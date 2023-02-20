@@ -23,7 +23,38 @@ namespace RosSharp.RosBridgeClient
     	// Update is called once per frame
     	void Update()
     	{
-        	if (Input.GetKeyDown("w"))
+
+            bool triggerValue;
+            Vector2 primary2DAxis;
+
+            var gameControllers = new List<UnityEngine.XR.InputDevice>();
+            UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
+            foreach (var device in gameControllers)
+            {
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue)
+                {
+                    Debug.Log("Trigger button is pressed.");
+                    Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.5f);
+                    Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+                    message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+                    message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+
+                    Publish(message);
+                }
+
+                if ((((uint)device.characteristics & 256) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
+                {
+                    Debug.Log("Left controller 2D axis value: " + primary2DAxis);
+                    //Debug.Log((uint)device.characteristics & 256);
+                }
+
+                if ((((uint)device.characteristics & 512) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
+                {
+                    Debug.Log("Right controller 2D axis value: " + primary2DAxis);
+                }
+            }
+
+            if (Input.GetKeyDown("w"))
         	{
             	print("w was pressed");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.5f);
