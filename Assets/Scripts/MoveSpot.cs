@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
 {
-	public class KeyboardControl : UnityPublisher<MessageTypes.Geometry.Twist>
+	public class MoveSpot : UnityPublisher<MessageTypes.Geometry.Twist>
 	{
         private MessageTypes.Geometry.Twist message;
  	protected override void Start()
@@ -45,6 +45,12 @@ namespace RosSharp.RosBridgeClient
                 if ((((uint)device.characteristics & 256) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
                 {
                     Debug.Log("Left controller 2D axis value: " + primary2DAxis);
+                    Vector3 linearVelocity = new Vector3(primary2DAxis[0], 0.0f, primary2DAxis[1]);
+                    Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+                    message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+                    message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+
+                    Publish(message);
                     //Debug.Log((uint)device.characteristics & 256);
                 }
 
