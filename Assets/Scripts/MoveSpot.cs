@@ -26,6 +26,7 @@ namespace RosSharp.RosBridgeClient
 
             bool triggerValue;
             Vector2 primary2DAxis;
+            bool publish = false;
 
             var gameControllers = new List<UnityEngine.XR.InputDevice>();
             UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
@@ -49,14 +50,29 @@ namespace RosSharp.RosBridgeClient
                     Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
                     message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
                     message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
-
-                    Publish(message);
-                    //Debug.Log((uint)device.characteristics & 256);
+                    publish = true;
                 }
 
                 if ((((uint)device.characteristics & 512) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
                 {
                     Debug.Log("Right controller 2D axis value: " + primary2DAxis);
+
+                    Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+                    Vector3 angularVelocity = new Vector3(0.0f, primary2DAxis[0],0.0f);
+
+                    //Don't change linear velocity if already publishing
+                    if (!publish)
+                    {
+                        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+                    }
+                    message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+
+                    publish = true;
+                }
+
+                if(publish)
+                {
+                    Publish(message);
                 }
             }
 
