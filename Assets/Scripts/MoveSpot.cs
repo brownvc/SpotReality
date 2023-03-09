@@ -7,7 +7,7 @@ namespace RosSharp.RosBridgeClient
 	public class MoveSpot : UnityPublisher<MessageTypes.Geometry.Twist>
 	{
         private MessageTypes.Geometry.Twist message;
- 	protected override void Start()
+ 	    protected override void Start()
         {
             base.Start();
             InitializeMessage();
@@ -24,7 +24,6 @@ namespace RosSharp.RosBridgeClient
     	void Update()
     	{
 
-            bool triggerValue;
             Vector2 primary2DAxis;
             bool publish = false;
 
@@ -32,17 +31,6 @@ namespace RosSharp.RosBridgeClient
             UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
             foreach (var device in gameControllers)
             {
-                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue)
-                {
-                    Debug.Log("Trigger button is pressed.");
-                    Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.5f);
-                    Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-                    message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
-                    message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
-
-                    Publish(message);
-                }
-
                 if ((((uint)device.characteristics & 256) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
                 {
                     Debug.Log("Left controller 2D axis value: " + primary2DAxis);
@@ -146,7 +134,7 @@ namespace RosSharp.RosBridgeClient
         	}
     	}
 
-        private static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)
+        public static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)
         {
             MessageTypes.Geometry.Vector3 geometryVector3 = new MessageTypes.Geometry.Vector3();
             geometryVector3.x = vector3.x;
