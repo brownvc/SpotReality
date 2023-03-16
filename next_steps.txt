@@ -1,0 +1,4 @@
+Snap the location in a new script before turning on the command
+Apply relative rotation
+Map the trigger to the dead man trigger
+Start programming gripper open with gripper trigger
