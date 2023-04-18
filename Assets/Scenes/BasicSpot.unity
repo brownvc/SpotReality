@@ -407,7 +407,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.188, z: 0.292}
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0.292}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -4078,9 +4078,9 @@ MonoBehaviour:
   DisplayInertiaGizmo: 0
   rigidbodyDataSource: 0
   Mass: 0.94831955
-  CenterOfMass: {x: 0.0027113, y: 0.04991363, z: 0.04476621}
-  InertiaTensor: {x: 0.0009601606, y: 0.0026557886, z: 0.0028640109}
-  InertiaTensorRotation: {x: -0.42388868, y: 0.14975886, z: 0.69355553, w: 0.5629134}
+  CenterOfMass: {x: 0, y: 0, z: 0}
+  InertiaTensor: {x: 1, y: 1, z: 1}
+  InertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
   UrdfMass: 0.94831955
   UrdfCenterOfMass: {x: 0.0027113, y: 0.04991363, z: 0.04476621}
   UrdfInertiaTensor: {x: 0.0009601606, y: 0.0026557886, z: 0.0028640109}
@@ -5598,6 +5598,52 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 29d81c10cb81ab3418a23d36d27a3a03, type: 2}
+--- !u!1 &991331604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 991331606}
+  - component: {fileID: 991331605}
+  m_Layer: 0
+  m_Name: LastRunner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &991331605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991331604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ce8f16a2be83441b17465f7f6b390a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dummyFinger: {fileID: 1507079563}
+  realFinger: {fileID: 1658837036}
+--- !u!4 &991331606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991331604}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &994116547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5826,7 +5872,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021127452}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.21, z: 0.3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8012,7 +8058,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3f1bce988d51f074592efa857c73ec35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3f1bce988d51f074592efa857c73ec35, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9153,15 +9199,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1507079563}
-  m_LocalRotation: {x: -0.0039674584, y: 0.0000008912822, z: 0.0000016309973, w: 0.9999922}
-  m_LocalPosition: {x: 0, y: 0.0148200095, z: 0.11745}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.189, y: 0.27782002, z: 1.1512499}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 879434693}
   - {fileID: 1286314161}
   m_Father: {fileID: 1399272934}
-  m_RootOrder: 2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1507079565
 MonoBehaviour:
@@ -9214,7 +9260,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.24818, z: -0.9163499}
+  m_ConnectedAnchor: {x: 0.094, y: -0.401, z: -1.0337999}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -9353,6 +9399,7 @@ GameObject:
   - component: {fileID: 1510830354}
   - component: {fileID: 1510830355}
   - component: {fileID: 1510830356}
+  - component: {fileID: 1510830357}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -9508,7 +9555,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd956d9f8c3a37d4a9bc58d12f905fe4, type: 3}
   m_Name: 
@@ -9529,6 +9576,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /spot/arm_stow
+--- !u!114 &1510830357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c91f347e2210d34c94880dd90dfd2e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/kill_motor
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0

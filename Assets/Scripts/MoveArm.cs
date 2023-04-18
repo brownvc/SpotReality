@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace RosSharp.RosBridgeClient
 {
     public class MoveArm : MonoBehaviour
@@ -26,8 +27,9 @@ namespace RosSharp.RosBridgeClient
         // This function moves the robot arm according to the right controller's 3D location if the trigger is pressed
         void Update()
         {
-            bool triggerValue;
+            bool gripValue;
             Vector3 locationChange;
+            GameObject connector;
             var gameControllers = new List<UnityEngine.XR.InputDevice>();
             UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
 
@@ -37,12 +39,16 @@ namespace RosSharp.RosBridgeClient
                 if ((((uint)device.characteristics & 512) != 0))
                 {
                     // If the  trigger is pressed, we want to start tracking the position of the arm and sending it to Spot
-                    if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue)
+                    if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue)
                     {
                         // If trigger is just now getting pressed, save the location but don't send a command
+                        // Also turn on the publisher to track the dummy hand
                         if (!triggerWasPressed)
                         {
                             triggerWasPressed = true;
+
+                            connector = GameObject.Find("RosConnector");
+                            (connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = true;
                         }
                         else
                         {
@@ -52,12 +58,16 @@ namespace RosSharp.RosBridgeClient
                         }
                         lastHandLocation = rightController.transform.position;
 
-                        Debug.Log("Location of controller: " + rightController.transform.position);
+                        //Debug.Log("Location of controller: " + rightController.transform.position);
                     }
                     else
                     {
                         // trigger is not pressed
-                        triggerWasPressed = false;    
+                        triggerWasPressed = false;
+
+                        // turn off dummy hand tracking
+                        connector = GameObject.Find("RosConnector");
+                        (connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = false;
                     }
                 }
             }
