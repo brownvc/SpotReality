@@ -1,0 +1,19 @@
+#pragma kernel CSMain
+
+struct MeshProperties {
+    float4x4 mat;
+    float4 color;
+};
+
+RWStructuredBuffer<MeshProperties> _Properties;
+float4x4 _GOPose;
+
+// We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
+// imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
+[numthreads(64, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID) {
+    float4x4 mat = _Properties[id.x].mat;
+
+    // Apply translation to existing matrix, which will be read in the shader.
+    _Properties[id.x].mat = mul(_GOPose, mat);
+}

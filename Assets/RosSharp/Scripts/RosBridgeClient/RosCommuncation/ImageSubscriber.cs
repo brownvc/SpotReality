@@ -22,7 +22,7 @@ namespace RosSharp.RosBridgeClient
     {
         public MeshRenderer meshRenderer;
 
-        private Texture2D texture2D;
+        public Texture2D texture2D;
         private byte[] imageData;
         private bool isMessageReceived;
 
