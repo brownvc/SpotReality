@@ -10,6 +10,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public Texture2D color_image;
 
+    public int imageScriptIndex;
+
     public Material material;
 
     public ComputeShader compute;
@@ -61,6 +63,9 @@ public class DrawMeshInstanced : MonoBehaviour
         int counter = 0;
 
         StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
+
+        GameObject rosConnector = GameObject.Find("RosConnector");
+        //ImageSubscriber imageScript = rosConnector.GetComponents<ImageSubscriber>()[2];
 
         while (!inp_stm.EndOfStream)
         {
@@ -179,8 +184,8 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         GameObject rosConnector = GameObject.Find("RosConnector");
-        ImageSubscriber imageScript = rosConnector.GetComponent<ImageSubscriber>();
-        color_image = imageScript.texture2D;
+        color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
+        
     }
 
     private void Update()
