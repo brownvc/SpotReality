@@ -23,11 +23,11 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public float noise_range;
 
-    private int total_population;
-    private int population;
-    public int downsample;
-    private int height;
-    private int width;
+    private uint total_population;
+    private uint population;
+    public uint downsample;
+    public uint height;
+    public uint width;
 
     public float size_scale; //hack to current pointcloud viewing
 
@@ -51,36 +51,38 @@ public class DrawMeshInstanced : MonoBehaviour
     private void Setup()
     {
         //size_scale = 0.002f;
-        width = 640;
-        height = 480;
+        //width = 640;
+        //height = 480;
+        //width = 424;
+        //height = 240;
         total_population = height * width;
-        population = (int)(total_population / downsample);
+        population = (uint)(total_population / downsample);
         Mesh mesh = CreateQuad(size_scale, size_scale, size_scale);
         //Mesh mesh = CreateQuad(0.01f,0.01f);
         this.mesh = mesh;
 
-        depth_ar = new float[height * width];
-        int counter = 0;
+        //depth_ar = new float[height * width];
+        //int counter = 0;
 
-        StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
+        //StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
 
-        GameObject rosConnector = GameObject.Find("RosConnector");
-        //ImageSubscriber imageScript = rosConnector.GetComponents<ImageSubscriber>()[2];
+        //GameObject rosConnector = GameObject.Find("RosConnector");
+        ////ImageSubscriber imageScript = rosConnector.GetComponents<ImageSubscriber>()[2];
 
-        while (!inp_stm.EndOfStream)
-        {
-            string inp_ln = inp_stm.ReadLine();
-            string[] split_arr = inp_ln.Split(',');
-            foreach (var spli in split_arr)
-            {
-                depth_ar[counter] = float.Parse(spli);
-                counter += 1;
-                //Debug.Log(spli);
-            }
-            // Do Something with the input. 
-        }
+        //while (!inp_stm.EndOfStream)
+        //{
+        //    string inp_ln = inp_stm.ReadLine();
+        //    string[] split_arr = inp_ln.Split(',');
+        //    foreach (var spli in split_arr)
+        //    {
+        //        depth_ar[counter] = float.Parse(spli);
+        //        counter += 1;
+        //        //Debug.Log(spli);
+        //    }
+        //    // Do Something with the input. 
+        //}
 
-        inp_stm.Close();
+        //inp_stm.Close();
 
         // Boundary surrounding the meshes we will be drawing.  Used for occlusion.
         bounds = new Bounds(transform.position, Vector3.one * (range + 1));
@@ -94,18 +96,27 @@ public class DrawMeshInstanced : MonoBehaviour
         // Initialize buffer with the given population.
         MeshProperties[] properties = new MeshProperties[population];
 
+        if(width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0)
+        {
+            return properties;
+        }
 
-        int x;
-        int y;
-        int depth_idx;
-        int i;
-        for (int pop_i = 0; pop_i < population; pop_i++)
+        uint x;
+        uint y;
+        uint depth_idx;
+        uint i;
+        for (uint pop_i = 0; pop_i < population; pop_i++)
         {
             i = pop_i * downsample;
             MeshProperties props = new MeshProperties();
             x = i % (width);
-            y = (int)Mathf.Floor(i / width);
+            y = (uint)Mathf.Floor(i / width);
             depth_idx = (width * (height - y - 1)) + x;
+
+            if(depth_idx >= depth_ar.Length)
+            {
+                continue;
+            }
 
             Vector3 position;
 
@@ -133,7 +144,7 @@ public class DrawMeshInstanced : MonoBehaviour
             props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
             //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
-            props.color = color_image.GetPixel(x, y);
+            props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
 
             properties[pop_i] = props;
         }
@@ -149,10 +160,10 @@ public class DrawMeshInstanced : MonoBehaviour
         uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         // Arguments for drawing mesh.
         // 0 == number of triangle indices, 1 == population, others are only relevant if drawing submeshes.
-        args[0] = (uint)mesh.GetIndexCount(0);
-        args[1] = (uint)population;
-        args[2] = (uint)mesh.GetIndexStart(0);
-        args[3] = (uint)mesh.GetBaseVertex(0);
+        args[0] = mesh.GetIndexCount(0);
+        args[1] = population;
+        args[2] = mesh.GetIndexStart(0);
+        args[3] = mesh.GetBaseVertex(0);
         argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
         argsBuffer.SetData(args);
 
@@ -160,7 +171,7 @@ public class DrawMeshInstanced : MonoBehaviour
         MeshProperties[] properties = new MeshProperties[population];
 
 
-        meshPropertiesBuffer = new ComputeBuffer(population, MeshProperties.Size());
+        meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
         meshPropertiesBuffer.SetData(GetProperties());
 
         SetProperties();
@@ -185,7 +196,8 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         GameObject rosConnector = GameObject.Find("RosConnector");
         color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
-        
+        depth_ar = rosConnector.GetComponents<Float32ArraySubscriber>()[imageScriptIndex].data;
+
     }
 
     private void Update()
@@ -205,7 +217,7 @@ public class DrawMeshInstanced : MonoBehaviour
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
     }
 
-    private Vector3 pixel_to_vision_frame(int i, int j, float depth)
+    private Vector3 pixel_to_vision_frame(uint i, uint j, float depth)
     {
         int CX = 320;
         int CY = 240;

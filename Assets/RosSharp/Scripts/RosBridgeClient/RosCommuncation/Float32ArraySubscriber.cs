@@ -2,8 +2,6 @@
 © Siemens AG, 2018
 Author: Berkay Alp Cakal (berkay_alp.cakal.ct@siemens.com)
 
-Modified by Brown University
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -15,33 +13,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using RosSharp.RosBridgeClient.MessageTypes.Sensor;
 using RosSharp.RosBridgeClient.MessageTypes.Std;
 
 namespace RosSharp.RosBridgeClient
 {
-    public class DepthImageSubscriber : UnitySubscriber<MessageTypes.Sensor.Image>
+    public class Float32ArraySubscriber : UnitySubscriber<MessageTypes.Std.Float32MultiArray>
     {
-        //public MessageTypes.Sensor.Image image;
-
-        public float[] imageData;
+        public float[] data;
 
         protected override void Start()
         {
             base.Start();
         }
 
-        protected override void ReceiveMessage(MessageTypes.Sensor.Image inputImage)
+        protected override void ReceiveMessage(MessageTypes.Std.Float32MultiArray floatarray)
         {
             //laserScanWriter.Write(laserScan);
 
-            // receive the image
-            imageData = new float[inputImage.data.Length];
-
-            foreach(byte pix in inputImage.data)
-            {
-                imageData[pix] = (float) pix;
-            }
+            data = floatarray.data;
 
         }
     }
