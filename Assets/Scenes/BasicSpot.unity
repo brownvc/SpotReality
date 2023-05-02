@@ -940,10 +940,6 @@ MonoBehaviour:
   downsample: 1
   height: 240
   width: 424
-  CX: 306
-  CY: 235
-  FX: 256.46777
-  FY: 256.1428
   size_scale: 0.01
 --- !u!1 &124656486
 GameObject:
@@ -2132,10 +2128,6 @@ MonoBehaviour:
   downsample: 5
   height: 0
   width: 0
-  CX: 0
-  CY: 0
-  FX: 0
-  FY: 0
   size_scale: 0.01
 --- !u!4 &299861281 stripped
 Transform:
@@ -3732,10 +3724,6 @@ MonoBehaviour:
   downsample: 1
   height: 240
   width: 424
-  CX: 311
-  CY: 246
-  FX: 255.8604
-  FY: 255.5597
   size_scale: 0.01
 --- !u!1 &549220550
 GameObject:
@@ -9584,6 +9572,7 @@ GameObject:
   - component: {fileID: 1510830364}
   - component: {fileID: 1510830365}
   - component: {fileID: 1510830366}
+  - component: {fileID: 1510830367}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -9711,7 +9700,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
@@ -9781,7 +9770,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
@@ -9797,7 +9786,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f261de8a4ad680488e875768238bee1, type: 3}
   m_Name: 
@@ -9814,7 +9803,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f261de8a4ad680488e875768238bee1, type: 3}
   m_Name: 
@@ -9831,7 +9820,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
@@ -9847,7 +9836,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f261de8a4ad680488e875768238bee1, type: 3}
   m_Name: 
@@ -9864,7 +9853,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
@@ -9880,7 +9869,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f261de8a4ad680488e875768238bee1, type: 3}
   m_Name: 
@@ -9897,7 +9886,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f261de8a4ad680488e875768238bee1, type: 3}
   m_Name: 
@@ -9907,6 +9896,19 @@ MonoBehaviour:
   data: []
   isColor: 1
   texture2D: {fileID: 0}
+--- !u!114 &1510830367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a38d89eaeabe6643bb3a58e1d5d0147, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/set_gripper
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11521,10 +11523,6 @@ MonoBehaviour:
   downsample: 1
   height: 480
   width: 640
-  CX: 320
-  CY: 240
-  FX: 552.0291
-  FY: 552.0291
   size_scale: 0.01
 --- !u!1001 &1795693229
 PrefabInstance:
@@ -13226,10 +13224,6 @@ MonoBehaviour:
   downsample: 1
   height: 240
   width: 424
-  CX: 0
-  CY: 0
-  FX: 0
-  FY: 0
   size_scale: 0.01
 --- !u!1 &2133151779
 GameObject:

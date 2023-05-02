@@ -53,34 +53,6 @@ namespace RosSharp.RosBridgeClient
 
         private void ProcessMessage()
         {
-            int width = 640;
-            int height = 480;
-            int offset;
-
-            //Debug.Log("Data length for topic " + Topic + ": " + data.Length);
-
-            if (isColor)
-            {
-                /*
-                for (int i = 0; i < height; i++)
-                {
-                    for (int j = 0; j < width; j++)
-                    {
-                        offset = i * width + j * 3;
-                        if (offset + 2 >= width)
-                        {
-                            continue;
-                        }
-                        Color color = new Color(data[offset] / 255.0f, data[offset + 1] / 255.0f, data[offset + 2] / 255.0f);
-                        texture2D.SetPixel(j, i, color);
-                        var x = texture2D.GetPixel(j, i);
-                        //Debug.Log(color);
-                    }
-                }
-                */
-            }
-
-            isMessageReceived = false;
         }
     }
 }

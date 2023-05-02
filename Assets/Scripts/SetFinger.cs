@@ -15,6 +15,7 @@ public class LastRun : MonoBehaviour
     {
         Debug.Log("Start called");
         dummyFinger.transform.position = realFinger.transform.position;
+        //dummyFinger.transform.rotation = realFinger.transform.rotation;
         startSecond = DateTime.Now.Second;
     }
 

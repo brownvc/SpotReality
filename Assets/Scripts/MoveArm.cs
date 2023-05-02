@@ -10,6 +10,7 @@ namespace RosSharp.RosBridgeClient
         private MessageTypes.Geometry.Twist message;
         private bool triggerWasPressed = false;
         private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
+        private Quaternion lastHandRotation = Quaternion.identity;
         private GameObject rightController;
         private GameObject dummyFinger;
 
@@ -54,7 +55,9 @@ namespace RosSharp.RosBridgeClient
                         {
                             // Change the location of the finger the same way
                             locationChange = (rightController.transform.position - lastHandLocation);
+                            //rotationChange = rightController.transform.rotation - lastHandRotation;
                             dummyFinger.transform.position += locationChange;
+                            dummyFinger.transform.rotation = rightController.transform.rotation;
                         }
                         lastHandLocation = rightController.transform.position;
 
