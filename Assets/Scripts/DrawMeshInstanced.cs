@@ -8,7 +8,7 @@ public class DrawMeshInstanced : MonoBehaviour
 {
     public float range;
 
-    public Texture2D color_image;
+    public float[] color_image;
 
     public int imageScriptIndex;
 
@@ -28,6 +28,10 @@ public class DrawMeshInstanced : MonoBehaviour
     public uint downsample;
     public uint height;
     public uint width;
+    public int CX;
+    public int CY; 
+    public float FX;
+    public float FY;
 
     public float size_scale; //hack to current pointcloud viewing
 
@@ -96,7 +100,7 @@ public class DrawMeshInstanced : MonoBehaviour
         // Initialize buffer with the given population.
         MeshProperties[] properties = new MeshProperties[population];
 
-        if(width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0)
+        if(width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0 || color_image.Length == 0)
         {
             return properties;
         }
@@ -144,7 +148,13 @@ public class DrawMeshInstanced : MonoBehaviour
             props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
             //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
-            props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
+            //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
+            int new_x = (int)(width - x) - 1;
+
+            int offset = (int)((height - y) - 1) * (int)width*3 + (int)new_x * 3;
+            //Debug.Log(color_image.Length);
+            props.color = new Color(color_image[offset] / 255.0f, color_image[offset + 1] / 255.0f, color_image[offset + 2] / 255.0f);
+            //Debug.Log(props.color);
 
             properties[pop_i] = props;
         }
@@ -195,7 +205,8 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         GameObject rosConnector = GameObject.Find("RosConnector");
-        color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
+        //color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
+        color_image = rosConnector.GetComponents<Float32ArraySubscriber>()[4].data;
         depth_ar = rosConnector.GetComponents<Float32ArraySubscriber>()[imageScriptIndex].data;
 
     }
@@ -219,11 +230,11 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private Vector3 pixel_to_vision_frame(uint i, uint j, float depth)
     {
-        int CX = 320;
-        int CY = 240;
+        //int CX = 320;
+        //int CY = 240;
 
-        float FX = (float)552.029101;
-        float FY = (float)552.029101;
+        //float FX = (float)552.029101;
+        //float FY = (float)552.029101;
 
         float x = (j - CX) * depth / FX;
         float y = (i - CY) * depth / FY;
@@ -325,4 +336,5 @@ public class DrawMeshInstanced : MonoBehaviour
         }
         argsBuffer = null;
     }
+
 }
