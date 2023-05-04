@@ -62,7 +62,9 @@ public class DrawMeshInstanced : MonoBehaviour
         //height = 240;
         total_population = height * width;
         population = (uint)(total_population / downsample);
-        Mesh mesh = CreateQuad(size_scale, size_scale, size_scale);
+
+        //Mesh mesh = CreateQuad(size_scale, size_scale, size_scale);
+        Mesh mesh = CreateQuad(size_scale, size_scale);
         //Mesh mesh = CreateQuad(0.01f,0.01f);
         this.mesh = mesh;
 
@@ -90,7 +92,8 @@ public class DrawMeshInstanced : MonoBehaviour
         //inp_stm.Close();
 
         // Boundary surrounding the meshes we will be drawing.  Used for occlusion.
-        bounds = new Bounds(transform.position, Vector3.one * (range + 1));
+        // bounds = new Bounds(transform.position, Vector3.one * (range + 1));
+        bounds = new Bounds(Vector3.zero, Vector3.one * (range + 1));
 
         InitializeBuffers();
 
@@ -116,7 +119,7 @@ public class DrawMeshInstanced : MonoBehaviour
             MeshProperties props = new MeshProperties();
             x = i % (width);
             y = (uint)Mathf.Floor(i / width);
-            depth_idx = (width * (height - y - 1)) + x;
+            depth_idx = (width * (height - y - 1)) + (width - x - 1);
 
             if (depth_idx >= depth_ar.Length)
             {
@@ -188,6 +191,7 @@ public class DrawMeshInstanced : MonoBehaviour
     private void SetGOPosition()
     {
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
+        // compute.SetMatrix("_GOPose", Matrix4x4.TRS(Vector3.zero, transform.rotation, new Vector3(1, 1, 1)));
     }
 
     private void SetProperties()
@@ -243,67 +247,110 @@ public class DrawMeshInstanced : MonoBehaviour
 
     }
 
-    private Mesh CreateQuad(float width = 1f, float height = 1f, float depth = 1f)
+    //private Mesh CreateQuad(float width = 1f, float height = 1f, float depth = 1f)
+    //{
+    //    // Create a quad mesh.
+    //    var mesh = new Mesh();
+
+    //    float w = width * .5f;
+    //    float h = height * .5f;
+    //    float d = depth * .5f;
+
+    //    var vertices = new Vector3[8] {
+    //        new Vector3(-w, -h, -d),
+    //        new Vector3(w, -h, -d),
+    //        new Vector3(w, h, -d),
+    //        new Vector3(-w, h, -d),
+    //        new Vector3(-w, -h, d),
+    //        new Vector3(w, -h, d),
+    //        new Vector3(w, h, d),
+    //        new Vector3(-w, h, d)
+    //    };
+
+    //    var tris = new int[3 * 2 * 6] {
+    //        0, 3, 1,
+    //        3, 2, 1,
+
+    //        0,4,5,
+    //        0,5,1,
+
+    //        1,5,2,
+    //        2,5,6,
+
+    //        7,3,6,
+    //        3,6,2,
+
+    //        0,4,3,
+    //        4,7,3,
+
+    //        4,7,5,
+    //        7,5,6
+    //    };
+
+    //    var normals = new Vector3[8] {
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+    //        -Vector3.forward,
+
+    //    };
+
+    //    var uv = new Vector2[8] {
+    //        new Vector2(0, 0),
+    //        new Vector2(1, 0),
+    //        new Vector2(1, 1),
+    //        new Vector2(0, 1),
+    //        new Vector2(0, 0),
+    //        new Vector2(1, 0),
+    //        new Vector2(1, 1),
+    //        new Vector2(0, 1),
+    //    };
+
+    //    mesh.vertices = vertices;
+    //    mesh.triangles = tris;
+    //    mesh.normals = normals;
+    //    mesh.uv = uv;
+
+    //    return mesh;
+    //}
+
+    private Mesh CreateQuad(float width = 1f, float height = 1f)
     {
         // Create a quad mesh.
         var mesh = new Mesh();
 
         float w = width * .5f;
         float h = height * .5f;
-        float d = depth * .5f;
-
-        var vertices = new Vector3[8] {
-            new Vector3(-w, -h, -d),
-            new Vector3(w, -h, -d),
-            new Vector3(w, h, -d),
-            new Vector3(-w, h, -d),
-            new Vector3(-w, -h, d),
-            new Vector3(w, -h, d),
-            new Vector3(w, h, d),
-            new Vector3(-w, h, d)
+        var vertices = new Vector3[4] {
+            new Vector3(-w, -h, 0),
+            new Vector3(w, -h, 0),
+            new Vector3(-w, h, 0),
+            new Vector3(w, h, 0)
         };
 
-        var tris = new int[3 * 2 * 6] {
-            0, 3, 1,
-            3, 2, 1,
-
-            0,4,5,
-            0,5,1,
-
-            1,5,2,
-            2,5,6,
-
-            7,3,6,
-            3,6,2,
-
-            0,4,3,
-            4,7,3,
-
-            4,7,5,
-            7,5,6
+        var tris = new int[6] {
+            // lower left tri.
+            0, 2, 1,
+            // lower right tri
+            2, 3, 1
         };
 
-        var normals = new Vector3[8] {
+        var normals = new Vector3[4] {
             -Vector3.forward,
             -Vector3.forward,
             -Vector3.forward,
             -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward,
-
         };
 
-        var uv = new Vector2[8] {
+        var uv = new Vector2[4] {
             new Vector2(0, 0),
             new Vector2(1, 0),
-            new Vector2(1, 1),
             new Vector2(0, 1),
-            new Vector2(0, 0),
-            new Vector2(1, 0),
             new Vector2(1, 1),
-            new Vector2(0, 1),
         };
 
         mesh.vertices = vertices;
