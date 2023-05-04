@@ -28,9 +28,14 @@ public class DrawMeshInstanced : MonoBehaviour
     public uint downsample;
     public uint height;
     public uint width;
+    public int CX;
+    public int CY;
+    public float FX;
+    public float FY;
 
     public float size_scale; //hack to current pointcloud viewing
 
+    //private float[] depth_ar;
     private float[] depth_ar;
 
     // Mesh Properties struct to be read from the GPU.
@@ -113,7 +118,7 @@ public class DrawMeshInstanced : MonoBehaviour
             y = (uint)Mathf.Floor(i / width);
             depth_idx = (width * (height - y - 1)) + x;
 
-            if(depth_idx >= depth_ar.Length)
+            if (depth_idx >= depth_ar.Length)
             {
                 continue;
             }
@@ -146,6 +151,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
             props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             props.color[3] = 1.0f;
+            //props.color = new Color(0, 0, 0, 0);
 
             properties[pop_i] = props;
         }
@@ -196,9 +202,11 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         GameObject rosConnector = GameObject.Find("RosConnector");
-        //color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
-        color_image = rosConnector.GetComponents<DepthImageSubscriber>()[0].texture2D;
-        depth_ar = rosConnector.GetComponents<Float32ArraySubscriber>()[imageScriptIndex].data;
+        color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
+        //color_image = rosConnector.GetComponents<ImageSubscriber>()[1].texture2D;
+        // = rosConnector.GetComponents<ImageSubscriber>()[0].depth_data;
+
+        depth_ar = rosConnector.GetComponents<RawImageSubscriber>()[imageScriptIndex].image_data;
 
     }
 
@@ -221,11 +229,11 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private Vector3 pixel_to_vision_frame(uint i, uint j, float depth)
     {
-        int CX = 320;
-        int CY = 240;
-
-        float FX = (float)552.029101;
-        float FY = (float)552.029101;
+        //int CX = 320;
+        //int CY = 240;
+        
+        //float FX = (float)552.029101;
+        //float FY = (float)552.029101;
 
         float x = (j - CX) * depth / FX;
         float y = (i - CY) * depth / FY;

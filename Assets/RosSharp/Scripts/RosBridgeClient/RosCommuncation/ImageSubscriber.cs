@@ -42,6 +42,7 @@ namespace RosSharp.RosBridgeClient
         {
             imageData = compressedImage.data;
             isMessageReceived = true;
+
         }
 
         private void ProcessMessage()
