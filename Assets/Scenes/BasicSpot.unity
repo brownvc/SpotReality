@@ -341,7 +341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &38613785
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -408,7 +408,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0, z: 0.292}
+  m_ConnectedAnchor: {x: 0, y: 0.18799996, z: 0.292}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -932,7 +932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
   imageScriptIndex: 0
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -945,6 +945,7 @@ MonoBehaviour:
   FX: 256.4678
   FY: 256.1428
   size_scale: 0.01
+  use_saved_meshes: 1
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,7 +1054,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.055, y: 0, z: -0.29785}
+  m_ConnectedAnchor: {x: 0.055, y: 0, z: -0.29784995}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -1345,7 +1346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image: {fileID: 2800000, guid: c42e37b95e20fb04f872bdd0b7807356, type: 3}
   imageScriptIndex: 5
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -1358,6 +1359,7 @@ MonoBehaviour:
   FX: 309.0163
   FY: 241.6659
   size_scale: 0.01
+  use_saved_meshes: 1
 --- !u!1 &177439707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,7 +1468,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.110944994, y: 0, z: 0}
+  m_ConnectedAnchor: {x: -0.110944994, y: 0, z: 0.000000059604645}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -1784,7 +1786,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.000000029802322, z: 0}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -2195,6 +2197,7 @@ MonoBehaviour:
   FX: 0
   FY: 0
   size_scale: 0.01
+  use_saved_meshes: 0
 --- !u!4 &299861281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0768174edffea91409ee4bccd12a6b18, type: 3}
@@ -3065,7 +3068,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.3205, z: 0.025000006}
+  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -3500,7 +3503,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.055, y: 0, z: -0.29785}
+  m_ConnectedAnchor: {x: -0.055, y: 0, z: -0.29784995}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -3782,7 +3785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -3795,6 +3798,7 @@ MonoBehaviour:
   FX: 255.8604
   FY: 255.5598
   size_scale: 0.01
+  use_saved_meshes: 1
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -4049,7 +4053,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594476507}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -0.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4252,7 +4256,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0, z: 0.33849996}
+  m_ConnectedAnchor: {x: 0, y: -0.000000029802322, z: 0.33849996}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -6846,7 +6850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image: {fileID: 2800000, guid: 3c04cbdd3edffc0448f55c44039436fa, type: 3}
   imageScriptIndex: 4
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -6859,6 +6863,7 @@ MonoBehaviour:
   FX: 257.0588
   FY: 256.5205
   size_scale: 0.01
+  use_saved_meshes: 1
 --- !u!1001 &1145622212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7108,7 +7113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163288626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.51, z: 0}
+  m_LocalPosition: {x: 0, y: 0.51, z: -0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7614,7 +7619,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.3205, z: 0.025000006}
+  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -8329,6 +8334,7 @@ Transform:
   - {fileID: 124656487}
   - {fileID: 38613792}
   - {fileID: 1507079564}
+  - {fileID: 1764592200}
   - {fileID: 112187587}
   - {fileID: 545284149}
   - {fileID: 2128929575}
@@ -8533,7 +8539,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.3205, z: 0.025000006}
+  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -9488,7 +9494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1507079564
 Transform:
   m_ObjectHideFlags: 0
@@ -9557,7 +9563,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.094, y: -0.401, z: -1.0337999}
+  m_ConnectedAnchor: {x: 0.189, y: 0.01481998, z: 0.11745}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -9858,6 +9864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /cmd_vel
+  save: 0
 --- !u!114 &1510830355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10290,7 +10297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1599918336
 Transform:
   m_ObjectHideFlags: 0
@@ -10729,7 +10736,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.0148200095, z: 0.11745}
+  m_ConnectedAnchor: {x: 0, y: 0.01481998, z: 0.11745}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -11428,7 +11435,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1759467423
 Transform:
   m_ObjectHideFlags: 0
@@ -11571,10 +11578,10 @@ MonoBehaviour:
   _rigidbody: {fileID: 1759467424}
   DisplayInertiaGizmo: 0
   rigidbodyDataSource: 0
-  Mass: 1.904699
-  CenterOfMass: {x: -0.000272, y: -0.024603, z: -0.008399}
-  InertiaTensor: {x: 0.0049215276, y: 0.007280424, z: 0.008919049}
-  InertiaTensorRotation: {x: 0.006994165, y: -0.99821013, z: -0.000018291876, w: -0.00096736406}
+  Mass: 1.9046991
+  CenterOfMass: {x: 0, y: 0, z: 0}
+  InertiaTensor: {x: 1, y: 1, z: 1}
+  InertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
   UrdfMass: 1.904699
   UrdfCenterOfMass: {x: -0.000272, y: -0.024603, z: -0.008399}
   UrdfInertiaTensor: {x: 0.0049215276, y: 0.007280424, z: 0.008919049}
@@ -11673,12 +11680,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764592199}
-  m_LocalRotation: {x: 0.03245784, y: 0.02355932, z: 0.7089702, w: 0.70409703}
-  m_LocalPosition: {x: -0.0013684223, y: 0.28191847, z: 0.53}
+  m_LocalRotation: {x: 0.032457843, y: 0.023559323, z: 0.70897025, w: 0.7040971}
+  m_LocalPosition: {x: -0.0013684223, y: 0.393, z: 0.5437999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1892496993}
+  m_Father: {fileID: 1399272934}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 89.913}
 --- !u!114 &1764592201
@@ -11694,12 +11701,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 320
@@ -11707,6 +11714,7 @@ MonoBehaviour:
   FX: 552.0291
   FY: 552.0291
   size_scale: 0.01
+  use_saved_meshes: 0
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11937,7 +11945,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.110944994, y: 0, z: 0}
+  m_ConnectedAnchor: {x: 0.110944994, y: 0, z: 0.000000059604645}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -12649,7 +12657,6 @@ Transform:
   - {fileID: 591289850}
   - {fileID: 1171373530}
   - {fileID: 1658837045}
-  - {fileID: 1764592200}
   m_Father: {fileID: 1046934013}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13117,7 +13124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037912907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13396,7 +13403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image: {fileID: 2800000, guid: 500926c50d135d14f88f797ffc7a96f3, type: 3}
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -13409,6 +13416,7 @@ MonoBehaviour:
   FX: 257.8765
   FY: 257.2844
   size_scale: 0.01
+  use_saved_meshes: 1
 --- !u!1 &2133151779
 GameObject:
   m_ObjectHideFlags: 0
@@ -13489,7 +13497,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.3205, z: 0.025000006}
+  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:

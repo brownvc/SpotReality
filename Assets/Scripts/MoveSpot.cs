@@ -7,6 +7,8 @@ namespace RosSharp.RosBridgeClient
 	public class MoveSpot : UnityPublisher<MessageTypes.Geometry.Twist>
 	{
         private MessageTypes.Geometry.Twist message;
+        public bool save;
+
  	    protected override void Start()
         {
             base.Start();
@@ -57,11 +59,11 @@ namespace RosSharp.RosBridgeClient
 
                     publish = true;
                 }
+            }
 
-                if(publish)
-                {
-                    Publish(message);
-                }
+            if (publish)
+            {
+                Publish(message);
             }
 
             if (Input.GetKeyDown("w"))
@@ -132,6 +134,11 @@ namespace RosSharp.RosBridgeClient
 
             	Publish(message);
         	}
+            if (Input.GetKeyDown("i"))
+            {
+                Debug.Log("Saving");
+                save = true;
+            }
     	}
 
         public static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using RosSharp.RosBridgeClient;
+using RosSharp.RosBridgeClient.MessageTypes.Nav;
+using System.Text;
+using static RosSharp.Urdf.Link.Visual.Material;
+//using System;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
@@ -34,9 +38,14 @@ public class DrawMeshInstanced : MonoBehaviour
     public float FY;
 
     public float size_scale; //hack to current pointcloud viewing
-
-    //private float[] depth_ar;
+    
+    public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private float[] depth_ar;
+
+    private MeshProperties[] globalProps;
+
+    private MeshProperties[] generalUseProps;
+    
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -68,26 +77,64 @@ public class DrawMeshInstanced : MonoBehaviour
         //Mesh mesh = CreateQuad(0.01f,0.01f);
         this.mesh = mesh;
 
-        //depth_ar = new float[height * width];
-        //int counter = 0;
+        generalUseProps = new MeshProperties[population];
 
-        //StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
+        // Use saved meshes
+        if (use_saved_meshes)
+        {
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                {
+                    int length = reader.ReadInt32();
+                    depth_ar = new float[length];
+                    for (int i = 0; i < length; i++)
+                    {
+                        depth_ar[i] = reader.ReadSingle();
+                    }
+                }
+            }
 
-        //GameObject rosConnector = GameObject.Find("RosConnector");
-        ////ImageSubscriber imageScript = rosConnector.GetComponents<ImageSubscriber>()[2];
+            // read the texture 2D
+            byte[] bytes;
+            using (var stream = File.Open("Assets/PointClouds/Color_" + imageScriptIndex + ".png", FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                {
+                    bytes = reader.ReadBytes(int.MaxValue);
+                }
+            }
+            color_image = new Texture2D(1, 1);
+            color_image.LoadImage(bytes);
 
-        //while (!inp_stm.EndOfStream)
-        //{
-        //    string inp_ln = inp_stm.ReadLine();
-        //    string[] split_arr = inp_ln.Split(',');
-        //    foreach (var spli in split_arr)
-        //    {
-        //        depth_ar[counter] = float.Parse(spli);
-        //        counter += 1;
-        //        //Debug.Log(spli);
-        //    }
-        //    // Do Something with the input. 
-        //}
+            //color_image = Resources.Load<Texture2D>("Assets/PointClouds/Color_" + imageScriptIndex + ".png");
+        }
+        else if (false)// Read in new scene data from ROS? 
+        {
+            depth_ar = new float[height * width];
+            int counter = 0;
+
+            StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
+
+            GameObject rosConnector = GameObject.Find("RosConnector");
+            //ImageSubscriber imageScript = rosConnector.GetComponents<ImageSubscriber>()[2];
+
+            while (!inp_stm.EndOfStream)
+            {
+                string inp_ln = inp_stm.ReadLine();
+                string[] split_arr = inp_ln.Split(',');
+                foreach (var spli in split_arr)
+                {
+                    depth_ar[counter] = float.Parse(spli);
+                    counter += 1;
+                    //Debug.Log(spli);
+                }
+                // Do Something with the input. 
+            }
+        }
+
+
+
 
         //inp_stm.Close();
 
@@ -99,20 +146,26 @@ public class DrawMeshInstanced : MonoBehaviour
 
     }
 
+
     private MeshProperties[] GetProperties()
     {
         // Initialize buffer with the given population.
-        MeshProperties[] properties = new MeshProperties[population];
+        //MeshProperties[] properties = new MeshProperties[population];
+
+        //return properties;
 
         if(width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0)
         {
-            return properties;
+            return new MeshProperties[population];
         }
+
+        MeshProperties[] properties = generalUseProps;
 
         uint x;
         uint y;
         uint depth_idx;
         uint i;
+        
         for (uint pop_i = 0; pop_i < population; pop_i++)
         {
             i = pop_i * downsample;
@@ -137,7 +190,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
                 props.color = new Vector4(0, 0, 0, 0);
 
-                properties[pop_i] = props;
+                //properties[pop_i] = props;
                 continue;
 
             }
@@ -157,8 +210,9 @@ public class DrawMeshInstanced : MonoBehaviour
             //props.color = new Color(0, 0, 0, 0);
 
             properties[pop_i] = props;
+            
         }
-
+        //Debug.Log("Hello there! Took me " + (Time.time - t).ToString() + " s to do this lengthy loop.");
         return (properties);
     }
 
@@ -198,19 +252,68 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        meshPropertiesBuffer.SetData(GetProperties());
+        //if (globalProps == null)// && use_saved_meshes)
+        {
+            globalProps = GetProperties();
+        }
+
+        meshPropertiesBuffer.SetData(globalProps);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
     }
 
     private void UpdateTexture()
-    {
+    {           
+        if(use_saved_meshes) {
+            return;
+        }
         GameObject rosConnector = GameObject.Find("RosConnector");
         color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
         //color_image = rosConnector.GetComponents<ImageSubscriber>()[1].texture2D;
         // = rosConnector.GetComponents<ImageSubscriber>()[0].depth_data;
 
         depth_ar = rosConnector.GetComponents<RawImageSubscriber>()[imageScriptIndex].image_data;
+
+        // save the point cloud if desired
+        MoveSpot move = rosConnector.GetComponent<MoveSpot>();
+        if (move.save)
+        {
+            using (FileStream file = File.Create("Assets/PointClouds/mesh_array_" + imageScriptIndex))
+            {
+                using (BinaryWriter writer = new BinaryWriter(file))
+                {
+                    writer.Write((int)depth_ar.Length);
+                    foreach (float value in depth_ar)
+                    {
+                        writer.Write(value);
+                    }
+                }
+            }
+
+            byte[] bytes = color_image.EncodeToPNG();
+            //var dirPath = Application.dataPath + "/../SaveImages/";
+            //if (!Directory.Exists(dirPath))
+            //{
+            //    Directory.CreateDirectory(dirPath);
+            //}
+            File.WriteAllBytes("Assets/PointClouds/Color_" + imageScriptIndex + ".png", bytes);
+
+
+            //using (var stream = File.Open("mesh_array_" + imageScriptIndex, FileMode.Open))
+            //{
+            //    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+            //    {
+            //        int length = reader.ReadInt32();
+            //        depth_ar = new float[length];
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            depth_ar[i] = reader.ReadSingle();
+            //        }
+            //    }
+            //}
+
+            //move.save = false;
+        }
 
     }
 
@@ -318,6 +421,7 @@ public class DrawMeshInstanced : MonoBehaviour
     //    return mesh;
     //}
 
+    // Actually a cube, not a quad
     private Mesh CreateQuad(float width = 1f, float height = 1f)
     {
         // Create a quad mesh.
