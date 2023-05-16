@@ -51,13 +51,13 @@ public class DrawMeshInstanced : MonoBehaviour
     // Size() is a convenience funciton which returns the stride of the struct.
     private struct MeshProperties
     {
-        public Matrix4x4 mat;
+        public Vector4 pos;
         public Vector4 color;
 
         public static int Size()
         {
             return
-                sizeof(float) * 4*4 + // matrix;
+                sizeof(float) * 4 + // matrix;
                 sizeof(float) * 4; // color;
         }
     }
@@ -166,7 +166,7 @@ public class DrawMeshInstanced : MonoBehaviour
         uint y;
         uint depth_idx;
         uint i;
-        
+
         for (uint pop_i = 0; pop_i < population; pop_i++)
         {
             i = pop_i * downsample;
@@ -188,43 +188,54 @@ public class DrawMeshInstanced : MonoBehaviour
             
             if (depth_ar[depth_idx] == 0)
             {
-                position = new Vector3(10000, 1000, 1000);
+                position = new Vector4(10000, 1000, 1000,1);
 
-                //props.pos = new Vector3(0,0,0);
-                props.mat = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one * 0);
+                props.pos = new Vector4(0,0,0,1);
+                //properties[pop_i].pos = new Vector4(0, 0, 0, 1);
+
+                //props.mat = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one * 0);
                 //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
-                props.color = new Vector4(0, 0, 0, 0);
+                props.color = new Vector4(0, 0, 0, 1);
+                //properties[pop_i].color = new Vector4(0, 0, 0, 1);
 
-                properties[pop_i] = props;
+                //properties[pop_i] = props;
                 continue;
 
             }
             else
             {
+                //position = new Vector3(10000, 1000, 1000);
                 position = pixel_to_vision_frame(x, y, depth_ar[depth_idx]); //TODO: Get 4x4 matrix instead
             }
-            
-            
-            Quaternion rotation = Quaternion.Euler(0, 0, 0);
-            Vector3 scale = Vector3.one * 1;
-            Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
-            props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
-            
+
+
+            //Quaternion rotation = Quaternion.Euler(0, 0, 0);
+            //Vector3 scale = Vector3.one * 1;
+            //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
+            //props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
+
+
             //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
             //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
             //Vector3 intermediatePos = position + some_noise;
-            //props.pos = new Vector4(position.x, position.y, position.z, 1.0f);
+
+            
+            props.pos = position;
 
             props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             props.color[3] = 1.0f;
+            
+            //properties[pop_i].pos = position;
+
+            //properties[pop_i].color = color_image.GetPixel((int)(width - x) - 1, (int)y);
+            //properties[pop_i].color[3] = 1.0f;
             //props.color = new Color(0, 0, 0, 0);
 
             properties[pop_i] = props;
             
         }
-        
         return (properties);
     }
 
@@ -346,7 +357,7 @@ public class DrawMeshInstanced : MonoBehaviour
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
     }
 
-    private Vector3 pixel_to_vision_frame(uint i, uint j, float depth)
+    private Vector4 pixel_to_vision_frame(uint i, uint j, float depth)
     {
         //int CX = 320;
         //int CY = 240;
@@ -357,7 +368,7 @@ public class DrawMeshInstanced : MonoBehaviour
         float x = (j - CX) * depth / FX;
         float y = (i - CY) * depth / FY;
 
-        Vector3 ret = new Vector3(x, y, depth);
+        Vector4 ret = new Vector4(x, y, depth,1f);
         return (ret);
 
     }

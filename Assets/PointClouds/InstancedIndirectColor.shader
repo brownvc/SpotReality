@@ -20,7 +20,7 @@ Shader "Custom/InstancedIndirectColor" {
             };
 
             struct MeshProperties {
-                float4x4 mat;
+                float4 pos;
                 float4 color;
             };
 
@@ -30,7 +30,12 @@ Shader "Custom/InstancedIndirectColor" {
             v2f vert(appdata_t i, uint instanceID: SV_InstanceID) {
                 v2f o;
 
-                float4 pos = mul(_Properties[instanceID].mat, i.vertex);
+                float4x4 mat = 	 {1.0,0.0,0.0,_Properties[instanceID].pos.x,
+							    0.0,1.0,0.0,_Properties[instanceID].pos.y,
+							    0.0,0.0,1.0,_Properties[instanceID].pos.z,
+							    0.0,0.0,0.0,1.0 };
+
+                float4 pos = mul(mat, i.vertex);
                 o.vertex = UnityObjectToClipPos(pos);
                 o.color = _Properties[instanceID].color;
 
