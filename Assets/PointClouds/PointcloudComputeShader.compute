@@ -12,8 +12,9 @@ float4x4 _GOPose;
 // imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
 [numthreads(64, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID) {
-    float4x4 mat = _Properties[id.x].mat;
+    //float4x4 mat = _Properties[id.x].mat;
+    //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};
 
     // Apply translation to existing matrix, which will be read in the shader.
-    _Properties[id.x].mat = mul(_GOPose, mat);
+    _Properties[id.x].mat = mul(_GOPose, _Properties[id.x].mat);
 }

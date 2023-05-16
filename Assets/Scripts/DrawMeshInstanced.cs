@@ -57,8 +57,8 @@ public class DrawMeshInstanced : MonoBehaviour
         public static int Size()
         {
             return
-                sizeof(float) * 4 * 4 + // matrix;
-                sizeof(float) * 4;      // color;
+                sizeof(float) * 4*4 + // matrix;
+                sizeof(float) * 4; // color;
         }
     }
 
@@ -73,6 +73,7 @@ public class DrawMeshInstanced : MonoBehaviour
         population = (uint)(total_population / downsample);
 
         //Mesh mesh = CreateQuad(size_scale, size_scale, size_scale);
+        //Mesh mesh = CreateQuad(size_scale, size_scale);
         Mesh mesh = CreateQuad(size_scale, size_scale);
         //Mesh mesh = CreateQuad(0.01f,0.01f);
         this.mesh = mesh;
@@ -185,12 +186,13 @@ public class DrawMeshInstanced : MonoBehaviour
             {
                 position = new Vector3(10000, 1000, 1000);
 
+                //props.pos = new Vector3(0,0,0);
                 props.mat = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one * 0);
                 //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
                 props.color = new Vector4(0, 0, 0, 0);
 
-                //properties[pop_i] = props;
+                properties[pop_i] = props;
                 continue;
 
             }
@@ -199,11 +201,17 @@ public class DrawMeshInstanced : MonoBehaviour
                 position = pixel_to_vision_frame(x, y, depth_ar[depth_idx]); //TODO: Get 4x4 matrix instead
             }
 
+            
             Quaternion rotation = Quaternion.Euler(0, 0, 0);
             Vector3 scale = Vector3.one * 1;
             Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
             props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
             //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
+            
+
+            //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
+            //Vector3 intermediatePos = position + some_noise;
+            //props.pos = new Vector4(position.x, position.y, position.z, 1.0f);
 
             props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             props.color[3] = 1.0f;
@@ -212,7 +220,6 @@ public class DrawMeshInstanced : MonoBehaviour
             properties[pop_i] = props;
             
         }
-        //Debug.Log("Hello there! Took me " + (Time.time - t).ToString() + " s to do this lengthy loop.");
         return (properties);
     }
 
@@ -455,6 +462,44 @@ public class DrawMeshInstanced : MonoBehaviour
             new Vector2(1, 0),
             new Vector2(0, 1),
             new Vector2(1, 1),
+        };
+
+        mesh.vertices = vertices;
+        mesh.triangles = tris;
+        mesh.normals = normals;
+        mesh.uv = uv;
+
+        return mesh;
+    }
+
+    private Mesh CreateTri(float width = 1f, float height = 1f)
+    {
+        // Create a quad mesh.
+        var mesh = new Mesh();
+
+        float w = width * .5f;
+        float h = height * .5f;
+        var vertices = new Vector3[3] {
+            new Vector3(-w, -h, 0),
+            new Vector3(w, -h, 0),
+            new Vector3(-w, h, 0)
+        };
+
+        var tris = new int[3] {
+            // lower left tri.
+            0, 2, 1
+        };
+
+        var normals = new Vector3[3] {
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+        };
+
+        var uv = new Vector2[3] {
+            new Vector2(0, 0),
+            new Vector2(1, 0),
+            new Vector2(0, 1),
         };
 
         mesh.vertices = vertices;
