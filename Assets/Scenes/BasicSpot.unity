@@ -1351,7 +1351,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 311
@@ -6855,7 +6855,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 309
@@ -13408,7 +13408,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 317
