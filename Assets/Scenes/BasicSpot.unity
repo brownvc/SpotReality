@@ -937,14 +937,14 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 306
   CY: 235
   FX: 256.4678
   FY: 256.1428
-  size_scale: 0.01
+  size_scale: 0.05
   use_saved_meshes: 1
 --- !u!1 &124656486
 GameObject:
@@ -1351,7 +1351,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 311
@@ -3790,14 +3790,14 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 311
   CY: 256
   FX: 255.8604
   FY: 255.5598
-  size_scale: 0.01
+  size_scale: 0.05
   use_saved_meshes: 1
 --- !u!1 &549220550
 GameObject:
@@ -6855,7 +6855,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 309
@@ -10297,7 +10297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1599918336
 Transform:
   m_ObjectHideFlags: 0
@@ -11435,7 +11435,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1759467423
 Transform:
   m_ObjectHideFlags: 0
@@ -12313,7 +12313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860543784}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.957}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13124,7 +13124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037912907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.61, z: 0}
+  m_LocalPosition: {x: 0, y: 0.61, z: 0.774}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13408,7 +13408,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   noise_range: 0
-  downsample: 1
+  downsample: 2
   height: 480
   width: 640
   CX: 317

@@ -143,6 +143,10 @@ public class DrawMeshInstanced : MonoBehaviour
         // bounds = new Bounds(transform.position, Vector3.one * (range + 1));
         bounds = new Bounds(Vector3.zero, Vector3.one * (range + 1));
 
+        material.SetFloat("width",1.0f / width);
+        material.SetFloat("height", 1.0f / height);
+        material.SetInt("w", (int)width);
+
         InitializeBuffers();
 
     }
@@ -167,6 +171,7 @@ public class DrawMeshInstanced : MonoBehaviour
         uint depth_idx;
         uint i;
 
+        
         for (uint pop_i = 0; pop_i < population; pop_i++)
         {
             i = pop_i * downsample;
@@ -223,9 +228,11 @@ public class DrawMeshInstanced : MonoBehaviour
 
             
             props.pos = position;
+            props.color.x = (float)x;
+            props.color.y = (float)y;  
 
-            props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
-            props.color[3] = 1.0f;
+            //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
+            //props.color[3] = 1.0f;
             
             //properties[pop_i].pos = position;
 
@@ -236,6 +243,7 @@ public class DrawMeshInstanced : MonoBehaviour
             properties[pop_i] = props;
             
         }
+        
         return (properties);
     }
 
@@ -282,6 +290,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
         meshPropertiesBuffer.SetData(globalProps);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
+        material.SetTexture("_colorMap",color_image);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
     }
 
