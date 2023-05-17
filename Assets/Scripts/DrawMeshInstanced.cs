@@ -252,7 +252,7 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        //if (globalProps == null)// && use_saved_meshes)
+        if (globalProps == null)// && use_saved_meshes)
         {
             globalProps = GetProperties();
         }
