@@ -46,6 +46,11 @@ Shader "Custom/InstancedIndirectColor" {
 							      - sin(a),0.0,cos(a),_Properties[instanceID].pos.z,
 							      0.0,0.0,0.0,1.0 };
 
+                /*float4x4 mat = 	 {1.0,0.0,0.0,_Properties[instanceID].pos.x,
+							      0.0,1.0,0.0,_Properties[instanceID].pos.y,
+							      0.0,0.0,1.0,_Properties[instanceID].pos.z,
+							      0.0,0.0,0.0,1.0 }; */
+
                 float4 pos = mul(mat, i.vertex);
                 o.vertex = UnityObjectToClipPos(pos);
 
