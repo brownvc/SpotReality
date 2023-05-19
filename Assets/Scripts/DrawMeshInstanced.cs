@@ -151,6 +151,9 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetInt("w", (int)width);
         material.SetFloat("a",facedAngle);
 
+        Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
+        compute.SetVector("intrinsics",intr);
+
         InitializeBuffers();
 
     }
@@ -192,13 +195,16 @@ public class DrawMeshInstanced : MonoBehaviour
                 continue;
             }
             
-
+            /*
             Vector3 position = Vector3.one;
-            
-            
+
+
+            position = new Vector4(10000, 1000, 1000, 1);
+            */
+            /*
             if (depth_ar[depth_idx] == 0)
             {
-                position = new Vector4(10000, 1000, 1000,1);
+                
 
                 props.pos = new Vector4(0,0,0,1);
                 //properties[pop_i].pos = new Vector4(0, 0, 0, 1);
@@ -218,7 +224,7 @@ public class DrawMeshInstanced : MonoBehaviour
                 //position = new Vector3(10000, 1000, 1000);
                 position = pixel_to_vision_frame(x, y, depth_ar[depth_idx]); //TODO: Get 4x4 matrix instead
             }
-            
+            */
 
             //Quaternion rotation = Quaternion.Euler(0, 0, 0);
             //Vector3 scale = Vector3.one * 1;
@@ -232,7 +238,7 @@ public class DrawMeshInstanced : MonoBehaviour
             //Vector3 intermediatePos = position + some_noise;
 
             
-            props.pos = position;
+            props.pos = new Vector4(0, 0, 0, 1); ;
             props.color.x = (float)x;
             props.color.y = (float)y;
             props.color.z = (float)depth_ar[depth_idx];
