@@ -46,7 +46,8 @@ Shader "Custom/InstancedIndirectColor" {
 							      - sin(a),0.0,cos(a),_Properties[instanceID].pos.z,
 							      0.0,0.0,0.0,1.0 };
 
-                /*float4x4 mat = 	 {1.0,0.0,0.0,_Properties[instanceID].pos.x,
+                /*
+                float4x4 mat = 	 {1.0,0.0,0.0,_Properties[instanceID].pos.x,
 							      0.0,1.0,0.0,_Properties[instanceID].pos.y,
 							      0.0,0.0,1.0,_Properties[instanceID].pos.z,
 							      0.0,0.0,0.0,1.0 }; */
@@ -54,12 +55,12 @@ Shader "Custom/InstancedIndirectColor" {
                 float4 pos = mul(mat, i.vertex);
                 o.vertex = UnityObjectToClipPos(pos);
 
-                o.color = _Properties[instanceID].color;
+                //o.color = _Properties[instanceID].color;
                 //o.color.r = instanceID * 0.000003;
                 
                 float id = float(instanceID);
 
-                float4 coor = {(o.color.x) * width, o.color.y * height, 0.0, 0.0};
+                float4 coor = {(_Properties[instanceID].color.x) * width, _Properties[instanceID].color.y * height, 0.0, 0.0};
                 
                 //float4 coor = {floor(instanceID * width), floor(instanceID * width), 0.0, 0.0};
                 float2 uv = TRANSFORM_TEX(coor.xy, _colorMap);
@@ -73,7 +74,7 @@ Shader "Custom/InstancedIndirectColor" {
                 //o.color.r = coor.y;
                 //o.color.g = coor.y;
                 //o.color.g = 0.0;
-
+                
                 return o;
             }
 

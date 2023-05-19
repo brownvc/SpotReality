@@ -195,6 +195,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
             Vector3 position = Vector3.one;
             
+            
             if (depth_ar[depth_idx] == 0)
             {
                 position = new Vector4(10000, 1000, 1000,1);
@@ -217,7 +218,7 @@ public class DrawMeshInstanced : MonoBehaviour
                 //position = new Vector3(10000, 1000, 1000);
                 position = pixel_to_vision_frame(x, y, depth_ar[depth_idx]); //TODO: Get 4x4 matrix instead
             }
-
+            
 
             //Quaternion rotation = Quaternion.Euler(0, 0, 0);
             //Vector3 scale = Vector3.one * 1;
@@ -233,7 +234,8 @@ public class DrawMeshInstanced : MonoBehaviour
             
             props.pos = position;
             props.color.x = (float)x;
-            props.color.y = (float)y;  
+            props.color.y = (float)y;
+            props.color.z = (float)depth_ar[depth_idx];
 
             //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             //props.color[3] = 1.0f;

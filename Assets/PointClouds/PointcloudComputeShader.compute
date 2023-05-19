@@ -13,8 +13,13 @@ float4x4 _GOPose;
 [numthreads(64, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID) {
     float4 pos = _Properties[id.x].pos;
-    //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};
+    /*
+    pos.x = (j - CX) * depth / FX;
+    pos.y = (i - CY) * depth / FY;
 
+    Vector4 ret = new Vector4(x, y, depth,1f);
+    //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};
+    */
     // Apply translation to existing matrix, which will be read in the shader.
     _Properties[id.x].pos = mul(_GOPose, pos);
 }
