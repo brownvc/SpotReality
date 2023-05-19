@@ -936,6 +936,7 @@ MonoBehaviour:
   imageScriptIndex: 0
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 1860543785}
   noise_range: 0
   downsample: 2
   height: 480
@@ -944,7 +945,8 @@ MonoBehaviour:
   CY: 235
   FX: 256.4678
   FY: 256.1428
-  size_scale: 0.05
+  facedAngle: 0
+  size_scale: 0.01
   use_saved_meshes: 1
 --- !u!1 &124656486
 GameObject:
@@ -1350,6 +1352,7 @@ MonoBehaviour:
   imageScriptIndex: 5
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
   noise_range: 0
   downsample: 2
   height: 480
@@ -1358,6 +1361,7 @@ MonoBehaviour:
   CY: 255
   FX: 309.0163
   FY: 241.6659
+  facedAngle: 90
   size_scale: 0.01
   use_saved_meshes: 1
 --- !u!1 &177439707
@@ -2188,6 +2192,7 @@ MonoBehaviour:
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
   noise_range: 0
   downsample: 5
   height: 0
@@ -2196,6 +2201,7 @@ MonoBehaviour:
   CY: 0
   FX: 0
   FY: 0
+  facedAngle: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &299861281 stripped
@@ -3789,6 +3795,7 @@ MonoBehaviour:
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 1860543785}
   noise_range: 0
   downsample: 2
   height: 480
@@ -3797,7 +3804,8 @@ MonoBehaviour:
   CY: 256
   FX: 255.8604
   FY: 255.5598
-  size_scale: 0.05
+  facedAngle: 0
+  size_scale: 0.01
   use_saved_meshes: 1
 --- !u!1 &549220550
 GameObject:
@@ -6854,6 +6862,7 @@ MonoBehaviour:
   imageScriptIndex: 4
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
   noise_range: 0
   downsample: 2
   height: 480
@@ -6862,6 +6871,7 @@ MonoBehaviour:
   CY: 242
   FX: 257.0588
   FY: 256.5205
+  facedAngle: 90
   size_scale: 0.01
   use_saved_meshes: 1
 --- !u!1001 &1145622212
@@ -11672,7 +11682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1764592200
 Transform:
   m_ObjectHideFlags: 0
@@ -11705,16 +11715,18 @@ MonoBehaviour:
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
   noise_range: 0
-  downsample: 2
+  downsample: 1
   height: 480
   width: 640
   CX: 320
   CY: 240
   FX: 552.0291
   FY: 552.0291
+  facedAngle: 0
   size_scale: 0.01
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13407,6 +13419,7 @@ MonoBehaviour:
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
   noise_range: 0
   downsample: 2
   height: 480
@@ -13415,6 +13428,7 @@ MonoBehaviour:
   CY: 248
   FX: 257.8765
   FY: 257.2844
+  facedAngle: 90
   size_scale: 0.01
   use_saved_meshes: 1
 --- !u!1 &2133151779

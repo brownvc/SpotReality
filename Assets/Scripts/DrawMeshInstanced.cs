@@ -22,6 +22,8 @@ public class DrawMeshInstanced : MonoBehaviour
     private ComputeBuffer meshPropertiesBuffer;
     private ComputeBuffer argsBuffer;
 
+    public Transform target;
+
     private Mesh mesh;
     private Bounds bounds;
 
@@ -36,6 +38,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public int CY;
     public float FX;
     public float FY;
+    public float facedAngle;
 
     public float size_scale; //hack to current pointcloud viewing
     
@@ -146,6 +149,7 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("width",1.0f / width);
         material.SetFloat("height", 1.0f / height);
         material.SetInt("w", (int)width);
+        material.SetFloat("a",facedAngle);
 
         InitializeBuffers();
 
@@ -353,6 +357,7 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
+        //transform.LookAt(target);
         SetProperties();
         SetGOPosition();
 

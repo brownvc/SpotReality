@@ -30,6 +30,8 @@ Shader "Custom/InstancedIndirectColor" {
             int w;  // Here is the real width but hidden under a pseudonym
             float width; float height; //   1 / width actually but don't tell anyone
 
+            float a;
+
             float4 _colorMap_ST;
 
             StructuredBuffer<MeshProperties> _Properties;
@@ -37,19 +39,22 @@ Shader "Custom/InstancedIndirectColor" {
             v2f vert(appdata_t i, uint instanceID: SV_InstanceID) {
                 v2f o;
 
-                float4x4 mat = 	 {1.0,0.0,0.0,_Properties[instanceID].pos.x,
+                //float scalarProd = -(spotPos.z - _Properties[instanceID].pos.z) / sqrt(pow(spotPos.x - _Properties[instanceID].pos.x,2) + pow(spotPos.z - _Properties[instanceID].pos.z,2)); 
+                //float sina = sin(acos(scalarProd));
+                float4x4 mat = 	 {cos(a),0.0,sin(a),_Properties[instanceID].pos.x,
 							      0.0,1.0,0.0,_Properties[instanceID].pos.y,
-							      0.0,0.0,1.0,_Properties[instanceID].pos.z,
+							      - sin(a),0.0,cos(a),_Properties[instanceID].pos.z,
 							      0.0,0.0,0.0,1.0 };
 
                 float4 pos = mul(mat, i.vertex);
                 o.vertex = UnityObjectToClipPos(pos);
+
                 o.color = _Properties[instanceID].color;
                 //o.color.r = instanceID * 0.000003;
                 
                 float id = float(instanceID);
 
-                float4 coor = {(w - o.color.x - 1) * width, o.color.y * height, 0.0, 0.0};
+                float4 coor = {(o.color.x) * width, o.color.y * height, 0.0, 0.0};
                 
                 //float4 coor = {floor(instanceID * width), floor(instanceID * width), 0.0, 0.0};
                 float2 uv = TRANSFORM_TEX(coor.xy, _colorMap);
