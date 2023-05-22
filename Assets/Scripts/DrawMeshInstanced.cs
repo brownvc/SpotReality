@@ -138,7 +138,7 @@ public class DrawMeshInstanced : MonoBehaviour
             }
         }
 
-
+        globalProps = GetProperties();
 
 
         //inp_stm.Close();
@@ -171,7 +171,7 @@ public class DrawMeshInstanced : MonoBehaviour
         //return properties;
         MeshProperties[] properties = new MeshProperties[population];
 
-        if (width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0)
+        if (width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0 || true)
         {
             return properties;
         }
@@ -245,7 +245,7 @@ public class DrawMeshInstanced : MonoBehaviour
             props.pos = new Vector4(0, 0, 0, 1); ;
             props.color.x = (float)i;
             //props.color.y = (float)y;
-            props.color.z = 1;//(float)depth_ar[depth_idx];
+            //props.color.z = 1;//(float)depth_ar[depth_idx];
 
             //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             //props.color[3] = 1.0f;
@@ -302,10 +302,11 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        //if (globalProps == null) && use_saved_meshes)
+        /*
+        if (globalProps == null)// && use_saved_meshes)
         {
             globalProps = GetProperties();
-        }
+        }*/
 
         meshPropertiesBuffer.SetData(globalProps);
         depthBuffer.SetData(depth_ar);

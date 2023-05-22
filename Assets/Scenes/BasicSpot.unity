@@ -938,7 +938,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 1860543785}
   noise_range: 0
-  downsample: 2
+  downsample: 1
   height: 480
   width: 640
   CX: 306
@@ -1354,7 +1354,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 0}
   noise_range: 0
-  downsample: 2
+  downsample: 1
   height: 480
   width: 640
   CX: 311
@@ -3797,7 +3797,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 1860543785}
   noise_range: 0
-  downsample: 2
+  downsample: 1
   height: 480
   width: 640
   CX: 311
@@ -6864,7 +6864,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 0}
   noise_range: 0
-  downsample: 2
+  downsample: 1
   height: 480
   width: 640
   CX: 309
@@ -11682,7 +11682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1764592200
 Transform:
   m_ObjectHideFlags: 0
@@ -13421,7 +13421,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 0}
   noise_range: 0
-  downsample: 2
+  downsample: 1
   height: 480
   width: 640
   CX: 317
