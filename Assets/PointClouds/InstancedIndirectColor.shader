@@ -69,7 +69,9 @@ Shader "Custom/InstancedIndirectColor" {
                 o.color = tex2Dlod(_colorMap, coor);
 
                 //o.uv = TRANSFORM_TEX (i.texcoord, _colorMap);
-                //o.color.r = coor.x;
+                //o.color.r = _Properties[instanceID].pos.w * 100000;
+                //o.color.g = _Properties[instanceID].pos.w / 64;
+                //o.color.b = _Properties[instanceID].pos.w / 64;
                 //o.color.b = coor.y;
                 //o.color.r = coor.y;
                 //o.color.g = coor.y;

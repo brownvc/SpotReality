@@ -21,6 +21,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public ComputeShader compute;
     private ComputeBuffer meshPropertiesBuffer;
     private ComputeBuffer argsBuffer;
+    private ComputeBuffer depthBuffer;
 
     public Transform target;
 
@@ -153,6 +154,9 @@ public class DrawMeshInstanced : MonoBehaviour
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
         compute.SetVector("intrinsics",intr);
+        Vector4 screenData = new Vector4((float)width, (float)height, 1/(float)width, FY);
+        compute.SetVector("screenData", screenData);
+        compute.SetFloat("samplingSize",downsample);
 
         InitializeBuffers();
 
@@ -185,16 +189,17 @@ public class DrawMeshInstanced : MonoBehaviour
             MeshProperties props = new MeshProperties();
 
             
-            x = i % (width);
-            y = (uint)Mathf.Floor(i / width);
+            //x = i % (width);
+            //y = (uint)Mathf.Floor(i / width);
             
+            /*
             depth_idx = (width * (height - y - 1)) + (width - x - 1);
 
             if (depth_idx >= depth_ar.Length)
             {
                 continue;
             }
-            
+            */
             /*
             Vector3 position = Vector3.one;
 
@@ -237,11 +242,10 @@ public class DrawMeshInstanced : MonoBehaviour
             //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
             //Vector3 intermediatePos = position + some_noise;
 
-            
             props.pos = new Vector4(0, 0, 0, 1); ;
-            props.color.x = (float)x;
-            props.color.y = (float)y;
-            props.color.z = (float)depth_ar[depth_idx];
+            props.color.x = (float)i;
+            //props.color.y = (float)y;
+            props.color.z = 1;//(float)depth_ar[depth_idx];
 
             //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             //props.color[3] = 1.0f;
@@ -281,6 +285,9 @@ public class DrawMeshInstanced : MonoBehaviour
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
         meshPropertiesBuffer.SetData(GetProperties());
 
+        depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
+        depthBuffer.SetData(depth_ar);
+
         SetProperties();
         SetGOPosition();
     }
@@ -295,15 +302,17 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        //if (globalProps == null)// && use_saved_meshes)
+        //if (globalProps == null) && use_saved_meshes)
         {
             globalProps = GetProperties();
         }
 
         meshPropertiesBuffer.SetData(globalProps);
+        depthBuffer.SetData(depth_ar);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
         material.SetTexture("_colorMap",color_image);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
+        compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
     private void UpdateTexture()
