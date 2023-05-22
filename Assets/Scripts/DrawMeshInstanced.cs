@@ -21,6 +21,9 @@ public class DrawMeshInstanced : MonoBehaviour
     public ComputeShader compute;
     private ComputeBuffer meshPropertiesBuffer;
     private ComputeBuffer argsBuffer;
+    private ComputeBuffer depthBuffer;
+
+    public Transform target;
 
     private Mesh mesh;
     private Bounds bounds;
@@ -36,6 +39,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public int CY;
     public float FX;
     public float FY;
+    public float facedAngle;
 
     public float size_scale; //hack to current pointcloud viewing
     
@@ -44,21 +48,21 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private MeshProperties[] globalProps;
 
-    private MeshProperties[] generalUseProps;
+    //private MeshProperties[] generalUseProps;
     
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
     private struct MeshProperties
     {
-        public Matrix4x4 mat;
+        public Vector4 pos;
         public Vector4 color;
 
         public static int Size()
         {
             return
-                sizeof(float) * 4 * 4 + // matrix;
-                sizeof(float) * 4;      // color;
+                sizeof(float) * 4 + // matrix;
+                sizeof(float) * 4; // color;
         }
     }
 
@@ -73,11 +77,12 @@ public class DrawMeshInstanced : MonoBehaviour
         population = (uint)(total_population / downsample);
 
         //Mesh mesh = CreateQuad(size_scale, size_scale, size_scale);
+        //Mesh mesh = CreateQuad(size_scale, size_scale);
         Mesh mesh = CreateQuad(size_scale, size_scale);
         //Mesh mesh = CreateQuad(0.01f,0.01f);
         this.mesh = mesh;
 
-        generalUseProps = new MeshProperties[population];
+        //generalUseProps = new MeshProperties[population];
 
         // Use saved meshes
         if (use_saved_meshes)
@@ -133,7 +138,7 @@ public class DrawMeshInstanced : MonoBehaviour
             }
         }
 
-
+        globalProps = GetProperties();
 
 
         //inp_stm.Close();
@@ -141,6 +146,17 @@ public class DrawMeshInstanced : MonoBehaviour
         // Boundary surrounding the meshes we will be drawing.  Used for occlusion.
         // bounds = new Bounds(transform.position, Vector3.one * (range + 1));
         bounds = new Bounds(Vector3.zero, Vector3.one * (range + 1));
+
+        material.SetFloat("width",1.0f / width);
+        material.SetFloat("height", 1.0f / height);
+        material.SetInt("w", (int)width);
+        material.SetFloat("a",facedAngle);
+
+        Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
+        compute.SetVector("intrinsics",intr);
+        Vector4 screenData = new Vector4((float)width, (float)height, 1/(float)width, FY);
+        compute.SetVector("screenData", screenData);
+        compute.SetFloat("samplingSize",downsample);
 
         InitializeBuffers();
 
@@ -153,42 +169,56 @@ public class DrawMeshInstanced : MonoBehaviour
         //MeshProperties[] properties = new MeshProperties[population];
 
         //return properties;
+        MeshProperties[] properties = new MeshProperties[population];
 
-        if(width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0)
+        if (width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0 || true)
         {
-            return new MeshProperties[population];
+            return properties;
         }
 
-        MeshProperties[] properties = generalUseProps;
 
         uint x;
         uint y;
         uint depth_idx;
         uint i;
+
         
         for (uint pop_i = 0; pop_i < population; pop_i++)
         {
             i = pop_i * downsample;
             MeshProperties props = new MeshProperties();
-            x = i % (width);
-            y = (uint)Mathf.Floor(i / width);
+
+            
+            //x = i % (width);
+            //y = (uint)Mathf.Floor(i / width);
+            
+            /*
             depth_idx = (width * (height - y - 1)) + (width - x - 1);
 
             if (depth_idx >= depth_ar.Length)
             {
                 continue;
             }
+            */
+            /*
+            Vector3 position = Vector3.one;
 
-            Vector3 position;
 
+            position = new Vector4(10000, 1000, 1000, 1);
+            */
+            /*
             if (depth_ar[depth_idx] == 0)
             {
-                position = new Vector3(10000, 1000, 1000);
+                
 
-                props.mat = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one * 0);
+                props.pos = new Vector4(0,0,0,1);
+                //properties[pop_i].pos = new Vector4(0, 0, 0, 1);
+
+                //props.mat = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one * 0);
                 //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
-                props.color = new Vector4(0, 0, 0, 0);
+                props.color = new Vector4(0, 0, 0, 1);
+                //properties[pop_i].color = new Vector4(0, 0, 0, 1);
 
                 //properties[pop_i] = props;
                 continue;
@@ -196,23 +226,40 @@ public class DrawMeshInstanced : MonoBehaviour
             }
             else
             {
+                //position = new Vector3(10000, 1000, 1000);
                 position = pixel_to_vision_frame(x, y, depth_ar[depth_idx]); //TODO: Get 4x4 matrix instead
             }
+            */
 
-            Quaternion rotation = Quaternion.Euler(0, 0, 0);
-            Vector3 scale = Vector3.one * 1;
-            Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
-            props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
+            //Quaternion rotation = Quaternion.Euler(0, 0, 0);
+            //Vector3 scale = Vector3.one * 1;
+            //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
+            //props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
+
+
             //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
 
-            props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
-            props.color[3] = 1.0f;
+            //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
+            //Vector3 intermediatePos = position + some_noise;
+
+            props.pos = new Vector4(0, 0, 0, 1); ;
+            props.color.x = (float)i;
+            //props.color.y = (float)y;
+            //props.color.z = 1;//(float)depth_ar[depth_idx];
+
+            //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
+            //props.color[3] = 1.0f;
+            
+            //properties[pop_i].pos = position;
+
+            //properties[pop_i].color = color_image.GetPixel((int)(width - x) - 1, (int)y);
+            //properties[pop_i].color[3] = 1.0f;
             //props.color = new Color(0, 0, 0, 0);
 
             properties[pop_i] = props;
             
         }
-        //Debug.Log("Hello there! Took me " + (Time.time - t).ToString() + " s to do this lengthy loop.");
+        
         return (properties);
     }
 
@@ -238,6 +285,9 @@ public class DrawMeshInstanced : MonoBehaviour
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
         meshPropertiesBuffer.SetData(GetProperties());
 
+        depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
+        depthBuffer.SetData(depth_ar);
+
         SetProperties();
         SetGOPosition();
     }
@@ -252,14 +302,18 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
+        /*
         if (globalProps == null)// && use_saved_meshes)
         {
             globalProps = GetProperties();
-        }
+        }*/
 
         meshPropertiesBuffer.SetData(globalProps);
+        depthBuffer.SetData(depth_ar);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
+        material.SetTexture("_colorMap",color_image);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
+        compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
     private void UpdateTexture()
@@ -321,6 +375,7 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
+        //transform.LookAt(target);
         SetProperties();
         SetGOPosition();
 
@@ -334,7 +389,7 @@ public class DrawMeshInstanced : MonoBehaviour
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
     }
 
-    private Vector3 pixel_to_vision_frame(uint i, uint j, float depth)
+    private Vector4 pixel_to_vision_frame(uint i, uint j, float depth)
     {
         //int CX = 320;
         //int CY = 240;
@@ -345,7 +400,7 @@ public class DrawMeshInstanced : MonoBehaviour
         float x = (j - CX) * depth / FX;
         float y = (i - CY) * depth / FY;
 
-        Vector3 ret = new Vector3(x, y, depth);
+        Vector4 ret = new Vector4(x, y, depth,1f);
         return (ret);
 
     }
@@ -455,6 +510,44 @@ public class DrawMeshInstanced : MonoBehaviour
             new Vector2(1, 0),
             new Vector2(0, 1),
             new Vector2(1, 1),
+        };
+
+        mesh.vertices = vertices;
+        mesh.triangles = tris;
+        mesh.normals = normals;
+        mesh.uv = uv;
+
+        return mesh;
+    }
+
+    private Mesh CreateTri(float width = 1f, float height = 1f)
+    {
+        // Create a quad mesh.
+        var mesh = new Mesh();
+
+        float w = width * .5f;
+        float h = height * .5f;
+        var vertices = new Vector3[3] {
+            new Vector3(-w, -h, 0),
+            new Vector3(w, -h, 0),
+            new Vector3(-w, h, 0)
+        };
+
+        var tris = new int[3] {
+            // lower left tri.
+            0, 2, 1
+        };
+
+        var normals = new Vector3[3] {
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+        };
+
+        var uv = new Vector2[3] {
+            new Vector2(0, 0),
+            new Vector2(1, 0),
+            new Vector2(0, 1),
         };
 
         mesh.vertices = vertices;
