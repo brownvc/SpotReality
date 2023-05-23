@@ -2,7 +2,6 @@
 
 struct MeshProperties {
     float4 pos;
-    float4 color;
 };
 
 RWStructuredBuffer<MeshProperties> _Properties;
@@ -21,16 +20,16 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     //float i = samplingSize * id.x;
     float i = id.x * samplingSize;
 
-    _Properties[id.x].color.y = floor(i * screenData.z);    
-    _Properties[id.x].color.x = i - floor(i * screenData.z) * screenData.x;
+    float col_y = floor(i * screenData.z);    
+    float col_x = i - floor(i * screenData.z) * screenData.x;
     //_Properties[id.x].color.z = 1
 
-    uint depth_idx = (screenData.x * (screenData.y - _Properties[id.x].color.y - 1)) + (screenData.x - _Properties[id.x].color.x - 1);
+    uint depth_idx = (screenData.x * (screenData.y - col_y - 1)) + (screenData.x - col_x - 1);
     
     pos.z = _Depth[depth_idx];
 
-    pos.x = (_Properties[id.x].color.y - intrinsics.x) * pos.z / intrinsics.z;
-    pos.y = (_Properties[id.x].color.x - intrinsics.y) * pos.z / intrinsics.w;
+    pos.x = (col_y - intrinsics.x) * pos.z / intrinsics.z;
+    pos.y = (col_x - intrinsics.y) * pos.z / intrinsics.w;
 
     pos.z = _Depth[depth_idx];
     pos.w = 1;

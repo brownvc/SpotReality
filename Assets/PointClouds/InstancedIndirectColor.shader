@@ -22,7 +22,6 @@ Shader "Custom/InstancedIndirectColor" {
 
             struct MeshProperties {
                 float4 pos;
-                float4 color;
             };
 
             sampler2D _colorMap;
@@ -34,6 +33,9 @@ Shader "Custom/InstancedIndirectColor" {
 
             float4 _colorMap_ST;
 
+            float4 screenData;
+            float samplingSize;
+
             StructuredBuffer<MeshProperties> _Properties;
 
             v2f vert(appdata_t i, uint instanceID: SV_InstanceID) {
@@ -42,7 +44,9 @@ Shader "Custom/InstancedIndirectColor" {
                 //float scalarProd = -(spotPos.z - _Properties[instanceID].pos.z) / sqrt(pow(spotPos.x - _Properties[instanceID].pos.x,2) + pow(spotPos.z - _Properties[instanceID].pos.z,2)); 
                 //float sina = sin(acos(scalarProd));
                 
-                float d = _Properties[instanceID].pos.w;
+                float d = _Properties[instanceID].pos.w ;
+
+                float iii = float(instanceID) * samplingSize;
 
                 float4x4 mat = 	 {cos(a) * d,0.0,sin(a) * d,_Properties[instanceID].pos.x,
 							      0.0,d,0.0,_Properties[instanceID].pos.y,
@@ -63,7 +67,7 @@ Shader "Custom/InstancedIndirectColor" {
                 
                 float id = float(instanceID);
 
-                float4 coor = {(_Properties[instanceID].color.x) * width, _Properties[instanceID].color.y * height, 0.0, 0.0};
+                float4 coor = {(iii - floor(iii * screenData.z) * screenData.x) * width, floor(iii * screenData.z) * height, 0.0, 0.0};
                 
                 //float4 coor = {floor(instanceID * width), floor(instanceID * width), 0.0, 0.0};
                 float2 uv = TRANSFORM_TEX(coor.xy, _colorMap);

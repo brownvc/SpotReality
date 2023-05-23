@@ -57,13 +57,11 @@ public class DrawMeshInstanced : MonoBehaviour
     private struct MeshProperties
     {
         public Vector4 pos;
-        public Vector4 color;
 
         public static int Size()
         {
             return
-                sizeof(float) * 4 + // matrix;
-                sizeof(float) * 4; // color;
+                sizeof(float) * 4; // position;
         }
     }
 
@@ -160,6 +158,8 @@ public class DrawMeshInstanced : MonoBehaviour
         Vector4 screenData = new Vector4((float)width, (float)height, 1/(float)width, FY);
         compute.SetVector("screenData", screenData);
         compute.SetFloat("samplingSize",downsample);
+        material.SetVector("screenData", screenData);
+        material.SetFloat("samplingSize", downsample);
 
         InitializeBuffers();
 
@@ -259,7 +259,7 @@ public class DrawMeshInstanced : MonoBehaviour
             //Vector3 intermediatePos = position + some_noise;
 
             props.pos = new Vector4(0, 0, 0, 1); ;
-            props.color.x = (float)i;
+            //props.color.x = (float)i;
             //props.color.y = (float)y;
             //props.color.z = 1;//(float)depth_ar[depth_idx];
 
@@ -318,11 +318,12 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        
+        /*
         if (globalProps == null)// && use_saved_meshes)
         {
             globalProps = GetProperties();
         }
+        */
 
         meshPropertiesBuffer.SetData(globalProps);
         material.SetFloat("a", get_target_rota());

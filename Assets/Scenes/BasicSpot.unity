@@ -11687,7 +11687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1764592200
 Transform:
   m_ObjectHideFlags: 0
@@ -11720,8 +11720,8 @@ MonoBehaviour:
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
-  target: {fileID: 0}
-  auxTarget: {fileID: 0}
+  target: {fileID: 1860543785}
+  auxTarget: {fileID: 1163288627}
   noise_range: 0
   downsample: 1
   height: 480
