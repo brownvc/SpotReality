@@ -42,9 +42,11 @@ Shader "Custom/InstancedIndirectColor" {
                 //float scalarProd = -(spotPos.z - _Properties[instanceID].pos.z) / sqrt(pow(spotPos.x - _Properties[instanceID].pos.x,2) + pow(spotPos.z - _Properties[instanceID].pos.z,2)); 
                 //float sina = sin(acos(scalarProd));
                 
-                float4x4 mat = 	 {cos(a),0.0,sin(a),_Properties[instanceID].pos.x,
-							      0.0,1.0,0.0,_Properties[instanceID].pos.y,
-							      - sin(a),0.0,cos(a),_Properties[instanceID].pos.z,
+                float d = _Properties[instanceID].pos.w;
+
+                float4x4 mat = 	 {cos(a) * d,0.0,sin(a) * d,_Properties[instanceID].pos.x,
+							      0.0,d,0.0,_Properties[instanceID].pos.y,
+							      - sin(a) * d,0.0,cos(a) * d,_Properties[instanceID].pos.z,
 							      0.0,0.0,0.0,1.0 };
                                   
                 /*

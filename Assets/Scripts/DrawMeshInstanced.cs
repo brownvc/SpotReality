@@ -24,6 +24,7 @@ public class DrawMeshInstanced : MonoBehaviour
     private ComputeBuffer depthBuffer;
 
     public Transform target;
+    public Transform auxTarget; // In case someone changes the offset rotation
 
     private Mesh mesh;
     private Bounds bounds;
@@ -150,7 +151,9 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("width",1.0f / width);
         material.SetFloat("height", 1.0f / height);
         material.SetInt("w", (int)width);
-        material.SetFloat("a",facedAngle);
+        //material.SetFloat("a",target.rotation.y * 0);
+        //Debug.Log(target.rotation);
+        material.SetFloat("a", get_target_rota());
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
         compute.SetVector("intrinsics",intr);
@@ -162,6 +165,13 @@ public class DrawMeshInstanced : MonoBehaviour
 
     }
 
+    private float get_target_rota()
+    {
+        if (auxTarget == null) { return target.rotation.y; }
+        else { 
+            return target.rotation.y + auxTarget.rotation.y;
+        }    
+    }
 
     private MeshProperties[] GetProperties()
     {
@@ -302,13 +312,14 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        /*
+        
         if (globalProps == null)// && use_saved_meshes)
         {
             globalProps = GetProperties();
-        }*/
+        }
 
         meshPropertiesBuffer.SetData(globalProps);
+        material.SetFloat("a", get_target_rota());
         depthBuffer.SetData(depth_ar);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
         material.SetTexture("_colorMap",color_image);
