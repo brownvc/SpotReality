@@ -937,6 +937,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 1860543785}
+  auxTarget: {fileID: 1163288627}
   noise_range: 0
   downsample: 1
   height: 480
@@ -1352,7 +1353,8 @@ MonoBehaviour:
   imageScriptIndex: 5
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
-  target: {fileID: 0}
+  target: {fileID: 1860543785}
+  auxTarget: {fileID: 1163288627}
   noise_range: 0
   downsample: 1
   height: 480
@@ -2193,6 +2195,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 0}
+  auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 5
   height: 0
@@ -3796,6 +3799,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 1860543785}
+  auxTarget: {fileID: 1163288627}
   noise_range: 0
   downsample: 1
   height: 480
@@ -6862,7 +6866,8 @@ MonoBehaviour:
   imageScriptIndex: 4
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
-  target: {fileID: 0}
+  target: {fileID: 1860543785}
+  auxTarget: {fileID: 1163288627}
   noise_range: 0
   downsample: 1
   height: 480
@@ -11716,6 +11721,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 0}
+  auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 1
   height: 480
@@ -13419,7 +13425,8 @@ MonoBehaviour:
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
-  target: {fileID: 0}
+  target: {fileID: 1860543785}
+  auxTarget: {fileID: 1163288627}
   noise_range: 0
   downsample: 1
   height: 480

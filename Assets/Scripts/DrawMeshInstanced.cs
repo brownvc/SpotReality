@@ -152,7 +152,7 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("height", 1.0f / height);
         material.SetInt("w", (int)width);
         //material.SetFloat("a",target.rotation.y * 0);
-        //Debug.Log(target.rotation);
+        Debug.Log(auxTarget.eulerAngles);
         material.SetFloat("a", get_target_rota());
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
@@ -167,10 +167,16 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private float get_target_rota()
     {
-        if (auxTarget == null) { return target.rotation.y; }
+        if (auxTarget == null) { return convert_angle(target.eulerAngles.y); }
         else { 
-            return target.rotation.y + auxTarget.rotation.y;
+            return convert_angle(target.eulerAngles.y) + convert_angle(auxTarget.eulerAngles.y);
         }    
+    }
+
+    private float convert_angle(float a) // Unity is giving me the sin of an angle when I just want the angle
+    {
+        //a = (a + 180) % 360 - 180;
+        return a * (float)0.00872;
     }
 
     private MeshProperties[] GetProperties()
