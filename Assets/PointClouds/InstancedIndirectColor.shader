@@ -67,11 +67,11 @@ Shader "Custom/InstancedIndirectColor" {
                 
                 float id = float(instanceID);
 
-                float4 coor = {(iii - floor(iii * screenData.z) * screenData.x) * width, floor(iii * screenData.z) * height, 0.0, 0.0};
+                float4 coor = {1 - (iii - floor(iii * screenData.z) * screenData.x) * width, floor(iii * screenData.z) * height, 0.0, 0.0};
                 
                 //float4 coor = {floor(instanceID * width), floor(instanceID * width), 0.0, 0.0};
                 float2 uv = TRANSFORM_TEX(coor.xy, _colorMap);
-                coor.x = uv.y; coor.y = uv.x;
+                coor.x = uv.x; coor.y = uv.y;
                 //float4 coor = {0.2,0.5,0.0,0.0};
                 o.color = tex2Dlod(_colorMap, coor);
 

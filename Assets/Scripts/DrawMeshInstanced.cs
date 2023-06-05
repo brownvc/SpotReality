@@ -136,6 +136,7 @@ public class DrawMeshInstanced : MonoBehaviour
                 // Do Something with the input. 
             }
         }
+        else { depth_ar = new float[height * width]; }
 
         globalProps = GetProperties();
 
@@ -167,8 +168,9 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private float get_target_rota()
     {
-        if (auxTarget == null) { return convert_angle(target.eulerAngles.y); }
-        else { 
+        Debug.Log(convert_angle(target.eulerAngles.y).ToString() + "     " + convert_angle(auxTarget.eulerAngles.y).ToString());
+        if (auxTarget == null || true) { return convert_angle(target.eulerAngles.y) * 2; }
+        else {
             return convert_angle(target.eulerAngles.y) + convert_angle(auxTarget.eulerAngles.y);
         }    
     }
@@ -339,8 +341,8 @@ public class DrawMeshInstanced : MonoBehaviour
         if(use_saved_meshes) {
             return;
         }
-        GameObject rosConnector = GameObject.Find("RosConnector");
-        color_image = rosConnector.GetComponents<ImageSubscriber>()[imageScriptIndex].texture2D;
+        GameObject rosConnector = GameObject.Find("RosConnector"); // TODO change to ImageSubscriber
+        color_image = rosConnector.GetComponents<JPEGImageSubscriber>()[imageScriptIndex].texture2D;
         //color_image = rosConnector.GetComponents<ImageSubscriber>()[1].texture2D;
         // = rosConnector.GetComponents<ImageSubscriber>()[0].depth_data;
 

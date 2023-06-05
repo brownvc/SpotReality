@@ -948,7 +948,7 @@ MonoBehaviour:
   FY: 256.1428
   facedAngle: 0
   size_scale: 0.01
-  use_saved_meshes: 1
+  use_saved_meshes: 0
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -3810,7 +3810,7 @@ MonoBehaviour:
   FY: 255.5598
   facedAngle: 0
   size_scale: 0.01
-  use_saved_meshes: 1
+  use_saved_meshes: 0
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -9719,16 +9719,22 @@ GameObject:
   - component: {fileID: 1510830357}
   - component: {fileID: 1510830367}
   - component: {fileID: 1510830353}
+  - component: {fileID: 1510830378}
   - component: {fileID: 1510830371}
   - component: {fileID: 1510830369}
+  - component: {fileID: 1510830380}
   - component: {fileID: 1510830370}
   - component: {fileID: 1510830362}
+  - component: {fileID: 1510830379}
   - component: {fileID: 1510830372}
   - component: {fileID: 1510830364}
+  - component: {fileID: 1510830383}
   - component: {fileID: 1510830373}
   - component: {fileID: 1510830375}
+  - component: {fileID: 1510830382}
   - component: {fileID: 1510830374}
   - component: {fileID: 1510830377}
+  - component: {fileID: 1510830381}
   - component: {fileID: 1510830376}
   m_Layer: 0
   m_Name: RosConnector
@@ -9764,13 +9770,6 @@ MonoBehaviour:
   - rear_right_hip_x
   - rear_right_hip_y
   - rear_right_knee
-  - arm_shoulder_0
-  - arm_shoulder_1
-  - arm_elbow_0
-  - arm_elbow_1
-  - arm_wrist_0
-  - arm_wrist_1
-  - arm_f1x
   JointStateWriters:
   - {fileID: 1599918344}
   - {fileID: 239038051}
@@ -9784,13 +9783,6 @@ MonoBehaviour:
   - {fileID: 124656495}
   - {fileID: 1814650912}
   - {fileID: 383680347}
-  - {fileID: 38613793}
-  - {fileID: 235843365}
-  - {fileID: 603672246}
-  - {fileID: 719730833}
-  - {fileID: 1046934014}
-  - {fileID: 1892496994}
-  - {fileID: 1658837037}
 --- !u!114 &1510830349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9857,12 +9849,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot_compressed_frontleft/compressed
+  Topic: /spot/stream_image/frontleft_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -9928,12 +9920,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot_compressed_frontright/compressed
+  Topic: /spot/stream_image/frontright_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -9944,7 +9936,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
@@ -9973,12 +9965,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot_compressed_hand/compressed
+  Topic: /spot/stream_image/hand_color_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -10069,7 +10061,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
@@ -10101,12 +10093,108 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6e2677fa36b0c46a9f6d8bd354c686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /spot_compressed_right/compressed
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+--- !u!114 &1510830378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontleft_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+--- !u!114 &1510830379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontright_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+--- !u!114 &1510830380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/hand_color_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+--- !u!114 &1510830381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot_compressed_right/compressed
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+--- !u!114 &1510830382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot_compressed_left/compressed
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+--- !u!114 &1510830383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot_compressed_back/compressed
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -11732,7 +11820,7 @@ MonoBehaviour:
   FY: 552.0291
   facedAngle: 0
   size_scale: 0.01
-  use_saved_meshes: 1
+  use_saved_meshes: 0
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
