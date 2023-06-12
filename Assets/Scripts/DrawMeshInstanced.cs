@@ -6,6 +6,10 @@ using RosSharp.RosBridgeClient;
 using RosSharp.RosBridgeClient.MessageTypes.Nav;
 using System.Text;
 using static RosSharp.Urdf.Link.Visual.Material;
+using System;
+using JetBrains.Annotations;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug; 
 //using System;
 
 public class DrawMeshInstanced : MonoBehaviour
@@ -41,6 +45,8 @@ public class DrawMeshInstanced : MonoBehaviour
     public float FX;
     public float FY;
     public float facedAngle;
+    //public uint counter;
+    //private uint numUpdates;
 
     public float size_scale; //hack to current pointcloud viewing
     
@@ -72,6 +78,8 @@ public class DrawMeshInstanced : MonoBehaviour
         //height = 480;
         //width = 424;
         //height = 240;
+        //counter = 0;
+        //numUpdates = 0;
         total_population = height * width;
         population = (uint)(total_population / downsample);
 
@@ -336,10 +344,11 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
-    private void UpdateTexture()
+    private uint UpdateTexture()
     {           
         if(use_saved_meshes) {
-            return;
+            Debug.Log("use_saved_meshes");
+            return 1;
         }
         GameObject rosConnector = GameObject.Find("RosConnector"); // TODO change to ImageSubscriber
         color_image = rosConnector.GetComponents<JPEGImageSubscriber>()[imageScriptIndex].texture2D;
@@ -388,11 +397,14 @@ public class DrawMeshInstanced : MonoBehaviour
 
             //move.save = false;
         }
+        return 1;
 
     }
 
     private void Update()
     {
+        
+        //Debug.Log("UPDATE");
         int kernel = compute.FindKernel("CSMain");
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
         //transform.LookAt(target);
@@ -400,13 +412,19 @@ public class DrawMeshInstanced : MonoBehaviour
         SetGOPosition();
 
         //update the color image
+        //counter += 1;
         UpdateTexture();
+        Debug.Log("UPDATE");
+        DateTime localTime = DateTime.Now;
+        float deltaTime = Time.deltaTime;
+        long microseconds = localTime.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
+        //Debug.Log("updates per second: " + (counter/Time.realtimeSinceStartup).ToString() + " updates: " + counter.ToString() + " deltaTime: " + Time.realtimeSinceStartup.ToString());
 
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
         // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 64f), 1, 1);
-
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
+        //numUpdates += 1;
     }
 
     private Vector4 pixel_to_vision_frame(uint i, uint j, float depth)
