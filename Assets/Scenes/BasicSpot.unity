@@ -932,7 +932,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image:
+  - 2800000
+  - NaN
+  - 3
   imageScriptIndex: 0
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -940,6 +943,10 @@ MonoBehaviour:
   downsample: 1
   height: 240
   width: 424
+  CX: 0
+  CY: 0
+  FX: 0
+  FY: 0
   size_scale: 0.01
 --- !u!1 &124656486
 GameObject:
@@ -2120,7 +2127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image:
+  - 2800000
+  - NaN
+  - 3
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -2128,6 +2138,10 @@ MonoBehaviour:
   downsample: 5
   height: 0
   width: 0
+  CX: 0
+  CY: 0
+  FX: 0
+  FY: 0
   size_scale: 0.01
 --- !u!4 &299861281 stripped
 Transform:
@@ -3716,7 +3730,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image:
+  - 2800000
+  - NaN
+  - 3
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -3724,6 +3741,10 @@ MonoBehaviour:
   downsample: 1
   height: 240
   width: 424
+  CX: 0
+  CY: 0
+  FX: 0
+  FY: 0
   size_scale: 0.01
 --- !u!1 &549220550
 GameObject:
@@ -9573,6 +9594,7 @@ GameObject:
   - component: {fileID: 1510830365}
   - component: {fileID: 1510830366}
   - component: {fileID: 1510830367}
+  - component: {fileID: 1510830368}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -9909,6 +9931,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /spot/set_gripper
+--- !u!114 &1510830368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a0513930c0ec14cbd181802c8f88ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/arm_pose_stamped
+  FrameId: Unity
+  PublishedTransform: {fileID: 1507079564}
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11515,7 +11552,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image:
+  - 2800000
+  - NaN
+  - 3
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -11523,6 +11563,10 @@ MonoBehaviour:
   downsample: 1
   height: 480
   width: 640
+  CX: 0
+  CY: 0
+  FX: 0
+  FY: 0
   size_scale: 0.01
 --- !u!1001 &1795693229
 PrefabInstance:
@@ -13216,7 +13260,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  color_image:
+  - 2800000
+  - NaN
+  - 3
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -13224,6 +13271,10 @@ MonoBehaviour:
   downsample: 1
   height: 240
   width: 424
+  CX: 0
+  CY: 0
+  FX: 0
+  FY: 0
   size_scale: 0.01
 --- !u!1 &2133151779
 GameObject:
