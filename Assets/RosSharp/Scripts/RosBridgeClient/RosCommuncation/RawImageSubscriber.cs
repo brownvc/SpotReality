@@ -20,6 +20,7 @@ using System;
 using RosSharp.RosBridgeClient.MessageTypes.Sensor;
 using RosSharp.RosBridgeClient.MessageTypes.Std;
 using UnityEngine;
+using System.Collections;
 
 namespace RosSharp.RosBridgeClient
 {
@@ -40,7 +41,7 @@ namespace RosSharp.RosBridgeClient
             //laserScanWriter.Write(laserScan);
             data = image.data;
             //Debug.Log("Received Color");
-            isMessageReceived = true;
+            isMessageReceived = true; 
             image_data = new float[data.Length/2];
 
             byte[] bytes = new byte[2];
@@ -54,6 +55,7 @@ namespace RosSharp.RosBridgeClient
                 image_data[j++] = (BitConverter.ToUInt16(bytes))/1000.0f;
                 // image_data[i] = (float)(data[i]);// + imageData[i + 1]);// System.BitConverter.ToSingle(value, 0);
             }
+            //Debug.Log("Message Received, Time: " + UnityEngine.Time.realtimeSinceStartup);
         }
 
         private void Update()

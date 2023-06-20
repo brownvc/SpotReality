@@ -69,7 +69,7 @@ namespace RosSharp.RosBridgeClient
             if (Input.GetKeyDown("w"))
         	{
             	print("w was pressed");
-            	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.5f);
+            	Vector3 linearVelocity = new Vector3(0.0f, 0.0f,  0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());

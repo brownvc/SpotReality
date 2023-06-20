@@ -159,7 +159,7 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("height", 1.0f / height);
         material.SetInt("w", (int)width);
         //material.SetFloat("a",target.rotation.y * 0);
-        Debug.Log(auxTarget.eulerAngles);
+        //Debug.Log(auxTarget.eulerAngles);
         material.SetFloat("a", get_target_rota());
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
@@ -176,7 +176,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private float get_target_rota()
     {
-        Debug.Log(convert_angle(target.eulerAngles.y).ToString() + "     " + convert_angle(auxTarget.eulerAngles.y).ToString());
+        //Debug.Log(convert_angle(target.eulerAngles.y).ToString() + "     " + convert_angle(auxTarget.eulerAngles.y).ToString());
         if (auxTarget == null || true) { return convert_angle(target.eulerAngles.y) * 2; }
         else {
             return convert_angle(target.eulerAngles.y) + convert_angle(auxTarget.eulerAngles.y);
@@ -206,7 +206,7 @@ public class DrawMeshInstanced : MonoBehaviour
         uint x;
         uint y;
         uint depth_idx;
-        uint i;
+        uint i; 
 
         
         for (uint pop_i = 0; pop_i < population; pop_i++)
@@ -344,11 +344,12 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
-    private uint UpdateTexture()
+    private void UpdateTexture()
     {           
         if(use_saved_meshes) {
-            Debug.Log("use_saved_meshes");
-            return 1;
+            //Debug.Log("use_saved_meshes");
+            //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
+            return;
         }
         GameObject rosConnector = GameObject.Find("RosConnector"); // TODO change to ImageSubscriber
         color_image = rosConnector.GetComponents<JPEGImageSubscriber>()[imageScriptIndex].texture2D;
@@ -380,8 +381,7 @@ public class DrawMeshInstanced : MonoBehaviour
             //    Directory.CreateDirectory(dirPath);
             //}
             File.WriteAllBytes("Assets/PointClouds/Color_" + imageScriptIndex + ".png", bytes);
-
-
+            //Debug.Log("FileWritten, Time: " + UnityEngine.Time.realtimeSinceStartup);
             //using (var stream = File.Open("mesh_array_" + imageScriptIndex, FileMode.Open))
             //{
             //    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
@@ -395,9 +395,10 @@ public class DrawMeshInstanced : MonoBehaviour
             //    }
             //}
 
-            //move.save = false;
+            //move.save = false;          
         }
-        return 1;
+        //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
+        //return 1;
 
     }
 
@@ -414,10 +415,10 @@ public class DrawMeshInstanced : MonoBehaviour
         //update the color image
         //counter += 1;
         UpdateTexture();
-        Debug.Log("UPDATE");
-        DateTime localTime = DateTime.Now;
-        float deltaTime = Time.deltaTime;
-        long microseconds = localTime.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
+        //Debug.Log("UPDATE");
+        //DateTime localTime = DateTime.Now;
+        //float deltaTime = Time.deltaTime;
+        //long microseconds = localTime.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
         //Debug.Log("updates per second: " + (counter/Time.realtimeSinceStartup).ToString() + " updates: " + counter.ToString() + " deltaTime: " + Time.realtimeSinceStartup.ToString());
 
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.

@@ -31,7 +31,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     pos.x = (col_y - intrinsics.x) * pos.z / intrinsics.z;
     pos.y = (col_x - intrinsics.y) * pos.z / intrinsics.w;
 
-    pos.z = _Depth[depth_idx];
+    //pos.z = _Depth[depth_idx];
     pos.w = 1;
     if (pos.z <= 0.001){pos.z = 50000;}
     //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};

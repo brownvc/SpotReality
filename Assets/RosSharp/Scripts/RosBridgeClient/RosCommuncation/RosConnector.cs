@@ -63,7 +63,7 @@ namespace RosSharp.RosBridgeClient
 
         private void OnConnected(object sender, EventArgs e)
         {
-            IsConnected.Set();
+            IsConnected.Set(); 
             Debug.Log("Connected to RosBridge: " + RosBridgeServerUrl);
         }
 
