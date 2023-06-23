@@ -100,10 +100,7 @@
 //            //double shoulderRotation = transformAngle(getJointRotation(shoulder).x);
 //            //shoulderRotation = -(Mathf.PI + shoulderRotation);
 
-//            //if (shoulderRotation < (-0.5) * Mathf.PI)
-//            //{
-//            //    shoulderRotation = -(Mathf.PI + shoulderRotation);
-//            //}
+
 //            dataArrayGhost[1] = shoulderRotation;
 
 
@@ -260,6 +257,10 @@ namespace RosSharp.RosBridgeClient
         private MessageTypes.Std.Float64MultiArray message;
         public string FrameId = "Unity";
 
+        float angle;
+        Vector3 axis;
+        double shoulderRotation;
+
         //Start is called before the first frame update
         protected override void Start()
         {
@@ -267,6 +268,8 @@ namespace RosSharp.RosBridgeClient
             targetTransform = GameObject.Find("TargetTransform");
             rightController = GameObject.Find("RightHand Controller");
             dummyFinger = GameObject.Find("dummy_link_fngr");
+
+
 
             Debug.Log(rightController);
             base.Start();
@@ -350,6 +353,7 @@ namespace RosSharp.RosBridgeClient
                         else
                         {
                             dummyFinger.transform.position = lastDummyLocation + rightController.transform.position - lastHandLocation;
+                            dummyFinger.transform.rotation = rightController.transform.rotation;
                         }
                         queue = true;
 
@@ -359,22 +363,8 @@ namespace RosSharp.RosBridgeClient
                     else if (queue)
                     {
                         targetTransform.transform.position = dummyFinger.transform.position;
+                        targetTransform.transform.rotation = dummyFinger.transform.rotation;
                         triggerWasPressed = false;
-
-                        float angle;
-                        Vector3 axis;
-                        currentR = shoulder.transform.localRotation;
-                        currentR.ToAngleAxis(out angle, out axis);
-                        sh2 = -1.0 * (2 * Mathf.PI - ((double)angle * Mathf.Deg2Rad));
-                        double shoulderRotation = transformAngle(sh2);
-
-                        dataArrayGhost[0] = -1.0 * transformAngle(getJointRotation(armObj).y);
-                        dataArrayGhost[1] = shoulderRotation;
-                        dataArrayGhost[2] = transformAngle(getJointRotation(elbow0).x);
-                        dataArrayGhost[3] = -1.0 * transformAngle(getJointRotation(elbow1).z); // changed from z to x
-                        dataArrayGhost[4] = transformAngle(getJointRotation(wrist0).x);
-                        dataArrayGhost[5] = -1.0 * transformAngle(getJointRotation(wrist1).z); // changed from z to x
-                        message.data = dataArrayGhost;
                         queue = false;
                     }
 
@@ -386,6 +376,20 @@ namespace RosSharp.RosBridgeClient
                     {
                         if (!trigger2WasPressed)
                         {
+                            currentR = shoulder.transform.localRotation;
+                            currentR.ToAngleAxis(out angle, out axis);
+                            // get rid of negative, transformangle
+                            sh2 = -1.0 * (2 * Mathf.PI - ((double)angle * Mathf.Deg2Rad));
+                            shoulderRotation = transformAngle(sh2);
+
+                            dataArrayGhost[0] = -1.0 * transformAngle(getJointRotation(armObj).y);
+                            dataArrayGhost[1] = shoulderRotation;
+                            //dataArrayGhost[1]= transformAngle(getJointRotation(shoulder).x);
+                            dataArrayGhost[2] = transformAngle(getJointRotation(elbow0).x);
+                            dataArrayGhost[3] = -1.0 * transformAngle(getJointRotation(elbow1).z); // changed from z to x
+                            dataArrayGhost[4] = transformAngle(getJointRotation(wrist0).x);
+                            dataArrayGhost[5] = -1.0 * transformAngle(getJointRotation(wrist1).z); // changed from z to x
+                            message.data = dataArrayGhost;
                             Debug.Log("Trigger2 is pressed");
                             Publish(message);
                             trigger2WasPressed = true;
