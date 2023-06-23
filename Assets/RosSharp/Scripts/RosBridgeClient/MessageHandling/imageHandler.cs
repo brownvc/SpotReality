@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using RosSharp.RosBridgeClient;
 using UnityEngine;
 using static RosSharp.Urdf.Link.Visual.Material;
@@ -40,6 +41,7 @@ public class imageHandler : MonoBehaviour
         public void Enqueue(T item, double priorityValue)
         {
             elements.Add(Tuple.Create(item, priorityValue));
+            elements.OrderByDescending((x => x.Item2));
             if (this.Count == 20)
             {
                 this.Dequeue();
@@ -51,11 +53,11 @@ public class imageHandler : MonoBehaviour
         /// Return lowest priority value item and remove item from Queue.
         /// </summary>
         /// <returns>Queue item with lowest priority value.</returns>
-        public T Dequeue()
+        public Tuple<T, double> Dequeue()
         {
-            
+            Tuple<T, double> lastItem = elements[elements.Count - 1];
             elements.RemoveAt(-1);
-            return bestItem;
+            return lastItem;
         }
 
 
