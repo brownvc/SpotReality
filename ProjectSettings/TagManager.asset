@@ -3,15 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - HybridIKStretchNode
+  - ExcludeFromIK
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - arm
   - Water
   - UI
-  - 
+  - body
   - 
   - 
   - 

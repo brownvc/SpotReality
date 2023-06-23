@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
-{
+{      
     public class MoveArmOnce : UnityPublisher<MessageTypes.Geometry.PoseStamped>
     {
         private bool triggerWasPressed = false;
@@ -85,7 +85,7 @@ namespace RosSharp.RosBridgeClient
 
                             Publish(message);
                             triggerWasPressed = false;
-
+                            Debug.Log("2");
                         }
   
                         //Debug.Log("Location of controller: " + rightController.transform.position);
