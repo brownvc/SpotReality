@@ -94,21 +94,4 @@ public class imageHandler : MonoBehaviour
         (Texture2D, uint) currFront = front.ProcessMessage();
         ringBufferFront.Enqueue(currFront.Item1, currFront.Item2);
     }
-    //protected override void ReceiveMessage(MessageTypes.Sensor.CompressedImage compressedImage)
-    //{
-    //   imageData = compressedImage.data;
-    //    timeStamp = compressedImage.header.stamp.nsecs; //
-    //    isMessageReceived = true;
-
-    //}
-
-    //public (Texture2D, uint) ProcessMessage()
-    //{
-    //   texture2D.LoadImage(imageData);
-    //    texture2D.Apply();
-    //    //Debug.Log(texture2D.height + ", " + texture2D.width);
-    //    meshRenderer.material.SetTexture("_MainTex", texture2D);
-    //    isMessageReceived = false;
-    //    return (texture2D, timeStamp);
-    //}
 }

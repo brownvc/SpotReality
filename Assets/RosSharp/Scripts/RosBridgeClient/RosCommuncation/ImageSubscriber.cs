@@ -25,7 +25,7 @@ namespace RosSharp.RosBridgeClient
         public Texture2D texture2D;
         private byte[] imageData;
         private bool isMessageReceived;
-
+        public uint timeStamp;
         protected override void Start()
         {
 			base.Start();
@@ -41,19 +41,20 @@ namespace RosSharp.RosBridgeClient
         protected override void ReceiveMessage(MessageTypes.Sensor.CompressedImage compressedImage)
         {
             imageData = compressedImage.data;
+            timeStamp = compressedImage.header.stamp.nsecs; //
             isMessageReceived = true;
 
         }
 
-        private void ProcessMessage()
+        public (Texture2D, uint) ProcessMessage()
         {
             texture2D.LoadImage(imageData);
             texture2D.Apply();
             //Debug.Log(texture2D.height + ", " + texture2D.width);
             meshRenderer.material.SetTexture("_MainTex", texture2D);
             isMessageReceived = false;
+            return (texture2D, timeStamp);
         }
-
     }
 }
 
