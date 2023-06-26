@@ -30,6 +30,8 @@ namespace RosSharp.RosBridgeClient
         {
             bool gripValue;
             Vector3 locationChange;
+
+            Quaternion rotationChange;
             GameObject connector;
             var gameControllers = new List<UnityEngine.XR.InputDevice>();
             UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
@@ -54,12 +56,16 @@ namespace RosSharp.RosBridgeClient
                         else
                         {
                             // Change the location of the finger the same way
+                            //Debug.Log(rightController.transform.localEulerAngles);
                             locationChange = (rightController.transform.position - lastHandLocation);
+                            rotationChange = rightController.transform.rotation * Quaternion.Inverse(lastHandRotation);
                             //rotationChange = rightController.transform.rotation - lastHandRotation;
                             dummyFinger.transform.position += locationChange;
-                            dummyFinger.transform.rotation = rightController.transform.rotation;
+                            //dummyFinger.transform.rotation = rightController.transform.rotation;
+                            dummyFinger.transform.rotation *= rotationChange;
                         }
                         lastHandLocation = rightController.transform.position;
+                        lastHandRotation = rightController.transform.rotation;
 
                         //Debug.Log("Location of controller: " + rightController.transform.position);
                     }
@@ -69,8 +75,8 @@ namespace RosSharp.RosBridgeClient
                         triggerWasPressed = false;
 
                         // turn off dummy hand tracking
-                        connector = GameObject.Find("RosConnector");
-                        (connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = false;
+                        //connector = GameObject.Find("RosConnector");
+                        //(connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = false;
                     }
                 }
             }
