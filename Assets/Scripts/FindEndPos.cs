@@ -502,6 +502,13 @@ namespace RosSharp.RosBridgeClient
             message.data = dataArrayGhost;
 
             Publish(message);
+            //Debug.Log(message.data.ToString() + " published");
+
+            //for(int i = 0; i < 6; i++)
+            //{
+            //    Debug.Log(dataArrayGhost[i] + " published");
+            //}
+        
         }
 
 
@@ -541,7 +548,7 @@ namespace RosSharp.RosBridgeClient
             {
                 //message.data = ghostArmRads;
                 message.data = ghostArmRads;
-                //Debug.Log("sending");
+                Debug.Log("sending");
                 Publish(message);
                 //trigger2WasPressed = false;
             }
