@@ -1925,11 +1925,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 170598113}
+    m_TransformParent: {fileID: 1266270215}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9057163d25f2a5f4e99552766e02be01, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9057163d25f2a5f4e99552766e02be01, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1961,11 +1961,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9057163d25f2a5f4e99552766e02be01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9057163d25f2a5f4e99552766e02be01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9057163d25f2a5f4e99552766e02be01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2505,10 +2505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image:
-  - 2800000
-  - NaN
-  - 3
+  color_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -5194,11 +5191,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1521449943}
   - {fileID: 779203846}
   - {fileID: 908225164}
+  - {fileID: 972017056}
   - {fileID: 1364489103}
-  - {fileID: 168017553}
   - {fileID: 1817927350}
   - {fileID: 762275806}
   - {fileID: 1948980707}
@@ -5915,13 +5911,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image:
-  - 2800000
-  - NaN
-  - 3
+  color_image: {fileID: 0}
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
+  auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 1
   height: 240
@@ -5930,7 +5925,9 @@ MonoBehaviour:
   CY: 0
   FX: 0
   FY: 0
+  facedAngle: 0
   size_scale: 0.01
+  use_saved_meshes: 0
 --- !u!1 &772360692
 GameObject:
   m_ObjectHideFlags: 0
@@ -6066,12 +6063,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: 
   targetTransform: {fileID: 772360692}
+  testing: 0
+  FrameId: Unity
   dataArrayGhost: []
   sh1: 0
-  shy: 0
-  shz: 0
-  sh1_without_transform: 0
-  FrameId: Unity
+  sh2: 0
+  sending: 0
+  IKDataArray: []
+  ghostArmRads: []
+  realArmDegrees: []
+  realArmRads: []
+  published: []
 --- !u!114 &772360699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7077,8 +7079,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 170598113}
+  m_Children: []
   m_Father: {fileID: 1266270215}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7164,13 +7165,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972017055}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.263, z: -0.09379989}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1285005849}
-  m_Father: {fileID: 1521449943}
-  m_RootOrder: 0
+  m_Father: {fileID: 680901391}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &972017057
 MonoBehaviour:
@@ -9178,6 +9179,7 @@ Transform:
   - {fileID: 949265625}
   - {fileID: 486283754}
   - {fileID: 2044859924}
+  - {fileID: 226347215}
   - {fileID: 1748198818}
   m_Father: {fileID: 2104173351}
   m_RootOrder: 2
@@ -10711,7 +10713,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.0148200095, z: 0.11745}
+  m_ConnectedAnchor: {x: 0, y: 0.01481998, z: 0.11745}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -15093,11 +15095,13 @@ MonoBehaviour:
   downsample: 1
   height: 480
   width: 640
-  CX: 0
-  CY: 0
-  FX: 0
-  FY: 0
+  CX: 320
+  CY: 240
+  FX: 552.0291
+  FY: 552.0291
+  facedAngle: 0
   size_scale: 0.01
+  use_saved_meshes: 0
 --- !u!1 &1773821427
 GameObject:
   m_ObjectHideFlags: 0
@@ -16560,13 +16564,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image:
-  - 2800000
-  - NaN
-  - 3
+  color_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
+  auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 1
   height: 480
@@ -16575,7 +16578,9 @@ MonoBehaviour:
   CY: 0
   FX: 0
   FY: 0
+  facedAngle: 0
   size_scale: 0.01
+  use_saved_meshes: 0
 --- !u!4 &1822593738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f518ea4b9c976ab46b9e1785d79b616c, type: 3}
@@ -17629,13 +17634,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1e+13
-  color_image:
-  - 2800000
-  - NaN
-  - 3
+  color_image: {fileID: 0}
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  target: {fileID: 0}
+  auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 1
   height: 240
@@ -17644,7 +17648,9 @@ MonoBehaviour:
   CY: 0
   FX: 0
   FY: 0
+  facedAngle: 0
   size_scale: 0.01
+  use_saved_meshes: 0
 --- !u!1 &1954744216 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3256527755189967320, guid: c6f13b52137e2374ab2f788237d6d3ce, type: 3}

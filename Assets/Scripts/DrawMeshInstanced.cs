@@ -9,14 +9,14 @@ using static RosSharp.Urdf.Link.Visual.Material;
 using System;
 using JetBrains.Annotations;
 using System.Diagnostics;
-using Debug = UnityEngine.Debug; 
+using Debug = UnityEngine.Debug;
 //using System;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
     public float range;
 
-    public float[] color_image;
+    public Texture2D color_image;
 
     public int imageScriptIndex;
 
@@ -49,14 +49,14 @@ public class DrawMeshInstanced : MonoBehaviour
     //private uint numUpdates;
 
     public float size_scale; //hack to current pointcloud viewing
-    
+
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private float[] depth_ar;
 
     private MeshProperties[] globalProps;
 
     //private MeshProperties[] generalUseProps;
-    
+
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -155,7 +155,7 @@ public class DrawMeshInstanced : MonoBehaviour
         // bounds = new Bounds(transform.position, Vector3.one * (range + 1));
         bounds = new Bounds(Vector3.zero, Vector3.one * (range + 1));
 
-        material.SetFloat("width",1.0f / width);
+        material.SetFloat("width", 1.0f / width);
         material.SetFloat("height", 1.0f / height);
         material.SetInt("w", (int)width);
         //material.SetFloat("a",target.rotation.y * 0);
@@ -163,10 +163,10 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("a", get_target_rota());
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
-        compute.SetVector("intrinsics",intr);
-        Vector4 screenData = new Vector4((float)width, (float)height, 1/(float)width, FY);
+        compute.SetVector("intrinsics", intr);
+        Vector4 screenData = new Vector4((float)width, (float)height, 1 / (float)width, FY);
         compute.SetVector("screenData", screenData);
-        compute.SetFloat("samplingSize",downsample);
+        compute.SetFloat("samplingSize", downsample);
         material.SetVector("screenData", screenData);
         material.SetFloat("samplingSize", downsample);
 
@@ -178,9 +178,10 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         //Debug.Log(convert_angle(target.eulerAngles.y).ToString() + "     " + convert_angle(auxTarget.eulerAngles.y).ToString());
         if (auxTarget == null || true) { return convert_angle(target.eulerAngles.y) * 2; }
-        else {
+        else
+        {
             return convert_angle(target.eulerAngles.y) + convert_angle(auxTarget.eulerAngles.y);
-        }    
+        }
     }
 
     private float convert_angle(float a) // Unity is giving me the sin of an angle when I just want the angle
@@ -206,18 +207,18 @@ public class DrawMeshInstanced : MonoBehaviour
         uint x;
         uint y;
         uint depth_idx;
-        uint i; 
+        uint i;
 
-        
+
         for (uint pop_i = 0; pop_i < population; pop_i++)
         {
             i = pop_i * downsample;
             MeshProperties props = new MeshProperties();
 
-            
+
             //x = i % (width);
             //y = (uint)Mathf.Floor(i / width);
-            
+
             /*
             depth_idx = (width * (height - y - 1)) + (width - x - 1);
 
@@ -275,7 +276,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
             //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
             //props.color[3] = 1.0f;
-            
+
             //properties[pop_i].pos = position;
 
             //properties[pop_i].color = color_image.GetPixel((int)(width - x) - 1, (int)y);
@@ -283,9 +284,9 @@ public class DrawMeshInstanced : MonoBehaviour
             //props.color = new Color(0, 0, 0, 0);
 
             properties[pop_i] = props;
-            
+
         }
-        
+
         return (properties);
     }
 
@@ -339,14 +340,15 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("a", get_target_rota());
         depthBuffer.SetData(depth_ar);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
-        material.SetTexture("_colorMap",color_image);
+        material.SetTexture("_colorMap", color_image);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
     private void UpdateTexture()
-    {           
-        if(use_saved_meshes) {
+    {
+        if (use_saved_meshes)
+        {
             //Debug.Log("use_saved_meshes");
             //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
             return;
@@ -404,7 +406,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Update()
     {
-        
+
         //Debug.Log("UPDATE");
         int kernel = compute.FindKernel("CSMain");
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
@@ -432,13 +434,14 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         //int CX = 320;
         //int CY = 240;
+
         //float FX = (float)552.029101;
         //float FY = (float)552.029101;
 
         float x = (j - CX) * depth / FX;
         float y = (i - CY) * depth / FY;
 
-        Vector4 ret = new Vector4(x, y, depth,1f);
+        Vector4 ret = new Vector4(x, y, depth, 1f);
         return (ret);
 
     }
@@ -617,5 +620,4 @@ public class DrawMeshInstanced : MonoBehaviour
         }
         argsBuffer = null;
     }
-
 }
