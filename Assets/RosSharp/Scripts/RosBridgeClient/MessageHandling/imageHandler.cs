@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using RosSharp.RosBridgeClient;
 using UnityEngine;
@@ -37,6 +38,13 @@ public class imageHandler : MonoBehaviour
     public PriorityQueue<Texture2D> ringBufferHand = null;
     public JPEGImageSubscriber hand = null;
     public RawImageSubscriber handDepth = null;
+
+    public Texture2D backTexture = null;
+    public Texture2D leftTexture = null;
+    public Texture2D rightTexture = null;
+    public Texture2D frontRightTexture = null;
+    public Texture2D frontLeftTexture = null;
+    public Texture2D handTexture = null;
 
     /// <summary>
 	/// A Queue class in which each item is associated with a Double value
@@ -134,11 +142,11 @@ public class imageHandler : MonoBehaviour
         ringBuffer.Enqueue(currCam.Item1, currCam.Item2);
         if (depth.isMessageReceived) {
             uint depthTime = depth.timeStamp; //in nanoseconds
-            uint optimalFrameDiff = -1;
+            double optimalFrameDiff = 10000000;
             Texture2D optimalFrameTexture = null;
             for (int i = 0; i < ringBuffer.Count; i++) {
-                (Texture2D, uint) curr = ringBuffer.Dequeue();
-                currBest = Math.Abs(curr.Item2 - depthTime);
+                System.Tuple<Texture2D, double> curr = ringBuffer.Dequeue();
+                double currBest = Math.Abs(curr.Item2 - depthTime);
                 if (currBest < optimalFrameDiff) {
                     optimalFrameDiff = currBest;
                     optimalFrameTexture = curr.Item1;
@@ -146,17 +154,18 @@ public class imageHandler : MonoBehaviour
             }
             return optimalFrameTexture;
         };
+        return null;
     }
     // Update is called once per frame
-    Texture2D[] Update()
+    void Update()
     {//ASK ARE ABOUT OPTIMIZATION BC I MIGHT BE CALLING THIS TWICE
-        Texture2D backTexture = handleBuffer(back, backDepth, ringBufferBack);
-        Texture2D leftTexture = handleBuffer(left, leftDepth, ringBufferLeft);
-        Texture2D rightTexture = handleBuffer(right, rightDepth, ringBufferRight);
-        Texture2D frontRightTexture = handleBuffer(frontRight, frontRightDepth, ringBufferFrontRight);
-        Texture2D frontLeftTexture = handleBuffer(frontLeft, frontLeftDepth, ringBufferFrontLeft);
-        Texture2D handTexture = handleBuffer(hand, handDepth, ringBufferHand);
+        backTexture = handleBuffer(back, backDepth, ringBufferBack);
+        leftTexture = handleBuffer(left, leftDepth, ringBufferLeft);
+        rightTexture = handleBuffer(right, rightDepth, ringBufferRight);
+        frontRightTexture = handleBuffer(frontRight, frontRightDepth, ringBufferFrontRight);
+        frontLeftTexture = handleBuffer(frontLeft, frontLeftDepth, ringBufferFrontLeft);
+        handTexture = handleBuffer(hand, handDepth, ringBufferHand);
 
-        return new Texture2D[] { handTexture, frontLeftTexture, frontRightTexture, frontTexture, backTexture, rightTexture, leftTexture };
+        //return new Texture2D[] { handTexture, frontLeftTexture, frontRightTexture, backTexture, rightTexture, leftTexture };
     }
 }

@@ -27,7 +27,7 @@ namespace RosSharp.RosBridgeClient
     public class RawImageSubscriber: UnitySubscriber<MessageTypes.Sensor.Image>
     {
         public byte[] data;
-        private bool isMessageReceived;
+        public bool isMessageReceived;
         public float[] image_data;
 
         public uint timeStamp;
