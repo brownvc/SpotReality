@@ -10,7 +10,33 @@ public class imageHandler : MonoBehaviour
 {
 
     public PriorityQueue<Texture2D> ringBufferFront = null;
-    public ImageSubscriber front = null;
+    public JPEGImageSubscriber front = null;
+
+    public RawImageSubscriber frontDepth = null;
+
+    public PriorityQueue<Texture2D> ringBufferBack = null;
+    public JPEGImageSubscriber back = null;
+    public RawImageSubscriber backDepth = null;
+
+    public PriorityQueue<Texture2D> ringBufferLeft = null;
+    public JPEGImageSubscriber left = null;
+    public RawImageSubscriber leftDepth = null;
+
+    public PriorityQueue<Texture2D> ringBufferRight = null;
+    public JPEGImageSubscriber right = null;
+    public RawImageSubscriber rightDepth = null;
+
+    public PriorityQueue<Texture2D> ringBufferFrontRight = null;
+    public JPEGImageSubscriber frontRight = null;
+    public RawImageSubscriber frontRightDepth = null;
+
+    public PriorityQueue<Texture2D> ringBufferFrontLeft = null;
+    public JPEGImageSubscriber frontLeft = null;
+    public RawImageSubscriber frontLeftDepth = null;
+
+    public PriorityQueue<Texture2D> ringBufferHand = null;
+    public JPEGImageSubscriber hand = null;
+    public RawImageSubscriber handDepth = null;
 
     /// <summary>
 	/// A Queue class in which each item is associated with a Double value
@@ -84,14 +110,53 @@ public class imageHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ringBufferFront = new PriorityQueue<Texture2D>();
-        front = new ImageSubscriber();
+        ringBufferBack = new PriorityQueue<Texture2D>();
+        back = new JPEGImageSubscriber();
+        backDepth = new RawImageSubscriber();
+        ringBufferLeft = new PriorityQueue<Texture2D>();
+        left = new JPEGImageSubscriber();
+        leftDepth = new RawImageSubscriber();
+        ringBufferRight = new PriorityQueue<Texture2D>();
+        right = new JPEGImageSubscriber();
+        rightDepth = new RawImageSubscriber();
+        ringBufferFrontRight = new PriorityQueue<Texture2D>();
+        frontRight = new JPEGImageSubscriber();
+        frontRightDepth = new RawImageSubscriber();
+        ringBufferFrontLeft = new PriorityQueue<Texture2D>();
+        frontLeft = new JPEGImageSubscriber();
+        frontLeftDepth = new RawImageSubscriber();
+        ringBufferHand = new PriorityQueue<Texture2D>();
+        hand = new JPEGImageSubscriber();
+        handDepth = new RawImageSubscriber();
     }
-
+    Texture2D handleBuffer(JPEGImageSubscriber cam, RawImageSubscriber depth, PriorityQueue<Texture2D> ringBuffer) {
+        (Texture2D, uint) currCam = cam.ProcessMessage();
+        ringBuffer.Enqueue(currCam.Item1, currCam.Item2);
+        if (depth.isMessageReceived) {
+            uint depthTime = depth.timeStamp; //in nanoseconds
+            uint optimalFrameDiff = -1;
+            Texture2D optimalFrameTexture = null;
+            for (int i = 0; i < ringBuffer.Count; i++) {
+                (Texture2D, uint) curr = ringBuffer.Dequeue();
+                currBest = Math.Abs(curr.Item2 - depthTime);
+                if (currBest < optimalFrameDiff) {
+                    optimalFrameDiff = currBest;
+                    optimalFrameTexture = curr.Item1;
+                }
+            }
+            return optimalFrameTexture;
+        };
+    }
     // Update is called once per frame
-    void Update()
+    Texture2D[] Update()
     {//ASK ARE ABOUT OPTIMIZATION BC I MIGHT BE CALLING THIS TWICE
-        (Texture2D, uint) currFront = front.ProcessMessage();
-        ringBufferFront.Enqueue(currFront.Item1, currFront.Item2);
+        Texture2D backTexture = handleBuffer(back, backDepth, ringBufferBack);
+        Texture2D leftTexture = handleBuffer(left, leftDepth, ringBufferLeft);
+        Texture2D rightTexture = handleBuffer(right, rightDepth, ringBufferRight);
+        Texture2D frontRightTexture = handleBuffer(frontRight, frontRightDepth, ringBufferFrontRight);
+        Texture2D frontLeftTexture = handleBuffer(frontLeft, frontLeftDepth, ringBufferFrontLeft);
+        Texture2D handTexture = handleBuffer(hand, handDepth, ringBufferHand);
+
+        return new Texture2D[] { handTexture, frontLeftTexture, frontRightTexture, frontTexture, backTexture, rightTexture, leftTexture };
     }
 }

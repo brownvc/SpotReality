@@ -30,6 +30,8 @@ namespace RosSharp.RosBridgeClient
         private bool isMessageReceived;
         public float[] image_data;
 
+        public uint timeStamp;
+
 
         protected override void Start()
         {
@@ -55,6 +57,8 @@ namespace RosSharp.RosBridgeClient
                 image_data[j++] = (BitConverter.ToUInt16(bytes))/1000.0f;
                 // image_data[i] = (float)(data[i]);// + imageData[i + 1]);// System.BitConverter.ToSingle(value, 0);
             }
+            timeStamp = image.header.stamp.nsecs;
+            isMessageReceived = true;
             //Debug.Log("Message Received, Time: " + UnityEngine.Time.realtimeSinceStartup);
         }
 
@@ -66,6 +70,7 @@ namespace RosSharp.RosBridgeClient
 
         private void ProcessMessage()
         {
+            isMessageReceived = false;
         }
     }
 }
