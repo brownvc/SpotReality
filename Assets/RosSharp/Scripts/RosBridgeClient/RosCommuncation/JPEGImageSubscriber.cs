@@ -14,6 +14,8 @@ limitations under the License.
 */
 
 using UnityEngine;
+using System.IO;
+using System; 
 
 namespace RosSharp.RosBridgeClient
 {
@@ -42,7 +44,13 @@ namespace RosSharp.RosBridgeClient
         {
             imageData = image.data;
             isMessageReceived = true;
+            SaveImage(imageData);
 
+        }
+
+        private void SaveImage(byte[] data)
+        {
+            File.WriteAllBytes("C:/Users/H2R/Downloads/images_from_spot/img_" + DateTime.Now.ToString("yyyMMdd_HHmmss") + ".jpeg", data);
         }
 
         private void ProcessMessage()
