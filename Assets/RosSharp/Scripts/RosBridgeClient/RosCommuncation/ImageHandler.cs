@@ -7,14 +7,8 @@ using RosSharp.RosBridgeClient;
 using UnityEngine;
 using static RosSharp.Urdf.Link.Visual.Material;
 
-public class imageHandler : MonoBehaviour
+public class ImageHandler : MonoBehaviour
 {
-
-    public PriorityQueue<Texture2D> ringBufferFront = null;
-    public JPEGImageSubscriber front = null;
-
-    public RawImageSubscriber frontDepth = null;
-
     public PriorityQueue<Texture2D> ringBufferBack = null;
     public JPEGImageSubscriber back = null;
     public RawImageSubscriber backDepth = null;

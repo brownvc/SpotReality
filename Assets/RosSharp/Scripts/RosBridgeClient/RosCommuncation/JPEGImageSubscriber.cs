@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
@@ -37,7 +38,9 @@ namespace RosSharp.RosBridgeClient
         private void Update()
         {
             if (isMessageReceived)
+            {
                 ProcessMessage();
+            }
         }
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
@@ -50,6 +53,7 @@ namespace RosSharp.RosBridgeClient
 
         public (Texture2D, uint) ProcessMessage()
         {
+            Debug.Log(imageData);
             texture2D.LoadImage(imageData);
             texture2D.Apply();
             //Debug.Log(texture2D.height + ", " + texture2D.width);
