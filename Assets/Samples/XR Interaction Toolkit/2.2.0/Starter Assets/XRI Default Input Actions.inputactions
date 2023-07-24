@@ -1495,11 +1495,11 @@
             ]
         },
         {
-            "name": "Custom1",
+            "name": "SpotReality Flight Mode",
             "id": "0f3df21e-8e10-4cf4-b0b4-81e30dac60f0",
             "actions": [
                 {
-                    "name": "Toggle Mode",
+                    "name": "Toggle Control Modes",
                     "type": "Button",
                     "id": "33bbc21f-e5fa-47ed-b8d1-ee3c5365565d",
                     "expectedControlType": "Button",
@@ -1508,7 +1508,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fly",
+                    "name": "Fly Headset",
                     "type": "Value",
                     "id": "f5562d44-3b92-41cd-8bb5-16e74d4fd764",
                     "expectedControlType": "Vector2",
@@ -1525,7 +1525,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Toggle Mode",
+                    "action": "Toggle Control Modes",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1536,7 +1536,83 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fly",
+                    "action": "Fly Headset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "SpotReality Toggle Modes",
+            "id": "d5e35a14-2dcb-437a-a5d1-8ae020fed217",
+            "actions": [
+                {
+                    "name": "Toggle Control Modes",
+                    "type": "Button",
+                    "id": "d0511878-2243-43a9-814f-638763bb05e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5b9cbba3-9950-47d7-97db-79c8998b3a40",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Control Modes",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "SpotReality Drive Mode",
+            "id": "b260e062-9c51-41d0-bd9e-5b2c3f05b715",
+            "actions": [
+                {
+                    "name": "Toggle Control Modes",
+                    "type": "Button",
+                    "id": "045ecb52-4ef6-4ff1-827f-47d409e9e03a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Drive",
+                    "type": "Value",
+                    "id": "1d6495af-3f63-4b8f-9eec-f37abe64b0ff",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "266629fa-b104-4fc8-a5c2-a51b28b6fdba",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Control Modes",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d28a3378-be8b-4ed3-a9a9-56080fca3016",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drive",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
