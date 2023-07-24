@@ -66,10 +66,10 @@ namespace RosSharp.RosBridgeClient
                 Publish(message);
             }
 
-            if (Input.GetKeyDown("w"))
+            if (Input.GetKey("w"))
         	{
-            	print("w was pressed");
-            	Vector3 linearVelocity = new Vector3(0.0f, 0.0f,  0.0f);
+            	print("move forward");
+            	Vector3 linearVelocity = new Vector3(0.0f, 0.0f,  0.5f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
@@ -78,9 +78,9 @@ namespace RosSharp.RosBridgeClient
             	Publish(message);
         	}
 
-        	if (Input.GetKeyDown("s"))
+        	if (Input.GetKey("s"))
         	{
-            	print("w was pressed");
+            	print("move back");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, -0.5f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
@@ -90,9 +90,9 @@ namespace RosSharp.RosBridgeClient
             	Publish(message);
         	}
 
-        	if (Input.GetKeyDown("d"))
+        	if (Input.GetKey("d"))
         	{
-            	print("w was pressed");
+            	print("move right");
             	Vector3 linearVelocity = new Vector3(0.5f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
@@ -102,9 +102,9 @@ namespace RosSharp.RosBridgeClient
             	Publish(message);
         	}
 
-        	if (Input.GetKeyDown("a"))
+        	if (Input.GetKey("a"))
         	{
-            	print("w was pressed");
+            	print("move left");
             	Vector3 linearVelocity = new Vector3(-0.5f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
@@ -114,9 +114,9 @@ namespace RosSharp.RosBridgeClient
             	Publish(message);
         	}
 
-        	if (Input.GetKeyDown("e"))
+        	if (Input.GetKey("e"))
         	{
-            	print("w was pressed");
+            	print("rotate right");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.5f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
@@ -124,9 +124,9 @@ namespace RosSharp.RosBridgeClient
 
             	Publish(message);
         	}
-       		if (Input.GetKeyDown("q"))
+       		if (Input.GetKey("q"))
         	{
-            	print("w was pressed");
+            	print("rotate left");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, -0.5f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
