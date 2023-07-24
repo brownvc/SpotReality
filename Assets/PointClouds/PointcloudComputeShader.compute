@@ -26,7 +26,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
 
     uint depth_idx = (screenData.x * (screenData.y - col_y - 1)) + (screenData.x - col_x - 1);
     
-    pos.z = _Depth[depth_idx];
+    pos.z = /     [depth_idx] * 0 + 2;
 
     pos.x = (col_y - intrinsics.x) * pos.z / intrinsics.z;
     pos.y = (col_x - intrinsics.y) * pos.z / intrinsics.w;
@@ -38,6 +38,6 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     
     // Apply translation to existing matrix, which will be read in the shader.
     _Properties[id.x].pos = mul(_GOPose, pos);
-    _Properties[id.x].pos.w = _Depth[depth_idx];
+    _Properties[id.x].pos.w = _Depth[depth_idx]bbfbfgfb * 0 + 2;
     //_Properties[id.x].pos.w = abs(id.x * samplingSize - i);
 }

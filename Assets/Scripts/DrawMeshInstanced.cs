@@ -9,15 +9,17 @@ using static RosSharp.Urdf.Link.Visual.Material;
 using System;
 using JetBrains.Annotations;
 using System.Diagnostics;
-using Debug = UnityEngine.Debug; 
+using System.Linq;
+using Debug = UnityEngine.Debug;
+
 //using System;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
     public float range;
-
+    private uint prevRaw;
     public Texture2D color_image;
-
+    public Texture2D prev_color;
     public int imageScriptIndex;
 
     public Material material;
@@ -45,6 +47,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public float FX;
     public float FY;
     public float facedAngle;
+    private PriorityQueue<Texture2D> ringBuffer;
     //public uint counter;
     //private uint numUpdates;
 
@@ -80,6 +83,7 @@ public class DrawMeshInstanced : MonoBehaviour
         //height = 240;
         //counter = 0;
         //numUpdates = 0;
+        ringBuffer = new PriorityQueue<Texture2D>();
         total_population = height * width;
         population = (uint)(total_population / downsample);
 
@@ -173,7 +177,70 @@ public class DrawMeshInstanced : MonoBehaviour
         InitializeBuffers();
 
     }
+    public class PriorityQueue<T>
+    {//ring buffer w max size of 20
 
+        List<Tuple<T, double>> elements = new List<Tuple<T, double>>();
+
+
+        /// <summary>
+        /// Return the total number of elements currently in the Queue.
+        /// </summary>
+        /// <returns>Total number of elements currently in Queue</returns>
+        public int Count
+        {
+            get { return elements.Count; }
+        }
+
+
+        /// <summary>
+        /// Add given item to Queue and assign item the given priority value.
+        /// </summary>
+        /// <param name="item">Item to be added.</param>
+        /// <param name="priorityValue">Item priority value as Double.</param>
+        public void Enqueue(T item, double priorityValue)
+        {
+            elements.Add(Tuple.Create(item, priorityValue));
+            elements.OrderByDescending((x => x.Item2));
+            if (this.Count == 20)
+            {
+                this.Dequeue();
+            }
+        }
+
+
+        /// <summary>
+        /// Return lowest priority value item and remove item from Queue.
+        /// </summary>
+        /// <returns>Queue item with lowest priority value.</returns>
+        public Tuple<T, double> Dequeue()
+        {
+            Tuple<T, double> lastItem = elements[elements.Count - 1];
+            elements.RemoveAt(elements.Count - 1);
+            return lastItem;
+        }
+
+
+        /// <summary>
+        /// Return lowest priority value item without removing item from Queue.
+        /// </summary>
+        /// <returns>Queue item with lowest priority value.</returns>
+        public T Peek()
+        {
+            int bestPriorityIndex = 0;
+
+            for (int i = 0; i < elements.Count; i++)
+            {
+                if (elements[i].Item2 < elements[bestPriorityIndex].Item2)
+                {
+                    bestPriorityIndex = i;
+                }
+            }
+
+            T bestItem = elements[bestPriorityIndex].Item1;
+            return bestItem;
+        }
+    }
     private float get_target_rota()
     {
         //Debug.Log(convert_angle(target.eulerAngles.y).ToString() + "     " + convert_angle(auxTarget.eulerAngles.y).ToString());
@@ -351,12 +418,45 @@ public class DrawMeshInstanced : MonoBehaviour
             //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
             return;
         }
+        //Debug.Log("UPDATING TEXTURES");
         GameObject rosConnector = GameObject.Find("RosConnector"); // TODO change to ImageSubscriber
-        color_image = rosConnector.GetComponents<JPEGImageSubscriber>()[imageScriptIndex].texture2D;
+        JPEGImageSubscriber[] currJPEG = rosConnector.GetComponents<JPEGImageSubscriber>();
+        //Debug.Log("COLOR: " + currJPEG[imageScriptIndex].timeStamp.ToString());
+
+        
         //color_image = rosConnector.GetComponents<ImageSubscriber>()[1].texture2D;
         // = rosConnector.GetComponents<ImageSubscriber>()[0].depth_data;
-
-        depth_ar = rosConnector.GetComponents<RawImageSubscriber>()[imageScriptIndex].image_data;
+        RawImageSubscriber[] currRaw = rosConnector.GetComponents<RawImageSubscriber>();
+        if (prevRaw == currRaw[imageScriptIndex].timeStamp)
+        {
+            ringBuffer.Enqueue(currJPEG[imageScriptIndex].texture2D, currJPEG[imageScriptIndex].timeStamp);
+            color_image = prev_color;
+        } else
+        {
+            double bestDiff = 1000000000;
+            Texture2D bestTexture = null;
+            while(ringBuffer.Count > 0)
+            {
+                Tuple<Texture2D, double> curr = ringBuffer.Dequeue();
+                if (Math.Abs(curr.Item2 - currRaw[imageScriptIndex].timeStamp) < bestDiff)
+                {
+                    bestTexture = curr.Item1;
+                    bestDiff = Math.Abs(curr.Item2 - currRaw[imageScriptIndex].timeStamp);
+                }
+                else if (curr.Item2 == currRaw[imageScriptIndex].timeStamp)
+                {
+                    bestTexture = curr.Item1;
+                    break;
+                }
+            }
+            color_image = bestTexture;
+            prev_color = color_image;
+            
+            Debug.Log("nah");
+        }
+        //Debug.Log("DEPTH: " + currRaw[imageScriptIndex].timeStamp.ToString());
+        prevRaw = currRaw[imageScriptIndex].timeStamp;
+        depth_ar = currRaw[imageScriptIndex].image_data;
 
         // save the point cloud if desired
         MoveSpot move = rosConnector.GetComponent<MoveSpot>();
@@ -599,6 +699,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Start()
     {
+        prevRaw = 0;
         Setup();
     }
 
