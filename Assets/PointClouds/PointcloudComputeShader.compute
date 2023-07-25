@@ -28,8 +28,8 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     
     pos.z = _Depth[depth_idx];
 
-    pos.x = (col_y - intrinsics.x) * pos.z / intrinsics.z;
-    pos.y = (col_x - intrinsics.y) * pos.z / intrinsics.w;
+    pos.x = (col_y - intrinsics.y) * pos.z / intrinsics.z;
+    pos.y = (col_x - intrinsics.x) * pos.z / intrinsics.w;
 
     //pos.z = _Depth[depth_idx];
     pos.w = 1;
