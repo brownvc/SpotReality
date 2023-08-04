@@ -6,21 +6,37 @@ using TMPro;
 
 public class ManualRotationSlider : MonoBehaviour
 {
-    public float sliderVal;
     private Slider slider;
     private TextMeshProUGUI sliderText;
+    private Canvas thisCanvas;
 
 
     void Start()
     {
         slider = this.GetComponentInChildren<Slider>();
         sliderText = this.GetComponentInChildren<TextMeshProUGUI>();
+        thisCanvas = this.GetComponentInParent<Canvas>();
     }
 
     //update slider's text
     void Update()
     {
-        sliderVal = slider.value;
         sliderText.text = slider.value.ToString();
     }
+
+    public double GetSliderVal()
+    {
+        return (double)slider.value;
+    }
+
+    public void SetSliderVal(double input)
+    {
+        slider.value = (float)input;
+    }
+
+    public Canvas getCanvas()
+    {
+        return thisCanvas;
+    }
+
 }

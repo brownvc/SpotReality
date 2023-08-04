@@ -1495,11 +1495,11 @@
             ]
         },
         {
-            "name": "SpotReality Flight Mode",
+            "name": "SpotReality",
             "id": "0f3df21e-8e10-4cf4-b0b4-81e30dac60f0",
             "actions": [
                 {
-                    "name": "Toggle Control Modes",
+                    "name": "LAxisButton",
                     "type": "Button",
                     "id": "33bbc21f-e5fa-47ed-b8d1-ee3c5365565d",
                     "expectedControlType": "Button",
@@ -1508,10 +1508,100 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fly Headset",
+                    "name": "LAxis",
                     "type": "Value",
                     "id": "f5562d44-3b92-41cd-8bb5-16e74d4fd764",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Y",
+                    "type": "Button",
+                    "id": "bedaccae-5565-44c6-a0f9-7805fd865e9d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "X",
+                    "type": "Button",
+                    "id": "9086f91d-d7fc-43ce-be1e-7dc8a06af24b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LTrigger1",
+                    "type": "Value",
+                    "id": "a422264c-8476-45b4-a246-19e860423a17",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LTrigger2",
+                    "type": "Value",
+                    "id": "c7ba4fc1-c2de-4c3d-97b6-01c6cd5ed78c",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RAxisButton",
+                    "type": "Button",
+                    "id": "8e4de2b4-f0e8-4f8d-89f7-6277d74c4473",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RAxis",
+                    "type": "Value",
+                    "id": "d033e4ff-b72d-433b-aa1f-80c1be17b0da",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "B",
+                    "type": "Button",
+                    "id": "f4693fa6-d3f5-4e2a-9afb-5e97bb565a84",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "A",
+                    "type": "Button",
+                    "id": "75f95d77-fd54-4d7e-a106-8fea9cb00917",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RTrigger1",
+                    "type": "Value",
+                    "id": "7c1169cd-aaa6-4ba5-97d8-d7b7c288561c",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RTrigger2",
+                    "type": "Value",
+                    "id": "02cb72f6-42ba-4774-83fe-8ef691c6155f",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1525,7 +1615,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Toggle Control Modes",
+                    "action": "LAxisButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1536,83 +1626,117 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fly Headset",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "SpotReality Toggle Modes",
-            "id": "d5e35a14-2dcb-437a-a5d1-8ae020fed217",
-            "actions": [
-                {
-                    "name": "Toggle Control Modes",
-                    "type": "Button",
-                    "id": "d0511878-2243-43a9-814f-638763bb05e5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "5b9cbba3-9950-47d7-97db-79c8998b3a40",
-                    "path": "<OculusTouchController>{LeftHand}/thumbstickClicked",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle Control Modes",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "SpotReality Drive Mode",
-            "id": "b260e062-9c51-41d0-bd9e-5b2c3f05b715",
-            "actions": [
-                {
-                    "name": "Toggle Control Modes",
-                    "type": "Button",
-                    "id": "045ecb52-4ef6-4ff1-827f-47d409e9e03a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Drive",
-                    "type": "Value",
-                    "id": "1d6495af-3f63-4b8f-9eec-f37abe64b0ff",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "266629fa-b104-4fc8-a5c2-a51b28b6fdba",
-                    "path": "<OculusTouchController>{LeftHand}/thumbstickClicked",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle Control Modes",
+                    "action": "LAxis",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "d28a3378-be8b-4ed3-a9a9-56080fca3016",
-                    "path": "<OculusTouchController>{LeftHand}/thumbstick",
+                    "id": "469bb85f-6132-4294-b7e4-18f43d7d8dc4",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Drive",
+                    "action": "Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec0a67be-8a91-49f0-9fd7-8ab32b84fbac",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79a912d8-bfbc-4c93-926e-9d79805e2595",
+                    "path": "<XRController>{LeftHand}/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LTrigger1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d068531-9aba-4877-9eaf-ffa6d0f557bb",
+                    "path": "<XRController>{LeftHand}/grip",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LTrigger2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2a818ce-84b9-4c53-af1e-35bab6c8ae6a",
+                    "path": "<XRController>{RightHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RAxisButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c43d217-b184-4494-919e-fb5c481e6fff",
+                    "path": "<XRController>{RightHand}/thumbstick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8f37481-624e-4853-9303-d10ead28a99d",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "B",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80fdcd73-380e-4f84-b750-65a3797632cc",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "A",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b706d03-ad9d-4d3b-afd9-01e6234d4fbc",
+                    "path": "<XRController>{RightHand}/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RTrigger1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6deb3333-84f3-49bf-a961-34d982f306f9",
+                    "path": "<XRController>{RightHand}/grip",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RTrigger2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

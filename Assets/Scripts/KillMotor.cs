@@ -20,26 +20,16 @@ namespace RosSharp.RosBridgeClient
         }
 
 
-        // Update is called once per frame
         void Update()
         {
-            
-            bool primaryButton;
-            var gameControllers = new List<UnityEngine.XR.InputDevice>();
-            UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
+            if(Input.GetKeyDown("k"))
+                killSpot();
+        }
 
-            foreach (var device in gameControllers)
-            {
-                // check if this is the right hand controller
-                if ((((uint)device.characteristics & 512) != 0))
-                {
-                    if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out primaryButton) && primaryButton)
-                    {
-                        message.data = true;
-                        Publish(message);
-                    }
-                }
-            }
+        public void killSpot()
+        {
+            message.data = true;
+            Publish(message);
         }
 
     }

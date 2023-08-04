@@ -6,54 +6,32 @@ using TMPro;
 
 public class ModeManager : MonoBehaviour
 {
-    public InputActionReference toggleModes = null;
-    public TextMeshProUGUI modeIndicator = null;
-    public List<ControlMode> modes;
-
-    public string TEMPstringForUI;//put into modes object
-
     [SerializeField]
     private int currMode;
+    public List<ControlMode> modes;
+    public List<TextMeshProUGUI> UICanvases;
+    public TextMeshProUGUI hintText;
+    public string hintTextString;
 
-    public bool mSwitchingInInspector;
-    public bool flushModesOnStart; //for testing
-    public int manualMode;
-
-    // Start is called before the first frame update
     void Start()
     {
-        currMode = 0;
-
-        if (flushModesOnStart)//for testing
+        currMode = modes.Count - 1;
+        
+        for (int i = 0; i < modes.Count; i++)
         {
-
-            for (int i = 0; i < modes.Count; i++)
-            {
-                nextMode();
-            }
+            modes[i].disableMode();
         }
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        if (mSwitchingInInspector)
-        {
-            if (manualMode != currMode)
-                switchToMode(manualMode);
-        }
-        else
-        {
-            if (toggleModes.action.WasReleasedThisFrame())
-                nextMode();
-        }
-        
+        if (Input.GetKeyDown("t"))
+            nextMode();
     }
 
 
-    private void switchToMode(int newMode)
+    public void switchToMode(int newMode)
     {
         //disable previous mode
         ControlMode mode = modes[currMode];
@@ -66,16 +44,24 @@ public class ModeManager : MonoBehaviour
         mode.enableMode();
 
         //update UI
-        modeIndicator.text = currMode.ToString() + "\n" + mode.name + "\n" + mode.description + "\n" + mode.listOfControlMappings;
-
+        UpdateUI("Mode: " + currMode.ToString() + " - " + mode.ToString());
+        hintText.text = "Mode: " + currMode.ToString() + " - " + mode.modeName + "\n" + hintTextString;
     }
 
-    private void nextMode()
+    public void nextMode()
     {
         //iterate mode number
         int newMode = currMode + 1;
         newMode %= modes.Count;
 
         switchToMode(newMode);
+    }
+
+    public void UpdateUI(string text)
+    {
+        for(int i = 0; i < UICanvases.Count; i++)
+        {
+            UICanvases[i].text = text;
+        }
     }
 }

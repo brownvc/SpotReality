@@ -25,53 +25,14 @@ namespace RosSharp.RosBridgeClient
     	// Update is called once per frame
     	void Update()
     	{
-
-            Vector2 primary2DAxis;
-            bool publish = false;
-
-            var gameControllers = new List<UnityEngine.XR.InputDevice>();
-            UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
-            foreach (var device in gameControllers)
-            {
-                if ((((uint)device.characteristics & 256) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
-                {
-                    //Debug.Log("Left controller 2D axis value: " + primary2DAxis);
-                    Vector3 linearVelocity = new Vector3(primary2DAxis[0], 0.0f, primary2DAxis[1]);
-                    Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-                    message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
-                    message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
-                    publish = true;
-                }
-
-                if ((((uint)device.characteristics & 512) != 0) && device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxis, out primary2DAxis) && !(primary2DAxis == new Vector2(0, 0)))
-                {
-                    //Debug.Log("Right controller 2D axis value: " + primary2DAxis);
-
-                    Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-                    Vector3 angularVelocity = new Vector3(0.0f, primary2DAxis[0],0.0f);
-
-                    //Don't change linear velocity if already publishing
-                    if (!publish)
-                    {
-                        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
-                    }
-                    message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
-
-                    publish = true;
-                }
-            }
-
-            if (publish)
-            {
-                Publish(message);
-            }
+            
 
             if (Input.GetKey("w"))
         	{
             	print("move forward");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f,  0.5f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+	            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
 
 
@@ -83,7 +44,7 @@ namespace RosSharp.RosBridgeClient
             	print("move back");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, -0.5f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+	            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
 
 
@@ -95,7 +56,7 @@ namespace RosSharp.RosBridgeClient
             	print("move right");
             	Vector3 linearVelocity = new Vector3(0.5f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+	            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
 
 
@@ -107,7 +68,7 @@ namespace RosSharp.RosBridgeClient
             	print("move left");
             	Vector3 linearVelocity = new Vector3(-0.5f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
-	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+	            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
 
 
@@ -119,7 +80,7 @@ namespace RosSharp.RosBridgeClient
             	print("rotate right");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.5f, 0.0f);
-	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+	            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
 
             	Publish(message);
@@ -129,7 +90,7 @@ namespace RosSharp.RosBridgeClient
             	print("rotate left");
             	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, -0.5f, 0.0f);
-	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+	            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
 
             	Publish(message);
@@ -140,6 +101,19 @@ namespace RosSharp.RosBridgeClient
                 save = true;
             }
     	}
+
+
+        public void drive(Vector2 wasd, float rotate)
+        {
+
+            Vector3 linearVelocity = new Vector3(wasd[0], 0.0f, wasd[1]);
+            Vector3 angularVelocity = new Vector3(0.0f, rotate, 0.0f);
+            message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
+            message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+                
+            
+            Publish(message);
+        }
 
         public static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)
         {
