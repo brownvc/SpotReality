@@ -11,7 +11,6 @@ namespace RosSharp.RosBridgeClient
         private void InitializeMessage()
         {
             message = new MessageTypes.Std.Bool();
-
         }
 
         protected override void Start()
@@ -21,28 +20,22 @@ namespace RosSharp.RosBridgeClient
         }
 
 
-        // Update is called once per frame
-        // This function moves the robot arm according to the right controller's 3D location if the trigger is pressed
-        void Update()
+        //Press 'R' to stow
+        public void Update()
         {
-            bool primary2DAxisClick;
-            var gameControllers = new List<UnityEngine.XR.InputDevice>();
-            UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
+            if (Input.GetKeyDown("r"))
+                Stow();
+        }
 
-            foreach (var device in gameControllers)
-            {
-                // check if this is the right hand controller
-                if ((((uint)device.characteristics & 512) != 0))
-                {
-                    // If the joystick is pressed stow the arm
-                    if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxisClick, out primary2DAxisClick) && primary2DAxisClick)
-                    {
-                        Debug.Log("Stow arm");
-                        message.data = true;
-                        Publish(message);
-                    }
-                }
-            }
+        // Call this function from other scripts to stow the arm
+        //WARNING: if recently sent an incomplete command, it will not Stow
+            //eg: if you close the gripper with an object in the gripper (gripper doesn't close all of the way)
+            //the arm won't stow because it's still trying to finish closing the gripper
+        public void Stow()
+        {
+            Debug.Log("Stowing arm");
+            message.data = true;
+            Publish(message);
         }
     }
 }

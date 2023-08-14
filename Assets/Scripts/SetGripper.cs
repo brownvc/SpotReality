@@ -19,49 +19,39 @@ namespace RosSharp.RosBridgeClient
             InitializeMessage();
         }
 
-
-        // Update is called once per frame
-        void Update()
+        //Press 'O' to open
+        //Press 'P' to close
+        private void Update()
         {
-            
-            bool secondaryButton;
-            bool triggerButton;
-            float triggerValue;
-            var gameControllers = new List<UnityEngine.XR.InputDevice>();
+            if (Input.GetKeyDown("o"))
+                openGripper();
+            else if (Input.GetKeyDown("p"))
+                closeGripper();
+        }
+
+
+        public void openGripper()
+        {
             Vector3 linearVelocity;
             Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 
-            UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
+            linearVelocity = new Vector3(1.0f, 0.0f, 0.0f);
+            message.linear = new MessageTypes.Geometry.Vector3(100.0f, 0.0f, 0.0f);
+            message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+            Debug.Log(message.linear);
+            Publish(message);
+            Debug.Log("Opening Gripper");
 
+        }
 
-            foreach (var device in gameControllers)
-            {
-                // check if this is the right hand controller
-                if ((((uint)device.characteristics & 512) != 0))
-                {
-                    // Pressing "b" opens the gripper all the way
-                    // Pressing the trigger slowly closes the gripper
-                    if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out secondaryButton) && secondaryButton)
-                    {
-                        linearVelocity = new Vector3(1.0f, 0.0f, 0.0f);
-                        message.linear = new MessageTypes.Geometry.Vector3(100.0f, 0.0f, 0.0f);
-                        message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
-                        Debug.Log(message.linear);
-                        Publish(message);
-                    }
-                    // Pressing the trigger slowly closes the gripper
-                    else if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerButton) && triggerButton)
-                    {
-                        // get how hard the trigger is pressed -- won't use for now
-                        device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out triggerValue);
+        public void closeGripper()
+        {
+            Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+            message.linear = new MessageTypes.Geometry.Vector3(-10.0f, 0.0f, 0.0f);
+            message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+            Publish(message);
+            Debug.Log("Closing Gripper");
 
-                        // build a message that just sends -1 value
-                        message.linear = new MessageTypes.Geometry.Vector3(-10.0f, 0.0f, 0.0f);
-                        message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
-                        Publish(message);
-                    }
-                }
-            }
         }
 
         public static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)

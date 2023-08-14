@@ -20,7 +20,7 @@ namespace RosSharp.RosBridgeClient
             rightController = GameObject.Find("RightHand Controller");
             dummyFinger = GameObject.Find("dummy_link_fngr");
             //dummyFinger.transform.position = GameObject.Find("arm0.link_fngr").transform.position;
-            Debug.Log(rightController);
+            //Debug.Log(rightController);
         }
 
 

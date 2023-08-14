@@ -204,9 +204,9 @@ public class DrawMeshInstanced : MonoBehaviour
         }
 
 
-        uint x;
-        uint y;
-        uint depth_idx;
+        // uint x;
+        // uint y;
+        // uint depth_idx;
         uint i; 
 
         
