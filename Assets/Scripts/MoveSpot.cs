@@ -7,6 +7,8 @@ namespace RosSharp.RosBridgeClient
 	public class MoveSpot : UnityPublisher<MessageTypes.Geometry.Twist>
 	{
         private MessageTypes.Geometry.Twist message;
+        public bool save;
+
  	    protected override void Start()
         {
             base.Start();
@@ -57,17 +59,17 @@ namespace RosSharp.RosBridgeClient
 
                     publish = true;
                 }
+            }
 
-                if(publish)
-                {
-                    Publish(message);
-                }
+            if (publish)
+            {
+                Publish(message);
             }
 
             if (Input.GetKeyDown("w"))
         	{
             	print("w was pressed");
-            	Vector3 linearVelocity = new Vector3(0.0f, 0.0f, 0.5f);
+            	Vector3 linearVelocity = new Vector3(0.0f, 0.0f,  0.0f);
             	Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
 	        message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             	message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
@@ -132,6 +134,11 @@ namespace RosSharp.RosBridgeClient
 
             	Publish(message);
         	}
+            if (Input.GetKeyDown("i"))
+            {
+                Debug.Log("Saving");
+                save = true;
+            }
     	}
 
         public static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)
