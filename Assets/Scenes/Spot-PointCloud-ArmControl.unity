@@ -1468,7 +1468,7 @@ MonoBehaviour:
   CY: 236
   FX: 330.72
   FY: 329.55
-  facedAngle: 1.57
+  facedAngle: 0
   t: 1
   size_scale: 0.01
   use_saved_meshes: 0
@@ -6600,7 +6600,7 @@ MonoBehaviour:
   CY: 234
   FX: 331.04
   FY: 330.051
-  facedAngle: -1.57
+  facedAngle: 0
   t: 1
   size_scale: 0.01
   use_saved_meshes: 0
@@ -11101,7 +11101,7 @@ MonoBehaviour:
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
-  target: {fileID: 0}
+  target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 1
@@ -12596,7 +12596,7 @@ MonoBehaviour:
   CY: 239
   FX: 330.11
   FY: 329.17
-  facedAngle: 3.14
+  facedAngle: 0
   t: 1
   size_scale: 0.01
   use_saved_meshes: 0
@@ -13922,11 +13922,9 @@ MonoBehaviour:
   - {fileID: 3465647788609732413}
   - {fileID: 3465647788415522004}
   - {fileID: 5235943364053865581}
-  UICanvases:
-  - {fileID: 3465647789049534246}
-  - {fileID: 5235943365319495258}
-  hintText: {fileID: 5235943365568112135}
-  hintTextString: Press Y to Toggle UI
+  UICanvases: []
+  hintText: {fileID: 0}
+  hintTextString: 
 --- !u!4 &3465647787329320715
 Transform:
   m_ObjectHideFlags: 0
@@ -21020,7 +21018,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999932
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21071,7 +21069,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69453}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
