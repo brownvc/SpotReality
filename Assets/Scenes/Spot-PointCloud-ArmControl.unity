@@ -13978,21 +13978,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI: {fileID: 5235943365672514837}
   hintUI: {fileID: 5235943365298683351}
-  LAxB: {fileID: 3970634664394140576, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  LAx: {fileID: 5020267834937582057, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  LX: {fileID: 6923875244885282697, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  LY: {fileID: 4135396622186686051, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  LT1: {fileID: -427563600136417821, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  LT2: {fileID: 7480799314088858833, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RAxB: {fileID: 1121300903121348007, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RAx: {fileID: 8666423268486674576, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RA: {fileID: -7531449337740461789, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RB: {fileID: -6720774763026460324, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RT1: {fileID: 3558177805153747478, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RT2: {fileID: 7934694802842344360, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  killSpot: {fileID: 0}
-  stow: {fileID: 0}
-  gripper: {fileID: 0}
+  LAxB: {fileID: 7810139833929723061, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LX: {fileID: -4450001596844576706, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LY: {fileID: 9148794882427830696, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT2: {fileID: -4486440786153861441, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAxB: {fileID: -3092645619780316101, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RA: {fileID: -5303886795616406269, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RB: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT2: {fileID: 1452166284691580520, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  killSpot: {fileID: 1510830357}
+  stow: {fileID: 1510830356}
+  gripper: {fileID: 1510830367}
   manager: {fileID: 3465647787329320714}
 --- !u!222 &3465647787365961320
 CanvasRenderer:
@@ -17399,7 +17399,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 8666423268486674576, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_Reference: {fileID: 1010738217276881514, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!114 &3465647788475013930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17430,7 +17430,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 5020267834937582057, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    m_Reference: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_RightHandMoveAction:
     m_UseReference: 0
     m_Action:
@@ -17698,9 +17698,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f70c27fb348ca47adefa5c7121c984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LAx: {fileID: 5020267834937582057, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  RAx: {fileID: 8666423268486674576, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  drive: {fileID: 0}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  drive: {fileID: 1510830354}
 --- !u!114 &3465647788609732413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19433,7 +19433,7 @@ MonoBehaviour:
   listOfControlMappings: "Left Axis - WASD in Virtual Scene\nRight Axis - Rotate
     head\n\nX - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes
     (next)\nLeft Gripper - Stow arm\nRight Gripper - Open/Close hand\n"
-  controls: {fileID: 0}
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
   - {fileID: 3465647788475013931}
   scriptsOfModeToEnable: []
@@ -21018,7 +21018,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9999932
+  m_Size: 0.96962976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21069,7 +21069,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69453}
+  m_AnchoredPosition: {x: -47.37, y: 143.6946}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -21666,7 +21666,7 @@ MonoBehaviour:
   sliderValues: {fileID: 3465647788415522010}
   rightHand: {fileID: 3465647787827832883}
   targetPos: {fileID: 5235943363731179991}
-  RT1: {fileID: 3558177805153747478, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   controlInUnity: 0
 --- !u!4 &5235943364053865580
 Transform:
