@@ -6,21 +6,18 @@ namespace RosSharp.RosBridgeClient
 {
     public class MoveArm : MonoBehaviour
     {
+        public RosSharp.RosBridgeClient.PoseStampedRelativePublisher armPublisher; // Reference to RosConnnector's arm publisher
+        public GameObject rightController; // Reference to right controller object
+        public GameObject dummyFinger; // Reference to dummy finger object
 
         private MessageTypes.Geometry.Twist message;
         private bool triggerWasPressed = false;
         private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
         private Quaternion lastHandRotation = Quaternion.identity;
-        private GameObject rightController;
-        private GameObject dummyFinger;
 
 
         void Start()
         {
-            rightController = GameObject.Find("RightHand Controller");
-            dummyFinger = GameObject.Find("dummy_link_fngr");
-            //dummyFinger.transform.position = GameObject.Find("arm0.link_fngr").transform.position;
-            //Debug.Log(rightController);
         }
 
 
@@ -50,8 +47,7 @@ namespace RosSharp.RosBridgeClient
                         {
                             triggerWasPressed = true;
 
-                            connector = GameObject.Find("RosConnector");
-                            (connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = true;
+                            armPublisher.enabled = true;
                         }
                         else
                         {
@@ -75,8 +71,7 @@ namespace RosSharp.RosBridgeClient
                         triggerWasPressed = false;
 
                         //turn off dummy hand tracking
-                        connector = GameObject.Find("RosConnector");
-                        (connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = false;
+                        armPublisher.enabled = false;
                     }
                 }
             }
