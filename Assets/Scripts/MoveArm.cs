@@ -74,9 +74,9 @@ namespace RosSharp.RosBridgeClient
                         // trigger is not pressed
                         triggerWasPressed = false;
 
-                        // turn off dummy hand tracking
-                        //connector = GameObject.Find("RosConnector");
-                        //(connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = false;
+                        //turn off dummy hand tracking
+                        connector = GameObject.Find("RosConnector");
+                        (connector.GetComponent("PoseStampedRelativePublisher") as MonoBehaviour).enabled = false;
                     }
                 }
             }
