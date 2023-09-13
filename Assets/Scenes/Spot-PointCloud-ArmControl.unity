@@ -17700,7 +17700,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  drive: {fileID: 1510830354}
 --- !u!114 &3465647788609732413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21018,7 +21017,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999535
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21863,6 +21862,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d64a8652c592d44d9c83014aea58236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  armPublisher: {fileID: 1510830355}
+  rightController: {fileID: 3465647787827832880}
+  dummyFinger: {fileID: 1507079563}
 --- !u!1 &5235943364700437153
 GameObject:
   m_ObjectHideFlags: 0
