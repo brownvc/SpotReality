@@ -18,10 +18,11 @@ public class VRSliderInput : MonoBehaviour
     public GhostArmPublisher GArmPublisher;
     public bool fromInspector; 
     public double[] inspectorVals = new double[6];
-    private ManualRotationSlider[] sliders = new ManualRotationSlider[6];
+    public ManualRotationSlider[] sliders = new ManualRotationSlider[6];
+    
     double[] prevVals;
 
-    private void Start()
+    void Start()
     {
         sliders = new ManualRotationSlider[6];
 
@@ -54,6 +55,7 @@ public class VRSliderInput : MonoBehaviour
             sliders[i].getCanvas().enabled = true;
         }
 
+
         SetSliderVals(prevVals);
 
     }
@@ -63,6 +65,7 @@ public class VRSliderInput : MonoBehaviour
         {
             sliders[i].getCanvas().enabled = false;
         }
+        
     }
 
 

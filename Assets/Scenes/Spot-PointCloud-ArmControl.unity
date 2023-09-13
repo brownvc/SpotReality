@@ -9025,6 +9025,8 @@ GameObject:
   - component: {fileID: 1510830381}
   - component: {fileID: 1510830376}
   - component: {fileID: 1510830384}
+  - component: {fileID: 1510830385}
+  - component: {fileID: 1510830386}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -9439,6 +9441,41 @@ MonoBehaviour:
   - {fileID: 1892496995}
   - {fileID: 1658837046}
   FrameId: Unity
+--- !u!114 &1510830385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2d2453755faef6429558d1a0db98ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armPublisher: {fileID: 1510830386}
+  moveGArmWithInspector: 0
+  ghostArmFromInspector:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+--- !u!114 &1510830386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657e0f4efb83fda468b5923c3512d066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /move_arm_once
+  published: []
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13923,7 +13960,7 @@ MonoBehaviour:
   - {fileID: 3465647788415522004}
   - {fileID: 5235943364053865581}
   UICanvases: []
-  hintText: {fileID: 0}
+  hintText: {fileID: 3465647789049534246}
   hintTextString: 
 --- !u!4 &3465647787329320715
 Transform:
@@ -17139,6 +17176,10 @@ MonoBehaviour:
   - {fileID: 6584013622637314591}
   - {fileID: 3465647787572215057}
   - {fileID: 3465647788475013931}
+  - {fileID: 3465647789238525239}
+  - {fileID: 3465647788475013931}
+  - {fileID: 3465647788475013931}
+  - {fileID: 3465647788475013931}
   scriptsOfModeToEnable:
   - {fileID: 3465647788415522010}
 --- !u!1 &3465647788415522005
@@ -17192,7 +17233,7 @@ MonoBehaviour:
   el1Slider: {fileID: 3465647789089808992}
   wr0Slider: {fileID: 3465647788635674654}
   wr1Slider: {fileID: 3465647787373898018}
-  GArmPublisher: {fileID: 0}
+  GArmPublisher: {fileID: 1510830385}
   fromInspector: 0
   inspectorVals:
   - 0
@@ -17201,6 +17242,13 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  sliders:
+  - {fileID: 3465647787572215055}
+  - {fileID: 3465647789238525233}
+  - {fileID: 3465647787497049402}
+  - {fileID: 3465647789089808992}
+  - {fileID: 3465647788635674654}
+  - {fileID: 3465647787373898018}
 --- !u!224 &3465647788442293816
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17700,6 +17748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  drive: {fileID: 1510830354}
 --- !u!114 &3465647788609732413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21016,8 +21065,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.98818904
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21068,7 +21117,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69464}
+  m_AnchoredPosition: {x: -47.37, y: 143.69467}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717

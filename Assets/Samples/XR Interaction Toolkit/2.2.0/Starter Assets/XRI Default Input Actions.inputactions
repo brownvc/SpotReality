@@ -1605,15 +1605,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Kill Spot",
-                    "type": "Button",
-                    "id": "72e60915-0a92-4e7f-a95f-5c7a5a27341b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1746,17 +1737,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "RT2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cd434caf-f1bc-4369-9058-30e3251ec121",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Kill Spot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

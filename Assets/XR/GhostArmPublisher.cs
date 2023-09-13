@@ -93,12 +93,12 @@ public class GhostArmPublisher : MonoBehaviour
 
         angles[0] = armObjGhost.transform.localEulerAngles.y;
         angles[1] = XAxisEulerCorrection(shoulder1Ghost.transform.localEulerAngles).x;
-        Debug.Log("sh1: " + shoulder1Ghost.transform.localEulerAngles); //for testing, can delete
+        //Debug.Log("sh1: " + shoulder1Ghost.transform.localEulerAngles); //for testing, can delete
         angles[2] = XAxisEulerCorrection(elbow0Ghost.transform.localEulerAngles).x;
-        Debug.Log("el0: " + elbow0Ghost.transform.localEulerAngles); //for testing, can delete
+        //Debug.Log("el0: " + elbow0Ghost.transform.localEulerAngles); //for testing, can delete
         angles[3] = elbow1Ghost.transform.localEulerAngles.z;
         angles[4] = XAxisEulerCorrection(wrist0Ghost.transform.localEulerAngles).x;
-        Debug.Log("wr0: " + wrist0Ghost.transform.localEulerAngles); //for testing, can delete
+        //Debug.Log("wr0: " + wrist0Ghost.transform.localEulerAngles); //for testing, can delete
         angles[5] = wrist1Ghost.transform.localEulerAngles.z;
 
         return angles;
