@@ -27,14 +27,14 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
 
     uint depth_idx = (screenData.x * (screenData.y - col_y - 1)) + (screenData.x - col_x - 1);
     
-    pos.z = _Depth[depth_idx] * t + (1 - t);
+    pos.z = _Depth[depth_idx]  * t + (1 - t);
 
     pos.x = (col_y - intrinsics.y) * pos.z / intrinsics.z;
     pos.y = (col_x - intrinsics.x) * pos.z / intrinsics.w;
 
     //pos.z = _Depth[depth_idx];
     pos.w = 1;
-    if (pos.z <= 0.001){pos.z = 50000;}
+    if (pos.z <= 0.001){pos.z = 1;}
     //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};
     
     // Apply translation to existing matrix, which will be read in the shader.

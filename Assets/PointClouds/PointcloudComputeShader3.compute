@@ -24,6 +24,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     float col_y = floor(i * screenData.z);    
     float col_x = i - floor(i * screenData.z) * screenData.x;
     //_Properties[id.x].color.z = 1
+    //float t = 0;
 
     uint depth_idx = (screenData.x * (screenData.y - col_y - 1)) + (screenData.x - col_x - 1);
     

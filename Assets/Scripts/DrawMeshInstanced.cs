@@ -45,6 +45,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public float FX;
     public float FY;
     public float facedAngle;
+    public float t;
     //public uint counter;
     //private uint numUpdates;
 
@@ -411,6 +412,7 @@ public class DrawMeshInstanced : MonoBehaviour
         //transform.LookAt(target);
         SetProperties();
         SetGOPosition();
+        compute.SetFloat("t",t);
 
         //update the color image
         //counter += 1;
