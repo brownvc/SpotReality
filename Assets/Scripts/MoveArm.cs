@@ -29,7 +29,6 @@ namespace RosSharp.RosBridgeClient
             Vector3 locationChange;
 
             Quaternion rotationChange;
-            GameObject connector;
             var gameControllers = new List<UnityEngine.XR.InputDevice>();
             UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
 
