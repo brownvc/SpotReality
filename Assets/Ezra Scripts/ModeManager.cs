@@ -7,16 +7,18 @@ using TMPro;
 public class ModeManager : MonoBehaviour
 {
     [SerializeField]
-    private int currMode;
-    public List<ControlMode> modes;
+    private int currMode; // currMode is set to value from 0-modes.Count      
+    public List<ControlMode> modes; 
     public List<TextMeshProUGUI> UICanvases;
     public TextMeshProUGUI hintText;
     public string hintTextString;
 
+    // Disable modes to at the beginning, user has to choose to enter into a mode
+    // TODO: Default mode: LOOK THIS UP
     void Start()
     {
-        currMode = modes.Count - 1;
-        
+        currMode = modes.Count - 1; // TODO: NOTE: why modify currMode for this?
+
         for (int i = 0; i < modes.Count; i++)
         {
             modes[i].disableMode();
@@ -45,7 +47,10 @@ public class ModeManager : MonoBehaviour
 
         //update UI
         UpdateUI("Mode: " + currMode.ToString() + " - " + mode.ToString());
-        hintText.text = "Mode: " + currMode.ToString() + " - " + mode.modeName + "\n" + hintTextString;
+        if (hintText != null)
+        {
+            hintText.text = "Mode: " + currMode.ToString() + " - " + mode.modeName + "\n" + hintTextString;
+        }
     }
 
     public void nextMode()

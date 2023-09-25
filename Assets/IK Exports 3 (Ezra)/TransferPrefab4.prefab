@@ -2608,6 +2608,13 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  sliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &2334803390298981028
 GameObject:
   m_ObjectHideFlags: 0
@@ -10130,6 +10137,7 @@ MonoBehaviour:
   FX: 0
   FY: 0
   facedAngle: 0
+  t: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1 &5413760632377090213
@@ -10505,6 +10513,7 @@ MonoBehaviour:
   FX: 0
   FY: 0
   facedAngle: 0
+  t: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1 &5413760633071116386
@@ -11291,6 +11300,7 @@ MonoBehaviour:
   FX: 0
   FY: 0
   facedAngle: 0
+  t: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1 &5413760633469494830
@@ -13954,6 +13964,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d64a8652c592d44d9c83014aea58236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  armPublisher: {fileID: 0}
+  rightController: {fileID: 0}
+  dummyFinger: {fileID: 0}
 --- !u!1 &6401683951590333771
 GameObject:
   m_ObjectHideFlags: 0

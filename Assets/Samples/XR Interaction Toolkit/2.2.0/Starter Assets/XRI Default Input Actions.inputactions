@@ -1511,7 +1511,7 @@
                     "name": "L Ax",
                     "type": "Value",
                     "id": "3426b46b-6353-4730-b3d8-04adca9f8843",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1565,7 +1565,7 @@
                     "name": "R Ax",
                     "type": "Value",
                     "id": "55c27061-2a0a-4f1e-b1c6-492b5ab8bfa8",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1622,7 +1622,7 @@
                 {
                     "name": "",
                     "id": "921605af-0d21-454a-8565-6c52ed64a4b6",
-                    "path": "<OculusTouchController>/thumbstickTouched",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1688,7 +1688,7 @@
                 {
                     "name": "",
                     "id": "295e36ed-c566-4a81-998e-4264f873ff60",
-                    "path": "<OculusTouchController>/thumbstickTouched",
+                    "path": "<OculusTouchController>{RightHand}/thumbstick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
