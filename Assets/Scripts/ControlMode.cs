@@ -22,7 +22,6 @@ public class ControlMode : MonoBehaviour
     //when entering this mode, these are the things we want enabled/disabled
     public void enableMode()
     {
-        // DISABLE THE REST?
         foreach (GameObject g in objectsOfModeToEnable)
             g.SetActive(true);
 
@@ -34,10 +33,6 @@ public class ControlMode : MonoBehaviour
     //when exiting this mode, we return these things to their previous state?
     public void disableMode()
     {
-        //Debug.Log("MODE: " + modeName);
-        //Debug.Log("\tdescription: " + description);
-        //Debug.Log("\tList of control mappings: " + listOfControlMappings);
-        //Debug.Log("\t ~~~~~~");
         foreach (GameObject g in objectsOfModeToEnable)
             g.SetActive(false);
 

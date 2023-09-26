@@ -11,7 +11,7 @@ namespace RosSharp.RosBridgeClient
         public GameObject dummyFinger; // Reference to dummy finger object
 
         private MessageTypes.Geometry.Twist message;
-        private bool triggerWasPressed = false;
+        private bool triggerWasPressed = false;  
         private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
         private Quaternion lastHandRotation = Quaternion.identity;
 

@@ -2426,6 +2426,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 93292939923265335, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 93292938933838674, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
@@ -5512,7 +5516,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 991331604}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3ce8f16a2be83441b17465f7f6b390a, type: 3}
   m_Name: 
@@ -9027,12 +9031,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1510830351}
+  - component: {fileID: 1510830355}
   - component: {fileID: 1510830350}
   - component: {fileID: 1510830349}
   - component: {fileID: 1510830348}
   - component: {fileID: 1510830352}
   - component: {fileID: 1510830354}
-  - component: {fileID: 1510830355}
   - component: {fileID: 1510830356}
   - component: {fileID: 1510830357}
   - component: {fileID: 1510830367}
@@ -9192,7 +9196,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd956d9f8c3a37d4a9bc58d12f905fe4, type: 3}
   m_Name: 
@@ -11162,7 +11166,7 @@ MonoBehaviour:
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
-  target: {fileID: 0}
+  target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
   downsample: 1
@@ -11173,7 +11177,7 @@ MonoBehaviour:
   FX: 552.0291
   FY: 552.0291
   facedAngle: 0
-  t: 0
+  t: 1
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1001 &1795693229
@@ -12872,6 +12876,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3122a7138a008c14f83e8b3df6286693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2135201361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2135201364}
+  - component: {fileID: 2135201362}
+  - component: {fileID: 2135201363}
+  m_Layer: 0
+  m_Name: ControlMode - Ghost Arm (static arm)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2135201362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135201361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Ghost Arm
+  description: Static Arm movement using IK
+  listOfControlMappings: "[UPDATE THESE - NOT UPDATED]\n\nRight Trigger - Update
+    the real arm\n\nLeft Axis - WASD in Virtual Scene\nRight Axis - Rotate head\n\nX
+    - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes (next)\nLeft
+    Gripper - Stow arm\nRight Gripper - Open/Close hand\n\n"
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 6584013622637314591}
+  - {fileID: 1427222904568994937}
+  - {fileID: 3465647788475013931}
+  - {fileID: 5235943363731179990}
+  scriptsOfModeToEnable:
+  - {fileID: 2135201363}
+--- !u!114 &2135201363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135201361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1843fa84dacc7bb4faa5630a83674fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gArmPublisher: {fileID: 1510830385}
+  sliderValues: {fileID: 3465647788415522010}
+  rightHand: {fileID: 3465647787827832883}
+  targetPos: {fileID: 5235943363731179991}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controlInUnity: 0
+--- !u!4 &2135201364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135201361}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34038937, y: -0.30017084, z: 0.6909096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3465647787329320715}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2136106023
 GameObject:
   m_ObjectHideFlags: 8
@@ -13983,6 +14064,7 @@ MonoBehaviour:
   - {fileID: 3465647788609732413}
   - {fileID: 3465647788415522004}
   - {fileID: 5235943364053865581}
+  - {fileID: 2135201362}
   UICanvases:
   - {fileID: 3465647789049534246}
   - {fileID: 5235943365319495258}
@@ -14006,6 +14088,7 @@ Transform:
   - {fileID: 3465647789012620529}
   - {fileID: 3465647788609728706}
   - {fileID: 5235943364053865580}
+  - {fileID: 2135201364}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17220,7 +17303,7 @@ GameObject:
   - component: {fileID: 3465647788415522004}
   - component: {fileID: 3465647788415522010}
   m_Layer: 0
-  m_Name: ControlMode - Manual Arm
+  m_Name: ControlMode - Manual Arm (sliders)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21091,8 +21174,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.99970555
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21143,7 +21226,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69469}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -21731,7 +21814,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5235943364053865583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1843fa84dacc7bb4faa5630a83674fc4, type: 3}
   m_Name: 
@@ -21770,19 +21853,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modeName: Dynamic Arm
-  description: "Dynamic arm movement using the IK\t"
-  listOfControlMappings: "Right Trigger - Update the real arm\n\nLeft Axis - WASD
-    in Virtual Scene\nRight Axis - Rotate head\n\nX - EMERGENCY STOP (kill motors)\nY
-    - toggle UI\nB - \nA - Switch modes (next)\nLeft Gripper - Stow arm\nRight Gripper
-    - Open/Close hand\n\n"
+  description: Dynamic arm movement using the position of the right joystick
+  listOfControlMappings: "[UPDATE THESE - NOT UPDATED]\n\nRight Trigger - Hold to
+    update the real arm\n\nLeft Axis - WASD in Virtual Scene\nRight Axis - Rotate
+    head\n\nX - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes
+    (next)\nLeft Gripper - Stow arm\nRight Gripper - Open/Close hand\n\n"
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
-  - {fileID: 6584013622637314591}
-  - {fileID: 1427222904568994937}
-  - {fileID: 3465647788475013931}
-  - {fileID: 5235943363731179990}
+  - {fileID: 3465647787827832880}
+  - {fileID: 1507079563}
   scriptsOfModeToEnable:
-  - {fileID: 5235943364053865554}
+  - {fileID: 5235943364053865585}
+  - {fileID: 1510830355}
 --- !u!1 &5235943364053865583
 GameObject:
   m_ObjectHideFlags: 0
@@ -21794,6 +21876,7 @@ GameObject:
   - component: {fileID: 5235943364053865580}
   - component: {fileID: 5235943364053865581}
   - component: {fileID: 5235943364053865554}
+  - component: {fileID: 5235943364053865585}
   m_Layer: 0
   m_Name: ControlMode - Dynamic Arm
   m_TagString: Untagged
@@ -21801,6 +21884,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5235943364053865585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5235943364053865583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481b63c4dd93fcb44ae08589b42311f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armPublisher: {fileID: 1510830355}
+  rightController: {fileID: 3465647787827832880}
+  dummyFinger: {fileID: 1507079563}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0
