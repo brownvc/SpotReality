@@ -10,10 +10,15 @@ public class VRStaticArmMode : MonoBehaviour
     public VRSliderInput sliderValues;
     public Transform rightHand;
     public Transform targetPos;
+    private Transform prevRightHand;
     public InputActionReference RT1;
     public bool controlInUnity;
 
 
+    private void Start()
+    {
+        prevRightHand = rightHand;
+    }
 
     void Update()
     {
@@ -21,8 +26,9 @@ public class VRStaticArmMode : MonoBehaviour
             gArmPublisher.PublishGhostArm();
         else
         {
-            targetPos.position = rightHand.position;
-            targetPos.rotation = rightHand.rotation;
+            //Transform changeInRightHandPos = rightHand.transform - prevRightHand.transform;
+            //targetPos.position = rightHand.position;
+            //targetPos.rotation = rightHand.rotation;
 
             if (RT1.action.IsPressed())
                 gArmPublisher.PublishGhostArm();

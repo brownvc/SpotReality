@@ -1,6 +1,0 @@
-Implement an e-stop
-
-DONE -- Snap the location in a new script before turning on the command, set names of objects in public file
-Apply relative rotation to the hand -- convert between rotations before sending command
-DONE -- Map the trigger to the dead man trigger -- done
-Start programming gripper open with gripper trigger
