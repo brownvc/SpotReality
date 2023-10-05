@@ -27,7 +27,6 @@ public class VRDriveSpot : MonoBehaviour
         if (rightMove.x != 0 || leftMove.magnitude != 0)
         {
             // Set movement so only one direction is moved with the left stick at a time
-            Debug.Log(leftMove);
             if (Mathf.Abs(leftMove.x) > Mathf.Abs(leftMove.y)) { leftMove.y = 0; }
             else if (Mathf.Abs(leftMove.y) > Mathf.Abs(leftMove.x)) { leftMove.x = 0; }
             drive.drive(leftMove, rightMove.x);
