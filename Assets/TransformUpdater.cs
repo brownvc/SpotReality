@@ -38,7 +38,7 @@ public class TransformUpdater : MonoBehaviour
             // Debug.Log(unity_position.x + ", " + unity_position.y + ", " + unity_position.z);
             RosSharp.RosBridgeClient.MessageTypes.Geometry.Quaternion new_orientation = subscriber.pose.orientation;
             //UnityEngine.Vector3 unity_rotation = new UnityEngine.Vector3(negations[3]*(float)new_orientation.x, negations[4]*(float)new_orientation.y, negations[5]*(float)new_orientation.z);
-            UnityEngine.Quaternion unity_rotation = new UnityEngine.Quaternion(negations[3] * (float)new_orientation.x, negations[4] * (float)new_orientation.y, negations[5] * (float)new_orientation.z, 0);
+            UnityEngine.Quaternion unity_rotation = UnityEngine.Quaternion.Euler(negations[3] * (float)new_orientation.x, negations[4] * (float)new_orientation.y, negations[5] * (float)new_orientation.z);
             target.transform.localPosition = unity_position;
             target.transform.localRotation = unity_rotation;
         }
