@@ -329,12 +329,11 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         int kernel = compute.FindKernel("CSMain");
 
-        /*
-        if (globalProps == null)// && use_saved_meshes)
-        {
-            globalProps = GetProperties();
-        }
-        */
+        //if (globalProps == null)// && use_saved_meshes)
+        //{
+        //    globalProps = GetProperties();
+        //}
+        
 
         meshPropertiesBuffer.SetData(globalProps);
         material.SetFloat("a", get_target_rota());
@@ -601,7 +600,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Start()
     {
-        Setup();
+        // See OnEnable
     }
 
 
@@ -619,5 +618,10 @@ public class DrawMeshInstanced : MonoBehaviour
             argsBuffer.Release();
         }
         argsBuffer = null;
+    }
+
+    private void OnEnable()
+    {
+        Setup();
     }
 }
