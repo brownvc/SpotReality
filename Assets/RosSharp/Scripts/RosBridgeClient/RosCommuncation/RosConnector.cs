@@ -29,7 +29,7 @@ namespace RosSharp.RosBridgeClient
         public RosSocket RosSocket { get; private set; }
         public RosSocket.SerializerEnum Serializer;
         public Protocol protocol;
-        public string RosBridgeServerUrl = "ws://192.168.0.1:9090";
+        public string RosBridgeServerUrl = "ws://138.16.160.231:9090";
 
         public ManualResetEvent IsConnected { get; private set; }
 

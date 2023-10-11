@@ -1070,15 +1070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7faa0d32e29b247a253b6265a49136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rots:
-  - -270
-  - -180
-  - -90
-  - 0
-  - 90
-  - 180
-  - 270
-  cycle_num: 150
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -21813,7 +21804,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
