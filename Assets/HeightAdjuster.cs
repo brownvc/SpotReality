@@ -30,6 +30,7 @@ public class HeightAdjuster : MonoBehaviour
         {
             cameraTransform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y - speed, cameraTransform.position.z);
         }
+        // Go higher
         else if(!low && high)
         {
             cameraTransform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y + speed, cameraTransform.position.z);
