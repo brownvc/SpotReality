@@ -22,8 +22,8 @@ public class HeightAdjuster : MonoBehaviour
     void Update()
     {
         // Detect input values
-        bool low = goLower.action.ReadValue<float>() != 0f;
-        bool high = goHigher.action.ReadValue<float>() != 0f;
+        bool low = goLower.action.IsPressed();
+        bool high = goHigher.action.IsPressed();
 
         // Go lower
         if (low && !high)

@@ -4424,6 +4424,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 93292939706064282, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 93292939923265335, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8091,6 +8095,8 @@ MonoBehaviour:
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 1507079563}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton: {fileID: 0}
+  spotBody: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11249,6 +11255,8 @@ MonoBehaviour:
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 5323045367923062791}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton: {fileID: 0}
+  spotBody: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18266,7 +18274,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3465647788475013931}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
   m_Name: 
@@ -22070,7 +22078,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69467}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -22742,6 +22750,7 @@ MonoBehaviour:
   objectsOfModeToEnable:
   - {fileID: 3465647787827832880}
   - {fileID: 1507079563}
+  - {fileID: 3465647788475013931}
   scriptsOfModeToEnable:
   - {fileID: 5235943364053865585}
 --- !u!1 &5235943364053865583
@@ -22779,6 +22788,8 @@ MonoBehaviour:
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 1507079563}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  spotBody: {fileID: 1399272934}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0

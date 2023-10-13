@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,11 @@ public class MoveArmTest : MonoBehaviour
     private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
     private Quaternion lastHandRotation = Quaternion.identity;
     public InputActionReference RT1; // Changing how input actions are received
+    public InputActionReference bButton;
+    public Transform spotBody;
+
+    private bool hideSpotBody = false;
+    private bool buttonAlreadyPressed = false;
 
 
     void Update()
@@ -52,10 +58,51 @@ public class MoveArmTest : MonoBehaviour
             // turn off dummy hand tracking
             armPublisher.enabled = false;
         }
+
+        // Hide or show Spot's rendering
+        if (bButton.action.IsPressed())
+        {
+            // Only do this once per button press
+            if (!buttonAlreadyPressed)
+            {
+                // Set invisible or visible
+                setSpotVisible(spotBody, hideSpotBody);
+
+                // Switch for next time
+                hideSpotBody = !hideSpotBody;
+                buttonAlreadyPressed = true;
+            }
+        }
+        else
+        {
+            buttonAlreadyPressed = false;
+        }
     }
+
+
+
+    // Recursive function to get all children of the parent that have the name "unnamed" and are children of "Visuals"
+    // and set them active or inactive
+    private void setSpotVisible(Transform parent, bool visible)
+    {
+        foreach(Transform child in parent) 
+        {
+            if (parent.gameObject.name == "Visuals" && child.gameObject.name == "unnamed")
+            {
+                child.gameObject.SetActive(visible);
+            }
+            else
+            {
+                setSpotVisible(child, visible);
+            }
+        }
+    }
+
     private void OnDisable()
     {
         armPublisher.enabled = false;
+        hideSpotBody = false;
+        setSpotVisible(spotBody, true);
     }
 }
 
