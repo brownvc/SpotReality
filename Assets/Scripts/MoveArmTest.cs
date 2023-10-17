@@ -82,6 +82,7 @@ public class MoveArmTest : MonoBehaviour
 
 
     // Recursive function to get all children of the parent that have the name "unnamed" and are children of "Visuals"
+    // Ignores children of arm0.link_wr0 and dummy_link_fngr
     // and set them active or inactive
     private void setSpotVisible(Transform parent, bool visible)
     {
@@ -90,6 +91,10 @@ public class MoveArmTest : MonoBehaviour
             if (parent.gameObject.name == "Visuals" && child.gameObject.name == "unnamed")
             {
                 child.gameObject.SetActive(visible);
+            }
+            else if (child.gameObject.name == "arm0.link_wr0" || child.gameObject.name == "dummy_link_fngr")
+            {
+                continue;
             }
             else
             {
