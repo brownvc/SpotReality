@@ -23,6 +23,7 @@ namespace RosSharp.RosBridgeClient
     public class PoseStampedRelativePublisher : UnityPublisher<MessageTypes.Geometry.PoseStamped>
     {
         public Transform PublishedTransform;
+        public Transform Offset;
         public string FrameId = "Unity";
 
         private MessageTypes.Geometry.PoseStamped message;
@@ -52,7 +53,8 @@ namespace RosSharp.RosBridgeClient
         private void UpdateMessage()
         {
             message.header.Update();
-            GetGeometryPoint(PublishedTransform.localPosition.Unity2Ros(), message.pose.position);
+            Vector3 newLocation = PublishedTransform.localPosition + Offset.localPosition;
+            GetGeometryPoint(newLocation.Unity2Ros(), message.pose.position);
             GetGeometryQuaternion(PublishedTransform.localRotation.Unity2Ros(), message.pose.orientation);
 
             Publish(message);
