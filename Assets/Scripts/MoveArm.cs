@@ -1,79 +1,103 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-namespace RosSharp.RosBridgeClient
+public class MoveArm : MonoBehaviour
 {
-    public class MoveArm : MonoBehaviour
+    public RosSharp.RosBridgeClient.PoseStampedRelativePublisher armPublisher; // Reference to RosConnnector's arm publisher
+    public GameObject rightController; // Reference to right controller object
+    public GameObject dummyFinger; // Reference to dummy finger object
+
+    // private MessageTypes.Geometry.Twist message;
+    private bool triggerWasPressed = false;
+    private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
+    private Quaternion lastHandRotation = Quaternion.identity;
+    public InputActionReference RT1; // Changing how input actions are received
+    public InputActionReference bButton;
+    public Transform spotBody;
+
+    private bool hideSpotBody = false;
+
+
+    void Update()
     {
-        public RosSharp.RosBridgeClient.PoseStampedRelativePublisher armPublisher; // Reference to RosConnnector's arm publisher
-        public GameObject rightController; // Reference to right controller object
-        public GameObject dummyFinger; // Reference to dummy finger object
+        Vector3 locationChange;
+        Quaternion rotationChange;
 
-        private MessageTypes.Geometry.Twist message;
-        private bool triggerWasPressed = false;  
-        private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
-        private Quaternion lastHandRotation = Quaternion.identity;
-
-
-        void Start()
+        // If the trigger is pressed, we want to start tracking the position of the arm and sending it to Spot
+        if (RT1.action.IsPressed())
         {
+            // If trigger is just now getting pressed, save the location but don't send a command
+            // Also turn on the publisher to track the dummy hand
+            if (!triggerWasPressed)
+            {
+                triggerWasPressed = true;
+                armPublisher.enabled = true;
+            }
+            else
+            {
+                // Change the location of the finger the same way
+                locationChange = (rightController.transform.position - lastHandLocation);
+                rotationChange = rightController.transform.rotation * Quaternion.Inverse(lastHandRotation);
+                dummyFinger.transform.position += locationChange;
+                dummyFinger.transform.rotation *= rotationChange;
+            }
+            lastHandLocation = rightController.transform.position;
+            lastHandRotation = rightController.transform.rotation;
+
+            // Debug.Log("Location of controller: " + rightController.transform.position);
+        }
+        else
+        {
+            // trigger is not pressed
+            triggerWasPressed = false;
+
+            // turn off dummy hand tracking
+            armPublisher.enabled = false;
         }
 
-
-        // Update is called once per frame
-        // This function moves the robot arm according to the right controller's 3D location if the trigger is pressed
-        void Update()
+        // Hide or show Spot's rendering
+        if (bButton.action.WasPressedThisFrame())
         {
-            bool gripValue;
-            Vector3 locationChange;
+            // Set invisible or visible
+            setSpotVisible(spotBody, hideSpotBody);
 
-            Quaternion rotationChange;
-            var gameControllers = new List<UnityEngine.XR.InputDevice>();
-            UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(UnityEngine.XR.InputDeviceCharacteristics.Controller, gameControllers);
+            // Switch for next time
+            hideSpotBody = !hideSpotBody;
+        }
+    }
 
-            foreach (var device in gameControllers)
+
+
+    // Recursive function to get all children of the parent that have the name "unnamed" and are children of "Visuals"
+    // Ignores children of arm0.link_wr0 and dummy_link_fngr
+    // and set them active or inactive
+    private void setSpotVisible(Transform parent, bool visible)
+    {
+        foreach(Transform child in parent) 
+        {
+            if (parent.gameObject.name == "Visuals" && child.gameObject.name == "unnamed")
             {
-                // check if this is the right hand controller
-                if ((((uint)device.characteristics & 512) != 0))
-                {
-                    // If the  trigger is pressed, we want to start tracking the position of the arm and sending it to Spot
-                    if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue)
-                    {
-                        // If trigger is just now getting pressed, save the location but don't send a command
-                        // Also turn on the publisher to track the dummy hand
-                        if (!triggerWasPressed)
-                        {
-                            triggerWasPressed = true;
-
-                            armPublisher.enabled = true;
-                        }
-                        else
-                        {
-                            // Change the location of the finger the same way
-                            //Debug.Log(rightController.transform.localEulerAngles);
-                            locationChange = (rightController.transform.position - lastHandLocation);
-                            rotationChange = rightController.transform.rotation * Quaternion.Inverse(lastHandRotation);
-                            //rotationChange = rightController.transform.rotation - lastHandRotation;
-                            dummyFinger.transform.position += locationChange;
-                            //dummyFinger.transform.rotation = rightController.transform.rotation;
-                            dummyFinger.transform.rotation *= rotationChange;
-                        }
-                        lastHandLocation = rightController.transform.position;
-                        lastHandRotation = rightController.transform.rotation;
-
-                        //Debug.Log("Location of controller: " + rightController.transform.position);
-                    }
-                    else
-                    {
-                        // trigger is not pressed
-                        triggerWasPressed = false;
-
-                        //turn off dummy hand tracking
-                        armPublisher.enabled = false;
-                    }
-                }
+                child.gameObject.SetActive(visible);
+            }
+            else if (child.gameObject.name == "arm0.link_wr0" || child.gameObject.name == "dummy_link_fngr")
+            {
+                continue;
+            }
+            else
+            {
+                setSpotVisible(child, visible);
             }
         }
     }
+
+    private void OnDisable()
+    {
+        armPublisher.enabled = false;
+        hideSpotBody = false;
+        setSpotVisible(spotBody, true);
+    }
 }
+

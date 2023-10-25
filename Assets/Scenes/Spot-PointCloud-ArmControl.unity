@@ -6046,7 +6046,7 @@ GameObject:
   - component: {fileID: 991331606}
   - component: {fileID: 991331605}
   m_Layer: 0
-  m_Name: LastRunner
+  m_Name: ScriptRunner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6066,6 +6066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dummyFinger: {fileID: 1507079563}
   realFinger: {fileID: 1658837036}
+  startSecond: 0
 --- !u!4 &991331606
 Transform:
   m_ObjectHideFlags: 0
@@ -11259,6 +11260,7 @@ MonoBehaviour:
   - {fileID: 3465647787827832880}
   scriptsOfModeToEnable:
   - {fileID: 1679772076}
+  - {fileID: 1679772079}
 --- !u!4 &1679772078
 Transform:
   m_ObjectHideFlags: 0
@@ -15077,6 +15079,7 @@ GameObject:
   - component: {fileID: 3465647787329320715}
   - component: {fileID: 3465647787329320714}
   - component: {fileID: 3465647787329320719}
+  - component: {fileID: 3465647787329320720}
   m_Layer: 0
   m_Name: CONTROL SYSTEM
   m_TagString: Untagged
@@ -15114,6 +15117,20 @@ MonoBehaviour:
   stow: {fileID: 1510830356}
   gripper: {fileID: 1510830367}
   manager: {fileID: 3465647787329320714}
+--- !u!114 &3465647787329320720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465647787329320718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74a051a0b27a771468f020005165ce69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerButton: {fileID: -7249721208760912034, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  body: {fileID: 1399272930}
 --- !u!222 &3465647787365961320
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22219,7 +22236,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69446}
+  m_AnchoredPosition: {x: -47.37, y: 143.69394}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -23092,6 +23109,9 @@ MonoBehaviour:
   armPublisher: {fileID: 0}
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 1507079563}
+  triggerWasPressed: 0
+  lastHandLocation: {x: 0, y: 0, z: 0}
+  lastHandRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &5235943364700437153
 GameObject:
   m_ObjectHideFlags: 0

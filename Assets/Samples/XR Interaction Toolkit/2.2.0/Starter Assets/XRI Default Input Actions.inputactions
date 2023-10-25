@@ -1584,6 +1584,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "LT1 Pressed",
+                    "type": "Button",
+                    "id": "cde5e8e6-f0fe-4e21-8a33-8217e5e16a49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LT2",
                     "type": "Value",
                     "id": "b1d0ee84-9dec-4eda-8522-54db90745910",
@@ -1777,6 +1786,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RT2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd48bc7e-b0cb-4072-a0dc-52cfee429ead",
+                    "path": "<XRController>{LeftHand}/triggerButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LT1 Pressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
