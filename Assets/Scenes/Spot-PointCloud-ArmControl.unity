@@ -1128,6 +1128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 0
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
   compute: {fileID: 7200000, guid: 91226eeebf6e12e4c842141808974e0e, type: 3}
@@ -1143,7 +1144,8 @@ MonoBehaviour:
   FY: 328.62
   facedAngle: 0
   t: 1
-  size_scale: 0.01
+  pS: 1
+  size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!114 &112187589
 MonoBehaviour:
@@ -1571,6 +1573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: c42e37b95e20fb04f872bdd0b7807356, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 5
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
   compute: {fileID: 7200000, guid: 764c8fe0e0f4ee849a5f2a047ca415e2, type: 3}
@@ -1586,7 +1589,8 @@ MonoBehaviour:
   FY: 329.55
   facedAngle: 0
   t: 1
-  size_scale: 0.01
+  pS: 1
+  size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &177439707
 GameObject:
@@ -2649,6 +2653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -2664,6 +2669,7 @@ MonoBehaviour:
   FY: 0
   facedAngle: 0
   t: 0
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &299861281 stripped
@@ -3734,6 +3740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 11f006e6df9b1c14e97fe62b00245f7d, type: 3}
@@ -3749,7 +3756,8 @@ MonoBehaviour:
   FY: 329.77
   facedAngle: 0
   t: 1
-  size_scale: 0.01
+  pS: 1
+  size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &549220550
 GameObject:
@@ -3915,6 +3923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -3930,6 +3939,7 @@ MonoBehaviour:
   FY: 552.0291
   facedAngle: 0
   t: 1
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1001 &587545455
@@ -6064,9 +6074,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ce8f16a2be83441b17465f7f6b390a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dummyFinger: {fileID: 1507079563}
-  realFinger: {fileID: 1658837036}
-  startSecond: 0
 --- !u!4 &991331606
 Transform:
   m_ObjectHideFlags: 0
@@ -7174,6 +7181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 3c04cbdd3edffc0448f55c44039436fa, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 4
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
   compute: {fileID: 7200000, guid: 5598efa8338f16642a497c645ac264c3, type: 3}
@@ -7189,7 +7197,8 @@ MonoBehaviour:
   FY: 330.051
   facedAngle: 0
   t: 1
-  size_scale: 0.01
+  pS: 1
+  size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1001 &1145622212
 PrefabInstance:
@@ -12031,6 +12040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -12046,7 +12056,8 @@ MonoBehaviour:
   FY: 552.0291
   facedAngle: 0
   t: 1
-  size_scale: 0.01
+  pS: 1
+  size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1001 &1795693229
 PrefabInstance:
@@ -13623,6 +13634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 500926c50d135d14f88f797ffc7a96f3, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: d8db540b250f7e346bca7c27140216c2, type: 3}
@@ -13638,7 +13650,8 @@ MonoBehaviour:
   FY: 329.17
   facedAngle: 0
   t: 1
-  size_scale: 0.01
+  pS: 1
+  size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &2133151779
 GameObject:
@@ -22236,7 +22249,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69394}
+  m_AnchoredPosition: {x: -47.37, y: 143.69438}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -23106,12 +23119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d64a8652c592d44d9c83014aea58236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armPublisher: {fileID: 0}
-  rightController: {fileID: 3465647787827832880}
-  dummyFinger: {fileID: 1507079563}
-  triggerWasPressed: 0
-  lastHandLocation: {x: 0, y: 0, z: 0}
-  lastHandRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &5235943364700437153
 GameObject:
   m_ObjectHideFlags: 0
@@ -26769,6 +26776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 0}
+  depth_image: {fileID: 0}
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -26784,6 +26792,7 @@ MonoBehaviour:
   FY: 0
   facedAngle: 0
   t: 0
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013623013709022
@@ -27132,6 +27141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 0}
+  depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -27147,6 +27157,7 @@ MonoBehaviour:
   FY: 0
   facedAngle: 0
   t: 0
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013623153188747
@@ -27952,6 +27963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 0}
+  depth_image: {fileID: 0}
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
@@ -27967,6 +27979,7 @@ MonoBehaviour:
   FY: 0
   facedAngle: 0
   t: 0
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013624242923235
