@@ -6,11 +6,11 @@ struct MeshProperties {
 
 RWStructuredBuffer<MeshProperties> _Properties;
 RWStructuredBuffer<float> _Depth;
-float4x4 _GOPose;
-float4 intrinsics;
-float4 screenData;
-float samplingSize;
-float t;
+float4x4 _GOPose;       // [2023-10-30][JHT] Global orientation? pose
+float4 intrinsics;      // [2023-10-30][JHT] Contains (CX, CY, FX, FY) - center point x, center point y, focal length x, focal length y
+float4 screenData;      // [2023-10-30][JHT] Continas (width, height, 1/width, FY) - screen/image coordinate data
+float samplingSize;     // [2023-10-30][JHT] Value of 1 samples all pixels; value of 2 samples half the pixels
+float t;                // [2023-10-30][JHT] Scalar on depth that also inverts the depth (?)
 
 // We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
 // imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.

@@ -17,6 +17,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public float range;
 
     public Texture2D color_image;
+    public Texture2D depth_image;
 
     public int imageScriptIndex;
 
@@ -46,6 +47,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public float FY;
     public float facedAngle;
     public float t;
+    public float pS;    // point scalar
     //public uint counter;
     //private uint numUpdates;
 
@@ -74,6 +76,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Setup()
     {
+        pS = 1.0f;
+
         //size_scale = 0.002f;
         //width = 640;
         //height = 480;
@@ -84,10 +88,7 @@ public class DrawMeshInstanced : MonoBehaviour
         total_population = height * width;
         population = (uint)(total_population / downsample);
 
-        //Mesh mesh = CreateQuad(size_scale, size_scale, size_scale);
-        //Mesh mesh = CreateQuad(size_scale, size_scale);
         Mesh mesh = CreateQuad(size_scale, size_scale);
-        //Mesh mesh = CreateQuad(0.01f,0.01f);
         this.mesh = mesh;
 
         //generalUseProps = new MeshProperties[population];
@@ -107,6 +108,9 @@ public class DrawMeshInstanced : MonoBehaviour
                     }
                 }
             }
+            // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
+            depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
+            depth_image.SetPixelData(depth_ar, 0);
 
             // read the texture 2D
             byte[] bytes;
@@ -125,6 +129,9 @@ public class DrawMeshInstanced : MonoBehaviour
         else if (false)// Read in new scene data from ROS? 
         {
             depth_ar = new float[height * width];
+            // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
+            depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
+            depth_image.SetPixelData(depth_ar, 0);
             int counter = 0;
 
             StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
@@ -145,7 +152,13 @@ public class DrawMeshInstanced : MonoBehaviour
                 // Do Something with the input. 
             }
         }
-        else { depth_ar = new float[height * width]; }
+        else 
+        { 
+            depth_ar = new float[height * width];
+            // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
+            depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
+            depth_image.SetPixelData(depth_ar, 0);
+        }
 
         globalProps = GetProperties();
 
@@ -156,19 +169,25 @@ public class DrawMeshInstanced : MonoBehaviour
         // bounds = new Bounds(transform.position, Vector3.one * (range + 1));
         bounds = new Bounds(Vector3.zero, Vector3.one * (range + 1));
 
+        // Pass 1 / width and 1 / height to material shader
+        // [2023-10-30][JHT] Why do we need to do this? That data is (almost) all in 'screenData' that gets passed in later.
         material.SetFloat("width",1.0f / width);
         material.SetFloat("height", 1.0f / height);
         material.SetInt("w", (int)width);
         //material.SetFloat("a",target.rotation.y * 0);
         //Debug.Log(auxTarget.eulerAngles);
         material.SetFloat("a", get_target_rota());
+        material.SetFloat("pS", pS);
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
         compute.SetVector("intrinsics",intr);
+        material.SetVector("intrinsics", intr);
+
         Vector4 screenData = new Vector4((float)width, (float)height, 1/(float)width, FY);
         compute.SetVector("screenData", screenData);
-        compute.SetFloat("samplingSize",downsample);
         material.SetVector("screenData", screenData);
+
+        compute.SetFloat("samplingSize", downsample);
         material.SetFloat("samplingSize", downsample);
 
         InitializeBuffers();
@@ -337,11 +356,23 @@ public class DrawMeshInstanced : MonoBehaviour
 
         meshPropertiesBuffer.SetData(globalProps);
         material.SetFloat("a", get_target_rota());
+        material.SetFloat("pS", pS);
         depthBuffer.SetData(depth_ar);
         material.SetBuffer("_Properties", meshPropertiesBuffer);
         material.SetTexture("_colorMap",color_image);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
+
+        Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
+        compute.SetVector("intrinsics", intr);
+        material.SetVector("intrinsics", intr);
+
+        Vector4 screenData = new Vector4((float)width, (float)height, 1 / (float)width, FY);
+        compute.SetVector("screenData", screenData);
+        material.SetVector("screenData", screenData);
+
+        compute.SetFloat("samplingSize", downsample);
+        material.SetFloat("samplingSize", downsample);
     }
 
     private void UpdateTexture()
@@ -351,6 +382,7 @@ public class DrawMeshInstanced : MonoBehaviour
             //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
             return;
         }
+
         GameObject rosConnector = GameObject.Find("RosConnector"); // TODO change to ImageSubscriber
         color_image = rosConnector.GetComponents<JPEGImageSubscriber>()[imageScriptIndex].texture2D;
         //color_image = rosConnector.GetComponents<ImageSubscriber>()[1].texture2D;

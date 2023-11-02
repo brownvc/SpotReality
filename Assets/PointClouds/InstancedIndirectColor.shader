@@ -26,15 +26,18 @@ Shader "Custom/InstancedIndirectColor" {
 
             sampler2D _colorMap;
 
-            int w;  // Here is the real width but hidden under a pseudonym
-            float width; float height; //   1 / width actually but don't tell anyone
+            int w;                      // Here is the real width but hidden under a pseudonym
+            float width; float height;  //   1 / width and 1 / height actually but don't tell anyone
 
-            float a;
+            float a;                   // angle
 
             float4 _colorMap_ST;
 
-            float4 screenData;
-            float samplingSize;
+            float4 intrinsics;         // [2023-10-30][JHT] Contains (CX, CY, FX, FY) - center point x, center point y, focal length x, focal length y
+            float4 screenData;         // [2023-10-30][JHT] Contains (width, height, 1/width, FY) - screen/image coordinate data
+            float samplingSize;        // [2023-10-30][JHT] Value of 1 samples all pixels; value of 2 samples half the pixels
+
+            float pS;                   // point scalar
 
             StructuredBuffer<MeshProperties> _Properties;
 
@@ -48,10 +51,23 @@ Shader "Custom/InstancedIndirectColor" {
 
                 float iii = float(instanceID) * samplingSize;
 
-                float4x4 mat = 	 {cos(a) * d,0.0,sin(a) * d,_Properties[instanceID].pos.x,
-							      0.0,d,0.0,_Properties[instanceID].pos.y,
-							      - sin(a) * d,0.0,cos(a) * d,_Properties[instanceID].pos.z,
-							      0.0,0.0,0.0,1.0 };
+                // [2023-10-30][JHT] Expose a quick scalar for the points themselves
+                float4x4 matS = {   pS,  0.0, 0.0, 0.0,
+							        0.0, pS,  0.0, 0.0,
+							        0.0, 0.0, pS,  0.0,
+							        0.0, 0.0, 0.0, 1.0 };
+
+                float4 vpos = mul(matS, i.vertex);
+
+                // [2023-10-30][JHT] What is this matrix? 
+                // We have scaling, rotation around X axis, and translation components
+                // It looks like we have already multiplied the scaling and rotation components, but simply added the translation.
+                // But, what is that middle d doing there in row 2? when we multiply scale by rotation, it shouldn't exist...
+                //
+                float4x4 mat = {    cos(a) * d,     0.0,    sin(a) * d, _Properties[instanceID].pos.x,
+							        0.0,            d,      0.0,        _Properties[instanceID].pos.y,
+							        - sin(a) * d,   0.0,    cos(a) * d, _Properties[instanceID].pos.z,
+							        0.0,            0.0,    0.0,        1.0 };
                                   
                 /*
                 float4x4 mat = 	 {1.0,0.0,0.0,_Properties[instanceID].pos.x,
@@ -59,7 +75,8 @@ Shader "Custom/InstancedIndirectColor" {
 							      0.0,0.0,1.0,_Properties[instanceID].pos.z,
 							      0.0,0.0,0.0,1.0 }; */
 
-                float4 pos = mul(mat, i.vertex);
+                float4 pos = mul(mat, vpos);
+                //float4 pos = mul(mat, i.vertex);
                 o.vertex = UnityObjectToClipPos(pos);
 
                 //o.color = _Properties[instanceID].color;
