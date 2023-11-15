@@ -13,13 +13,13 @@ public class MoveArm : MonoBehaviour
     // private MessageTypes.Geometry.Twist message;
     private bool triggerWasPressed = false;
     private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
-    private Quaternion lastHandRotation = Quaternion.identity;
+    private Quaternion initialHandRotation = Quaternion.identity;
+    private Quaternion initialDummyRotation = Quaternion.identity;
     public InputActionReference RT1; // Changing how input actions are received
     public InputActionReference bButton;
     public Transform spotBody;
 
     private bool hideSpotBody = false;
-
 
     void Update()
     {
@@ -35,19 +35,18 @@ public class MoveArm : MonoBehaviour
             {
                 triggerWasPressed = true;
                 armPublisher.enabled = true;
+                initialHandRotation = rightController.transform.rotation;
+                initialDummyRotation = dummyFinger.transform.rotation;
             }
             else
             {
                 // Change the location of the finger the same way
                 locationChange = (rightController.transform.position - lastHandLocation);
-                rotationChange = rightController.transform.rotation * Quaternion.Inverse(lastHandRotation);
+                rotationChange = rightController.transform.rotation * Quaternion.Inverse(initialHandRotation);
                 dummyFinger.transform.position += locationChange;
-                dummyFinger.transform.rotation *= rotationChange;
+                dummyFinger.transform.rotation = rotationChange * initialDummyRotation;
             }
             lastHandLocation = rightController.transform.position;
-            lastHandRotation = rightController.transform.rotation;
-
-            // Debug.Log("Location of controller: " + rightController.transform.position);
         }
         else
         {
