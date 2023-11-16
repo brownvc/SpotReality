@@ -53,7 +53,10 @@ namespace RosSharp.RosBridgeClient
         private void UpdateMessage()
         {
             message.header.Update();
-            Vector3 newLocation = PublishedTransform.localPosition + Offset.localPosition;
+
+            // Go to the dummy finger's position, plus the approximate offset of the end effector
+            Vector3 offsetPosition = PublishedTransform.localRotation * Offset.localPosition;
+            Vector3 newLocation = PublishedTransform.localPosition + offsetPosition;
             GetGeometryPoint(newLocation.Unity2Ros(), message.pose.position);
             GetGeometryQuaternion(PublishedTransform.localRotation.Unity2Ros(), message.pose.orientation);
 

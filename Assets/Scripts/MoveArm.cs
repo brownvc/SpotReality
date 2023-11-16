@@ -81,7 +81,7 @@ public class MoveArm : MonoBehaviour
             {
                 child.gameObject.SetActive(visible);
             }
-            else if (child.gameObject.name == "arm0.link_wr0" || child.gameObject.name == "dummy_link_fngr")
+            else if (child.gameObject.name == "arm0.link_wr1" || child.gameObject.name == "dummy_link_fngr")
             {
                 continue;
             }
