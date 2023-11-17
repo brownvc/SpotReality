@@ -54,6 +54,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public float size_scale; //hack to current pointcloud viewing
     
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
+    private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
 
     private MeshProperties[] globalProps;
@@ -377,7 +378,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void UpdateTexture()
     {           
-        if(use_saved_meshes) {
+        if(use_saved_meshes || freezeCloud) {
             //Debug.Log("use_saved_meshes");
             //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
             return;
@@ -628,6 +629,11 @@ public class DrawMeshInstanced : MonoBehaviour
         mesh.uv = uv;
 
         return mesh;
+    }
+
+    public void toggleFreezeCloud()
+    {
+        freezeCloud = !freezeCloud;
     }
 
     private void Start()

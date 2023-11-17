@@ -16,7 +16,7 @@ limitations under the License.
 using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
-{
+{                                            
     [RequireComponent(typeof(RosConnector))]
     public class JPEGImageSubscriber : UnitySubscriber<MessageTypes.Sensor.Image>
     {
@@ -25,12 +25,15 @@ namespace RosSharp.RosBridgeClient
         public Texture2D texture2D;
         private byte[] imageData;
         private bool isMessageReceived;
+        private bool freezeColor = false;
 
         protected override void Start()
         {
 			base.Start();
             texture2D = new Texture2D(1, 1);
             meshRenderer.material = new Material(Shader.Find("Standard"));
+            freezeColor = false;
+
         }
         private void Update()
         {
@@ -47,11 +50,19 @@ namespace RosSharp.RosBridgeClient
 
         private void ProcessMessage()
         {
-            texture2D.LoadImage(imageData);
-            texture2D.Apply();
-            //Debug.Log(texture2D.height + ", " + texture2D.width);
-            meshRenderer.material.SetTexture("_MainTex", texture2D);
+            if (!freezeColor)
+            { 
+                texture2D.LoadImage(imageData);
+                texture2D.Apply();
+                //Debug.Log(texture2D.height + ", " + texture2D.width);
+                meshRenderer.material.SetTexture("_MainTex", texture2D);
+            }
             isMessageReceived = false;
+        }
+
+        public void toggleFreeze()
+        {
+            freezeColor = !freezeColor; 
         }
 
     }

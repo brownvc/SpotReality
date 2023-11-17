@@ -42,7 +42,7 @@ public class VRGeneralControls : MonoBehaviour
     void Update()
     {
 
-        if(LX.action.WasPressedThisFrame())
+        if(LX.action.WasPressedThisFrame() && LT1.action.IsPressed())
             killSpot.killSpot();
 
         if (LT2.action.WasPressedThisFrame())

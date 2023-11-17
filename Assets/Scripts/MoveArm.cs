@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Text;
+using RosSharp.RosBridgeClient;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,9 @@ public class MoveArm : MonoBehaviour
     public InputActionReference RT1; // Changing how input actions are received
     public InputActionReference bButton;
     public Transform spotBody;
+    public DrawMeshInstanced handCloud;
+    public TransformUpdater handExtUpdater;
+    public JPEGImageSubscriber handImageSubscriber;
 
     private bool hideSpotBody = false;
 
@@ -57,21 +61,25 @@ public class MoveArm : MonoBehaviour
             armPublisher.enabled = false;
         }
 
-        // Hide or show Spot's rendering
+        // Freeze or unfreeze the hand point cloud
         if (bButton.action.WasPressedThisFrame())
         {
-            // Set invisible or visible
-            setSpotVisible(spotBody, hideSpotBody);
 
-            // Switch for next time
-            hideSpotBody = !hideSpotBody;
+            handCloud.toggleFreezeCloud();
+            handExtUpdater.toggleFreeze();
+            handImageSubscriber.toggleFreeze();
+
+            // Previous code to hide spot's body
+            //// Set invisible or visible
+            //setSpotVisible(spotBody, hideSpotBody);
+
+            //// Switch for next time
+            //hideSpotBody = !hideSpotBody;
         }
     }
 
-
-
     // Recursive function to get all children of the parent that have the name "unnamed" and are children of "Visuals"
-    // Ignores children of arm0.link_wr0 and dummy_link_fngr
+    // Ignores children of arm0.link_wr0 and dummy_arm0.link_wr1
     // and set them active or inactive
     private void setSpotVisible(Transform parent, bool visible)
     {
@@ -81,7 +89,7 @@ public class MoveArm : MonoBehaviour
             {
                 child.gameObject.SetActive(visible);
             }
-            else if (child.gameObject.name == "arm0.link_wr1" || child.gameObject.name == "dummy_link_fngr")
+            else if (child.gameObject.name == "arm0.link_wr1" || child.gameObject.name == "dummy_arm0.link_wr1")
             {
                 continue;
             }

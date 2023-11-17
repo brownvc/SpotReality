@@ -8090,6 +8090,9 @@ MonoBehaviour:
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   bButton: {fileID: 0}
   spotBody: {fileID: 0}
+  handCloud: {fileID: 0}
+  handExtUpdater: {fileID: 0}
+  handImageSubscriber: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9418,7 +9421,6 @@ MonoBehaviour:
   - arm_wrist_0
   - arm_wrist_1
   - arm_f1x
-  - arm_f1x
   JointStateWriters:
   - {fileID: 1599918344}
   - {fileID: 239038051}
@@ -9439,7 +9441,6 @@ MonoBehaviour:
   - {fileID: 1046934014}
   - {fileID: 1892496994}
   - {fileID: 1658837037}
-  - {fileID: 0}
 --- !u!114 &1510830349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9793,7 +9794,6 @@ MonoBehaviour:
   - {fileID: 1046934015}
   - {fileID: 1892496995}
   - {fileID: 1658837046}
-  - {fileID: 0}
   FrameId: Unity
 --- !u!114 &1510830385
 MonoBehaviour:
@@ -10961,6 +10961,9 @@ MonoBehaviour:
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
+  handCloud: {fileID: 0}
+  handExtUpdater: {fileID: 0}
+  handImageSubscriber: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21749,7 +21752,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -22535,6 +22538,9 @@ MonoBehaviour:
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
+  handCloud: {fileID: 1764592201}
+  handExtUpdater: {fileID: 637838618}
+  handImageSubscriber: {fileID: 1510830380}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0

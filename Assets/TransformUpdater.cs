@@ -13,6 +13,7 @@ public class TransformUpdater : MonoBehaviour
     public GameObject rosConnector;
     public bool[] neg = new bool[7];
     public int subscriberIndex;
+    private bool freezeExt = false;
 
 
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class TransformUpdater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (subscriber != null && subscriber.pose != null)
+        if (subscriber != null && subscriber.pose != null && !freezeExt)
         {
             float[] negations = new float[7];
             for (int i = 0; i<7; i++)
@@ -44,4 +45,9 @@ public class TransformUpdater : MonoBehaviour
         }
         
     }
+
+    public void toggleFreeze()
+    {
+        freezeExt = !freezeExt;
+    }    
 }
