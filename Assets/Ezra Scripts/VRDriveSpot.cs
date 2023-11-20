@@ -22,8 +22,8 @@ public class VRDriveSpot : MonoBehaviour
         Vector2 rightMove;
 
         // Send command to move the robot based on controller joystick values
-        rightMove = RAx.action.ReadValue<Vector2>();
-        leftMove = LAx.action.ReadValue<Vector2>();
+        rightMove = RAx.action.ReadValue<Vector2>() * 0.75f;
+        leftMove = LAx.action.ReadValue<Vector2>() * 0.75f;
         if (rightMove.x != 0 || leftMove.magnitude != 0)
         {
             // Set movement so only one direction is moved with the left stick at a time

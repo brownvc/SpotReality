@@ -54,6 +54,14 @@ namespace RosSharp.RosBridgeClient
 
         }
 
+        public void setGripperPercentage(float percent)
+        {
+            Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+            message.linear = new MessageTypes.Geometry.Vector3(percent, 0.0f, 0.0f);
+            message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+            Publish(message);
+        }
+
         public static MessageTypes.Geometry.Vector3 GetGeometryVector3(Vector3 vector3)
         {
             MessageTypes.Geometry.Vector3 geometryVector3 = new MessageTypes.Geometry.Vector3();
