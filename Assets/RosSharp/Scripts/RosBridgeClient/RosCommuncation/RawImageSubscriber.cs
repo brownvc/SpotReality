@@ -29,6 +29,21 @@ namespace RosSharp.RosBridgeClient
         public byte[] data;
         private bool isMessageReceived;
         public float[] image_data;
+        public bool useDepthHistory;
+
+        /* struct to hold the recency of a depth value */
+        private struct DepthInfo
+        {
+            public DepthInfo(float d, int r)
+            {
+                depth = d;
+                recency = r;
+            }
+
+            public float depth { get; set; }
+            public int recency { get; set; }
+        };
+        private DepthInfo[] depthHistory;
 
 
         protected override void Start()
@@ -38,11 +53,18 @@ namespace RosSharp.RosBridgeClient
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
         {
+            DateTime start = System.DateTime.Now;
+            DateTime end;
+            float depthVal;
             //laserScanWriter.Write(laserScan);
             data = image.data;
             //Debug.Log("Received Color");
             isMessageReceived = true; 
             image_data = new float[data.Length/2];
+            if (depthHistory == null)
+            {
+                depthHistory = new DepthInfo[data.Length/2];
+            }
 
             byte[] bytes = new byte[2];
             int j = 0;
@@ -52,10 +74,29 @@ namespace RosSharp.RosBridgeClient
                 //value[1] = imageData[i + 1];
                 bytes[0] = data[i];
                 bytes[1] = data[i+1];
-                image_data[j++] = (BitConverter.ToUInt16(bytes))/1000.0f;
-                // image_data[i] = (float)(data[i]);// + imageData[i + 1]);// System.BitConverter.ToSingle(value, 0);
+                depthVal = (BitConverter.ToUInt16(bytes)) / 1000.0f;
+
+                if (useDepthHistory)
+                {
+                    // If there is a depth value, overwrite its depth history
+                    if (depthVal != 0f)
+                    {
+                        depthHistory[j].depth = depthVal;
+                        depthHistory[j].recency = 0;
+                    }
+                    // If depth value is zero, check history to see if it had a value recently
+                    else if (depthHistory[j].recency < 10)
+                    {
+                        depthVal = depthHistory[j].depth;
+                        depthHistory[j].recency++;
+                    }
+                }
+
+                image_data[j++] = depthVal;
             }
-            //Debug.Log("Message Received, Time: " + UnityEngine.Time.realtimeSinceStartup);
+
+            end = System.DateTime.Now;
+            //Debug.Log("Depth retrieval took " + (end - start).TotalSeconds + " seconds");
         }
 
         private void Update()
