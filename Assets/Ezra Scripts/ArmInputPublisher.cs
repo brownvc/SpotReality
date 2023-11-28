@@ -66,7 +66,6 @@ namespace RosSharp.RosBridgeClient
             //publish
             message.data = published;
             Publish(message);
-            Debug.Log("Publishing Arm Angles");
             
         }
 
