@@ -9380,6 +9380,7 @@ GameObject:
   - component: {fileID: 1510830392}
   - component: {fileID: 1510830390}
   - component: {fileID: 1510830389}
+  - component: {fileID: 1510830393}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -9926,6 +9927,20 @@ MonoBehaviour:
   Topic: /spot/frontright_fisheye_extrinsics
   TimeStep: 0
   data: 
+--- !u!114 &1510830393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33073a523db06dc44add3461f09c0745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: 
+  save: 0
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18439,6 +18454,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  rightPress: {fileID: -577649520916242105, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  leftPress: {fileID: 9220027740127852921, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   drive: {fileID: 1510830354}
 --- !u!114 &3465647788609732413
 MonoBehaviour:
@@ -21810,7 +21827,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69467}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717

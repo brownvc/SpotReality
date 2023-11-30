@@ -53,7 +53,6 @@ public class VRGeneralControls : MonoBehaviour
             if (gripperPercentage > 0)
             {
                 gripperPercentage -= 0.5f;
-                Debug.Log(gripperPercentage);
                 gripper.setGripperPercentage(gripperPercentage);
                 gripperOpen = false;
             }
