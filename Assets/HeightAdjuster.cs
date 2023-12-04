@@ -25,7 +25,6 @@ public class HeightAdjuster : MonoBehaviour
     {
         Vector2 leftMove;
         Vector2 rightMove;
-        Vector3 eulerRot;
 
         /* Set the camera higher or lower */
         // Detect input values
