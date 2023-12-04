@@ -9,6 +9,8 @@ public class HeightAdjuster : MonoBehaviour
 {
     public InputActionReference goHigher;
     public InputActionReference goLower;
+    public InputActionReference LAx;
+    public InputActionReference RAx;
     public Transform cameraTransform;
     public float speed;
 
@@ -21,9 +23,15 @@ public class HeightAdjuster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 leftMove;
+        Vector2 rightMove;
+        Vector3 eulerRot;
+
+        /* Set the camera higher or lower */
         // Detect input values
         bool low = goLower.action.IsPressed();
         bool high = goHigher.action.IsPressed();
+
 
         // Go lower
         if (low && !high)
@@ -35,5 +43,14 @@ public class HeightAdjuster : MonoBehaviour
         {
             cameraTransform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y + speed, cameraTransform.position.z);
         }
+
+        /* Move camera position around */
+        leftMove = LAx.action.ReadValue<Vector2>() / 50f;
+        cameraTransform.position += cameraTransform.rotation * new Vector3(leftMove.x, 0f, leftMove.y);
+
+        /* Move camera rotation */
+        rightMove = RAx.action.ReadValue<Vector2>();
+        cameraTransform.Rotate(new Vector3(0f, rightMove.x, 0f));
+
     }
 }
