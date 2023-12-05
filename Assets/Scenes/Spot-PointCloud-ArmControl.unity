@@ -1008,7 +1008,6 @@ GameObject:
   m_Component:
   - component: {fileID: 112187587}
   - component: {fileID: 112187588}
-  - component: {fileID: 112187589}
   m_Layer: 0
   m_Name: front_left_cloud
   m_TagString: Untagged
@@ -1064,18 +1063,6 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
---- !u!114 &112187589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112187586}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c7faa0d32e29b247a253b6265a49136, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -5926,7 +5913,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 991331606}
-  - component: {fileID: 991331605}
+  - component: {fileID: 991331607}
   m_Layer: 0
   m_Name: ScriptRunner
   m_TagString: Untagged
@@ -5934,18 +5921,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &991331605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 991331604}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ce8f16a2be83441b17465f7f6b390a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &991331606
 Transform:
   m_ObjectHideFlags: 0
@@ -5961,6 +5936,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &991331607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991331604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59f587b10d1c1e4a8cd58d513ab0355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intrinsicsSubscriber: {fileID: 1510830393}
+  getIntrinsicsScript: {fileID: 1510830394}
+  clouds:
+  - {fileID: 1764592201}
+  - {fileID: 112187588}
+  - {fileID: 545284150}
+  - {fileID: 1140544844}
+  - {fileID: 171996664}
+  - {fileID: 2128929576}
 --- !u!1001 &994116547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9380,6 +9376,7 @@ GameObject:
   - component: {fileID: 1510830392}
   - component: {fileID: 1510830390}
   - component: {fileID: 1510830389}
+  - component: {fileID: 1510830394}
   - component: {fileID: 1510830393}
   m_Layer: 0
   m_Name: RosConnector
@@ -9936,11 +9933,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1510830347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33073a523db06dc44add3461f09c0745, type: 3}
+  m_Script: {fileID: 11500000, guid: 2752c01a6c4586141b1ecd4a8125fd41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: 
-  save: 0
+  Topic: /spot/intrinsics
+  TimeStep: 0
+  intrinsics: []
+  modifyIntrinsicsScript: {fileID: 991331607}
+--- !u!114 &1510830394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c0a90ff0b03814c89e036a4537d566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/get_intrinsics
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21745,7 +21757,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69405}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
