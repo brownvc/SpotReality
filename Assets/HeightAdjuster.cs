@@ -11,6 +11,7 @@ public class HeightAdjuster : MonoBehaviour
     public InputActionReference goLower;
     public InputActionReference LAx;
     public InputActionReference RAx;
+    public InputActionReference LT1;
     public Transform cameraTransform;
     public float speed;
 
@@ -45,29 +46,32 @@ public class HeightAdjuster : MonoBehaviour
             cameraTransform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y + speed, cameraTransform.position.z);
         }
 
-        /* Move camera position around according to left stick */
-        leftMove = LAx.action.ReadValue<Vector2>() / 50f;
-        relativeRot = Quaternion.Euler(0f, cameraTransform.rotation.eulerAngles.y, 0f);// cameraTransform.rotation;
-        cameraTransform.position += relativeRot * new Vector3(leftMove.x, 0f, leftMove.y);
-
-        /* Adjust camera rotation according to right stick*/
-        rightMove = RAx.action.ReadValue<Vector2>();
-        if (rightMove.magnitude > 0f)
+        if (!LT1.action.IsPressed())
         {
-            /* Only change one axis at a time */
-            if (Math.Abs(rightMove.x) > Math.Abs(rightMove.y))
+            /* Move camera position around according to left stick */
+            leftMove = LAx.action.ReadValue<Vector2>() / 50f;
+            relativeRot = Quaternion.Euler(0f, cameraTransform.rotation.eulerAngles.y, 0f);// cameraTransform.rotation;
+            cameraTransform.position += relativeRot * new Vector3(leftMove.x, 0f, leftMove.y);
+
+            /* Adjust camera rotation according to right stick*/
+            rightMove = RAx.action.ReadValue<Vector2>();
+            if (rightMove.magnitude > 0f)
             {
-                /* Rotate left/right relative to world space */
-                cameraTransform.Rotate(new Vector3(0f, rightMove.x, 0f), Space.World);
+                /* Only change one axis at a time */
+                if (Math.Abs(rightMove.x) > Math.Abs(rightMove.y))
+                {
+                    /* Rotate left/right relative to world space */
+                    cameraTransform.Rotate(new Vector3(0f, rightMove.x, 0f), Space.World);
+                }
+                else
+                {
+                    /* Rotate up/down relative to world space */
+                    /* Disabled for now */
+                    // cameraTransform.Rotate(new Vector3(rightMove.y * 0.5f, 0f, 0f), Space.World);
+                }
+                /* Don't allow z rotation to change */
+                cameraTransform.rotation = Quaternion.Euler(new Vector3(cameraTransform.rotation.eulerAngles.x, cameraTransform.rotation.eulerAngles.y, 0f));
             }
-            else
-            {
-                /* Rotate up/down relative to world space */
-                /* Disabled for now */
-                // cameraTransform.Rotate(new Vector3(rightMove.y * 0.5f, 0f, 0f), Space.World);
-            }
-            /* Don't allow z rotation to change */
-            cameraTransform.rotation = Quaternion.Euler(new Vector3(cameraTransform.rotation.eulerAngles.x, cameraTransform.rotation.eulerAngles.y, 0f));
         }
     }
 }

@@ -47,16 +47,6 @@ public class VRGeneralControls : MonoBehaviour
         /* Kill spot if X and left gripper (LT1) are pressed */
         if (LX.action.WasPressedThisFrame() && LT1.action.IsPressed())
             killSpot.killSpot();
-        /* Partially close gripper if gripper is open and X only is pressed */
-        else if (LX.action.IsPressed())
-        {
-            if (gripperPercentage > 0)
-            {
-                gripperPercentage -= 0.5f;
-                gripper.setGripperPercentage(gripperPercentage);
-                gripperOpen = false;
-            }
-        }
 
         /* Stow arm if left trigger (LT2) is pressed */
         if (LT2.action.WasPressedThisFrame())

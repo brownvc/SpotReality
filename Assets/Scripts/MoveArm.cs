@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing.Text;
 using RosSharp.RosBridgeClient;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
 
 public class MoveArm : MonoBehaviour
@@ -17,11 +18,16 @@ public class MoveArm : MonoBehaviour
     private Quaternion initialHandRotation = Quaternion.identity;
     private Quaternion initialDummyRotation = Quaternion.identity;
     public InputActionReference RT1; // Changing how input actions are received
+    public InputActionReference LT1; // Toggle for slow open and close
+    public InputActionReference LAx; // Left joystick controls slow close and open with LT1 toggle
     public InputActionReference bButton;
     public Transform spotBody;
     public DrawMeshInstanced handCloud;
     public TransformUpdater handExtUpdater;
     public JPEGImageSubscriber handImageSubscriber;
+    public RosSharp.RosBridgeClient.SetGripper gripper;
+    private bool gripperOpen;
+    private float gripperPercentage;
 
     private bool hideSpotBody = false;
 
@@ -51,6 +57,31 @@ public class MoveArm : MonoBehaviour
                 dummyFinger.transform.rotation = rotationChange * initialDummyRotation;
             }
             lastHandLocation = rightController.transform.position;
+        }
+        
+        else if (LT1.action.IsPressed())
+        {
+            Vector2 leftMove = LAx.action.ReadValue<Vector2>();
+            if (leftMove.y < 0)
+            {
+                if (gripperPercentage > 0)
+                {
+                    gripperPercentage -= 0.5f;
+                    gripper.setGripperPercentage(gripperPercentage);
+                    gripperOpen = false;
+                }
+
+            }
+            if (leftMove.y > 0)
+            {
+                if (gripperPercentage < 100.0f)
+                {
+                    gripperPercentage += 0.5f;
+                    gripper.setGripperPercentage(gripperPercentage);
+                    gripperOpen = true;
+                }
+            }
+
         }
         else
         {

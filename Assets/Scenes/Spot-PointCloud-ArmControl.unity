@@ -8084,11 +8084,14 @@ MonoBehaviour:
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 0}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 0}
+  LAx: {fileID: 0}
   bButton: {fileID: 0}
   spotBody: {fileID: 0}
   handCloud: {fileID: 0}
   handExtUpdater: {fileID: 0}
   handImageSubscriber: {fileID: 0}
+  gripper: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9939,7 +9942,7 @@ MonoBehaviour:
   Topic: /spot/intrinsics
   TimeStep: 0
   intrinsics: []
-  modifyIntrinsicsScript: {fileID: 991331607}
+  messageReceived: 0
 --- !u!114 &1510830394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10992,11 +10995,14 @@ MonoBehaviour:
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 5323045367923062791}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 0}
+  LAx: {fileID: 0}
   bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
   handCloud: {fileID: 0}
   handExtUpdater: {fileID: 0}
   handImageSubscriber: {fileID: 0}
+  gripper: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14729,7 +14735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74a051a0b27a771468f020005165ce69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerButton: {fileID: -7249721208760912034, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  triggerButton: {fileID: -4450001596844576706, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   body: {fileID: 1399272930}
 --- !u!222 &3465647787365961320
 CanvasRenderer:
@@ -18146,6 +18152,7 @@ MonoBehaviour:
   goLower: {fileID: 9220027740127852921, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   cameraTransform: {fileID: 3465647788663781134}
   speed: 0.01
 --- !u!114 &3465647788535288380
@@ -21706,7 +21713,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9995183
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21757,7 +21764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69405}
+  m_AnchoredPosition: {x: -47.37, y: 143.69464}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -22433,8 +22440,13 @@ MonoBehaviour:
 
     Right Stick Click - Move up in scene
 
-    X - EMERGENCY STOP
-    (kill motors)
+    LT1 + X - EMERGENCY
+    STOP (kill motors)
+
+    X - Switch to 2D View
+
+    LT1 + Left Joystick - slow
+    open/close gripper
 
     Y - toggle UI
 
@@ -22489,11 +22501,14 @@ MonoBehaviour:
   rightController: {fileID: 3465647787827832880}
   dummyFinger: {fileID: 5323045367923062791}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
   handCloud: {fileID: 1764592201}
   handExtUpdater: {fileID: 637838618}
   handImageSubscriber: {fileID: 1510830380}
+  gripper: {fileID: 1510830367}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0
