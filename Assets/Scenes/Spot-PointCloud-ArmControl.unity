@@ -18153,7 +18153,8 @@ MonoBehaviour:
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  cameraTransform: {fileID: 3465647788663781134}
+  cameraOffset: {fileID: 3465647788663781134}
+  mainCamera: {fileID: 3465647789006909972}
   speed: 0.01
 --- !u!114 &3465647788535288380
 MonoBehaviour:
@@ -21713,7 +21714,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9995183
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -21764,7 +21765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69464}
+  m_AnchoredPosition: {x: -47.37, y: 143.69467}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
