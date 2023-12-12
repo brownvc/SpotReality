@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Text;
 using RosSharp.RosBridgeClient;
 using UnityEngine;
@@ -10,7 +11,8 @@ public class MoveArm : MonoBehaviour
 {
     public RosSharp.RosBridgeClient.PoseStampedRelativePublisher armPublisher; // Reference to RosConnnector's arm publisher
     public GameObject rightController; // Reference to right controller object
-    public GameObject dummyFinger; // Reference to dummy finger object
+    public Transform dummyHandTransform; // Reference to dummy hand object
+    public Transform realHandTransform; // Reference to real hand
 
     // private MessageTypes.Geometry.Twist message;
     private bool triggerWasPressed = false;
@@ -28,8 +30,18 @@ public class MoveArm : MonoBehaviour
     public RosSharp.RosBridgeClient.SetGripper gripper;
     private bool gripperOpen;
     private float gripperPercentage;
+    private Vector3 defaultDummyPos = new Vector3(-1f, -1f, -1f);
+    private Quaternion defaultDummyRot = new Quaternion(-1f, -1f, -1f, -1f);
+
 
     private bool hideSpotBody = false;
+
+    private void OnEnable()
+    {
+        // Set the dummy hand to the same location as the real hand
+        dummyHandTransform.position = realHandTransform.position;
+        dummyHandTransform.rotation = realHandTransform.rotation;
+    }
 
     void Update()
     {
@@ -46,15 +58,15 @@ public class MoveArm : MonoBehaviour
                 triggerWasPressed = true;
                 armPublisher.enabled = true;
                 initialHandRotation = rightController.transform.rotation;
-                initialDummyRotation = dummyFinger.transform.rotation;
+                initialDummyRotation = dummyHandTransform.rotation;
             }
             else
             {
-                // Change the location of the finger the same way
+                // Change the location of the hand the same way
                 locationChange = (rightController.transform.position - lastHandLocation);
                 rotationChange = rightController.transform.rotation * Quaternion.Inverse(initialHandRotation);
-                dummyFinger.transform.position += locationChange;
-                dummyFinger.transform.rotation = rotationChange * initialDummyRotation;
+                dummyHandTransform.position += locationChange;
+                dummyHandTransform.rotation = rotationChange * initialDummyRotation;
             }
             lastHandLocation = rightController.transform.position;
         }

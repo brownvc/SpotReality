@@ -8082,7 +8082,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armPublisher: {fileID: 1510830355}
   rightController: {fileID: 3465647787827832880}
-  dummyFinger: {fileID: 0}
+  dummyHandTransform: {fileID: 0}
+  realHandTransform: {fileID: 0}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 0}
   LAx: {fileID: 0}
@@ -10993,7 +10994,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armPublisher: {fileID: 1510830355}
   rightController: {fileID: 3465647787827832880}
-  dummyFinger: {fileID: 5323045367923062791}
+  dummyHandTransform: {fileID: 0}
+  realHandTransform: {fileID: 0}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 0}
   LAx: {fileID: 0}
@@ -22500,7 +22502,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armPublisher: {fileID: 1510830355}
   rightController: {fileID: 3465647787827832880}
-  dummyFinger: {fileID: 5323045367923062791}
+  dummyHandTransform: {fileID: 5323045367923062784}
+  realHandTransform: {fileID: 1892496993}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
