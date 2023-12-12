@@ -8093,6 +8093,7 @@ MonoBehaviour:
   handExtUpdater: {fileID: 0}
   handImageSubscriber: {fileID: 0}
   gripper: {fileID: 0}
+  generalControls: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11005,6 +11006,7 @@ MonoBehaviour:
   handExtUpdater: {fileID: 0}
   handImageSubscriber: {fileID: 0}
   gripper: {fileID: 0}
+  generalControls: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14721,6 +14723,8 @@ MonoBehaviour:
   RB: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   RT2: {fileID: 1452166284691580520, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  gripperOpen: 0
+  gripperPercentage: 0
   killSpot: {fileID: 1510830357}
   stow: {fileID: 1510830356}
   gripper: {fileID: 1510830367}
@@ -21715,7 +21719,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21767,7 +21771,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69467}
+  m_AnchoredPosition: {x: -47.37, y: 143.69466}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -22513,6 +22517,7 @@ MonoBehaviour:
   handExtUpdater: {fileID: 637838618}
   handImageSubscriber: {fileID: 1510830380}
   gripper: {fileID: 1510830367}
+  generalControls: {fileID: 3465647787329320719}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0

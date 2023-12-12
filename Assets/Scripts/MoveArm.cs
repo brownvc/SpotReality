@@ -14,11 +14,6 @@ public class MoveArm : MonoBehaviour
     public Transform dummyHandTransform; // Reference to dummy hand object
     public Transform realHandTransform; // Reference to real hand
 
-    // private MessageTypes.Geometry.Twist message;
-    private bool triggerWasPressed = false;
-    private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
-    private Quaternion initialHandRotation = Quaternion.identity;
-    private Quaternion initialDummyRotation = Quaternion.identity;
     public InputActionReference RT1; // Changing how input actions are received
     public InputActionReference LT1; // Toggle for slow open and close
     public InputActionReference LAx; // Left joystick controls slow close and open with LT1 toggle
@@ -27,9 +22,14 @@ public class MoveArm : MonoBehaviour
     public DrawMeshInstanced handCloud;
     public TransformUpdater handExtUpdater;
     public JPEGImageSubscriber handImageSubscriber;
-    public RosSharp.RosBridgeClient.SetGripper gripper;
-    private bool gripperOpen;
-    private float gripperPercentage;
+    public SetGripper gripper;
+    public VRGeneralControls generalControls;
+
+    // private MessageTypes.Geometry.Twist message;
+    private bool triggerWasPressed = false;
+    private Vector3 lastHandLocation = new Vector3(0.0f, 0.0f, 0.0f);
+    private Quaternion initialHandRotation = Quaternion.identity;
+    private Quaternion initialDummyRotation = Quaternion.identity;
     private Vector3 defaultDummyPos = new Vector3(-1f, -1f, -1f);
     private Quaternion defaultDummyRot = new Quaternion(-1f, -1f, -1f, -1f);
 
@@ -76,21 +76,21 @@ public class MoveArm : MonoBehaviour
             Vector2 leftMove = LAx.action.ReadValue<Vector2>();
             if (leftMove.y < 0)
             {
-                if (gripperPercentage > 0)
+                if (generalControls.gripperPercentage > 0)
                 {
-                    gripperPercentage -= 0.5f;
-                    gripper.setGripperPercentage(gripperPercentage);
-                    gripperOpen = false;
+                    generalControls.gripperPercentage -= 0.25f;
+                    gripper.setGripperPercentage(generalControls.gripperPercentage);
+                    generalControls.gripperOpen = false;
                 }
 
             }
             if (leftMove.y > 0)
             {
-                if (gripperPercentage < 100.0f)
+                if (generalControls.gripperPercentage < 100.0f)
                 {
-                    gripperPercentage += 0.5f;
-                    gripper.setGripperPercentage(gripperPercentage);
-                    gripperOpen = true;
+                    generalControls.gripperPercentage += 0.25f;
+                    gripper.setGripperPercentage(generalControls.gripperPercentage);
+                    generalControls.gripperOpen = true;
                 }
             }
 

@@ -23,11 +23,13 @@ public class VRGeneralControls : MonoBehaviour
     public InputActionReference RT1;
     public InputActionReference RT2;
 
+    /* To be accessed by MoveArm script */
+    public bool gripperOpen;
+    public float gripperPercentage;
+
     public RosSharp.RosBridgeClient.KillMotor killSpot;
     public RosSharp.RosBridgeClient.StowArm stow;
     public RosSharp.RosBridgeClient.SetGripper gripper;
-    private bool gripperOpen;
-    private float gripperPercentage;
     public ModeManager manager;
 
 
