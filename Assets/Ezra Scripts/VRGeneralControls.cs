@@ -47,7 +47,7 @@ public class VRGeneralControls : MonoBehaviour
     {
 
         /* Kill spot if X and left gripper (LT1) are pressed */
-        if (LX.action.WasPressedThisFrame() && LT1.action.IsPressed())
+        if (LX.action.IsPressed() && LT1.action.IsPressed() && LY.action.IsPressed())
             killSpot.killSpot();
 
         /* Stow arm if left trigger (LT2) is pressed */
