@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RosSharp.RosBridgeClient;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
@@ -12,6 +13,7 @@ public class VRDriveSpot : MonoBehaviour
     public InputActionReference rightPress;
     public InputActionReference leftPress;
     public RosSharp.RosBridgeClient.MoveSpot drive;
+    public RawImageSubscriber[] depthSubscribers;
 
     private float height;
     private const float HEIGHT_INC = 0.005f;
@@ -55,6 +57,12 @@ public class VRDriveSpot : MonoBehaviour
             if (Mathf.Abs(leftMove.x) > Mathf.Abs(leftMove.y)) { leftMove.y = 0; }
             else if (Mathf.Abs(leftMove.y) > Mathf.Abs(leftMove.x)) { leftMove.x = 0; }
             drive.drive(leftMove, rightMove.x, height);
+
+            // Pause depth history for 2 seconds
+            foreach(RawImageSubscriber ds in depthSubscribers)
+            {
+                ds.pauseDepthHistory(2f);
+            }
         }
     }
 }

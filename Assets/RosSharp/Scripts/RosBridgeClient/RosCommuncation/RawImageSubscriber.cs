@@ -21,15 +21,23 @@ using RosSharp.RosBridgeClient.MessageTypes.Sensor;
 using RosSharp.RosBridgeClient.MessageTypes.Std;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 namespace RosSharp.RosBridgeClient
 {
     public class RawImageSubscriber: UnitySubscriber<MessageTypes.Sensor.Image>
     {
-        public byte[] data;
-        private bool isMessageReceived;
-        public float[] image_data;
-        public bool useDepthHistory;
+        private byte[] data;               
+        private bool isMessageReceived; 
+        private float[] globalData;            // final depth array returned
+        private float[ , ] image_data_cbuffer; // buffer of previous frames' depth value
+        private float[] image_data_avg;        // sum of non-zero values in each pixel's history
+        private byte[] image_data_pixcount;    // number of non-zero values in each pixel's history
+        private int image_data_cbuffer_pos;    // tracker for spot in image_data_cbuffer
+        private int image_data_cbuffer_length; // number of frames to average depth over
+        private bool useDepthHistory;          // whether to use depth buffer for averaging, or just use current frame
+        private bool clearCbuf;                // whether to clear image_data_cbuffer at beginning of next message
+        private float turnDepthOnTime;         // when to turn depth history back on        
 
         /* struct to hold the recency of a depth value */
         private struct DepthInfo
@@ -49,6 +57,16 @@ namespace RosSharp.RosBridgeClient
         protected override void Start()
         {
             base.Start();
+
+            image_data_cbuffer_pos = 0;
+
+            //how many frames to average depth over
+            image_data_cbuffer_length = 6;
+
+            globalData = new float[1];
+            useDepthHistory = true;
+            clearCbuf = false;
+            turnDepthOnTime = 0f;
         }
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
@@ -56,45 +74,75 @@ namespace RosSharp.RosBridgeClient
             DateTime start = System.DateTime.Now;
             DateTime end;
             float depthVal;
-            //laserScanWriter.Write(laserScan);
+            float[] image_data = new float[1];
+
             data = image.data;
-            //Debug.Log("Received Color");
-            isMessageReceived = true; 
+            isMessageReceived = true;
+            
             image_data = new float[data.Length/2];
-            if (depthHistory == null)
+
+            // Initialize the buffer containing past frame values for each pixel
+            if (image_data_cbuffer == null || clearCbuf)
             {
-                depthHistory = new DepthInfo[data.Length/2];
-            }
+                image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
+            }            
 
             byte[] bytes = new byte[2];
             int j = 0;
             for (int i = 0; i < data.Length; i+=2)
             {
-                //value[0] = imageData[i];
-                //value[1] = imageData[i + 1];
                 bytes[0] = data[i];
                 bytes[1] = data[i+1];
                 depthVal = (BitConverter.ToUInt16(bytes)) / 1000.0f;
 
-                if (useDepthHistory)
+                image_data[j] = depthVal;
+                image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
+                j++;
+            }
+
+            image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
+
+            // Average depth frames
+            if ( useDepthHistory ) // If robot is not moving
+            {
+                // Accumulate
+                image_data_avg = new float[image_data.Length];
+                image_data_pixcount = new byte[image_data.Length];
+                string cbuf = "cbuf ";
+                int ind = 128238;
+                for (int m = 0; m < image_data_cbuffer_length; m++)
                 {
-                    // If there is a depth value, overwrite its depth history
-                    if (depthVal != 0f)
+                    for (j = 0; j < image_data.Length; j++)
                     {
-                        depthHistory[j].depth = depthVal;
-                        depthHistory[j].recency = 0;
+                        if (j == ind)
+                            cbuf += image_data_cbuffer[j, m] + " ";
+
+                        // Exclude readings of zeros
+                        if (image_data_cbuffer[j,m] > 0f)
+                        {
+                            image_data_avg[j] += image_data_cbuffer[j, m];
+                            image_data_pixcount[j] += 1;
+                        }
                     }
-                    // If depth value is zero, check history to see if it had a value recently
-                    else if (depthHistory[j].recency < 10)
+
+                }
+                cbuf += "   avg " + image_data_avg[ind] / (image_data_pixcount[ind]+0.0001f);
+                Debug.Log(cbuf);
+
+                // Normalize
+                for (j = 0; j < image_data.Length; j++)
+                {
+                    if (image_data_pixcount[j] > 0)
                     {
-                        depthVal = depthHistory[j].depth;
-                        depthHistory[j].recency++;
+                        image_data[j] = image_data_avg[j] / image_data_pixcount[j];
                     }
                 }
 
-                image_data[j++] = depthVal;
             }
 
+            globalData = new float[image_data.Length];
+            Array.Copy(image_data, globalData, image_data.Length);
+            
             end = System.DateTime.Now;
             //Debug.Log("Depth retrieval took " + (end - start).TotalSeconds + " seconds");
         }
@@ -103,6 +151,35 @@ namespace RosSharp.RosBridgeClient
         {
             if (isMessageReceived)
                 ProcessMessage();
+
+            // Turn depth history back on after the allotted time has passed
+            if (useDepthHistory == false && UnityEngine.Time.time > turnDepthOnTime)
+            {
+                turnDepthOn();
+            }
+        }
+
+        // Get the most recently calculated depth array
+        public float[] getDepthArr()
+        {
+            return globalData;
+        }
+
+        // Turn off depth history for specified time
+        public void pauseDepthHistory(float howLong)
+        {
+            useDepthHistory = false;
+            clearCbuf = true;
+            
+            // Turn depth on after time has passed             
+            turnDepthOnTime = UnityEngine.Time.time + howLong;
+        }
+
+        // Turn depth info back on
+        private void turnDepthOn()
+        {
+            useDepthHistory = true;
+            clearCbuf = false;
         }
 
         private void ProcessMessage()

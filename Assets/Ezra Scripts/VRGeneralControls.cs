@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RosSharp.RosBridgeClient;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,6 +32,7 @@ public class VRGeneralControls : MonoBehaviour
     public RosSharp.RosBridgeClient.StowArm stow;
     public RosSharp.RosBridgeClient.SetGripper gripper;
     public ModeManager manager;
+    public RawImageSubscriber handDepthSubscriber;
 
 
     void Start()
@@ -52,7 +54,12 @@ public class VRGeneralControls : MonoBehaviour
 
         /* Stow arm if left trigger (LT2) is pressed */
         if (LT2.action.WasPressedThisFrame())
+        {
             stow.Stow();
+
+            // pause hand cam depth history for 2 seconds
+            handDepthSubscriber.pauseDepthHistory(2f);
+        }
 
         /* Switch modes if A is pressed */
         if (RA.action.WasPressedThisFrame())

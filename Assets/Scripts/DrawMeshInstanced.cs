@@ -23,6 +23,10 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public Material material;
 
+    public RawImageSubscriber depthSubscriber;  // ROS subscriber that holds the depth array
+    public JPEGImageSubscriber colorSubscriber; // ROS subscriber holding the color image
+    public bool savePointCloud;                 // allow user to save point cloud
+
     public ComputeShader compute;
     private ComputeBuffer meshPropertiesBuffer;
     private ComputeBuffer argsBuffer;
@@ -384,16 +388,12 @@ public class DrawMeshInstanced : MonoBehaviour
             return;
         }
 
-        GameObject rosConnector = GameObject.Find("RosConnector"); // TODO change to ImageSubscriber
-        color_image = rosConnector.GetComponents<JPEGImageSubscriber>()[imageScriptIndex].texture2D;
-        //color_image = rosConnector.GetComponents<ImageSubscriber>()[1].texture2D;
-        // = rosConnector.GetComponents<ImageSubscriber>()[0].depth_data;
-
-        depth_ar = rosConnector.GetComponents<RawImageSubscriber>()[imageScriptIndex].image_data;
+        // Get the depth and color
+        color_image = colorSubscriber.texture2D;
+        depth_ar = depthSubscriber.getDepthArr();
 
         // save the point cloud if desired
-        MoveSpot move = rosConnector.GetComponent<MoveSpot>();
-        if (move.save)
+        if (savePointCloud)
         {
             using (FileStream file = File.Create("Assets/PointClouds/mesh_array_" + imageScriptIndex))
             {
@@ -408,30 +408,8 @@ public class DrawMeshInstanced : MonoBehaviour
             }
 
             byte[] bytes = color_image.EncodeToPNG();
-            //var dirPath = Application.dataPath + "/../SaveImages/";
-            //if (!Directory.Exists(dirPath))
-            //{
-            //    Directory.CreateDirectory(dirPath);
-            //}
             File.WriteAllBytes("Assets/PointClouds/Color_" + imageScriptIndex + ".png", bytes);
-            //Debug.Log("FileWritten, Time: " + UnityEngine.Time.realtimeSinceStartup);
-            //using (var stream = File.Open("mesh_array_" + imageScriptIndex, FileMode.Open))
-            //{
-            //    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
-            //    {
-            //        int length = reader.ReadInt32();
-            //        depth_ar = new float[length];
-            //        for (int i = 0; i < length; i++)
-            //        {
-            //            depth_ar[i] = reader.ReadSingle();
-            //        }
-            //    }
-            //}
-
-            //move.save = false;          
         }
-        //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
-        //return 1;
 
     }
 

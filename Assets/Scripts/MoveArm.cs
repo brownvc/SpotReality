@@ -24,6 +24,7 @@ public class MoveArm : MonoBehaviour
     public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
     public VRGeneralControls generalControls;
+    public RawImageSubscriber handDepthSubscriber;
 
     // private MessageTypes.Geometry.Twist message;
     private bool triggerWasPressed = false;
@@ -69,8 +70,11 @@ public class MoveArm : MonoBehaviour
                 dummyHandTransform.rotation = rotationChange * initialDummyRotation;
             }
             lastHandLocation = rightController.transform.position;
+
+            // Pause hand cam history for 4 seconds
+            handDepthSubscriber.pauseDepthHistory(4f);
         }
-        
+       // Change the gripper percentage
         else if (LT1.action.IsPressed())
         {
             Vector2 leftMove = LAx.action.ReadValue<Vector2>();
