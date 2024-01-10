@@ -127,7 +127,7 @@ namespace RosSharp.RosBridgeClient
 
                 }
                 cbuf += "   avg " + image_data_avg[ind] / (image_data_pixcount[ind]+0.0001f);
-                Debug.Log(cbuf);
+                //Debug.Log(cbuf);
 
                 // Normalize
                 for (j = 0; j < image_data.Length; j++)
