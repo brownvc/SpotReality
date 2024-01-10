@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147699, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147701, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_Enabled
@@ -2652,7 +2652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064280, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064282, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_Enabled
@@ -4442,7 +4442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064280, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064282, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_Enabled
@@ -6241,7 +6241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5920217393054607765, guid: aaca05b770704194896f68fc1f7d9afe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5920217393054607767, guid: aaca05b770704194896f68fc1f7d9afe, type: 3}
       propertyPath: m_Enabled
@@ -8985,7 +8985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5448052310388850899, guid: db9e50740c0f73549a7601adb02d77c3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5448052310388850901, guid: db9e50740c0f73549a7601adb02d77c3, type: 3}
       propertyPath: m_Enabled
@@ -14737,7 +14737,6 @@ MonoBehaviour:
   stow: {fileID: 1510830356}
   gripper: {fileID: 1510830367}
   manager: {fileID: 3465647787329320714}
-  handDepthSubscriber: {fileID: 1510830370}
 --- !u!114 &3465647787329320720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21735,7 +21734,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21787,7 +21786,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69467}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
