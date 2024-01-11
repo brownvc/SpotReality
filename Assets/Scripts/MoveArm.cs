@@ -24,7 +24,7 @@ public class MoveArm : MonoBehaviour
     public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
     public VRGeneralControls generalControls;
-    public RawImageSubscriber handDepthSubscriber;
+    public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
 
     // private MessageTypes.Geometry.Twist message;
     private bool triggerWasPressed = false;
@@ -71,8 +71,11 @@ public class MoveArm : MonoBehaviour
             }
             lastHandLocation = rightController.transform.position;
 
-            // Pause hand cam history for 4 seconds
-            handDepthSubscriber.pauseDepthHistory(4f);
+            // Pause depth history for 3 seconds
+            foreach (RawImageSubscriber ds in depthSubscribers)
+            {
+                ds.pauseDepthHistory(3f);
+            }
         }
        // Change the gripper percentage
         else if (LT1.action.IsPressed())
