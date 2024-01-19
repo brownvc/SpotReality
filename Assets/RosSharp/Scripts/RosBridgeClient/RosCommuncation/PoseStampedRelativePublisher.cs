@@ -32,11 +32,9 @@ namespace RosSharp.RosBridgeClient
         {
             base.Start();
             InitializeMessage();
-        }
 
-        private void FixedUpdate()
-        {
-            UpdateMessage();
+            // Call update at 5 hz
+            InvokeRepeating("UpdateMessage", 0, 0.2f);        
         }
 
         private void InitializeMessage()
@@ -52,15 +50,19 @@ namespace RosSharp.RosBridgeClient
 
         private void UpdateMessage()
         {
-            message.header.Update();
+            // Only set location if enabled -- controlled by MoveArm script
+            if (enabled)
+            {
+                message.header.Update();
 
-            // Go to the dummy finger's position, plus the approximate offset of the end effector
-            Vector3 offsetPosition = PublishedTransform.localRotation * Offset.localPosition;
-            Vector3 newLocation = PublishedTransform.localPosition + offsetPosition;
-            GetGeometryPoint(newLocation.Unity2Ros(), message.pose.position);
-            GetGeometryQuaternion(PublishedTransform.localRotation.Unity2Ros(), message.pose.orientation);
+                // Go to the dummy finger's position, plus the approximate offset of the end effector
+                Vector3 offsetPosition = PublishedTransform.localRotation * Offset.localPosition;
+                Vector3 newLocation = PublishedTransform.localPosition + offsetPosition;
+                GetGeometryPoint(newLocation.Unity2Ros(), message.pose.position);
+                GetGeometryQuaternion(PublishedTransform.localRotation.Unity2Ros(), message.pose.orientation);
 
-            Publish(message);
+                Publish(message);
+            }
         }
 
         private static void GetGeometryPoint(Vector3 position, MessageTypes.Geometry.Point geometryPoint)
