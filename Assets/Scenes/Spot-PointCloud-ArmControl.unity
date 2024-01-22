@@ -14654,9 +14654,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currMode: 0
   modes:
-  - {fileID: 3465647789012620534}
-  - {fileID: 3465647788609732413}
   - {fileID: 5235943364053865581}
+  - {fileID: 3465647788609732413}
   UICanvases:
   - {fileID: 3465647789049534246}
   - {fileID: 5235943365319495258}
@@ -14678,8 +14677,8 @@ Transform:
   - {fileID: 3465647788475013926}
   - {fileID: 3465647788415522007}
   - {fileID: 3465647789012620529}
-  - {fileID: 3465647788609728706}
   - {fileID: 5235943364053865580}
+  - {fileID: 3465647788609728706}
   - {fileID: 2135201364}
   - {fileID: 1315557108}
   - {fileID: 1679772078}
@@ -18430,9 +18429,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modeName: Drive
   description: Drive the dog
-  listOfControlMappings: "Left axis - Spot WASD\nRight axis - turn spot\n\nX - EMERGENCY
-    STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes (next)\nLeft Gripper
-    - Stow arm\nRight Gripper - Open/Close hand"
+  listOfControlMappings: "Left axis - Spot WASD\nRight axis - turn spot\nLeft Stick
+    Click - Stand Spot lower\nRight Stick Click - Stand Spot taller\n\nY - toggle
+    UI\nX - Switch to 2D View \nA - Switch modes (next)\nLeft Gripper - Stow arm\nRight
+    Gripper - Open/Close hand"
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
   - {fileID: 3465647787827832880}
@@ -18677,6 +18677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3465647788663781134}
+  - component: {fileID: 3465647788663781136}
   m_Layer: 0
   m_Name: Camera Offset
   m_TagString: Untagged
@@ -18684,6 +18685,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &3465647788663781136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465647788663781135}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052a19d3cd47fd046a37ef950b45af70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armBaseLocation: {fileID: 38613792}
 --- !u!114 &3465647788708902356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20013,6 +20027,7 @@ GameObject:
   - component: {fileID: 3465647789006909969}
   - component: {fileID: 3465647789006909974}
   - component: {fileID: 3465647789006909975}
+  - component: {fileID: 3465647789006909976}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -20117,6 +20132,19 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   m_HasMigratedActions: 1
+--- !u!114 &3465647789006909976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465647789006909973}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052a19d3cd47fd046a37ef950b45af70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armBaseLocation: {fileID: 38613792}
 --- !u!4 &3465647789012620529
 Transform:
   m_ObjectHideFlags: 0
@@ -20170,7 +20198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &3465647789039488040
 GameObject:
   m_ObjectHideFlags: 0
@@ -20776,6 +20804,7 @@ GameObject:
   - component: {fileID: 3465647789265011315}
   - component: {fileID: 3465647789265011312}
   - component: {fileID: 3465647789265011313}
+  - component: {fileID: 3465647789265011319}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -20783,6 +20812,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &3465647789265011319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465647789265011318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052a19d3cd47fd046a37ef950b45af70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armBaseLocation: {fileID: 38613792}
 --- !u!1 &3465647789283207368
 GameObject:
   m_ObjectHideFlags: 0
@@ -21734,7 +21776,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21786,7 +21828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.6947}
+  m_AnchoredPosition: {x: -47.37, y: 143.69467}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717
@@ -22449,7 +22491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modeName: Dynamic Arm
-  description: Dynamic arm movement using the position of the right joystick
+  description: Dynamic arm movement using the position of the right controller
   listOfControlMappings: 'Right Trigger - Hold to update the real arm
 
     Left Axis
@@ -22462,25 +22504,22 @@ MonoBehaviour:
 
     Right Stick Click - Move up in scene
 
-    LT1 + X - EMERGENCY
-    STOP (kill motors)
-
     X - Switch to 2D View
 
-    LT1 + Left Joystick - slow
-    open/close gripper
+    LT1
+    + Left Joystick - slow open/close gripper
 
     Y - toggle UI
 
-    B - Toggle showing Spot''s body
+    B - Freeze
+    hand cam view
 
-    A
-    - Switch modes (next)
+    A - Switch modes (next)
 
     Left Gripper - Stow arm
 
-    Right Gripper - Open/Close
-    hand'
+    Right
+    Gripper - Open/Close hand'
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
   - {fileID: 3465647787827832880}
