@@ -14661,6 +14661,7 @@ MonoBehaviour:
   - {fileID: 5235943365319495258}
   hintText: {fileID: 5235943365568112135}
   hintTextString: Press Y to Toggle UI
+  generalControlsScript: {fileID: 3465647787329320719}
 --- !u!4 &3465647787329320715
 Transform:
   m_ObjectHideFlags: 0

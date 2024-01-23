@@ -14,9 +14,11 @@ public class ModeManager : MonoBehaviour
     public List<TextMeshProUGUI> UICanvases;
     public TextMeshProUGUI hintText;
     public string hintTextString;
+    public VRGeneralControls generalControlsScript;
 
     // Time tracking
     private Stopwatch[] stopwatches;
+    private bool timeStarted;
 
     // Disable modes to at the beginning, user has to choose to enter into a mode
     // TODO: Default mode: LOOK THIS UP
@@ -27,12 +29,14 @@ public class ModeManager : MonoBehaviour
         {
             stopwatches[i] = new Stopwatch();
         }
-        currMode = modes.Count - 1; // Needs to be -1 at first so when nextMode() is called, it goes to 0
+        currMode = modes.Count - 1; // Second to last mode
 
         for (int i = 0; i < modes.Count; i++)
         {
             modes[i].disableMode();
         }
+
+        timeStarted = false;
 
     }
 
@@ -69,9 +73,15 @@ public class ModeManager : MonoBehaviour
         int newMode;
 
         // Time tracking, end stopwatch for old mode
-        if (currMode >= 0 && currMode < modes.Count)
+        if (timeStarted)
         {
             stopwatches[currMode].Stop();
+        }
+        else
+        {
+            // First time a mode is activated, start other stopwatch
+            generalControlsScript.beginTime();
+            timeStarted = true;
         }
 
         newMode = currMode + 1;
