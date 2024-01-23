@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -14696,7 +14696,6 @@ GameObject:
   - component: {fileID: 3465647787329320715}
   - component: {fileID: 3465647787329320714}
   - component: {fileID: 3465647787329320719}
-  - component: {fileID: 3465647787329320720}
   m_Layer: 0
   m_Name: CONTROL SYSTEM
   m_TagString: Untagged
@@ -14736,19 +14735,6 @@ MonoBehaviour:
   stow: {fileID: 1510830356}
   gripper: {fileID: 1510830367}
   manager: {fileID: 3465647787329320714}
---- !u!114 &3465647787329320720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3465647787329320718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74a051a0b27a771468f020005165ce69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerButton: {fileID: -4450001596844576706, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   body: {fileID: 1399272930}
 --- !u!222 &3465647787365961320
 CanvasRenderer:
@@ -21776,7 +21762,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3668355818898085611}
   m_HandleRect: {fileID: 3668355818898085608}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21828,7 +21814,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.35832658, y: 0}
   m_AnchorMax: {x: 1, y: 0.5142166}
-  m_AnchoredPosition: {x: -47.37, y: 143.69467}
+  m_AnchoredPosition: {x: -47.37, y: 143.69395}
   m_SizeDelta: {x: 47.37, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &3668355818714895717

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Diagnostics;
 
 public class VRGeneralControls : MonoBehaviour
 {
@@ -32,6 +33,14 @@ public class VRGeneralControls : MonoBehaviour
     public RosSharp.RosBridgeClient.SetGripper gripper;
     public ModeManager manager;
 
+    /* Toggle Point Cloud */
+    public GameObject body;
+    private DrawMeshInstanced[] pointClouds;
+    private float point_cloud_t;
+
+    /* Track time in 2D vs 3D fields */
+    private Stopwatch threed_time;
+    private Stopwatch twod_time;
 
     void Start()
     {
@@ -41,14 +50,47 @@ public class VRGeneralControls : MonoBehaviour
         UI.enabled = false;
         UIShowing = false;
         gripperPercentage = 0f;
+
+        pointClouds = body.GetComponentsInChildren<DrawMeshInstanced>();
+        point_cloud_t = 1;
+        threed_time = new Stopwatch();
+        twod_time = new Stopwatch();
+
+        threed_time.Start();
     }
 
     void Update()
     {
 
-        /* Kill spot if X and left gripper (LT1) and left trigger (LT2) are pressed */
-        if (LX.action.WasPressedThisFrame() && LT1.action.IsPressed() && LT2.action.IsPressed())
-            killSpot.killSpot();
+        /* LX commands */
+        if (LX.action.WasPressedThisFrame())
+        {
+            /* Toggle every point cloud */
+            point_cloud_t = point_cloud_t == 1f ? 0f : 1f;
+            foreach (DrawMeshInstanced cloud in pointClouds)
+            {
+                cloud.t = point_cloud_t;
+            }
+
+            if (point_cloud_t == 1f)
+            {
+                /* Turn on 3D stopwatch */
+                twod_time.Stop();
+                threed_time.Start();
+            }
+            else
+            {
+                /* Turn on 2D stopwatch */
+                threed_time.Stop();
+                twod_time.Start();
+            }
+
+            /* Kill left gripper (LT1) and left trigger (LT2) are also pressed */
+            if (LT1.action.IsPressed() && LT2.action.IsPressed())
+            {
+                killSpot.killSpot();
+            }
+        }
 
         /* Stow arm if left trigger (LT2) is pressed */
         if (LT2.action.WasPressedThisFrame())
@@ -81,6 +123,12 @@ public class VRGeneralControls : MonoBehaviour
             toggleUI();
         }
 
+        /* Toggle point cloud if x was pressed this frame */
+        if (LX.action.WasPressedThisFrame())
+        {
+
+        }
+
     }
 
     public void toggleUI()
@@ -88,5 +136,12 @@ public class VRGeneralControls : MonoBehaviour
         UI.enabled = !(UI.enabled);
         hintUI.enabled = !(hintUI.enabled);
         UIShowing = !UIShowing;
+    }
+
+    private void OnApplicationQuit()
+    {
+        // Log time
+        UnityEngine.Debug.Log("2D mode time elapsed: " + System.Math.Round(twod_time.Elapsed.TotalSeconds, 2) + " seconds");
+        UnityEngine.Debug.Log("3D mode time elapsed: " + System.Math.Round(threed_time.Elapsed.TotalSeconds, 2) + " seconds");
     }
 }
