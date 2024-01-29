@@ -34,6 +34,15 @@ public class MoveArm : MonoBehaviour
     private Vector3 defaultDummyPos = new Vector3(-1f, -1f, -1f);
     private Quaternion defaultDummyRot = new Quaternion(-1f, -1f, -1f, -1f);
 
+    // Used to change ghost gripper color when it goes out of reach - Are Oelsner
+    public Transform armBase;
+    public GameObject ghostArm;
+    public GameObject ghostFinger;
+    public Material greenMaterial;
+    public Material redMaterial;
+    private bool isGreen = true;
+    private float maxArmLength = .73f;
+
 
     private bool hideSpotBody = false;
 
@@ -70,6 +79,28 @@ public class MoveArm : MonoBehaviour
                 dummyHandTransform.rotation = rotationChange * initialDummyRotation;
             }
             lastHandLocation = rightController.transform.position;
+            // Change ghost gripper color if it is out of bounds            
+            if ((dummyHandTransform.position - armBase.position).magnitude > maxArmLength)
+            {
+                if (isGreen)
+                {
+                    // Set ghost gripper color to red
+                    ghostArm.GetComponent<MeshRenderer>().material = redMaterial;
+                    ghostFinger.GetComponent<MeshRenderer>().material = redMaterial;
+                    isGreen = false;
+                }
+            }
+            else // Maybe check if color is already green / red before going to swap them
+            {
+                if (!isGreen)
+                {
+                    // Set ghost gripper color to green
+                    ghostArm.GetComponent<MeshRenderer>().material = greenMaterial;
+                    ghostFinger.GetComponent<MeshRenderer>().material = greenMaterial;
+                    isGreen = true;
+                }
+            }
+
 
             // Pause depth history for 3 seconds
             foreach (RawImageSubscriber ds in depthSubscribers)

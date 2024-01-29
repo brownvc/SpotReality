@@ -8377,6 +8377,11 @@ MonoBehaviour:
   gripper: {fileID: 0}
   generalControls: {fileID: 0}
   depthSubscribers: []
+  armBase: {fileID: 0}
+  ghostArm: {fileID: 0}
+  ghostFinger: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11487,6 +11492,11 @@ MonoBehaviour:
   gripper: {fileID: 0}
   generalControls: {fileID: 0}
   depthSubscribers: []
+  armBase: {fileID: 0}
+  ghostArm: {fileID: 0}
+  ghostFinger: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22015,6 +22025,11 @@ MonoBehaviour:
   depthSubscribers:
   - {fileID: 1500417874}
   - {fileID: 1673597984}
+  armBase: {fileID: 1994087620}
+  ghostArm: {fileID: 4980462626297936253}
+  ghostFinger: {fileID: 4980462624635889862}
+  greenMaterial: {fileID: 2100000, guid: 111cc6f7903b08549a403a883034988d, type: 2}
+  redMaterial: {fileID: 2100000, guid: 7cff8448fe4a5bf42b1263fa906be561, type: 2}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0
