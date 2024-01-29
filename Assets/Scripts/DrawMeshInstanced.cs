@@ -381,8 +381,8 @@ public class DrawMeshInstanced : MonoBehaviour
     }
 
     private void UpdateTexture()
-    {           
-        if(use_saved_meshes || freezeCloud) {
+    {
+        if (use_saved_meshes || freezeCloud) {
             //Debug.Log("use_saved_meshes");
             //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
             return;
@@ -390,7 +390,14 @@ public class DrawMeshInstanced : MonoBehaviour
 
         // Get the depth and color
         color_image = colorSubscriber.texture2D;
-        depth_ar = depthSubscriber.getDepthArr();
+        if (t == 0)
+        {
+            depth_ar = new float[width * height];
+        }
+        else
+        {
+            depth_ar = depthSubscriber.getDepthArr();
+        }
 
         // save the point cloud if desired
         if (savePointCloud)

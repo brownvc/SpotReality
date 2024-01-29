@@ -22,6 +22,7 @@ using RosSharp.RosBridgeClient.MessageTypes.Std;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System.Threading;
 
 namespace RosSharp.RosBridgeClient
 {
@@ -37,7 +38,13 @@ namespace RosSharp.RosBridgeClient
         private int image_data_cbuffer_length; // number of frames to average depth over
         private bool useDepthHistory;          // whether to use depth buffer for averaging, or just use current frame
         private bool clearCbuf;                // whether to clear image_data_cbuffer at beginning of next message
-        private float turnDepthOnTime;         // when to turn depth history back on        
+        private float turnDepthOnTime;         // when to turn depth history back 
+
+        public bool printMessageReceiveRate;
+        public bool printMessageProcRate;
+        private DateTime lastMessageRetrieved;
+        private DateTime lastUpdate;
+        private Thread messageThread;
 
         /* struct to hold the recency of a depth value */
         private struct DepthInfo
@@ -58,10 +65,13 @@ namespace RosSharp.RosBridgeClient
         {
             base.Start();
 
+            lastMessageRetrieved = DateTime.Now;
+            lastUpdate = DateTime.Now;
+
             image_data_cbuffer_pos = 0;
 
             //how many frames to average depth over
-            image_data_cbuffer_length = 6;
+            image_data_cbuffer_length = 15;
 
             globalData = new float[1];
             useDepthHistory = true;
@@ -71,28 +81,50 @@ namespace RosSharp.RosBridgeClient
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
         {
-            DateTime start = System.DateTime.Now;
-            DateTime end;
-            float depthVal;
-            float[] image_data = new float[1];
+            double totalSeconds;
+            if (printMessageReceiveRate)
+            {
+                totalSeconds = (DateTime.Now - lastMessageRetrieved).TotalSeconds;
+                Debug.Log("Time between messages: " + totalSeconds.ToString("0.0000") +" seconds, " + (1 / totalSeconds).ToString("0.00") + " FPS");
+                lastMessageRetrieved = DateTime.Now;
+            }
 
             data = image.data;
-            isMessageReceived = true;
-            
-            image_data = new float[data.Length/2];
+
+            // Thread the expensive processing of depth data
+            if (messageThread == null || !messageThread.IsAlive)
+            {
+                messageThread = new Thread(processMessageThreaded);
+                messageThread.Start();
+            }
+        }
+
+
+        private void processMessageThreaded()
+        {
+            DateTime start;
+            DateTime end;
+            float depthVal;
+            double totalSeconds;
+
+            start = DateTime.Now;
+
+            float[] image_data = new float[1];
+
+            image_data = new float[data.Length / 2];
 
             // Initialize the buffer containing past frame values for each pixel
             if (image_data_cbuffer == null || clearCbuf)
             {
                 image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
-            }            
+            }
 
             byte[] bytes = new byte[2];
             int j = 0;
-            for (int i = 0; i < data.Length; i+=2)
+            for (int i = 0; i < data.Length; i += 2)
             {
                 bytes[0] = data[i];
-                bytes[1] = data[i+1];
+                bytes[1] = data[i + 1];
                 depthVal = (BitConverter.ToUInt16(bytes)) / 1000.0f;
 
                 image_data[j] = depthVal;
@@ -103,7 +135,7 @@ namespace RosSharp.RosBridgeClient
             image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
 
             // Average depth frames
-            if ( useDepthHistory ) // If robot is not moving
+            if (useDepthHistory) // If robot is not moving
             {
                 // Accumulate
                 image_data_avg = new float[image_data.Length];
@@ -118,15 +150,15 @@ namespace RosSharp.RosBridgeClient
                             cbuf += image_data_cbuffer[j, m] + " ";
 
                         // Exclude readings of zeros
-                        if (image_data_cbuffer[j,m] > 0f)
+                        if (image_data_cbuffer[j, m] > 0f)
                         {
                             image_data_avg[j] += image_data_cbuffer[j, m];
                             image_data_pixcount[j] += 1;
                         }
                     }
-
                 }
-                cbuf += "   avg " + image_data_avg[ind] / (image_data_pixcount[ind]+0.0001f);
+
+                cbuf += "   avg " + image_data_avg[ind] / (image_data_pixcount[ind] + 0.0001f);
                 //Debug.Log(cbuf);
 
                 // Normalize
@@ -140,17 +172,25 @@ namespace RosSharp.RosBridgeClient
 
             }
 
+            // Copy into the final array
             globalData = new float[image_data.Length];
             Array.Copy(image_data, globalData, image_data.Length);
-            
-            end = System.DateTime.Now;
-            //Debug.Log("Depth retrieval took " + (end - start).TotalSeconds + " seconds");
+
+            // Debugging info
+            if (printMessageProcRate)
+            {
+                end = DateTime.Now;
+                totalSeconds = (end - start).TotalSeconds;
+                Debug.Log("Depth retrieval took " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
+            }
+
         }
+
 
         private void Update()
         {
-            if (isMessageReceived)
-                ProcessMessage();
+            //Debug.Log((DateTime.Now - lastUpdate).TotalSeconds);
+            lastUpdate = DateTime.Now;
 
             // Turn depth history back on after the allotted time has passed
             if (useDepthHistory == false && UnityEngine.Time.time > turnDepthOnTime)
@@ -182,8 +222,9 @@ namespace RosSharp.RosBridgeClient
             clearCbuf = false;
         }
 
-        private void ProcessMessage()
+        private void OnDestroy()
         {
+            messageThread.Abort();
         }
     }
 }

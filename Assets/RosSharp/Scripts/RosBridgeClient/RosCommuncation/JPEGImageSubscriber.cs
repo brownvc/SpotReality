@@ -14,6 +14,7 @@ limitations under the License.
 */
 
 using UnityEngine;
+using System;
 
 namespace RosSharp.RosBridgeClient
 {                                            
@@ -26,6 +27,8 @@ namespace RosSharp.RosBridgeClient
         private byte[] imageData;
         private bool isMessageReceived;
         private bool freezeColor = false;
+        private DateTime lastMessageRetrieved;
+        public bool printRate;
 
         protected override void Start()
         {
@@ -33,6 +36,7 @@ namespace RosSharp.RosBridgeClient
             texture2D = new Texture2D(1, 1);
             meshRenderer.material = new Material(Shader.Find("Standard"));
             freezeColor = false;
+            lastMessageRetrieved = DateTime.Now;
 
         }
         private void Update()
@@ -43,9 +47,16 @@ namespace RosSharp.RosBridgeClient
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
         {
+            double totalSeconds;
+            if (printRate)
+            {
+                totalSeconds = (DateTime.Now - lastMessageRetrieved).TotalSeconds;
+                Debug.Log("Time between messages: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " FPS");
+            }
+
             imageData = image.data;
             isMessageReceived = true;
-
+            lastMessageRetrieved = DateTime.Now;
         }
 
         private void ProcessMessage()
@@ -54,7 +65,6 @@ namespace RosSharp.RosBridgeClient
             { 
                 texture2D.LoadImage(imageData);
                 texture2D.Apply();
-                //Debug.Log(texture2D.height + ", " + texture2D.width);
                 meshRenderer.material.SetTexture("_MainTex", texture2D);
             }
             isMessageReceived = false;

@@ -35,7 +35,7 @@ public class VRGeneralControls : MonoBehaviour
 
     /* Toggle Point Cloud */
     public GameObject body;
-    private DrawMeshInstanced[] pointClouds;
+    public DrawMeshInstanced[] pointClouds;
     private float point_cloud_t;
 
     /* Track time in 2D vs 3D fields */
@@ -51,7 +51,6 @@ public class VRGeneralControls : MonoBehaviour
         UIShowing = false;
         gripperPercentage = 0f;
 
-        pointClouds = body.GetComponentsInChildren<DrawMeshInstanced>();
         point_cloud_t = 1;
         threed_time = new Stopwatch();
         twod_time = new Stopwatch();

@@ -21,12 +21,6 @@ public class InitialPos : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (transform.hasChanged)
-        {
-            int x = 0;
-            x += 1;
-        }
-        
+    {        
     }
 }

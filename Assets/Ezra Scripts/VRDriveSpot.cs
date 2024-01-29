@@ -46,9 +46,10 @@ public class VRDriveSpot : MonoBehaviour
         }
         
 
-        // Read base movement values
+        // Read base movement values, adjust speeds
         rightMove = RAx.action.ReadValue<Vector2>() * 0.75f;
-        leftMove = LAx.action.ReadValue<Vector2>() * 0.75f;
+        leftMove = LAx.action.ReadValue<Vector2>() * 0.5f;
+        leftMove.x *= 0.5f;
 
         // Move the robot if any adjustments have been made
         if (rightMove.x != 0f || leftMove.magnitude != 0f || heightChanged)
@@ -58,10 +59,10 @@ public class VRDriveSpot : MonoBehaviour
             else if (Mathf.Abs(leftMove.y) > Mathf.Abs(leftMove.x)) { leftMove.x = 0; }
             drive.drive(leftMove, rightMove.x, height);
 
-            // Pause depth history for 2 seconds
+            // Pause depth history for half a second
             foreach(RawImageSubscriber ds in depthSubscribers)
             {
-                ds.pauseDepthHistory(2f);
+                ds.pauseDepthHistory(0.5f);
             }
         }
     }
