@@ -3232,7 +3232,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &442599356
 MonoBehaviour:
@@ -3863,7 +3862,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &565983655
 MonoBehaviour:
@@ -6001,7 +5999,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!1 &969663038
 GameObject:
@@ -7902,7 +7899,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!1001 &1268083998
 PrefabInstance:
@@ -8388,6 +8384,8 @@ MonoBehaviour:
   redMaterial: {fileID: 0}
   translucentSpotMaterial: {fileID: 0}
   opaqueSpotMaterial: {fileID: 0}
+  opaqueSpotArmMaterial: {fileID: 0}
+  translucentSpotArmMaterial: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9695,7 +9693,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1500417875
@@ -9958,7 +9955,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/hand_depth_in_hand_color_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830371
@@ -9975,7 +9971,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830372
@@ -9992,7 +9987,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830373
@@ -10009,7 +10003,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/back_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830374
@@ -10026,7 +10019,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/left_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830376
@@ -10043,7 +10035,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/right_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830378
@@ -10062,7 +10053,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830379
 MonoBehaviour:
@@ -10080,7 +10070,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830380
 MonoBehaviour:
@@ -10098,7 +10087,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830381
 MonoBehaviour:
@@ -10116,7 +10104,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830382
 MonoBehaviour:
@@ -10134,7 +10121,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830383
 MonoBehaviour:
@@ -10152,7 +10138,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830384
 MonoBehaviour:
@@ -10961,7 +10946,6 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  timestamp_synced: 0
   printRate: 0
 --- !u!1 &1646763829
 GameObject:
@@ -11267,7 +11251,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
   TimeStep: 0
-  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1673597985
@@ -11532,6 +11515,8 @@ MonoBehaviour:
   redMaterial: {fileID: 0}
   translucentSpotMaterial: {fileID: 0}
   opaqueSpotMaterial: {fileID: 0}
+  opaqueSpotArmMaterial: {fileID: 0}
+  translucentSpotArmMaterial: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21993,18 +21978,18 @@ MonoBehaviour:
 
     Move down in the scene: Click/Press the left joystick
 
-    Freeze/Unfreeze
-    the view of the robot hand camera: Click B on the right controller
+    Toggle
+    spot body transparency: Click B on the right controller
 
 
 
-    System
-    Controls:
+    System Controls:
 
-    Switch Modes - Click A on the right controller
+    Switch
+    Modes - Click A on the right controller
 
-    Toggle UI
-    - Click Y on the left controller'
+    Toggle UI - Click Y on the left
+    controller'
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
   - {fileID: 3465647787827832880}
@@ -22067,6 +22052,8 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 7cff8448fe4a5bf42b1263fa906be561, type: 2}
   translucentSpotMaterial: {fileID: 2100000, guid: 3a64d6ad8489c3d47a28f38d7928c8f8, type: 2}
   opaqueSpotMaterial: {fileID: 2100000, guid: c1ca4f08be289874c86dbfa1786350e9, type: 2}
+  opaqueSpotArmMaterial: {fileID: 2100000, guid: 1009aa728b6bccd49a5691c631816ea4, type: 2}
+  translucentSpotArmMaterial: {fileID: 2100000, guid: 86f42008a474fbf4aba6368837fb6993, type: 2}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0

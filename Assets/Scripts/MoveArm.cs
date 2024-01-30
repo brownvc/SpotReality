@@ -47,6 +47,8 @@ public class MoveArm : MonoBehaviour
     private bool hideSpotBody = false;
     public Material translucentSpotMaterial;
     public Material opaqueSpotMaterial;
+    public Material opaqueSpotArmMaterial;
+    public Material translucentSpotArmMaterial;
     
 
 
@@ -165,21 +167,35 @@ public class MoveArm : MonoBehaviour
     {
         foreach (Transform child in parent)
         {
-            if (parent.gameObject.name == "unnamed")//  && child.gameObject.name == "unnamed")
+            if (parent.gameObject.name == "unnamed")
             {
                 if (child.gameObject.GetComponent<MeshRenderer>() != null)
                 {
                     if (visible)
                     {
-                        child.gameObject.GetComponent<MeshRenderer>().material = translucentSpotMaterial;
+                        if (child.gameObject.name.Contains("arm"))
+                        {
+                            child.gameObject.GetComponent<MeshRenderer>().material = translucentSpotArmMaterial;
+                        }
+                        else
+                        {
+                            child.gameObject.GetComponent<MeshRenderer>().material = translucentSpotMaterial;
+                        }
                     }
                     else
                     {
-                        child.gameObject.GetComponent<MeshRenderer>().material = opaqueSpotMaterial;
+                        if (child.gameObject.name.Contains("arm"))
+                        {
+                            child.gameObject.GetComponent<MeshRenderer>().material = opaqueSpotArmMaterial;
+                        }
+                        else
+                        {
+                            child.gameObject.GetComponent<MeshRenderer>().material = opaqueSpotMaterial;
+                        }
                     }
                 }
             }
-            else if (child.gameObject.name == "arm0.link_sh0" || child.gameObject.name == "dummy_arm0.link_wr1")
+            else if (child.gameObject.name == "arm0.link_wr1" || child.gameObject.name == "dummy_arm0.link_wr1")
             {
                 return;
             }
