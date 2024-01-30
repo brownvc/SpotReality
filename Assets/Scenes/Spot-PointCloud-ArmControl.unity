@@ -3232,6 +3232,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &442599356
 MonoBehaviour:
@@ -3862,6 +3863,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &565983655
 MonoBehaviour:
@@ -5999,6 +6001,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!1 &969663038
 GameObject:
@@ -7899,6 +7902,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!1001 &1268083998
 PrefabInstance:
@@ -8382,6 +8386,8 @@ MonoBehaviour:
   ghostFinger: {fileID: 0}
   greenMaterial: {fileID: 0}
   redMaterial: {fileID: 0}
+  translucentSpotMaterial: {fileID: 0}
+  opaqueSpotMaterial: {fileID: 0}
 --- !u!114 &1315557110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8811,7 +8817,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 33d04cdb7d83c6644b761088efbdea09, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 3670417072048115407, guid: 33d04cdb7d83c6644b761088efbdea09, type: 3}
+      objectReference: {fileID: 2100000, guid: c1ca4f08be289874c86dbfa1786350e9, type: 2}
     - target: {fileID: -7511558181221131132, guid: 33d04cdb7d83c6644b761088efbdea09, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
@@ -9689,6 +9695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1500417875
@@ -9951,6 +9958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/hand_depth_in_hand_color_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830371
@@ -9967,6 +9975,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830372
@@ -9983,6 +9992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830373
@@ -9999,6 +10009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/back_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830374
@@ -10015,6 +10026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/left_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830376
@@ -10031,6 +10043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/right_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1510830378
@@ -10049,6 +10062,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830379
 MonoBehaviour:
@@ -10066,6 +10080,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830380
 MonoBehaviour:
@@ -10083,6 +10098,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830381
 MonoBehaviour:
@@ -10100,6 +10116,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830382
 MonoBehaviour:
@@ -10117,6 +10134,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830383
 MonoBehaviour:
@@ -10134,6 +10152,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!114 &1510830384
 MonoBehaviour:
@@ -10942,6 +10961,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  timestamp_synced: 0
   printRate: 0
 --- !u!1 &1646763829
 GameObject:
@@ -11247,6 +11267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
   TimeStep: 0
+  timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
 --- !u!114 &1673597985
@@ -11509,6 +11530,8 @@ MonoBehaviour:
   ghostFinger: {fileID: 0}
   greenMaterial: {fileID: 0}
   redMaterial: {fileID: 0}
+  translucentSpotMaterial: {fileID: 0}
+  opaqueSpotMaterial: {fileID: 0}
 --- !u!114 &1679772080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22042,6 +22065,8 @@ MonoBehaviour:
   ghostFinger: {fileID: 4980462624635889862}
   greenMaterial: {fileID: 2100000, guid: 111cc6f7903b08549a403a883034988d, type: 2}
   redMaterial: {fileID: 2100000, guid: 7cff8448fe4a5bf42b1263fa906be561, type: 2}
+  translucentSpotMaterial: {fileID: 2100000, guid: 3a64d6ad8489c3d47a28f38d7928c8f8, type: 2}
+  opaqueSpotMaterial: {fileID: 2100000, guid: c1ca4f08be289874c86dbfa1786350e9, type: 2}
 --- !u!114 &5235943364068947172
 MonoBehaviour:
   m_ObjectHideFlags: 0
