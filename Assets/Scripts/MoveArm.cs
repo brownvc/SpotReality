@@ -45,6 +45,10 @@ public class MoveArm : MonoBehaviour
 
 
     private bool hideSpotBody = false;
+    public Material translucentSpotMaterial;
+    public Material opaqueSpotMaterial;
+    
+
 
     private void OnEnable()
     {
@@ -145,17 +149,12 @@ public class MoveArm : MonoBehaviour
         // Freeze or unfreeze the hand point cloud
         if (bButton.action.WasPressedThisFrame())
         {
-
-            handCloud.toggleFreezeCloud();
-            handExtUpdater.toggleFreeze();
-            handImageSubscriber.toggleFreeze();
-
             // Previous code to hide spot's body
             //// Set invisible or visible
-            //setSpotVisible(spotBody, hideSpotBody);
+            setSpotVisible(spotBody, hideSpotBody);
 
             //// Switch for next time
-            //hideSpotBody = !hideSpotBody;
+            hideSpotBody = !hideSpotBody;
         }
     }
 
@@ -164,16 +163,28 @@ public class MoveArm : MonoBehaviour
     // and set them active or inactive
     private void setSpotVisible(Transform parent, bool visible)
     {
-        foreach(Transform child in parent) 
+        foreach (Transform child in parent)
         {
-            if (parent.gameObject.name == "Visuals" && child.gameObject.name == "unnamed")
+            if (parent.gameObject.name == "unnamed")//  && child.gameObject.name == "unnamed")
             {
-                child.gameObject.SetActive(visible);
+                if (child.gameObject.GetComponent<MeshRenderer>() != null)
+                {
+                    if (visible)
+                    {
+                        child.gameObject.GetComponent<MeshRenderer>().material = translucentSpotMaterial;
+                    }
+                    else
+                    {
+                        child.gameObject.GetComponent<MeshRenderer>().material = opaqueSpotMaterial;
+                    }
+                }
             }
-            else if (child.gameObject.name == "arm0.link_wr1" || child.gameObject.name == "dummy_arm0.link_wr1")
+            else if (child.gameObject.name == "arm0.link_sh0" || child.gameObject.name == "dummy_arm0.link_wr1")
             {
-                continue;
+                return;
             }
+            // child.gameObject.SetActive(visible);
+
             else
             {
                 setSpotVisible(child, visible);
@@ -185,7 +196,7 @@ public class MoveArm : MonoBehaviour
     {
         armPublisher.enabled = false;
         hideSpotBody = false;
-        setSpotVisible(spotBody, true);
+        setSpotVisible(spotBody, false);
     }
 }
 
