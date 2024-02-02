@@ -3232,7 +3232,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  associatedDepth: {fileID: 0}
+  associatedDepth: {fileID: 1673597984}
   printRate: 0
   printSyncTime: 0
   printClosestTime: 0
@@ -3866,7 +3866,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  associatedDepth: {fileID: 0}
+  associatedDepth: {fileID: 1500417874}
   printRate: 0
   printSyncTime: 0
   printClosestTime: 0
