@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
 using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
@@ -20,9 +21,11 @@ namespace RosSharp.RosBridgeClient
     public class OdometrySubscriber : UnitySubscriber<MessageTypes.Nav.Odometry>
     {
         public Transform PublishedTransform;
+        public double timeStamp;
 
         private Vector3 position;
         private Quaternion rotation;
+        private MessageTypes.Std.Time msgTime;
         private bool isMessageReceived;
 
         protected override void Start()
@@ -40,12 +43,14 @@ namespace RosSharp.RosBridgeClient
         {
             position = GetPosition(message).Ros2Unity();
             rotation = GetRotation(message).Ros2Unity();
+            msgTime = message.header.stamp;
             isMessageReceived = true;
         }
         private void ProcessMessage()
         {
             PublishedTransform.position = position;
             PublishedTransform.rotation = rotation;
+            timeStamp = msgTime.secs + msgTime.nsecs * 0.000000001;
         }
 
         private Vector3 GetPosition(MessageTypes.Nav.Odometry message)

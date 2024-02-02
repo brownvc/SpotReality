@@ -621,6 +621,11 @@ public class DrawMeshInstanced : MonoBehaviour
         freezeCloud = !freezeCloud;
     }
 
+    public void setCloudFreeze(bool freeze)
+    {
+        freezeCloud = freeze;
+    }
+
     private void Start()
     {
         // See OnEnable

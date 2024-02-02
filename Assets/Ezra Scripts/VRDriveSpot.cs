@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RosSharp.RosBridgeClient;
+using RosSharp.RosBridgeClient.MessageTypes.Std;
+using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
@@ -14,6 +17,16 @@ public class VRDriveSpot : MonoBehaviour
     public InputActionReference leftPress;
     public RosSharp.RosBridgeClient.MoveSpot drive;
     public RawImageSubscriber[] depthSubscribers;
+    public OdometrySubscriber odometrySubscriber;
+    public DrawMeshInstanced[] pointClouds;
+
+    private Vector3 lastOdomPos;
+    private Quaternion lastOdomRot;
+    private Tuple<Vector3, Quaternion>[] origCloudTransforms; // Original location of each point cloud
+    private double lastOdomChangeStamp;
+    private bool[] depthsTempChanged;
+
+    
 
     private float height;
     private const float HEIGHT_INC = 0.005f;
@@ -23,14 +36,25 @@ public class VRDriveSpot : MonoBehaviour
     void Start()
     {
         height = 0f;
+        origCloudTransforms = new Tuple<Vector3, Quaternion>[pointClouds.Length];
+        for (int i = 0; i < origCloudTransforms.Length; i++ )
+        {
+            origCloudTransforms[i] = new Tuple<Vector3, Quaternion>(pointClouds[i].transform.localPosition, pointClouds[i].transform.localRotation);
+        }
+
+        depthsTempChanged = new bool[pointClouds.Length];
+
     }
 
     void Update()
     {
         Vector2 leftMove;
         Vector2 rightMove;
+        Vector3 relativePos;
+        Quaternion relativeRot;
+        Vector3 newPos;
+        Quaternion newRot;
         bool heightChanged = false;
-
 
         // Detect joystick press values
         if (leftPress.action.IsPressed() && (height - HEIGHT_INC) > HEIGHT_MIN)
@@ -44,7 +68,7 @@ public class VRDriveSpot : MonoBehaviour
             height += HEIGHT_INC;
             heightChanged = true;
         }
-        
+
 
         // Read base movement values, adjust speeds
         rightMove = RAx.action.ReadValue<Vector2>() * 0.75f;
@@ -59,11 +83,102 @@ public class VRDriveSpot : MonoBehaviour
             else if (Mathf.Abs(leftMove.y) > Mathf.Abs(leftMove.x)) { leftMove.x = 0; }
             drive.drive(leftMove, rightMove.x, height);
 
-            // Pause depth history for half a second
-            foreach(RawImageSubscriber ds in depthSubscribers)
+            // Pause depth history for 1.5 seconds
+            foreach (RawImageSubscriber ds in depthSubscribers)
             {
-                ds.pauseDepthHistory(0.5f);
+                ds.pauseDepthHistory(1.5f);
             }
         }
+
+
+        // Odometry logic
+        if (odometrySubscriber != null)
+        {
+            newPos = odometrySubscriber.PublishedTransform.position;
+            newRot = odometrySubscriber.PublishedTransform.rotation;
+
+            if (lastOdomPos == null || lastOdomPos == Vector3.zero)
+            {
+                lastOdomPos = newPos;
+                lastOdomRot = newRot;
+            }
+            else if (!vectorEqual(lastOdomPos, newPos) || !quatEqual(lastOdomRot, newRot))
+            {
+                lastOdomChangeStamp = odometrySubscriber.timeStamp;
+                //Debug.Log("Depth was frozen at " + lastOdomChangeStamp);
+
+                //Debug.Log(odometrySubscriber.PublishedTransform.position);
+                // Get the transform between the two
+                relativePos = newPos - lastOdomPos;
+                relativeRot = newRot * Quaternion.Inverse(lastOdomRot);
+
+                //Debug.Log("Difference in position: " + relativePos + ", difference in rotation: " + relativeRot);
+
+                // Freeze point clouds, and move the them to undo that transform
+                foreach (DrawMeshInstanced dmi in pointClouds)
+                {
+                    dmi.setCloudFreeze(true);
+                    dmi.transform.position -= relativePos;
+                    dmi.transform.rotation = Quaternion.Inverse(relativeRot) * dmi.transform.rotation;
+                }
+
+                // Set transform
+                lastOdomPos = newPos;
+                lastOdomRot = newRot;
+
+                // Mark that the depth has been changed
+                for (int i = 0; i < depthsTempChanged.Length; i++)
+                {
+                    depthsTempChanged[i] = true;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pointClouds.Length; i++)
+                {
+                    // if depth has been frozen and has been updated more recently than odometry
+                    if (depthsTempChanged[i] && depthSubscribers[i].timestamp_synced > lastOdomChangeStamp)
+                    {
+                        Debug.Log("Depth was unfrozen for subscriber " + (i + 1) + " at " + depthSubscribers[i].timestamp_synced);
+                        // Unfreeze the point clouds and move them back to their original relative location
+                        pointClouds[i].setCloudFreeze(false);
+                        pointClouds[i].transform.localPosition = origCloudTransforms[i].Item1;
+                        pointClouds[i].transform.localRotation = origCloudTransforms[i].Item2;
+                        depthsTempChanged[i] = false;
+                    }
+                }
+            }
+        }
+    }
+
+
+    private bool vectorEqual(Vector3 a, Vector3 b)
+    {
+        Vector3 diff;
+        diff = new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+        diff.x = Math.Abs(diff.x);
+        diff.y = Math.Abs(diff.y);
+        diff.z = Math.Abs(diff.z);
+        if (diff.x > 0.03 || diff.y > 0.03 || diff.z > 0.03)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private bool quatEqual(Quaternion a, Quaternion b)
+    {
+        Quaternion diff;
+        diff = new Quaternion(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
+        diff.x = Math.Abs(diff.x);  
+        diff.y = Math.Abs(diff.y);
+        diff.z = Math.Abs(diff.z);
+        diff.w = Math.Abs(diff.w);
+
+        if (diff.x > 0.01 || diff.y > 0.01 || diff.z > 0.01) // || diff.w > 0.001)
+        {
+            return false;
+        }
+        return true;
     }
 }
