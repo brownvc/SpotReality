@@ -23,6 +23,7 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RosSharp.RosBridgeClient
 {
@@ -31,6 +32,9 @@ namespace RosSharp.RosBridgeClient
         private byte[] data;               
         private bool isMessageReceived; 
         private float[] globalData;            // final depth array returned
+        private MessageTypes.Std.Time 
+                               timestamp_proc; // timestamp of message being processed
+        public double timestamp_synced;        // timestamp of message that has been processed in nanoseconds, to return
         private float[ , ] image_data_cbuffer; // buffer of previous frames' depth value
         private float[] image_data_avg;        // sum of non-zero values in each pixel's history
         private byte[] image_data_pixcount;    // number of non-zero values in each pixel's history
@@ -44,7 +48,8 @@ namespace RosSharp.RosBridgeClient
         public bool printMessageProcRate;
         private DateTime lastMessageRetrieved;
         private DateTime lastUpdate;
-        private Thread messageThread;
+        private DateTime threadStart;
+        private bool depthUpdated;
 
         /* struct to hold the recency of a depth value */
         private struct DepthInfo
@@ -71,12 +76,14 @@ namespace RosSharp.RosBridgeClient
             image_data_cbuffer_pos = 0;
 
             //how many frames to average depth over
-            image_data_cbuffer_length = 15;
+            image_data_cbuffer_length = 5;
 
             globalData = new float[1];
+            timestamp_synced = 0d;
             useDepthHistory = true;
             clearCbuf = false;
             turnDepthOnTime = 0f;
+            depthUpdated = false;
         }
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
@@ -85,30 +92,40 @@ namespace RosSharp.RosBridgeClient
             if (printMessageReceiveRate)
             {
                 totalSeconds = (DateTime.Now - lastMessageRetrieved).TotalSeconds;
-                Debug.Log("Time between messages: " + totalSeconds.ToString("0.0000") +" seconds, " + (1 / totalSeconds).ToString("0.00") + " FPS");
+                Debug.Log("Time between messages: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " FPS");
                 lastMessageRetrieved = DateTime.Now;
             }
 
             data = image.data;
+            timestamp_proc = image.header.stamp;
 
-            // Thread the expensive processing of depth data
-            if (messageThread == null || !messageThread.IsAlive)
+            startThread();
+        }
+
+        private async void startThread()
+        {
+            DateTime end;
+            double totalSeconds;
+
+            threadStart = DateTime.Now;
+            await Task.Run(() => processMessageThreaded());
+            depthUpdated = true;
+
+            timestamp_synced = timestamp_proc.secs + timestamp_proc.nsecs * 0.000000001;
+
+            // Debugging info
+            if (printMessageProcRate)
             {
-                messageThread = new Thread(processMessageThreaded);
-                messageThread.Start();
+                end = DateTime.Now;
+                totalSeconds = (end - threadStart).TotalSeconds;
+                Debug.Log("Depth retrieval took " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
             }
         }
 
 
         private void processMessageThreaded()
         {
-            DateTime start;
-            DateTime end;
             float depthVal;
-            double totalSeconds;
-
-            start = DateTime.Now;
-
             float[] image_data = new float[1];
 
             image_data = new float[data.Length / 2];
@@ -121,11 +138,13 @@ namespace RosSharp.RosBridgeClient
 
             byte[] bytes = new byte[2];
             int j = 0;
-            for (int i = 0; i < data.Length; i += 2)
+            for (int i = 0; i < data.Length; i+= 2)
             {
                 bytes[0] = data[i];
                 bytes[1] = data[i + 1];
                 depthVal = (BitConverter.ToUInt16(bytes)) / 1000.0f;
+
+                //depthVal = data[i] / 100.0f;
 
                 image_data[j] = depthVal;
                 image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
@@ -172,24 +191,15 @@ namespace RosSharp.RosBridgeClient
 
             }
 
-            // Copy into the final array
+            // Copy into the final return array and timestamp
             globalData = new float[image_data.Length];
             Array.Copy(image_data, globalData, image_data.Length);
-
-            // Debugging info
-            if (printMessageProcRate)
-            {
-                end = DateTime.Now;
-                totalSeconds = (end - start).TotalSeconds;
-                Debug.Log("Depth retrieval took " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
-            }
-
         }
 
 
         private void Update()
         {
-            //Debug.Log((DateTime.Now - lastUpdate).TotalSeconds);
+            // Debug.Log((DateTime.Now - lastUpdate).TotalSeconds);
             lastUpdate = DateTime.Now;
 
             // Turn depth history back on after the allotted time has passed
@@ -197,6 +207,14 @@ namespace RosSharp.RosBridgeClient
             {
                 turnDepthOn();
             }
+        }
+
+        public bool newDepthAvailable()
+        {
+            bool ret;
+            ret = depthUpdated;
+            depthUpdated= false;
+            return ret;
         }
 
         // Get the most recently calculated depth array
@@ -220,11 +238,6 @@ namespace RosSharp.RosBridgeClient
         {
             useDepthHistory = true;
             clearCbuf = false;
-        }
-
-        private void OnDestroy()
-        {
-            messageThread.Abort();
         }
     }
 }

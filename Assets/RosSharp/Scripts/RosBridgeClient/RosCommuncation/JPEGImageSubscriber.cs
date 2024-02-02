@@ -24,11 +24,19 @@ namespace RosSharp.RosBridgeClient
         public MeshRenderer meshRenderer;
 
         public Texture2D texture2D;
+        public RawImageSubscriber associatedDepth;
+        private MessageTypes.Sensor.Image[] imgBuffer;
+        private uint bufferInd;
+        private uint bufferLength;
         private byte[] imageData;
         private bool isMessageReceived;
         private bool freezeColor = false;
         private DateTime lastMessageRetrieved;
+        private DateTime startSyncTime;
         public bool printRate;
+        public bool printSyncTime;
+        public bool printClosestTime;
+        public double latest_time;
 
         protected override void Start()
         {
@@ -38,11 +46,27 @@ namespace RosSharp.RosBridgeClient
             freezeColor = false;
             lastMessageRetrieved = DateTime.Now;
 
+            // Keep last 5 color images, or just 1 if there is no depth
+            if (associatedDepth == null || !associatedDepth.enabled) 
+            {
+                bufferLength = 1;
+            }
+            else
+            {
+                bufferLength = 20;
+            }
+            bufferInd = 0;
+            imgBuffer = new MessageTypes.Sensor.Image[bufferLength];
         }
+
         private void Update()
         {
-            if (isMessageReceived)
+            // If we have a new color image and a new depth frame has been received (or there is no associated depth), update the color image
+            if (isMessageReceived && (associatedDepth == null || !associatedDepth.enabled || associatedDepth.newDepthAvailable()))
+            {
+                startSyncTime = DateTime.Now;
                 ProcessMessage();
+            }
         }
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
@@ -54,20 +78,78 @@ namespace RosSharp.RosBridgeClient
                 Debug.Log("Time between messages: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " FPS");
             }
 
-            imageData = image.data;
+            imgBuffer[bufferInd] = image;
+            bufferInd = (bufferInd + 1) % bufferLength;
+            latest_time = image.header.stamp.secs + image.header.stamp.nsecs * 0.000000001;
+
             isMessageReceived = true;
             lastMessageRetrieved = DateTime.Now;
         }
 
+        /// <summary>
+        /// Process an image into the texture2D returned by this subscriber
+        /// </summary>
+        /// <param name="closestInd">The index of the image in the buffer that has the closest timestamp to the most recent depth as</param>
         private void ProcessMessage()
         {
+            int closestInd;
+            double totalSeconds;
+
             if (!freezeColor)
-            { 
-                texture2D.LoadImage(imageData);
+            {
+                closestInd = getClosestTime();
+                texture2D.LoadImage(imgBuffer[closestInd].data);
                 texture2D.Apply();
                 meshRenderer.material.SetTexture("_MainTex", texture2D);
             }
+
+            if (printSyncTime)
+            {
+                totalSeconds = (DateTime.Now - startSyncTime).TotalSeconds;
+                Debug.Log("Time to sync with depth: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
+            }
+
             isMessageReceived = false;
+        }
+
+        private int getClosestTime()
+        {
+            double depthTime;   // When the depth data was received
+            int closestInd;     // Closest index to return
+            double closestTime; // Closest time found
+            double disparity;   // Disparity between a given image's timestamp and the depth's timestamp
+            double imgTime;     // The formatted timestamp for a given image (seconds plus nanoseconds)
+
+            // Ignore all of this if there is no depth subscriber
+            if (associatedDepth == null || !associatedDepth.enabled)
+            {
+                return 0;
+            }
+
+            // Initialize variables
+            depthTime = associatedDepth.timestamp_synced;
+            closestTime = 1000d;
+            closestInd = 0;
+
+            // Look at the timestamp of each image in the buffer
+            for (int i = 0; i < imgBuffer.Length; i++)
+            {
+                imgTime = imgBuffer[i].header.stamp.secs + imgBuffer[i].header.stamp.nsecs * 0.000000001;
+                disparity = Math.Abs(depthTime - imgTime);
+                if (disparity < closestTime)
+                {
+                    closestInd = i;
+                    closestTime = disparity;
+                }
+            }
+
+            // If the user wants to see the closest depth to image time
+            if (printClosestTime)
+            {
+                Debug.Log(closestTime);
+            }
+
+            return closestInd;
         }
 
         public void toggleFreeze()
