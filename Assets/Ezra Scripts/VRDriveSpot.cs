@@ -94,8 +94,8 @@ public class VRDriveSpot : MonoBehaviour
         // Odometry logic
         if (odometrySubscriber != null)
         {
-            newPos = odometrySubscriber.PublishedTransform.position;
-            newRot = odometrySubscriber.PublishedTransform.rotation;
+            newPos = odometrySubscriber.PublishedPosition;
+            newRot = odometrySubscriber.PublishedRotation;
 
             if (lastOdomPos == null || lastOdomPos == Vector3.zero)
             {
@@ -112,7 +112,7 @@ public class VRDriveSpot : MonoBehaviour
                 relativePos = newPos - lastOdomPos;
                 relativeRot = newRot * Quaternion.Inverse(lastOdomRot);
 
-                //Debug.Log("Difference in position: " + relativePos + ", difference in rotation: " + relativeRot);
+                Debug.Log("Difference in position: " + relativePos + ", difference in rotation: " + relativeRot);
 
                 // Freeze point clouds, and move the them to undo that transform
                 foreach (DrawMeshInstanced dmi in pointClouds)
@@ -155,11 +155,13 @@ public class VRDriveSpot : MonoBehaviour
     private bool vectorEqual(Vector3 a, Vector3 b)
     {
         Vector3 diff;
+        float thresh;
+        thresh = 0.001f;
         diff = new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
         diff.x = Math.Abs(diff.x);
         diff.y = Math.Abs(diff.y);
         diff.z = Math.Abs(diff.z);
-        if (diff.x > 0.03 || diff.y > 0.03 || diff.z > 0.03)
+        if (diff.x > thresh || diff.y > thresh || diff.z > thresh)
         {
             return false;
         }
@@ -169,13 +171,15 @@ public class VRDriveSpot : MonoBehaviour
     private bool quatEqual(Quaternion a, Quaternion b)
     {
         Quaternion diff;
+        float thresh;
+        thresh = 0.001f;
         diff = new Quaternion(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
         diff.x = Math.Abs(diff.x);  
         diff.y = Math.Abs(diff.y);
         diff.z = Math.Abs(diff.z);
         diff.w = Math.Abs(diff.w);
 
-        if (diff.x > 0.01 || diff.y > 0.01 || diff.z > 0.01) // || diff.w > 0.001)
+        if (diff.x > thresh || diff.y > thresh || diff.z > thresh) // || diff.w > 0.001)
         {
             return false;
         }

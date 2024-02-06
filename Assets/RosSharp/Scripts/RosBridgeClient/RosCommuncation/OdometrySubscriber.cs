@@ -20,7 +20,9 @@ namespace RosSharp.RosBridgeClient
 {
     public class OdometrySubscriber : UnitySubscriber<MessageTypes.Nav.Odometry>
     {
-        public Transform PublishedTransform;
+        //public Transform PublishedTransform;
+        public Vector3 PublishedPosition;
+        public Quaternion PublishedRotation;
         public double timeStamp;
 
         private Vector3 position;
@@ -48,8 +50,8 @@ namespace RosSharp.RosBridgeClient
         }
         private void ProcessMessage()
         {
-            PublishedTransform.position = position;
-            PublishedTransform.rotation = rotation;
+            PublishedPosition = position;
+            PublishedRotation = rotation;
             timeStamp = msgTime.secs + msgTime.nsecs * 0.000000001;
         }
 
