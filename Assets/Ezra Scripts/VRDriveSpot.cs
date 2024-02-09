@@ -91,64 +91,64 @@ public class VRDriveSpot : MonoBehaviour
         }
 
 
-        // Odometry logic
-        if (odometrySubscriber != null)
-        {
-            newPos = odometrySubscriber.PublishedPosition;
-            newRot = odometrySubscriber.PublishedRotation;
+        //// Odometry logic
+        //if (odometrySubscriber != null)
+        //{
+        //    newPos = odometrySubscriber.PublishedPosition;
+        //    newRot = odometrySubscriber.PublishedRotation;
 
-            if (lastOdomPos == null || lastOdomPos == Vector3.zero)
-            {
-                lastOdomPos = newPos;
-                lastOdomRot = newRot;
-            }
-            else if (!vectorEqual(lastOdomPos, newPos) || !quatEqual(lastOdomRot, newRot))
-            {
-                lastOdomChangeStamp = odometrySubscriber.timeStamp;
-                //Debug.Log("Depth was frozen at " + lastOdomChangeStamp);
+        //    if (lastOdomPos == null || lastOdomPos == Vector3.zero)
+        //    {
+        //        lastOdomPos = newPos;
+        //        lastOdomRot = newRot;
+        //    }
+        //    else if (!vectorEqual(lastOdomPos, newPos) || !quatEqual(lastOdomRot, newRot))
+        //    {
+        //        lastOdomChangeStamp = odometrySubscriber.timeStamp;
+        //        //Debug.Log("Depth was frozen at " + lastOdomChangeStamp);
 
-                //Debug.Log(odometrySubscriber.PublishedTransform.position);
-                // Get the transform between the two
-                relativePos = newPos - lastOdomPos;
-                relativeRot = newRot * Quaternion.Inverse(lastOdomRot);
+        //        //Debug.Log(odometrySubscriber.PublishedTransform.position);
+        //        // Get the transform between the two
+        //        relativePos = newPos - lastOdomPos;
+        //        relativeRot = newRot * Quaternion.Inverse(lastOdomRot);
 
-                Debug.Log("Difference in position: " + relativePos + ", difference in rotation: " + relativeRot);
+        //        Debug.Log("Difference in position: " + relativePos + ", difference in rotation: " + relativeRot);
 
-                // Freeze point clouds, and move the them to undo that transform
-                foreach (DrawMeshInstanced dmi in pointClouds)
-                {
-                    dmi.setCloudFreeze(true);
-                    dmi.transform.position -= relativePos;
-                    dmi.transform.rotation = Quaternion.Inverse(relativeRot) * dmi.transform.rotation;
-                }
+        //        // Freeze point clouds, and move the them to undo that transform
+        //        foreach (DrawMeshInstanced dmi in pointClouds)
+        //        {
+        //            dmi.setCloudFreeze(true);
+        //            dmi.transform.position -= relativePos;
+        //            dmi.transform.rotation = Quaternion.Inverse(relativeRot) * dmi.transform.rotation;
+        //        }
 
-                // Set transform
-                lastOdomPos = newPos;
-                lastOdomRot = newRot;
+        //        // Set transform
+        //        lastOdomPos = newPos;
+        //        lastOdomRot = newRot;
 
-                // Mark that the depth has been changed
-                for (int i = 0; i < depthsTempChanged.Length; i++)
-                {
-                    depthsTempChanged[i] = true;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < pointClouds.Length; i++)
-                {
-                    // if depth has been frozen and has been updated more recently than odometry
-                    if (depthsTempChanged[i] && depthSubscribers[i].timestamp_synced > lastOdomChangeStamp)
-                    {
-                        Debug.Log("Depth was unfrozen for subscriber " + (i + 1) + " at " + depthSubscribers[i].timestamp_synced);
-                        // Unfreeze the point clouds and move them back to their original relative location
-                        pointClouds[i].setCloudFreeze(false);
-                        pointClouds[i].transform.localPosition = origCloudTransforms[i].Item1;
-                        pointClouds[i].transform.localRotation = origCloudTransforms[i].Item2;
-                        depthsTempChanged[i] = false;
-                    }
-                }
-            }
-        }
+        //        // Mark that the depth has been changed
+        //        for (int i = 0; i < depthsTempChanged.Length; i++)
+        //        {
+        //            depthsTempChanged[i] = true;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < pointClouds.Length; i++)
+        //        {
+        //            // if depth has been frozen and has been updated more recently than odometry
+        //            if (depthsTempChanged[i] && depthSubscribers[i].timestamp_synced > lastOdomChangeStamp)
+        //            {
+        //                Debug.Log("Depth was unfrozen for subscriber " + (i + 1) + " at " + depthSubscribers[i].timestamp_synced);
+        //                // Unfreeze the point clouds and move them back to their original relative location
+        //                pointClouds[i].setCloudFreeze(false);
+        //                pointClouds[i].transform.localPosition = origCloudTransforms[i].Item1;
+        //                pointClouds[i].transform.localRotation = origCloudTransforms[i].Item2;
+        //                depthsTempChanged[i] = false;
+        //            }
+        //        }
+        //    }
+        //}
     }
 
 

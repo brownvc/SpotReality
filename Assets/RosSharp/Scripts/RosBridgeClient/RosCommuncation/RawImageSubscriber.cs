@@ -144,7 +144,10 @@ namespace RosSharp.RosBridgeClient
                 bytes[1] = data[i + 1];
                 depthVal = (BitConverter.ToUInt16(bytes)) / 1000.0f;
 
-                //depthVal = data[i] / 100.0f;
+                //Decompress the RangeLinear compression
+                //depthVal = data[i] / 255f;
+                //depthVal *= farPlane;
+                //depthVal /= 1000.0f;
 
                 image_data[j] = depthVal;
                 image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
