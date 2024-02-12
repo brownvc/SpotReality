@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147699, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147701, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_Enabled
@@ -1042,6 +1042,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 320
+  voxel_y: 160
+  voxel_z: 240
+  voxel_size: 0.0125
+  threshold_distance: 0.3
+  truncation_scale: 3
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
   depth_image: {fileID: 0}
@@ -1051,6 +1057,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 442599355}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 91226eeebf6e12e4c842141808974e0e, type: 3}
+  preprocess_shader: {fileID: 7200000, guid: 67a2737c8313d3743b9f929b447f4dcd, type: 3}
+  tsdf_shader: {fileID: 7200000, guid: 27cef79403145b8479554a8b51c0f543, type: 3}
+  postprocess_shader: {fileID: 7200000, guid: 886a8567cc955714883134490b0965e0, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -1064,8 +1073,8 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  size_scale: 0.0045
-  use_saved_meshes: 0
+  size_scale: 0.0068
+  use_saved_meshes: 1
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,6 +1487,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: c42e37b95e20fb04f872bdd0b7807356, type: 3}
   depth_image: {fileID: 0}
@@ -1487,6 +1502,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 1646176758}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 764c8fe0e0f4ee849a5f2a047ca415e2, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -1498,10 +1516,10 @@ MonoBehaviour:
   FX: 330.72
   FY: 329.55
   facedAngle: 0
-  t: 0
+  t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1 &177439707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,6 +2579,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
   depth_image: {fileID: 0}
@@ -2570,6 +2594,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -2652,7 +2679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064280, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064282, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_Enabled
@@ -3717,6 +3744,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
   depth_image: {fileID: 0}
@@ -3726,6 +3759,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 565983654}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 11f006e6df9b1c14e97fe62b00245f7d, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -3740,7 +3776,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -3969,6 +4005,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
   depth_image: {fileID: 0}
@@ -3978,6 +4020,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -6439,7 +6484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5920217393054607765, guid: aaca05b770704194896f68fc1f7d9afe, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5920217393054607767, guid: aaca05b770704194896f68fc1f7d9afe, type: 3}
       propertyPath: m_Enabled
@@ -7214,6 +7259,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 3c04cbdd3edffc0448f55c44039436fa, type: 3}
   depth_image: {fileID: 0}
@@ -7223,6 +7274,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 944201364}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 5598efa8338f16642a497c645ac264c3, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -7234,10 +7288,10 @@ MonoBehaviour:
   FX: 331.04
   FY: 330.051
   facedAngle: 0
-  t: 0
+  t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1001 &1145622212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9270,7 +9324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5448052310388850899, guid: db9e50740c0f73549a7601adb02d77c3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5448052310388850901, guid: db9e50740c0f73549a7601adb02d77c3, type: 3}
       propertyPath: m_Enabled
@@ -10327,6 +10381,83 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /spot/get_intrinsics
+--- !u!1 &1520013946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1520013948}
+  - component: {fileID: 1520013947}
+  m_Layer: 0
+  m_Name: front_left_cloud
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1520013947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520013946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
+  range: 1e+13
+  color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
+  depth_image: {fileID: 0}
+  imageScriptIndex: 0
+  material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
+  depthSubscriber: {fileID: 1673597984}
+  colorSubscriber: {fileID: 442599355}
+  savePointCloud: 0
+  compute: {fileID: 7200000, guid: 91226eeebf6e12e4c842141808974e0e, type: 3}
+  preprocess_shader: {fileID: 7200000, guid: 67a2737c8313d3743b9f929b447f4dcd, type: 3}
+  tsdf_shader: {fileID: 7200000, guid: 27cef79403145b8479554a8b51c0f543, type: 3}
+  postprocess_shader: {fileID: 7200000, guid: 886a8567cc955714883134490b0965e0, type: 3}
+  target: {fileID: 3465647789006909972}
+  auxTarget: {fileID: 0}
+  noise_range: 0
+  downsample: 1
+  height: 480
+  width: 640
+  CX: 318
+  CY: 236
+  FX: 329.64
+  FY: 328.62
+  facedAngle: 0
+  t: 1
+  pS: 1
+  size_scale: 0.02
+  use_saved_meshes: 1
+--- !u!4 &1520013948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520013946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12252,6 +12383,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
   depth_image: {fileID: 0}
@@ -12261,6 +12398,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 1510830380}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -12275,7 +12415,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13782,6 +13922,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 500926c50d135d14f88f797ffc7a96f3, type: 3}
   depth_image: {fileID: 0}
@@ -13791,6 +13937,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 1243440617}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: d8db540b250f7e346bca7c27140216c2, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -13802,10 +13951,10 @@ MonoBehaviour:
   FX: 330.11
   FY: 329.17
   facedAngle: 0
-  t: 0
+  t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1 &2133151779
 GameObject:
   m_ObjectHideFlags: 0
@@ -25860,6 +26009,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 0}
   depth_image: {fileID: 0}
@@ -25869,6 +26024,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -26228,6 +26386,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 0}
   depth_image: {fileID: 0}
@@ -26237,6 +26401,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -27053,6 +27220,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voxel_x: 0
+  voxel_y: 0
+  voxel_z: 0
+  voxel_size: 0
+  threshold_distance: 0
+  truncation_scale: 0
   range: 1e+13
   color_image: {fileID: 0}
   depth_image: {fileID: 0}
@@ -27062,6 +27235,9 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  preprocess_shader: {fileID: 0}
+  tsdf_shader: {fileID: 0}
+  postprocess_shader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0

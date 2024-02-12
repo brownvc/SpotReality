@@ -40,6 +40,7 @@ Shader "Custom/InstancedIndirectColor" {
             float pS;                   // point scalar
 
             StructuredBuffer<MeshProperties> _Properties;
+            StructuredBuffer<MeshProperties> uv_coord;
 
             v2f vert(appdata_t i, uint instanceID: SV_InstanceID) {
                 v2f o;
@@ -83,8 +84,12 @@ Shader "Custom/InstancedIndirectColor" {
                 //o.color.r = instanceID * 0.000003;
                 
                 float id = float(instanceID);
-
-                float4 coor = {1 - (iii - floor(iii * screenData.z) * screenData.x) * width, floor(iii * screenData.z) * height, 0.0, 0.0};
+                
+                float posx = _Properties[instanceID].pos.x;
+                float posy = _Properties[instanceID].pos.y;
+                //float4 coor = {1 - (iii - floor(iii * screenData.z) * screenData.x) * width, floor(iii * screenData.z) * height, 0.0, 0.0};
+                float4 coor = {uv_coord[instanceID].pos.x, uv_coord[instanceID].pos.y, 0.0, 0.0};
+                //float4 coor = {1.0 - ((posy - 0.5) / 2.1) / 2.0 + 0.5, (posx - 0.1) / 3.2, 0.0, 0.0};
                 
                 //float4 coor = {floor(instanceID * width), floor(instanceID * width), 0.0, 0.0};
                 float2 uv = TRANSFORM_TEX(coor.xy, _colorMap);

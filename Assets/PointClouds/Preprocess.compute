@@ -1,0 +1,88 @@
+#pragma kernel CSMain1
+#pragma kernel CSMain2
+#define K 30
+
+struct MeshProperties {
+    float4 pos;
+};
+
+RWStructuredBuffer<MeshProperties> _Properties;
+
+// We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
+// imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
+[numthreads(64, 1, 1)]
+void CSMain1(uint3 id : SV_DispatchThreadID) {
+    uint index = id.x;
+    float meanDistanceThreshold = 0.1;
+
+    if (index >= _Properties.Length) return; // Guard against out-of-bounds access
+
+    float kNearestDistances[K];
+    for (int i = 0; i < K; i++) {
+        kNearestDistances[i] = 3.402823466e+38F;
+    }
+
+    float totalDistance = 0;
+    float meanDistance = 0;
+
+    for (uint i = 0; i < _Properties.Length; i++) {
+        if (i != index) {
+            //float d = distance(_Properties[index].pos.xyz, _Properties[i].pos.xyz);
+            float d = sqrt(dot(_Properties[index].pos - _Properties[i].pos, _Properties[index].pos - _Properties[i].pos));
+            // Simplified "insertion" into a sorted list of k nearest distances
+            for (int j = 0; j < K; j++) {
+                if (d < kNearestDistances[j]) {
+                    // Shift distances and insert the new distance
+                    for (int k = K - 1; k > j; k--) {
+                        kNearestDistances[k] = kNearestDistances[k - 1];
+                    }
+                    kNearestDistances[j] = d;
+                    break;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < K; i++) {
+        meanDistance += kNearestDistances[i];
+    }
+    meanDistance /= K;
+
+    if (meanDistance > meanDistanceThreshold) {
+        _Properties[index].pos.x = 0;
+        _Properties[index].pos.y = 0;
+        _Properties[index].pos.z = 0;
+    }
+}
+
+
+// We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
+// imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
+[numthreads(64, 1, 1)]
+void CSMain2(uint3 id : SV_DispatchThreadID) {
+    float radius = 0.1f;
+    uint minNeighbors = 50;
+    uint index = id.x;
+    if (index >= _Properties.Length) return; // Bounds check
+
+    uint count = 0;
+
+    // Check against all other points (naive approach)
+    for (uint i = 0; i < _Properties.Length; ++i)
+    {
+        if (i != index)
+        {
+            if (sqrt(dot(_Properties[index].pos - _Properties[i].pos, _Properties[index].pos - _Properties[i].pos)) <= radius)
+            {
+                count++;
+            }
+        }
+    }
+
+    if (count < minNeighbors)
+    {
+        _Properties[index].pos.x = 0;
+        _Properties[index].pos.y = 0;
+        _Properties[index].pos.z = 0;
+    }
+}

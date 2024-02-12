@@ -1,0 +1,49 @@
+#pragma kernel CSMain
+
+#define DIMX 320
+
+struct MeshProperties {
+    float4 pos;
+};
+
+RWStructuredBuffer<MeshProperties> _Properties;
+RWStructuredBuffer<float> tsdfVolume;
+float voxel_size;
+float threshold_dis;
+int dimy;
+int dimz;
+
+// We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
+// imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
+[numthreads(DIMX, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    uint3 voxelIndex = uint3(threadId.x, groupId.y, groupId.z); // group dim (1, 84, 60)
+    uint index = voxelIndex.z * DIMX * (uint)dimy + voxelIndex.y * DIMX + voxelIndex.x;
+
+    // Ensure we're within the volume bounds
+    if (voxelIndex.x >= DIMX || voxelIndex.y >= (uint)dimy || voxelIndex.z >= (uint)dimz)
+        return;
+
+    float3 voxelCenter = (float3(voxelIndex) + 0.5f) * voxel_size + float3(0.1, 0.5, 1.8);
+
+    if (tsdfVolume[index] < threshold_dis && tsdfVolume[index] > 0.0)
+    {
+        _Properties[index].pos.x = voxelCenter.x;
+        _Properties[index].pos.y = voxelCenter.y;
+        _Properties[index].pos.z = voxelCenter.z;
+        _Properties[index].pos.w = voxelCenter.z;
+    }
+    else
+    {
+        _Properties[index].pos.x = 0.0;
+        _Properties[index].pos.y = 0.0;
+        _Properties[index].pos.z = 0.0;
+        _Properties[index].pos.w = 0.0;
+    }
+    //_Properties[index].pos.x = voxelCenter.x;
+    //_Properties[index].pos.y = voxelCenter.y;
+    //_Properties[index].pos.z = voxelCenter.z;
+    //_Properties[index].pos.w = voxelCenter.z;
+
+}

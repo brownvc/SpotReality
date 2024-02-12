@@ -4,7 +4,12 @@ struct MeshProperties {
     float4 pos;
 };
 
-RWStructuredBuffer<MeshProperties> _Properties;
+//RWStructuredBuffer<float> _PropertiesX;
+//RWStructuredBuffer<float> _PropertiesY;
+//RWStructuredBuffer<float> _PropertiesZ;
+//RWStructuredBuffer<float> _PropertiesW;
+RWStructuredBuffer<MeshProperties> pp;
+
 RWStructuredBuffer<float> _Depth;
 float4x4 _GOPose;
 float4 intrinsics;
@@ -16,10 +21,10 @@ float t;
 // imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
 [numthreads(64, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID) {
-    float4 pos = _Properties[id.x].pos;
+    float4 pos = float4(0.0,0.0,0.0,0.0); // 0,0,0,0
 
     //float i = samplingSize * id.x;
-    float i = id.x * samplingSize;
+    float i = id.x * samplingSize; // i
 
     float col_y = floor(i * screenData.z);    
     float col_x = i - floor(i * screenData.z) * screenData.x;
@@ -38,7 +43,19 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};
     
     // Apply translation to existing matrix, which will be read in the shader.
-    _Properties[id.x].pos = mul(_GOPose, pos);
-    _Properties[id.x].pos.w = _Depth[depth_idx] * t + (1 - t);
+    //_PropertiesX[id.x] = mul(_GOPose, pos).x;
+    //_PropertiesY[id.x] = mul(_GOPose, pos).y;
+    //_PropertiesZ[id.x] = mul(_GOPose, pos).z;
+    pp[id.x].pos = mul(_GOPose, pos);
+    pp[id.x].pos.w = _Depth[depth_idx] * t + (1 - t);
     //_Properties[id.x].pos.w = abs(id.x * samplingSize - i);
+
+    if (pp[id.x].pos.x > 3.3 || pp[id.x].pos.x < 0.1 || pp[id.x].pos.y > 2.6 || pp[id.x].pos.y < 0.5 || pp[id.x].pos.z > 3.3 || pp[id.x].pos.z < 1.8)
+    {
+        pp[id.x].pos.x = 0.0;
+        pp[id.x].pos.y = 0.0;
+        pp[id.x].pos.z = 0.0;
+        pp[id.x].pos.w = 0.0;
+    }
+    pp[id.x].pos.w = pp[id.x].pos.z;
 }
