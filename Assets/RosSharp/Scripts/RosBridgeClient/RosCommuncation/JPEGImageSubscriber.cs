@@ -14,6 +14,7 @@ limitations under the License.
 */
 
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 namespace RosSharp.RosBridgeClient
@@ -37,6 +38,7 @@ namespace RosSharp.RosBridgeClient
         public bool printSyncTime;
         public bool printClosestTime;
         public double latest_time;
+        private bool frameUpdated;
 
         protected override void Start()
         {
@@ -57,6 +59,8 @@ namespace RosSharp.RosBridgeClient
             }
             bufferInd = 0;
             imgBuffer = new MessageTypes.Sensor.Image[bufferLength];
+            frameUpdated = false;
+
         }
 
         private void Update()
@@ -109,6 +113,7 @@ namespace RosSharp.RosBridgeClient
                 Debug.Log("Time to sync with depth: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
             }
 
+            frameUpdated = true;
             isMessageReceived = false;
         }
 
@@ -155,6 +160,13 @@ namespace RosSharp.RosBridgeClient
         public void toggleFreeze()
         {
             freezeColor = !freezeColor; 
+        }
+
+        public bool getFrameUpdated()
+        {
+            bool ret = frameUpdated;
+            frameUpdated = false;
+            return ret;
         }
 
     }

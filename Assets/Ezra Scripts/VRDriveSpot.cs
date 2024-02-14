@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using RosSharp.RosBridgeClient;
 using RosSharp.RosBridgeClient.MessageTypes.Std;
 using Unity.XR.CoreUtils;
@@ -17,13 +18,13 @@ public class VRDriveSpot : MonoBehaviour
     public InputActionReference leftPress;
     public RosSharp.RosBridgeClient.MoveSpot drive;
     public RawImageSubscriber[] depthSubscribers;
+    public JPEGImageSubscriber[] colorSubscribers; // Must be in the same order as depthSubscribers
     public OdometrySubscriber odometrySubscriber;
     public DrawMeshInstanced[] pointClouds;
 
     private Vector3 lastOdomPos;
     private Quaternion lastOdomRot;
     private Tuple<Vector3, Quaternion>[] origCloudTransforms; // Original location of each point cloud
-    private double lastOdomChangeStamp;
     private bool[] depthsTempChanged;
 
     
@@ -43,7 +44,6 @@ public class VRDriveSpot : MonoBehaviour
         }
 
         depthsTempChanged = new bool[pointClouds.Length];
-
     }
 
     void Update()
@@ -90,7 +90,6 @@ public class VRDriveSpot : MonoBehaviour
             }
         }
 
-
         //// Odometry logic
         //if (odometrySubscriber != null)
         //{
@@ -104,20 +103,14 @@ public class VRDriveSpot : MonoBehaviour
         //    }
         //    else if (!vectorEqual(lastOdomPos, newPos) || !quatEqual(lastOdomRot, newRot))
         //    {
-        //        lastOdomChangeStamp = odometrySubscriber.timeStamp;
-        //        //Debug.Log("Depth was frozen at " + lastOdomChangeStamp);
-
-        //        //Debug.Log(odometrySubscriber.PublishedTransform.position);
         //        // Get the transform between the two
         //        relativePos = newPos - lastOdomPos;
         //        relativeRot = newRot * Quaternion.Inverse(lastOdomRot);
-
-        //        Debug.Log("Difference in position: " + relativePos + ", difference in rotation: " + relativeRot);
+        //        //relativeRot *= new Quaternion(0.5f,0.5f,0.5f,0f);
 
         //        // Freeze point clouds, and move the them to undo that transform
         //        foreach (DrawMeshInstanced dmi in pointClouds)
         //        {
-        //            dmi.setCloudFreeze(true);
         //            dmi.transform.position -= relativePos;
         //            dmi.transform.rotation = Quaternion.Inverse(relativeRot) * dmi.transform.rotation;
         //        }
@@ -132,20 +125,15 @@ public class VRDriveSpot : MonoBehaviour
         //            depthsTempChanged[i] = true;
         //        }
         //    }
-        //    else
+            
+        //    // Reset position if depth frame has changed
+        //    for (int i = 0; i < pointClouds.Length; i++)
         //    {
-        //        for (int i = 0; i < pointClouds.Length; i++)
+        //        if (depthsTempChanged[i] && colorSubscribers[i].getFrameUpdated())
         //        {
-        //            // if depth has been frozen and has been updated more recently than odometry
-        //            if (depthsTempChanged[i] && depthSubscribers[i].timestamp_synced > lastOdomChangeStamp)
-        //            {
-        //                Debug.Log("Depth was unfrozen for subscriber " + (i + 1) + " at " + depthSubscribers[i].timestamp_synced);
-        //                // Unfreeze the point clouds and move them back to their original relative location
-        //                pointClouds[i].setCloudFreeze(false);
-        //                pointClouds[i].transform.localPosition = origCloudTransforms[i].Item1;
-        //                pointClouds[i].transform.localRotation = origCloudTransforms[i].Item2;
-        //                depthsTempChanged[i] = false;
-        //            }
+        //            pointClouds[i].transform.localPosition = origCloudTransforms[i].Item1;
+        //            pointClouds[i].transform.localRotation = origCloudTransforms[i].Item2;
+        //            depthsTempChanged[i] = false;
         //        }
         //    }
         //}
