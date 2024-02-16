@@ -104,7 +104,10 @@ namespace RosSharp.RosBridgeClient
 
             data = image.data;
             timestamp_proc = image.header.stamp;
-            farPlane = 7000f;
+
+            // HACK -- width is actually the far plane
+            farPlane = image.width;
+            //farPlane = 4000f;
 
             // Thread the expensive processing of depth data
             if (messageThread == null || !messageThread.IsAlive)
@@ -136,12 +139,22 @@ namespace RosSharp.RosBridgeClient
             }
 
             // Initialize the buffer containing past frame values for each pixel
-            if (image_data_cbuffer == null || clearCbuf)
+            if (image_data_cbuffer == null)
             {
                 image_data_cbuffer_pos = 0;
                 image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
                 image_data_pixcount = new byte[image_data.Length];
                 image_data_sum = new float[image_data.Length];
+            }
+            else if (clearCbuf)
+            {
+                image_data_cbuffer_pos = 0;
+                Array.Clear(image_data_cbuffer, 0, image_data_cbuffer.Length);
+                Array.Clear(image_data_pixcount, 0, image_data_pixcount.Length);
+                Array.Clear(image_data_sum, 0, image_data_sum.Length);
+
+                // Don't need to keep clearing buffer
+                clearCbuf = false;
             }
 
             byte[] bytes = new byte[2];
@@ -164,26 +177,30 @@ namespace RosSharp.RosBridgeClient
 
                 image_data[j] = depthVal;
 
-                // Update this index in pixcount and sum arrays
-                if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
+                if (useDepthHistory)
                 {
-                    // Decrement from counts
-                    image_data_pixcount[j] -= 1;
+                    // Update this index in pixcount and sum arrays
+                    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
+                    {
+                        // Decrement from counts
+                        image_data_pixcount[j] -= 1;
 
-                    // subtract from sum
-                    image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
+                        // subtract from sum
+                        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
+                    }
+                    if (depthVal > 0f)
+                    {
+                        // Increment to counts
+                        image_data_pixcount[j] += 1;
+
+                        // Add to sum
+                        image_data_sum[j] += depthVal;
+                    }
+
+                    // Store this value in the buffer
+                    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
                 }
-                if (depthVal > 0f)
-                {
-                    // Increment to counts
-                    image_data_pixcount[j] += 1;
 
-                    // Add to sum
-                    image_data_sum[j] += depthVal;
-                }
-
-                // Store this value in the buffer
-                image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
                 j++;
             }
 
@@ -249,9 +266,13 @@ namespace RosSharp.RosBridgeClient
         // Turn off depth history for specified time
         public void pauseDepthHistory(float howLong)
         {
-            useDepthHistory = false;
-            clearCbuf = true;
-            
+            // If depth history already off, no need to clear cbuf
+            if (useDepthHistory)
+            {
+                clearCbuf = true;
+                useDepthHistory = false;
+            }
+
             // Turn depth on after time has passed             
             turnDepthOnTime = UnityEngine.Time.time + howLong;
         }

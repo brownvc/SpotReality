@@ -44,7 +44,7 @@ public class MoveArm : MonoBehaviour
     private float maxArmLength = .73f;
 
 
-    private bool hideSpotBody = false;
+    private bool showSpotBody = false;
     public Material translucentSpotMaterial;
     public Material opaqueSpotMaterial;
     public Material opaqueSpotArmMaterial;
@@ -57,6 +57,8 @@ public class MoveArm : MonoBehaviour
         // Set the dummy hand to the same location as the real hand
         dummyHandTransform.position = realHandTransform.position;
         dummyHandTransform.rotation = realHandTransform.rotation;
+        showSpotBody = false;
+        setSpotVisible(spotBody, showSpotBody);
     }
 
     void Update()
@@ -107,11 +109,10 @@ public class MoveArm : MonoBehaviour
                 }
             }
 
-
-            // Pause depth history for 3 seconds
+            // Pause depth history for 1.5 seconds
             foreach (RawImageSubscriber ds in depthSubscribers)
             {
-                ds.pauseDepthHistory(3f);
+                ds.pauseDepthHistory(1.5f);
             }
         }
        // Change the gripper percentage
@@ -151,12 +152,11 @@ public class MoveArm : MonoBehaviour
         // Freeze or unfreeze the hand point cloud
         if (bButton.action.WasPressedThisFrame())
         {
-            // Previous code to hide spot's body
-            //// Set invisible or visible
-            setSpotVisible(spotBody, hideSpotBody);
+            //// Switch visibility
+            showSpotBody = !showSpotBody;
 
-            //// Switch for next time
-            hideSpotBody = !hideSpotBody;
+            //// Set invisible or visible
+            setSpotVisible(spotBody, showSpotBody);
         }
     }
 
@@ -171,7 +171,7 @@ public class MoveArm : MonoBehaviour
             {
                 if (child.gameObject.GetComponent<MeshRenderer>() != null)
                 {
-                    if (visible)
+                    if (!visible)
                     {
                         if (child.gameObject.name.Contains("arm"))
                         {
@@ -211,8 +211,8 @@ public class MoveArm : MonoBehaviour
     private void OnDisable()
     {
         armPublisher.enabled = false;
-        hideSpotBody = false;
-        setSpotVisible(spotBody, false);
+        showSpotBody = false;
+        setSpotVisible(spotBody, true);
     }
 }
 

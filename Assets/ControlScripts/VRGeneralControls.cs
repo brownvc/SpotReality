@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Diagnostics;
+using RosSharp.RosBridgeClient;
 
 public class VRGeneralControls : MonoBehaviour
 {
@@ -36,7 +37,11 @@ public class VRGeneralControls : MonoBehaviour
     /* Toggle Point Cloud */
     public GameObject body;
     public DrawMeshInstanced[] pointClouds;
+    public GameObject[] toggleObjects;
     private float point_cloud_t;
+
+    /* Raw Image Subscribers */
+    public RawImageSubscriber[] depthSubscribers;
 
     /* Track time in 2D vs 3D fields */
     private Stopwatch threed_time;
@@ -68,6 +73,12 @@ public class VRGeneralControls : MonoBehaviour
                 cloud.t = point_cloud_t;
             }
 
+            /* Toggle whether the left and right are enabled at all */
+            foreach (GameObject gameObject in toggleObjects)
+            {
+                gameObject.SetActive(point_cloud_t == 0f);
+            }
+
             if (point_cloud_t == 1f)
             {
                 /* Turn on 3D stopwatch */
@@ -90,7 +101,14 @@ public class VRGeneralControls : MonoBehaviour
 
         /* Stow arm if left trigger (LT2) is pressed */
         if (LT2.action.WasPressedThisFrame())
+        {
             stow.Stow();
+            // Pause depth history for 1.5 seconds
+            foreach (RawImageSubscriber ds in depthSubscribers)
+            {
+                ds.pauseDepthHistory(1.5f);
+            }
+        }
 
         /* Switch modes if A is pressed */
         if (RA.action.WasPressedThisFrame())

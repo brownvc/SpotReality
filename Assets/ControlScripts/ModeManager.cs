@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using System.Diagnostics;
-
+using RosSharp.RosBridgeClient;
 
 public class ModeManager : MonoBehaviour
 {
@@ -15,6 +15,7 @@ public class ModeManager : MonoBehaviour
     public TextMeshProUGUI hintText;
     public string hintTextString;
     public VRGeneralControls generalControlsScript;
+    public SetFarPlane planePublisher;
 
     // Time tracking
     private Stopwatch[] stopwatches;
@@ -64,6 +65,17 @@ public class ModeManager : MonoBehaviour
         if (hintText != null)
         {
             hintText.text = "Mode: " + (currMode + 1).ToString() + " - " + mode.modeName + "\n" + hintTextString;
+        }
+
+        UnityEngine.Debug.Log(mode.name);
+        // Send far plane request
+        if (mode.name == "ControlMode - Dynamic Arm")
+        {
+            planePublisher.RequestFarPlane(2000f);
+        }
+        else
+        {
+            planePublisher.RequestFarPlane(6000f);
         }
     }
 

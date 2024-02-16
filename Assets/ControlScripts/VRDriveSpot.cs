@@ -89,54 +89,6 @@ public class VRDriveSpot : MonoBehaviour
                 ds.pauseDepthHistory(1.5f);
             }
         }
-
-        //// Odometry logic
-        //if (odometrySubscriber != null)
-        //{
-        //    newPos = odometrySubscriber.PublishedPosition;
-        //    newRot = odometrySubscriber.PublishedRotation;
-
-        //    if (lastOdomPos == null || lastOdomPos == Vector3.zero)
-        //    {
-        //        lastOdomPos = newPos;
-        //        lastOdomRot = newRot;
-        //    }
-        //    else if (!vectorEqual(lastOdomPos, newPos) || !quatEqual(lastOdomRot, newRot))
-        //    {
-        //        // Get the transform between the two
-        //        relativePos = newPos - lastOdomPos;
-        //        relativeRot = newRot * Quaternion.Inverse(lastOdomRot);
-        //        //relativeRot *= new Quaternion(0.5f,0.5f,0.5f,0f);
-
-        //        // Freeze point clouds, and move the them to undo that transform
-        //        foreach (DrawMeshInstanced dmi in pointClouds)
-        //        {
-        //            dmi.transform.position -= relativePos;
-        //            dmi.transform.rotation = Quaternion.Inverse(relativeRot) * dmi.transform.rotation;
-        //        }
-
-        //        // Set transform
-        //        lastOdomPos = newPos;
-        //        lastOdomRot = newRot;
-
-        //        // Mark that the depth has been changed
-        //        for (int i = 0; i < depthsTempChanged.Length; i++)
-        //        {
-        //            depthsTempChanged[i] = true;
-        //        }
-        //    }
-            
-        //    // Reset position if depth frame has changed
-        //    for (int i = 0; i < pointClouds.Length; i++)
-        //    {
-        //        if (depthsTempChanged[i] && colorSubscribers[i].getFrameUpdated())
-        //        {
-        //            pointClouds[i].transform.localPosition = origCloudTransforms[i].Item1;
-        //            pointClouds[i].transform.localRotation = origCloudTransforms[i].Item2;
-        //            depthsTempChanged[i] = false;
-        //        }
-        //    }
-        //}
     }
 
 
