@@ -9,8 +9,7 @@ using System.Drawing;
 public class TransformUpdater : MonoBehaviour
 {
     public UnityEngine.Transform target;
-    private ExtrinsicsSubscriber subscriber;
-    public GameObject rosConnector;
+    public ExtrinsicsSubscriber subscriber;
     public bool[] neg = new bool[7];
     public int subscriberIndex;
     private bool freezeExt = false;
@@ -19,7 +18,6 @@ public class TransformUpdater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        subscriber = rosConnector.GetComponents<ExtrinsicsSubscriber>()[subscriberIndex];
         
     }
 

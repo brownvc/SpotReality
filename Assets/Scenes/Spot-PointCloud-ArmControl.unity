@@ -5074,6 +5074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 637838614}
+  subscriber: {fileID: 0}
   rosConnector: {fileID: 1510830347}
   neg: 01000000010100
   subscriberIndex: 0
@@ -5343,6 +5344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 340593840}
+  subscriber: {fileID: 0}
   rosConnector: {fileID: 1510830347}
   neg: 01000001010100
   subscriberIndex: 1
@@ -6300,6 +6302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 95812735}
+  subscriber: {fileID: 1510830392}
   rosConnector: {fileID: 1510830347}
   neg: 01000000010100
   subscriberIndex: 3
@@ -6411,7 +6414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &944201362
 Transform:
   m_ObjectHideFlags: 0
@@ -6943,6 +6946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1023286911}
+  subscriber: {fileID: 0}
   rosConnector: {fileID: 1510830347}
   neg: 01000001010100
   subscriberIndex: 5
@@ -8527,7 +8531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1243440615
 Transform:
   m_ObjectHideFlags: 0
@@ -10047,6 +10051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1469775438}
+  subscriber: {fileID: 0}
   rosConnector: {fileID: 1510830347}
   neg: 01000001010100
   subscriberIndex: 4
@@ -11676,6 +11681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1477243967}
+  subscriber: {fileID: 1510830391}
   rosConnector: {fileID: 1510830347}
   neg: 01000000010100
   subscriberIndex: 2
@@ -11696,7 +11702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1646176756
 Transform:
   m_ObjectHideFlags: 0
