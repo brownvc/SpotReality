@@ -19,7 +19,7 @@ public class MoveArm : MonoBehaviour
     public InputActionReference LAx; // Left joystick controls slow close and open with LT1 toggle
     public InputActionReference bButton;
     public Transform spotBody;
-    public DrawMeshInstanced handCloud;
+    public DrawMeshInstanced[] cloudsToFreeze;
     public TransformUpdater handExtUpdater;
     public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
@@ -153,10 +153,15 @@ public class MoveArm : MonoBehaviour
         if (bButton.action.WasPressedThisFrame())
         {
             //// Switch visibility
-            showSpotBody = !showSpotBody;
+            //showSpotBody = !showSpotBody;
 
             //// Set invisible or visible
-            setSpotVisible(spotBody, showSpotBody);
+            //setSpotVisible(spotBody, showSpotBody);
+
+            foreach(DrawMeshInstanced cloud in cloudsToFreeze)
+            {
+                cloud.toggleFreezeCloud();
+            }
         }
     }
 
