@@ -135,10 +135,12 @@ public class DrawMeshInstanced : MonoBehaviour
 
         //generalUseProps = new MeshProperties[population];
 
-        // Use saved meshes
+        // Use saved meshesa
         if (use_saved_meshes)
         {
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            //using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            //using (var stream = File.Open("Assets/PointClouds/mesh_array_test", FileMode.Open))
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_ip_process", FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                 {
@@ -638,46 +640,43 @@ public class DrawMeshInstanced : MonoBehaviour
 
             float[] tt = new float[num_voxel];
             tsdfVolume.GetData(tt);
-
-            using (BinaryWriter writer = new BinaryWriter(File.Open("./temp.txt", FileMode.Create)))
+            using (var file = new StreamWriter("./temp.txt"))
             {
-                // Optionally, write dimensions to the file if needed.
-                writer.Write(320);
-                writer.Write(160);
-                writer.Write(240);
+                // Write dimensions at the beginning of the file
+                file.WriteLine($"{voxel_x},{voxel_y},{voxel_z}");
 
-                // Write each float to the binary file.
+                // Write array data
                 foreach (float value in tt)
                 {
-                    writer.Write(value);
+                    file.WriteLine(value);
                 }
             }
 
-                //float[] ttx = new float[population];
-                //float[] tty = new float[population];
-                //float[] ttz = new float[population];
-                //float[] ttw = new float[population];
+            //float[] ttx = new float[population];
+            //float[] tty = new float[population];
+            //float[] ttz = new float[population];
+            //float[] ttw = new float[population];
 
-                //meshPropertiesBufferX.GetData(ttx);
-                //meshPropertiesBufferY.GetData(tty);
-                //meshPropertiesBufferZ.GetData(ttz);
-                //meshPropertiesBufferW.GetData(ttw);
+            //meshPropertiesBufferX.GetData(ttx);
+            //meshPropertiesBufferY.GetData(tty);
+            //meshPropertiesBufferZ.GetData(ttz);
+            //meshPropertiesBufferW.GetData(ttw);
 
-                //List<float> ttxx = ttx.ToList();
-                //ttxx.RemoveAll(item => item > 100.0f || item < 0.0f);
+            //List<float> ttxx = ttx.ToList();
+            //ttxx.RemoveAll(item => item > 100.0f || item < 0.0f);
 
-                //List<float> ttxy = tty.ToList();
-                //ttxy.RemoveAll(item => item > 100.0f || item < 0.0f);
+            //List<float> ttxy = tty.ToList();
+            //ttxy.RemoveAll(item => item > 100.0f || item < 0.0f);
 
-                //List<float> ttxz = ttz.ToList();
-                //ttxz.RemoveAll(item => item > 100.0f || item < 0.0f);
+            //List<float> ttxz = ttz.ToList();
+            //ttxz.RemoveAll(item => item > 100.0f || item < 0.0f);
 
-                //List<float> ttxw = ttw.ToList();
-                //ttxw.RemoveAll(item => item > 100.0f || item < 0.0f);
+            //List<float> ttxw = ttw.ToList();
+            //ttxw.RemoveAll(item => item > 100.0f || item < 0.0f);
 
-                //resBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
+            //resBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
 
-                int postprocess_kernel = postprocess_shader.FindKernel("CSMain");
+            int postprocess_kernel = postprocess_shader.FindKernel("CSMain");
             postprocess_shader.SetBuffer(postprocess_kernel, "tsdfVolume", tsdfVolume);
             //tempx = new ComputeBuffer((int)population, sizeof(float));
             //tempy = new ComputeBuffer((int)population, sizeof(float));

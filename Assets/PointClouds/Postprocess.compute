@@ -1,6 +1,6 @@
 #pragma kernel CSMain
 
-#define DIMX 320
+#define DIMX 160
 
 struct MeshProperties {
     float4 pos;
@@ -27,7 +27,7 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 
     float3 voxelCenter = (float3(voxelIndex) + 0.5f) * voxel_size + float3(0.1, 0.5, 1.8);
 
-    if (tsdfVolume[index] < threshold_dis && tsdfVolume[index] > 0.0)
+    if (tsdfVolume[index] < threshold_dis && tsdfVolume[index] > -0.01f)
     {
         _Properties[index].pos.x = voxelCenter.x;
         _Properties[index].pos.y = voxelCenter.y;

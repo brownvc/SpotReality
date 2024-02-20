@@ -1042,11 +1042,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voxel_x: 320
-  voxel_y: 160
-  voxel_z: 240
-  voxel_size: 0.0125
-  threshold_distance: 0.3
+  voxel_x: 160
+  voxel_y: 80
+  voxel_z: 120
+  voxel_size: 0.025
+  threshold_distance: 0.4
   truncation_scale: 3
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  size_scale: 0.0068
+  size_scale: 0.011
   use_saved_meshes: 1
 --- !u!1 &124656486
 GameObject:

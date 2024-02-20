@@ -10,7 +10,10 @@
 #define MAXY 2.0
 #define MAXZ 4.0
 
-#define DIMX 320
+#define DIMX 160
+
+#define DH 480
+#define DW 640
 
 struct MeshProperties {
     float4 pos;
@@ -101,11 +104,19 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
         float3 voxel_camera = World2Camera(voxel_world);
         float2 voxel_image = Camera2Image(voxel_camera);
 
-        uint depth_idx = (screenData.x * (screenData.y - round(voxel_image.y) - 1)) + (screenData.x - round(voxel_image.x) - 1);
+        uint depth_idx = (screenData.x * DW / W * (screenData.y * DH / H - round(voxel_image.y * DH / H) - 1)) + (screenData.x * DW / W - round(voxel_image.x * DW / W) - 1);
         if (depth_idx < W * H)
         {
             float sdf = _Depth[depth_idx] - (voxel_world.z - _GOPose[3][2]);
             tsdfVolume[globalIndex] = clamp(sdf / (voxel_size * (float)truncation_scale), -1.0f, 1.0f);
+            //if (tsdfVolume[globalIndex] < 0.9f && tsdfVolume[globalIndex] > -0.1f)
+            //{
+            //    tsdfVolume[globalIndex] = 0.1f;
+            //}
+            //else
+            //{
+            //    tsdfVolume[globalIndex] = -1.0f;
+            //}
             uv_coord[globalIndex].pos.x = 1 - voxel_image.x / W;
             uv_coord[globalIndex].pos.y = voxel_image.y / H;
         }
