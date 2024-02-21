@@ -16109,8 +16109,10 @@ MonoBehaviour:
   toggleObjects:
   - {fileID: 944201361}
   - {fileID: 1646176755}
+  - {fileID: 1243440614}
   - {fileID: 1156904540}
   - {fileID: 10179180}
+  - {fileID: 710129522}
   depthSubscribers: []
 --- !u!222 &3465647787365961320
 CanvasRenderer:
