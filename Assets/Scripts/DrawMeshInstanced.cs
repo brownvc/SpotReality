@@ -9,11 +9,11 @@ using static RosSharp.Urdf.Link.Visual.Material;
 using System;
 using JetBrains.Annotations;
 using System.Diagnostics;
-using Debug = UnityEngine.Debug; 
-//using System;
+using Debug = UnityEngine.Debug;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
+
     public float range;
 
     public Texture2D color_image;
@@ -101,7 +101,17 @@ public class DrawMeshInstanced : MonoBehaviour
         // Use saved meshes
         if (use_saved_meshes)
         {
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = "python"; // or the full path to the Python executable
+            start.Arguments = "Assets/Scripts/processDepth.py Assets/PointClouds/mesh_array_" + imageScriptIndex; // argument
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            start.CreateNoWindow = true;
+            Process.Start(start);
+
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex + "_postprocess", FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                 {
@@ -113,6 +123,23 @@ public class DrawMeshInstanced : MonoBehaviour
                     }
                 }
             }
+
+            using (FileStream file = File.Create("Assets/PointClouds/mesh_array_temp" + imageScriptIndex))
+            {
+                using (BinaryWriter writer = new BinaryWriter(file))
+                {
+                    writer.Write((int)depth_ar.Length);
+                    foreach (float value in depth_ar)
+                    {
+                        writer.Write(value);
+                    }
+                }
+            }
+
+            stopwatch.Stop();
+            Debug.Log($"Execution Time: {stopwatch.ElapsedMilliseconds} ms");
+
+
             // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
             depth_image.SetPixelData(depth_ar, 0);
@@ -422,7 +449,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Update()
     {
-        
+
         //Debug.Log("UPDATE");
         int kernel = compute.FindKernel("CSMain");
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
