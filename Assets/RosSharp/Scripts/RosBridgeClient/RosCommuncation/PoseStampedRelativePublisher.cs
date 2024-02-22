@@ -34,7 +34,7 @@ namespace RosSharp.RosBridgeClient
             InitializeMessage();
 
             // Call update at 5 hz
-            InvokeRepeating("UpdateMessage", 0, 0.3f);        
+            InvokeRepeating("UpdateMessage", 0, 0.2f);        
         }
 
         private void InitializeMessage()
