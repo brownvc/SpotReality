@@ -105,13 +105,13 @@ public class DrawMeshInstanced : MonoBehaviour
 
             ProcessStartInfo start = new ProcessStartInfo();
             start.FileName = "python"; // or the full path to the Python executable
-            start.Arguments = "Assets/Scripts/processDepth.py Assets/PointClouds/mesh_array_" + imageScriptIndex; // argument
+            start.Arguments = "Assets/Scripts/processDepthMinimalnew.py Assets/PointClouds/mesh_array_" + imageScriptIndex; // argument
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
             start.CreateNoWindow = true;
             Process.Start(start);
 
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex + "_postprocess", FileMode.Open))
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex + "_preprocess", FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                 {
