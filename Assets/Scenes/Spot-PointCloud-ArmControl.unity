@@ -16019,13 +16019,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currMode: 0
   modes:
-  - {fileID: 5235943364053865581}
   - {fileID: 3465647788609732413}
+  - {fileID: 5235943364053865581}
   UICanvases:
   - {fileID: 3465647789049534246}
   - {fileID: 5235943365319495258}
   hintText: {fileID: 5235943365568112135}
-  hintTextString: Press Y to Toggle UI
+  hintTextString: ' Mode: uninitialized'
   generalControlsScript: {fileID: 3465647787329320719}
   planePublisher: {fileID: 1510830395}
 --- !u!4 &3465647787329320715
@@ -19782,6 +19782,7 @@ MonoBehaviour:
   pointClouds:
   - {fileID: 112187588}
   - {fileID: 545284150}
+  defaultLow: 0
 --- !u!114 &3465647788609732413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23070,8 +23071,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 16.7}
+  m_SizeDelta: {x: 0, y: -33.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5235943364700437159
 MonoBehaviour:
@@ -23466,8 +23467,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 138.15, y: -51.4}
-  m_SizeDelta: {x: 254.36, y: 67.88}
+  m_AnchoredPosition: {x: 132.66, y: -35.9}
+  m_SizeDelta: {x: 265.33, y: 36.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5235943365568112135
 MonoBehaviour:

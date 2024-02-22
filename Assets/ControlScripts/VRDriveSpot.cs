@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Threading;
 using RosSharp.RosBridgeClient;
 using RosSharp.RosBridgeClient.MessageTypes.Std;
@@ -27,7 +28,7 @@ public class VRDriveSpot : MonoBehaviour
     private Tuple<Vector3, Quaternion>[] origCloudTransforms; // Original location of each point cloud
     private bool[] depthsTempChanged;
 
-    
+    public bool defaultLow;
 
     private float height;
     private const float HEIGHT_INC = 0.005f;
@@ -36,7 +37,14 @@ public class VRDriveSpot : MonoBehaviour
 
     void Start()
     {
-        height = 0f;
+        if (defaultLow)
+        {
+            height = HEIGHT_MIN;
+        }
+        else
+        {
+            height = 0f;
+        }
         origCloudTransforms = new Tuple<Vector3, Quaternion>[pointClouds.Length];
         for (int i = 0; i < origCloudTransforms.Length; i++ )
         {

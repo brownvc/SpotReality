@@ -64,7 +64,7 @@ public class ModeManager : MonoBehaviour
         UpdateUI("Mode: " + currMode.ToString() + " - " + mode.ToString());
         if (hintText != null)
         {
-            hintText.text = "Mode: " + (currMode + 1).ToString() + " - " + mode.modeName + "\n" + hintTextString;
+            hintText.text = " Mode: " + (currMode + 1).ToString() + " - " + mode.modeName + "\n";
         }
 
         UnityEngine.Debug.Log(mode.name);

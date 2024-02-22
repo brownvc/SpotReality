@@ -131,12 +131,6 @@ public class VRGeneralControls : MonoBehaviour
             }
         }
 
-        /* Toggle UI if Y is pressed */
-        if (LY.action.WasPressedThisFrame())
-        {
-            toggleUI();
-        }
-
     }
 
     public void toggleUI()
