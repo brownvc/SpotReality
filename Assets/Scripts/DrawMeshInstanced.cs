@@ -101,17 +101,35 @@ public class DrawMeshInstanced : MonoBehaviour
         // Use saved meshes
         if (use_saved_meshes)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
 
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = "python"; // or the full path to the Python executable
-            start.Arguments = "Assets/Scripts/processDepthMinimalnew.py Assets/PointClouds/mesh_array_" + imageScriptIndex; // argument
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = true;
-            start.CreateNoWindow = true;
-            Process.Start(start);
 
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex + "_preprocess", FileMode.Open))
+
+            //using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex + "_preprocess", FileMode.Open))
+            //{
+            //    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+            //    {
+            //        int length = reader.ReadInt32();
+            //        depth_ar = new float[length];
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            depth_ar[i] = reader.ReadSingle();
+            //        }
+            //    }
+            //}
+
+            //using (FileStream file = File.Create("Assets/PointClouds/mesh_array_part1"))
+            //{
+            //    using (BinaryWriter writer = new BinaryWriter(file))
+            //    {
+            //        writer.Write((int)depth_ar.Length);
+            //        foreach (float value in depth_ar)
+            //        {
+            //            writer.Write(value);
+            //        }
+            //    }
+            //}
+
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_part1", FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                 {
@@ -124,17 +142,9 @@ public class DrawMeshInstanced : MonoBehaviour
                 }
             }
 
-            using (FileStream file = File.Create("Assets/PointClouds/mesh_array_temp" + imageScriptIndex))
-            {
-                using (BinaryWriter writer = new BinaryWriter(file))
-                {
-                    writer.Write((int)depth_ar.Length);
-                    foreach (float value in depth_ar)
-                    {
-                        writer.Write(value);
-                    }
-                }
-            }
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            depth_ar = GetComponent<DepthPipeline2>().DepthPipeline(depth_ar);
 
             stopwatch.Stop();
             Debug.Log($"Execution Time: {stopwatch.ElapsedMilliseconds} ms");

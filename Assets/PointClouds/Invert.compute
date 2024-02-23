@@ -1,0 +1,16 @@
+#pragma kernel CSMain
+#define H 480
+#define W 640
+
+RWBuffer<float> depth;
+
+// dim is (1, H, 1)
+[numthreads(W, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    uint index = threadId.x + groupId.y * W;
+    if (depth[index] > 0.1f)
+    {
+        depth[index] = 100.0f - depth[index];
+    }
+}

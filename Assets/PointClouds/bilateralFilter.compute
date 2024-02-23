@@ -1,0 +1,45 @@
+#pragma kernel CSMain
+#define H 480
+#define W 640
+
+RWBuffer<float> depth;
+
+float sigmaColor = 0.5;
+float sigmaSpace = 2.0;
+
+float Gaussian(float x, float sigma) {
+    return exp(-((x * x) / (2.0 * sigma * sigma)));
+}
+
+[numthreads(W, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+	uint index = threadId.x + groupId.y * W;
+    float centralColor = depth[index];
+    float finalColor = 0.0f;
+    float totalWeight = 0.0f;
+
+    // Define the size of the kernel
+    int kernelRadius = 2; // For a 5x5 kernel
+
+	if (depth[index] > 0.1f && threadId.x >= 2 && threadId.x < W - 2 && groupId.y >= 2 && groupId.y < H - 2)
+    {
+		for (int dy = -kernelRadius; dy <= kernelRadius; ++dy) 
+		{
+			for (int dx = -kernelRadius; dx <= kernelRadius; ++dx) 
+			{
+				uint pos = threadId.x + dx + (groupId.y + dy) * W;
+
+				float neighborColor = depth[pos];
+
+				float weight = Gaussian(neighborColor - centralColor, sigmaColor) * Gaussian(length(float2(dx, dy)), sigmaSpace);
+
+				finalColor += neighborColor * weight;
+				totalWeight += weight;
+			}
+		}
+
+		finalColor /= totalWeight;
+		depth[index] = finalColor;
+    }
+}

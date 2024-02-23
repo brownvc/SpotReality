@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147699, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147701, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_Enabled
@@ -1008,6 +1008,7 @@ GameObject:
   m_Component:
   - component: {fileID: 112187587}
   - component: {fileID: 112187588}
+  - component: {fileID: 112187589}
   m_Layer: 0
   m_Name: front_left_cloud
   m_TagString: Untagged
@@ -1066,6 +1067,23 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 1
+--- !u!114 &112187589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112187586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ec55e02811bdcb4abba629b834a2d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,209 @@
+#pragma kernel CSMain
+#define H 480
+#define W 640
+
+#define MINX 0.0
+#define MINY 0.0
+#define MINZ 1.0
+
+#define MAXX 4.0
+#define MAXY 2.0
+#define MAXZ 4.0
+
+#define DIMX 160
+
+#define DH 480
+#define DW 640
+
+struct MeshProperties {
+    float4 pos;
+};
+
+//RWStructuredBuffer<MeshProperties> pointCloud;
+RWStructuredBuffer<float> tsdfVolume;
+//RWStructuredBuffer<MeshProperties> res;
+RWStructuredBuffer<MeshProperties> uv_coord;
+RWStructuredBuffer<float> _Depth;
+
+float4 intrinsics;
+float4x4 _GOPose;
+float4x4 _GOPoseInverse;
+float4 screenData;
+
+int dimy;
+int dimz;
+float voxel_size;
+int truncation_scale;
+
+//RWStructuredBuffer<float> test_x;
+//RWStructuredBuffer<float> test_y;
+//RWStructuredBuffer<float> test_z;
+
+//uint3 MapPointToNearestVoxel(float3 p)
+//{
+//    float3 normalizedPoint = p - float3(MINX, MINY, MINZ);
+//    uint3 voxelIndex = (uint3)(normalizedPoint / VOXEL + 0.5f);
+
+//    return voxelIndex;
+//}
+
+//float3 Pixel2World(uint2 pixel, float depth)
+//{
+//    float4 res;
+//    res.x = ((float)pixel.y - intrinsics.y) * depth / intrinsics.z;
+//    res.y = ((float)pixel.x - intrinsics.x) * depth / intrinsics.w;
+//    res.z = depth;
+//    res.w = 1.0;
+
+//    res = mul(_GOPose, res);
+//    return float3(res.x, res.y, res.z);
+//}
+
+//float CalculateTSDF(uint3 p, float d)
+//{
+//    float sdf = d - p.z * VOXEL + MINZ;
+//    return clamp(sdf / (VOXEL * TSCALE), -1.0f, 1.0f);
+//}
+
+//uint GetVoxelIndex(uint3 p)
+//{
+//    return p.z * DIMX * DIMY + p.y * DIMX + p.x;
+//}
+
+float3 GetVoxelPos(uint3 p)
+{
+    return (float3(p) + 0.5f) * voxel_size + float3(MINX, MINY, MINZ);
+}
+
+float3 World2Camera(float3 p)
+{
+    float4 hp = float4(p.x, p.y, p.z, 1.0);
+    hp = mul(_GOPoseInverse, hp);
+    return float3(hp.x, hp.y, hp.z);
+}   
+
+float2 Camera2Image(float3 p)
+{
+    float2 res;
+    res.y = p.x * intrinsics.z / p.z + intrinsics.y;
+    res.x = p.y * intrinsics.w / p.z + intrinsics.x;
+    return res;
+
+}  
+
+// We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
+// imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
+[numthreads(DIMX, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    for (uint z = 0; z < (uint)dimz; z++)
+    {
+        uint3 voxelIndex = uint3(threadId.x, groupId.y, z);
+        uint globalIndex = voxelIndex.z * DIMX * (uint)dimy + voxelIndex.y * DIMX + voxelIndex.x;
+        float3 voxel_world = GetVoxelPos(voxelIndex);
+        float3 voxel_camera = World2Camera(voxel_world);
+        float2 voxel_image = Camera2Image(voxel_camera);
+
+        uint depth_idx = (screenData.x * DW / W * (screenData.y * DH / H - round(voxel_image.y * DH / H) - 1)) + (screenData.x * DW / W - round(voxel_image.x * DW / W) - 1);
+        if (depth_idx < W * H)
+        {
+            float sdf = _Depth[depth_idx] - (voxel_world.z - _GOPose[3][2]);
+            tsdfVolume[globalIndex] = clamp(sdf / (voxel_size * (float)truncation_scale), -1.0f, 1.0f);
+            //if (tsdfVolume[globalIndex] < 0.9f && tsdfVolume[globalIndex] > -0.1f)
+            //{
+            //    tsdfVolume[globalIndex] = 0.1f;
+            //}
+            //else
+            //{
+            //    tsdfVolume[globalIndex] = -1.0f;
+            //}
+            uv_coord[globalIndex].pos.x = 1 - voxel_image.x / W;
+            uv_coord[globalIndex].pos.y = voxel_image.y / H;
+        }
+        else
+        {
+            tsdfVolume[globalIndex] = -1.0f;
+        }
+
+    //float voxelSize = 0.025; 
+    //float truncationDistance = voxelSize * 3;
+    //uint index = voxelIndex.z * 128 * 84 + voxelIndex.y * 128 + voxelIndex.x;
+    }
+
+    //uint2 pixel_index = uint2(threadId.x, groupId.y);
+    //int global_index = pixel_index.y * W + pixel_index.x;
+    //float3 ray_start = Pixel2World(pixel_index, MINZ);
+    //float3 ray_next = Pixel2World(pixel_index, MINZ);
+    //float3 ray_dir = normalize(ray_next - ray_start);
+    //float3 ray = ray_start;
+
+    //uint3 g = MapPointToNearestVoxel(ray_start);
+    //float tsdf = CalculateTSDF(g, pointCloud[global_index].pos.z);
+
+    //bool end = false;
+
+    //while (g.x >= 0 && g.x < DIMX && g.y >= 0 && g.y < DIMY && g.z >= 0 && g.z < DIMZ && !end)
+    //{
+    //    g.z = g.z + 1;
+    //    uint3 g_prev = g;
+    //    float tsdf_prev = tsdf;
+    //    ray = ray + ray_dir * STEP;
+
+    //    g = MapPointToNearestVoxel(ray);
+    //    tsdf = CalculateTSDF(g, pointCloud[global_index].pos.z);
+
+    //    if (abs(tsdf) < abs(tsdfVolume[GetVoxelIndex(g)]))
+    //    {
+    //        float dummy;
+    //        uint index = GetVoxelIndex(g);
+    //        InterlockedExchange(tsdfVolume[index], tsdf, dummy);
+
+    //        //InterlockedExchange(uv_coord[index].pos.x, 1.0 - (global_index - floor(global_index / W) * W) / W, dummy);
+    //        //InterlockedExchange(uv_coord[index].pos.y, floor(global_index / W) / H, dummy);
+    //    }
+
+    //    if (tsdf * tsdf_prev <= 0.0)
+    //    {
+    //        end = true;
+    //    }
+    //}
+
+
+    //uint3 voxelIndex = uint3(threadId.x, groupId.y, groupId.z); // group dim (1, 84, 60)
+    //float voxelSize = 0.025; 
+    //float truncationDistance = voxelSize * 3;
+    //uint index = voxelIndex.z * 128 * 84 + voxelIndex.y * 128 + voxelIndex.x;
+
+    //float width = 640.0;
+    //float height = 480.0;
+
+    //// Ensure we're within the volume bounds
+    //if (voxelIndex.x >= 128 || voxelIndex.y >= 84 || voxelIndex.z >= 60)
+    //    return;
+
+    //float3 voxelCenter = (float3(voxelIndex) + 0.5f) * voxelSize + float3(0.1, 0.5, 1.8);
+
+    //float minDistance = truncationDistance;
+
+    //// Iterate over the point cloud to find the nearest point (naive approach)
+    //for (uint i = 0; i < 307200; i++)
+    //{
+    //    //test_x[i] = pointCloud[i].pos.x;
+    //    //test_y[i] = pointCloud[i].pos.y;
+    //    //test_z[i] = pointCloud[i].pos.z;
+    //    float3 temp_p = pointCloud[i].pos.xyz;
+    //    float distance = sqrt( (voxelCenter.x - temp_p.x)*(voxelCenter.x - temp_p.x) + (voxelCenter.y - temp_p.y)*(voxelCenter.y - temp_p.y) + (voxelCenter.z - temp_p.z)*(voxelCenter.z - temp_p.z) );
+    //    if (distance < minDistance)
+    //    {
+    //        minDistance = distance;
+    //        uv_coord[index].pos.x = 1 - (i - floor(i / width) * width) / width;
+    //        uv_coord[index].pos.y = floor(i / width) / height;
+    //    }
+    //}
+
+    //// Truncate the distance and normalize it between [-1, 1]
+    //minDistance = clamp(minDistance / truncationDistance, -1.0f, 1.0f);
+
+    //// Write the TSDF value to the volume
+    //tsdfVolume[index] = minDistance;
+}

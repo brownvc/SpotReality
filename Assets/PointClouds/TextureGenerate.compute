@@ -1,0 +1,14 @@
+#pragma kernel CSMain
+#define H 480
+#define W 640
+
+RWTexture2D<float> data;
+RWBuffer<float> depth;
+
+// dim is (1, H, 1)
+[numthreads(W, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    uint2 index = uint2(threadId.x, groupId.y);
+    data[index] = depth[threadId.x + W * groupId.y];
+}
