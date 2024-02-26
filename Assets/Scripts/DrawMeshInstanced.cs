@@ -144,6 +144,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
+            depth_ar = GetComponent<DepthPipeline1>().DepthPipeline(depth_ar);
             depth_ar = GetComponent<DepthPipeline2>().DepthPipeline(depth_ar);
 
             stopwatch.Stop();

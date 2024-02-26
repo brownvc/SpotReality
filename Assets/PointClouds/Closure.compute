@@ -1,0 +1,38 @@
+#pragma kernel CSMain
+
+#define H 480
+#define W 640
+
+RWBuffer<float> depth;
+int kernelSize;
+bool isDilation; // true for dilation, false for erosion
+
+[numthreads(W, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    uint index = threadId.x + groupId.y * W;
+    float depthValue = depth[index];
+    if (depthValue <= 0.1f && threadId.x >= 2 && threadId.x < W - 2 && groupId.y >= 2 && groupId.y < H - 2)
+    {
+        int kernelRadius = (kernelSize - 1) / 2;
+        float newValue = isDilation ? 0.0f : 1000.0f; 
+
+        for (int dy = -kernelRadius; dy <= kernelRadius; ++dy)
+        {
+            for (int dx = -kernelRadius; dx <= kernelRadius; ++dx)
+            {
+                uint newDepthIdx = threadId.x + dx + (groupId.y + dy) * W;
+                if (isDilation)
+                {
+                    newValue = max(newValue, depth[newDepthIdx]);
+                }
+                else
+                {
+                    newValue = min(newValue, depth[newDepthIdx]);
+                }
+            }
+        }
+
+        depth[index] = newValue;
+    }
+}

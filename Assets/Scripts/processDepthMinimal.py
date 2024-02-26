@@ -76,6 +76,7 @@ def fill_in_multiscale(depth_map, max_depth=100.0,
     s3_closed_depths = cv2.morphologyEx(
         s2_dilated_depths, cv2.MORPH_CLOSE, FULL_KERNEL_5)
 
+    # PART 2 ONWARD
     # Median blur to remove outliers
     s4_blurred_depths = np.copy(s3_closed_depths)
     blurred = cv2.medianBlur(s3_closed_depths, 5)
