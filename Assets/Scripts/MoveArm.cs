@@ -21,7 +21,6 @@ public class MoveArm : MonoBehaviour
     public Transform spotBody;
     public DrawMeshInstanced[] cloudsToFreeze;
     public TransformUpdater handExtUpdater;
-    public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
     public VRGeneralControls generalControls;
     public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
@@ -162,6 +161,8 @@ public class MoveArm : MonoBehaviour
             {
                 cloud.toggleFreezeCloud();
             }
+
+            handExtUpdater.toggleFreeze();
         }
     }
 

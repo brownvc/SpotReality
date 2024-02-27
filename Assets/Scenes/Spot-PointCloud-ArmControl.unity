@@ -9123,7 +9123,6 @@ MonoBehaviour:
   spotBody: {fileID: 0}
   cloudsToFreeze: []
   handExtUpdater: {fileID: 0}
-  handImageSubscriber: {fileID: 0}
   gripper: {fileID: 0}
   generalControls: {fileID: 0}
   depthSubscribers: []
@@ -12392,7 +12391,6 @@ MonoBehaviour:
   spotBody: {fileID: 1399272934}
   cloudsToFreeze: []
   handExtUpdater: {fileID: 0}
-  handImageSubscriber: {fileID: 0}
   gripper: {fileID: 0}
   generalControls: {fileID: 0}
   depthSubscribers: []
@@ -23020,7 +23018,6 @@ MonoBehaviour:
   - {fileID: 545284150}
   - {fileID: 1764592201}
   handExtUpdater: {fileID: 637838618}
-  handImageSubscriber: {fileID: 1510830380}
   gripper: {fileID: 1510830367}
   generalControls: {fileID: 3465647787329320719}
   depthSubscribers:
