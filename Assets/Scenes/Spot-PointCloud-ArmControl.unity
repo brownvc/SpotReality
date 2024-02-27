@@ -2385,7 +2385,7 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
-  associatedDepth: {fileID: 0}
+  associatedDepth: {fileID: 1727925598}
   printRate: 0
   printSyncTime: 0
   printClosestTime: 0
@@ -19915,13 +19915,16 @@ MonoBehaviour:
   depthSubscribers:
   - {fileID: 1673597984}
   - {fileID: 1500417874}
+  - {fileID: 1727925598}
   colorSubscribers:
   - {fileID: 442599355}
   - {fileID: 565983654}
+  - {fileID: 240143643}
   odometrySubscriber: {fileID: 1510830352}
   pointClouds:
   - {fileID: 112187588}
   - {fileID: 545284150}
+  - {fileID: 1764592201}
   defaultLow: 0
 --- !u!114 &3465647788609732413
 MonoBehaviour:
@@ -23015,6 +23018,7 @@ MonoBehaviour:
   cloudsToFreeze:
   - {fileID: 112187588}
   - {fileID: 545284150}
+  - {fileID: 1764592201}
   handExtUpdater: {fileID: 637838618}
   handImageSubscriber: {fileID: 1510830380}
   gripper: {fileID: 1510830367}
@@ -23022,6 +23026,7 @@ MonoBehaviour:
   depthSubscribers:
   - {fileID: 1500417874}
   - {fileID: 1673597984}
+  - {fileID: 1727925598}
   armBase: {fileID: 1994087620}
   ghostArm: {fileID: 4980462626297936253}
   ghostFinger: {fileID: 4980462624635889862}
