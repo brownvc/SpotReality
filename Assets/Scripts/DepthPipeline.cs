@@ -26,9 +26,9 @@ public class DepthPipeline : MonoBehaviour
         depthBuffer.SetData(depth);
 
         // Invert
-        kernel = InvertShader.FindKernel("CSMain");
-        InvertShader.SetBuffer(kernel, "depth", depthBuffer);
-        InvertShader.Dispatch(kernel, 1, H, 1);
+        // kernel = InvertShader.FindKernel("CSMain");
+        // InvertShader.SetBuffer(kernel, "depth", depthBuffer);
+        // InvertShader.Dispatch(kernel, 1, H, 1);
 
         //// Multiscale Dilate (just a single dilate for now)
         //kernel = DilateEmptyShader.FindKernel("CSMain");
@@ -38,15 +38,15 @@ public class DepthPipeline : MonoBehaviour
 
         // Small hole closure
         // expand
-        kernel = ClosureShader.FindKernel("CSMain");
-        ClosureShader.SetBuffer(kernel, "depth", depthBuffer);
-        ClosureShader.SetInt("kernelSize", 5);
-        ClosureShader.SetBool("isDilation", true);
-        ClosureShader.Dispatch(kernel, 1, H, 1);
-        // contract
-        ClosureShader.SetInt("kernelSize", 5);
-        ClosureShader.SetBool("isDilation", false);
-        ClosureShader.Dispatch(kernel, 1, H , 1);
+        // kernel = ClosureShader.FindKernel("CSMain");
+        // ClosureShader.SetBuffer(kernel, "depth", depthBuffer);
+        // ClosureShader.SetInt("kernelSize", 5);
+        // ClosureShader.SetBool("isDilation", true);
+        // ClosureShader.Dispatch(kernel, 1, H, 1);
+        // // contract
+        // ClosureShader.SetInt("kernelSize", 5);
+        // ClosureShader.SetBool("isDilation", false);
+        // ClosureShader.Dispatch(kernel, 1, H , 1);
 
         // Median blur to remove outliers
         kernel = MedianBlurShader.FindKernel("CSMain");
@@ -60,7 +60,7 @@ public class DepthPipeline : MonoBehaviour
         DilateEmptyShader.Dispatch(kernel, 1, H, 1);
 
         // Fill large holes with masked dilations
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 3; i++)
         {
             DilateEmptyShader.SetBuffer(kernel, "depth", depthBuffer);
             DilateEmptyShader.SetInt("kernelSize", 5);
@@ -77,13 +77,15 @@ public class DepthPipeline : MonoBehaviour
         BilateralFilterShader.Dispatch(kernel, 1, H, 1);
 
         // Invert(and offset)
-        kernel = InvertShader.FindKernel("CSMain");
-        InvertShader.SetBuffer(kernel, "depth", depthBuffer);
-        //InvertShader.SetTexture(kernel, "data", depthTexture);
-        InvertShader.Dispatch(kernel, 1, H, 1);
+        // kernel = InvertShader.FindKernel("CSMain");
+        // InvertShader.SetBuffer(kernel, "depth", depthBuffer);
+        // //InvertShader.SetTexture(kernel, "data", depthTexture);
+        // InvertShader.Dispatch(kernel, 1, H, 1);
 
         float[] res = new float[H * W];
         depthBuffer.GetData(res);
+
+        depthBuffer.Release();
 
         return res;
     }

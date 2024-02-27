@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -975,6 +975,7 @@ GameObject:
   m_Component:
   - component: {fileID: 112187587}
   - component: {fileID: 112187588}
+  - component: {fileID: 112187589}
   m_Layer: 0
   m_Name: front_left_cloud
   m_TagString: Untagged
@@ -1011,8 +1012,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 0
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: 91226eeebf6e12e4c842141808974e0e, type: 3}
   target: {fileID: 1860543785}
   auxTarget: {fileID: 1163288627}
@@ -1026,8 +1031,27 @@ MonoBehaviour:
   FY: 328.62
   facedAngle: 0
   t: 1
+  pS: 0
   size_scale: 0.01
-  use_saved_meshes: 0
+  use_saved_meshes: 1
+--- !u!114 &112187589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112187586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1393,6 +1417,7 @@ GameObject:
   m_Component:
   - component: {fileID: 171996663}
   - component: {fileID: 171996664}
+  - component: {fileID: 171996665}
   m_Layer: 0
   m_Name: right_cloud
   m_TagString: Untagged
@@ -1429,8 +1454,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: c42e37b95e20fb04f872bdd0b7807356, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 5
   material: {fileID: 2100000, guid: 2ed8634ad505ab74a8ba24b04a0993f7, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: 764c8fe0e0f4ee849a5f2a047ca415e2, type: 3}
   target: {fileID: 1860543785}
   auxTarget: {fileID: 1163288627}
@@ -1444,8 +1473,27 @@ MonoBehaviour:
   FY: 329.55
   facedAngle: 1.57
   t: 1
+  pS: 0
   size_scale: 0.01
-  use_saved_meshes: 0
+  use_saved_meshes: 1
+--- !u!114 &171996665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171996662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &177439707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2271,8 +2319,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
@@ -2286,6 +2338,7 @@ MonoBehaviour:
   FY: 0
   facedAngle: 0
   t: 0
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &299861281 stripped
@@ -3914,6 +3967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 545284149}
   - component: {fileID: 545284150}
+  - component: {fileID: 545284151}
   m_Layer: 0
   m_Name: front_right_cloud
   m_TagString: Untagged
@@ -3950,8 +4004,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: 11f006e6df9b1c14e97fe62b00245f7d, type: 3}
   target: {fileID: 1860543785}
   auxTarget: {fileID: 1163288627}
@@ -3965,8 +4023,27 @@ MonoBehaviour:
   FY: 329.77
   facedAngle: 0
   t: 1
+  pS: 0
   size_scale: 0.01
-  use_saved_meshes: 0
+  use_saved_meshes: 1
+--- !u!114 &545284151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545284148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -6032,8 +6109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ce8f16a2be83441b17465f7f6b390a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dummyFinger: {fileID: 1507079563}
-  realFinger: {fileID: 1658837036}
 --- !u!4 &991331606
 Transform:
   m_ObjectHideFlags: 0
@@ -7061,6 +7136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1140544843}
   - component: {fileID: 1140544844}
+  - component: {fileID: 1140544845}
   m_Layer: 0
   m_Name: left_cloud
   m_TagString: Untagged
@@ -7097,8 +7173,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 3c04cbdd3edffc0448f55c44039436fa, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 4
   material: {fileID: 2100000, guid: be7c1be57b4cb59499bdc80a7210a944, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: 5598efa8338f16642a497c645ac264c3, type: 3}
   target: {fileID: 1860543785}
   auxTarget: {fileID: 1163288627}
@@ -7112,8 +7192,27 @@ MonoBehaviour:
   FY: 330.051
   facedAngle: -1.57
   t: 1
+  pS: 0
   size_scale: 0.01
-  use_saved_meshes: 0
+  use_saved_meshes: 1
+--- !u!114 &1140544845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140544842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1001 &1145622212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10232,7 +10331,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/odometry
   TimeStep: 0
-  PublishedTransform: {fileID: 1399272934}
+  PublishedPosition: {x: 0, y: 0, z: 0}
+  PublishedRotation: {x: 0, y: 0, z: 0, w: 0}
+  timeStamp: 0
 --- !u!114 &1510830353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10277,6 +10378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/arm_pose_stamped
   PublishedTransform: {fileID: 1507079564}
+  Offset: {fileID: 0}
   FrameId: Unity
 --- !u!114 &1510830356
 MonoBehaviour:
@@ -10379,8 +10481,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/hand_depth_in_hand_color_frame/image
   TimeStep: 0
-  data: 
-  image_data: []
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
 --- !u!114 &1510830371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10395,8 +10499,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
   TimeStep: 0
-  data: 
-  image_data: []
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
 --- !u!114 &1510830372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10411,8 +10517,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
   TimeStep: 0
-  data: 
-  image_data: []
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
 --- !u!114 &1510830373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10427,8 +10535,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/back_depth_in_visual_frame/image
   TimeStep: 0
-  data: 
-  image_data: []
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
 --- !u!114 &1510830374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10443,8 +10553,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/left_depth_in_visual_frame/image
   TimeStep: 0
-  data: 
-  image_data: []
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
 --- !u!114 &1510830375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10475,8 +10587,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Topic: /spot/stream_image/right_depth_in_visual_frame/image
   TimeStep: 0
-  data: 
-  image_data: []
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
 --- !u!114 &1510830377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10509,6 +10623,11 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!114 &1510830379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10525,6 +10644,11 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!114 &1510830380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10541,6 +10665,11 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!114 &1510830381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10557,6 +10686,11 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!114 &1510830382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10573,6 +10707,11 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!114 &1510830383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10589,6 +10728,11 @@ MonoBehaviour:
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!1001 &1545367764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12196,8 +12340,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 1860543785}
   auxTarget: {fileID: 1163288627}
@@ -12211,6 +12359,7 @@ MonoBehaviour:
   FY: 552.0291
   facedAngle: 0
   t: 0
+  pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1001 &1795693229
@@ -13866,6 +14015,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2128929575}
   - component: {fileID: 2128929576}
+  - component: {fileID: 2128929577}
   m_Layer: 0
   m_Name: back_cloud
   m_TagString: Untagged
@@ -13902,8 +14052,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 1e+13
   color_image: {fileID: 2800000, guid: 500926c50d135d14f88f797ffc7a96f3, type: 3}
+  depth_image: {fileID: 0}
   imageScriptIndex: 3
   material: {fileID: 2100000, guid: 7f3ab29675a22bc439ce629f49f7cb0e, type: 2}
+  depthSubscriber: {fileID: 0}
+  colorSubscriber: {fileID: 0}
+  savePointCloud: 0
   compute: {fileID: 7200000, guid: d8db540b250f7e346bca7c27140216c2, type: 3}
   target: {fileID: 1860543785}
   auxTarget: {fileID: 1163288627}
@@ -13917,8 +14071,27 @@ MonoBehaviour:
   FY: 329.17
   facedAngle: 3.14
   t: 1
+  pS: 0
   size_scale: 0.01
-  use_saved_meshes: 0
+  use_saved_meshes: 1
+--- !u!114 &2128929577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128929574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &2133151779
 GameObject:
   m_ObjectHideFlags: 0
