@@ -12,7 +12,7 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
     uint index = threadId.x + groupId.y * W;
     float depthValue = depth[index];
-    if (depthValue <= 0.1f && threadId.x >= 2 && threadId.x < W - 2 && groupId.y >= 2 && groupId.y < H - 2)
+    if (depthValue >= 0.1f && threadId.x >= 2 && threadId.x < W - 2 && groupId.y >= 2 && groupId.y < H - 2)
     {
         int kernelRadius = (kernelSize - 1) / 2;
         float newValue = isDilation ? 0.0f : 1000.0f; 

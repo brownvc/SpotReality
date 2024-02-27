@@ -104,18 +104,18 @@ public class DrawMeshInstanced : MonoBehaviour
 
 
 
-            //using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex + "_preprocess", FileMode.Open))
-            //{
-            //    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
-            //    {
-            //        int length = reader.ReadInt32();
-            //        depth_ar = new float[length];
-            //        for (int i = 0; i < length; i++)
-            //        {
-            //            depth_ar[i] = reader.ReadSingle();
-            //        }
-            //    }
-            //}
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                {
+                    int length = reader.ReadInt32();
+                    depth_ar = new float[length];
+                    for (int i = 0; i < length; i++)
+                    {
+                        depth_ar[i] = reader.ReadSingle();
+                    }
+                }
+            }
 
             //using (FileStream file = File.Create("Assets/PointClouds/mesh_array_part1"))
             //{
@@ -129,24 +129,25 @@ public class DrawMeshInstanced : MonoBehaviour
             //    }
             //}
 
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_part1", FileMode.Open))
-            {
-                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
-                {
-                    int length = reader.ReadInt32();
-                    depth_ar = new float[length];
-                    for (int i = 0; i < length; i++)
-                    {
-                        depth_ar[i] = reader.ReadSingle();
-                    }
-                }
-            }
+            //using (var stream = File.Open("Assets/PointClouds/mesh_array_part1", FileMode.Open))
+            //{
+            //    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+            //    {
+            //        int length = reader.ReadInt32();
+            //        depth_ar = new float[length];
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            depth_ar[i] = reader.ReadSingle();
+            //        }
+            //    }
+            //}
 
             Stopwatch stopwatch = Stopwatch.StartNew();
-
-            depth_ar = GetComponent<DepthPipeline1>().DepthPipeline(depth_ar);
-            depth_ar = GetComponent<DepthPipeline2>().DepthPipeline(depth_ar);
-
+                
+            if (imageScriptIndex == 0)
+            {
+                depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
+            }
             stopwatch.Stop();
             Debug.Log($"Execution Time: {stopwatch.ElapsedMilliseconds} ms");
 
