@@ -2320,6 +2320,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9090ae501ff9cd459bec5271d40249c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &240143640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 240143641}
+  - component: {fileID: 240143643}
+  - component: {fileID: 240143642}
+  m_Layer: 0
+  m_Name: HandColorSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &240143641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240143640}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2049993858}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &240143642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240143640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.160.231:9090
+--- !u!114 &240143643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240143640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/hand_color_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 1823382995}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
 --- !u!1 &283964066
 GameObject:
   m_ObjectHideFlags: 0
@@ -5034,7 +5104,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064280, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 93292939706064282, guid: 31c0dca9fef715e40819f09ced21ffb1, type: 3}
       propertyPath: m_Enabled
@@ -5074,7 +5144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 637838614}
-  subscriber: {fileID: 0}
+  subscriber: {fileID: 1510830387}
   neg: 01000000010100
   subscriberIndex: 0
 --- !u!1001 &660498808
@@ -10941,7 +11011,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510830347}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
   m_Name: 
@@ -12677,6 +12747,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GeometryType: 3
+--- !u!1 &1727925595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1727925596}
+  - component: {fileID: 1727925598}
+  - component: {fileID: 1727925597}
+  m_Layer: 0
+  m_Name: HandDepthSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1727925596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727925595}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2049993858}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1727925597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727925595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.160.231:9090
+--- !u!114 &1727925598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727925595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/hand_depth_in_hand_color_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 1
 --- !u!1 &1750092286
 GameObject:
   m_ObjectHideFlags: 0
@@ -13075,8 +13212,8 @@ MonoBehaviour:
   depth_image: {fileID: 0}
   imageScriptIndex: 1
   material: {fileID: 2100000, guid: b56000fea1486844bae3b0308966ec96, type: 2}
-  depthSubscriber: {fileID: 1510830370}
-  colorSubscriber: {fileID: 1510830380}
+  depthSubscriber: {fileID: 1727925598}
+  colorSubscriber: {fileID: 240143643}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
   target: {fileID: 3465647789006909972}
@@ -14323,6 +14460,8 @@ Transform:
   - {fileID: 565983653}
   - {fileID: 1673597983}
   - {fileID: 442599354}
+  - {fileID: 1727925596}
+  - {fileID: 240143641}
   - {fileID: 1510830351}
   - {fileID: 944201362}
   - {fileID: 1646176756}
@@ -16106,6 +16245,7 @@ MonoBehaviour:
   pointClouds:
   - {fileID: 112187588}
   - {fileID: 545284150}
+  - {fileID: 1764592201}
   toggleObjects:
   - {fileID: 944201361}
   - {fileID: 1646176755}
