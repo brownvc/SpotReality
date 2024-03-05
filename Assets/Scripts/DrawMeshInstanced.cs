@@ -60,7 +60,11 @@ public class DrawMeshInstanced : MonoBehaviour
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
-
+    private float[ , ] depth_ar_cbuffer; // the buffer that we maintain of the last depth_ar_cbuffer_length depth_ars
+    private int depth_ar_cbuffer_length; // the maximum number of depth_ars to keep in the buffer
+    private int depth_ar_cbuffer_pos; // the current position in the buffer
+    private float[] depth_ar_cbuffer_avg; // the average of the depth_ars in the buffer (may not be necessary)
+    
     private MeshProperties[] globalProps;
 
     //private MeshProperties[] generalUseProps;
@@ -436,6 +440,38 @@ public class DrawMeshInstanced : MonoBehaviour
         else
         {
             depth_ar = depthSubscriber.getDepthArr();
+            depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
+
+            if (depth_ar_cbuffer == null)
+            {
+                depth_ar_cbuffer = new float[depth_ar_cbuffer_length, depth_ar.Length];
+            }
+            else if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
+            {
+                depth_ar_cbuffer_pos = 0;
+            }
+            
+            for (int i = 0; i < depth_ar.Length; i++)
+            {
+                depth_ar_cbuffer[depth_ar_cbuffer_pos, i] = depth_ar[i];
+            }
+
+            depth_ar_cbuffer_pos += 1;
+
+            // starting code for averaging the depth_ar_cbuffer, will probably need to do this in compute shader
+            if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
+            {
+                depth_ar_cbuffer_avg = new float[depth_ar.Length];
+                for (int i = 0; i < depth_ar.Length; i++)
+                {
+                    float sum = 0;
+                    for (int j = 0; j < depth_ar_cbuffer_length; j++)
+                    {
+                        sum += depth_ar_cbuffer[j, i];
+                    }
+                    depth_ar_cbuffer_avg[i] = sum / depth_ar_cbuffer_length;
+                }
+            }
         }
 
         // save the point cloud if desired
