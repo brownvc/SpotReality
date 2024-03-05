@@ -455,6 +455,7 @@ public class DrawMeshInstanced : MonoBehaviour
             }
             else if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
             {
+                is_cbuffer_full = true;
                 depth_ar_cbuffer_pos = 0;
                 is_cbuffer_full = true;
             }
