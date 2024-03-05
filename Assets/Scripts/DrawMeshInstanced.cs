@@ -64,13 +64,12 @@ public class DrawMeshInstanced : MonoBehaviour
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
     private float[] depth_ar_cbuffer; // the buffer that we maintain of the last depth_ar_cbuffer_length depth_ars
-    private int depth_ar_cbuffer_length; // the maximum number of depth_ars to keep in the buffer
-    private int depth_ar_cbuffer_pos; // the current position in the buffer
+    private int depth_ar_cbuffer_length = 10; // the maximum number of depth_ars to keep in the buffer
+    private int depth_ar_cbuffer_pos = 0; // the current position in the buffer
     private float[] depth_ar_cbuffer_avg; // the average of the depth_ars in the buffer (may not be necessary)
+    private bool is_cbuffer_full = false; // boolean that determines whether the buffer is full
     
     private MeshProperties[] globalProps;
-
-    private bool start_average = false;
 
     //private MeshProperties[] generalUseProps;
     
@@ -102,8 +101,6 @@ public class DrawMeshInstanced : MonoBehaviour
         //numUpdates = 0;
         total_population = height * width;
         population = (uint)(total_population / downsample);
-        depth_ar_cbuffer_length = 10;
-        depth_ar_cbuffer_pos = 0;
 
         Mesh mesh = CreateQuad(size_scale, size_scale);
         this.mesh = mesh;
@@ -458,8 +455,8 @@ public class DrawMeshInstanced : MonoBehaviour
             }
             else if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
             {
-                start_average = true;
                 depth_ar_cbuffer_pos = 0;
+                is_cbuffer_full = true;
             }
             
             for (int i = 0; i < depth_ar.Length; i++)
@@ -484,10 +481,10 @@ public class DrawMeshInstanced : MonoBehaviour
             //    }
             //}
 
-            if (start_average)
+            if (is_cbuffer_full)
             {
-                depth_ar_shaderBuffer.SetData(depth_ar_cbuffer);
                 int kernel = AverageShader.FindKernel("CSMain");
+                depth_ar_shaderBuffer.SetData(depth_ar_cbuffer);
                 AverageShader.SetBuffer(kernel, "depth", depth_ar_shaderBuffer);
                 AverageShader.SetBuffer(kernel, "res", averaged_buffer);
                 AverageShader.SetInt("size", depth_ar_cbuffer_length);
