@@ -96,6 +96,8 @@ public class DrawMeshInstanced : MonoBehaviour
         //numUpdates = 0;
         total_population = height * width;
         population = (uint)(total_population / downsample);
+        depth_ar_cbuffer_length = 10;
+        depth_ar_cbuffer_pos = 0;
 
         Mesh mesh = CreateQuad(size_scale, size_scale);
         this.mesh = mesh;
