@@ -82,7 +82,7 @@ public class DepthPipeline : MonoBehaviour
         // //InvertShader.SetTexture(kernel, "data", depthTexture);
         // InvertShader.Dispatch(kernel, 1, H, 1);
 
-        float[] res = new float[H * W];
+        float[] res = new float[depth.Length];
         depthBuffer.GetData(res);
 
         depthBuffer.Release();
