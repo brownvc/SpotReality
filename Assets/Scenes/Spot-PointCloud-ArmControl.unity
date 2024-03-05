@@ -1052,6 +1052,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 442599355}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 91226eeebf6e12e4c842141808974e0e, type: 3}
+  AverageShader: {fileID: 7200000, guid: 6b92049d10158914d83df2870868aee3, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -1463,6 +1464,7 @@ GameObject:
   m_Component:
   - component: {fileID: 171996663}
   - component: {fileID: 171996664}
+  - component: {fileID: 171996665}
   m_Layer: 0
   m_Name: right_cloud
   m_TagString: Untagged
@@ -1506,6 +1508,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 1646176758}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 764c8fe0e0f4ee849a5f2a047ca415e2, type: 3}
+  AverageShader: {fileID: 7200000, guid: 6b92049d10158914d83df2870868aee3, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -1521,6 +1524,24 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+--- !u!114 &171996665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171996662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &177439707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2589,6 +2610,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  AverageShader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -4158,6 +4180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 545284149}
   - component: {fileID: 545284150}
+  - component: {fileID: 545284151}
   m_Layer: 0
   m_Name: front_right_cloud
   m_TagString: Untagged
@@ -4201,6 +4224,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 565983654}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 11f006e6df9b1c14e97fe62b00245f7d, type: 3}
+  AverageShader: {fileID: 7200000, guid: 6b92049d10158914d83df2870868aee3, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -4216,6 +4240,24 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 1
+--- !u!114 &545284151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545284148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -4457,6 +4499,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  AverageShader: {fileID: 0}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -7769,6 +7812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1140544843}
   - component: {fileID: 1140544844}
+  - component: {fileID: 1140544845}
   m_Layer: 0
   m_Name: left_cloud
   m_TagString: Untagged
@@ -7812,6 +7856,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 944201364}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 5598efa8338f16642a497c645ac264c3, type: 3}
+  AverageShader: {fileID: 7200000, guid: 6b92049d10158914d83df2870868aee3, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -7827,6 +7872,24 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+--- !u!114 &1140544845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140544842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1001 &1145622212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13055,6 +13118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1764592200}
   - component: {fileID: 1764592201}
+  - component: {fileID: 1764592202}
   m_Layer: 0
   m_Name: hand_cloud
   m_TagString: Untagged
@@ -13098,6 +13162,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 1510830380}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  AverageShader: {fileID: 7200000, guid: 6b92049d10158914d83df2870868aee3, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -13113,6 +13178,24 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+--- !u!114 &1764592202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764592199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14585,6 +14668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2128929575}
   - component: {fileID: 2128929576}
+  - component: {fileID: 2128929577}
   m_Layer: 0
   m_Name: back_cloud
   m_TagString: Untagged
@@ -14628,6 +14712,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 1243440617}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: d8db540b250f7e346bca7c27140216c2, type: 3}
+  AverageShader: {fileID: 7200000, guid: 6b92049d10158914d83df2870868aee3, type: 3}
   target: {fileID: 3465647789006909972}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -14643,6 +14728,24 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+--- !u!114 &2128929577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128929574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a5db86b2dad7b42941170f357b7d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: c99e49c8dd19d1c458fecc8d365807af, type: 3}
+  InvertShader: {fileID: 7200000, guid: 4a1faa8f7b665874a8fbd54804ae429c, type: 3}
+  ClosureShader: {fileID: 7200000, guid: 32b86590ac29f40788d778f47d9049f9, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 0c48246e47a36354e9b35ac049534f4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: b555e7f641fd7fc43b314ab47bc97026, type: 3}
+  TextureGenerateShader: {fileID: 7200000, guid: 3b2866a09b67aed499fb672ef9e6c11b, type: 3}
 --- !u!1 &2133151779
 GameObject:
   m_ObjectHideFlags: 0
@@ -26722,6 +26825,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  AverageShader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -27090,6 +27194,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  AverageShader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0
@@ -27915,6 +28020,7 @@ MonoBehaviour:
   colorSubscriber: {fileID: 0}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 7c75016ce147e8a4aadb1b0132241f05, type: 3}
+  AverageShader: {fileID: 0}
   target: {fileID: 0}
   auxTarget: {fileID: 0}
   noise_range: 0

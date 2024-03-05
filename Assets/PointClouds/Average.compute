@@ -1,0 +1,21 @@
+#pragma kernel CSMain
+#define H 480
+#define W 640
+
+RWBuffer<float> depth;
+RWBuffer<float> res;
+int size;
+
+// dim is (1, H, 1)
+[numthreads(W, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    uint index = threadId.x + groupId.y * W;
+    float sum = 0.0f;
+    for (int i = 0; i < size; ++i) 
+    {
+       sum += depth[index + i * H * W];
+    }
+
+    res[index] = sum / float(size);
+}
