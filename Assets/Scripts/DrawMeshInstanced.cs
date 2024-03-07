@@ -449,8 +449,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
             if (depth_ar_cbuffer == null)
             {
-                depth_ar_cbuffer = new float[depth_ar_cbuffer_length * depth_ar.Length];
-                depth_ar_shaderBuffer = new ComputeBuffer((int)depth_ar_cbuffer_length * depth_ar.Length, sizeof(float));
+                depth_ar_cbuffer = new float[depth_ar_cbuffer_length * height * width];
+                depth_ar_shaderBuffer = new ComputeBuffer((int)depth_ar_cbuffer_length * (int)height * (int)width, sizeof(float));
                 averaged_buffer = new ComputeBuffer((int)width * (int)height, sizeof(float));
             }
             else if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)

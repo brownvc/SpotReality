@@ -86,7 +86,7 @@ namespace RosSharp.RosBridgeClient
 
             globalData = new float[1];
             timestamp_synced = 0d;
-            useDepthHistory = true;
+            useDepthHistory = false;
             clearCbuf = false;
             turnDepthOnTime = 0f;
             depthUpdated = false;
