@@ -16,6 +16,7 @@ public class ModeManager : MonoBehaviour
     public string hintTextString;
     public VRGeneralControls generalControlsScript;
     public SetFarPlane planePublisher;
+    public DrawMeshInstanced[] pointClouds;
 
     // Time tracking
     private Stopwatch[] stopwatches;
@@ -72,10 +73,18 @@ public class ModeManager : MonoBehaviour
         if (mode.name == "ControlMode - Dynamic Arm")
         {
             planePublisher.RequestFarPlane(2000f);
+            foreach (DrawMeshInstanced pointCloud in pointClouds)
+            {
+                pointCloud.is_in_hand_mode = true;
+            }
         }
         else
         {
             planePublisher.RequestFarPlane(6000f);
+            foreach (DrawMeshInstanced pointCloud in pointClouds)
+            {
+                pointCloud.is_in_hand_mode = false;
+            }
         }
     }
 

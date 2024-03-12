@@ -1,0 +1,41 @@
+#pragma kernel CSMain
+#define H 480
+#define W 640
+
+RWBuffer<float> depth;
+
+void Sort(inout float values[25]) {
+    for (int i = 1; i < 25; ++i) {
+        float temp = values[i];
+        int j = i - 1;
+
+        while (j >= 0 && values[j] > temp) {
+            values[j + 1] = values[j];
+            j--;
+        }
+        values[j + 1] = temp;
+    }
+}
+
+// dim is (1, H, 1)
+[numthreads(W, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+	float values[25];
+    int index = 0;
+
+    uint depth_idx = threadId.x + groupId.y * W;
+    if (depth[depth_idx] > 0.1f && threadId.x >= 2 && threadId.x < W - 2 && groupId.y >=2 && groupId.y < H - 2)
+    {
+        [unroll]
+        for (int dy = -2; dy <= 2; ++dy) {
+            [unroll]
+            for (int dx = -2; dx <= 2; ++dx) {
+                uint new_depth_idx = threadId.x + dx + (groupId.y + dy) * W;
+                values[index++] = depth[new_depth_idx];
+            }
+        }
+        Sort(values);
+        depth[depth_idx] = values[12];
+    }
+}
