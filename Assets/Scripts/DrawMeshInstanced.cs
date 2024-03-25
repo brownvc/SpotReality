@@ -54,7 +54,6 @@ public class DrawMeshInstanced : MonoBehaviour
     public float pS;    // point scalar
     //public uint counter;
     //private uint numUpdates;
-    public bool is_in_hand_mode = false;
 
     public float size_scale; //hack to current pointcloud viewing
     
@@ -114,10 +113,10 @@ public class DrawMeshInstanced : MonoBehaviour
                     }
                 }
             }
-            if (is_in_hand_mode)
-            {
-                depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
-            }
+
+            // Preprocess Depth
+            depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
+
             // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
             depth_image.SetPixelData(depth_ar, 0);
@@ -402,10 +401,7 @@ public class DrawMeshInstanced : MonoBehaviour
         else
         {
             depth_ar = depthSubscriber.getDepthArr();
-            if (is_in_hand_mode)
-            {
-                depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
-            }
+            depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
         }
 
         // save the point cloud if desired

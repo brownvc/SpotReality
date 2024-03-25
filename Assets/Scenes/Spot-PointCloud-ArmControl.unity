@@ -1008,6 +1008,7 @@ GameObject:
   m_Component:
   - component: {fileID: 112187587}
   - component: {fileID: 112187588}
+  - component: {fileID: 112187589}
   m_Layer: 0
   m_Name: front_left_cloud
   m_TagString: Untagged
@@ -1064,8 +1065,24 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
+  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
+--- !u!114 &112187589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112187586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af355cf616a44ca6a87d05b6cba5436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: 7fd713d7adcae4826ab12d10fcc03aec, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 14fdb67d737a940d9b52aa85bc433c4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: de5fad40eed61475a9b6301740aab4be, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,6 +1517,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 1
+  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &177439707
@@ -2583,6 +2601,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
+  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &299861281 stripped
@@ -4139,6 +4158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 545284149}
   - component: {fileID: 545284150}
+  - component: {fileID: 545284151}
   m_Layer: 0
   m_Name: front_right_cloud
   m_TagString: Untagged
@@ -4195,8 +4215,24 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
+  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
+--- !u!114 &545284151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545284148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af355cf616a44ca6a87d05b6cba5436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DilateEmptyShader: {fileID: 7200000, guid: 7fd713d7adcae4826ab12d10fcc03aec, type: 3}
+  MedianBlurShader: {fileID: 7200000, guid: 14fdb67d737a940d9b52aa85bc433c4e, type: 3}
+  BilateralFilterShader: {fileID: 7200000, guid: de5fad40eed61475a9b6301740aab4be, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -4451,6 +4487,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 0
+  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1001 &587545455
@@ -7806,6 +7843,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 1
+  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1001 &1145622212
@@ -13092,6 +13130,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
+  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1001 &1795693229
@@ -14622,6 +14661,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 1
+  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &2133151779
@@ -16028,6 +16068,9 @@ MonoBehaviour:
   hintTextString: ' Mode: uninitialized'
   generalControlsScript: {fileID: 3465647787329320719}
   planePublisher: {fileID: 1510830395}
+  pointClouds:
+  - {fileID: 112187588}
+  - {fileID: 545284150}
 --- !u!4 &3465647787329320715
 Transform:
   m_ObjectHideFlags: 0
@@ -26719,6 +26762,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
+  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013623013709022
@@ -27087,6 +27131,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
+  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013623153188747
@@ -27912,6 +27957,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
+  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013624242923235
