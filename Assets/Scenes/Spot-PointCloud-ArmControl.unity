@@ -1065,7 +1065,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!114 &112187589
@@ -1517,7 +1516,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 1
-  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &177439707
@@ -2601,7 +2599,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
-  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &299861281 stripped
@@ -4215,7 +4212,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!114 &545284151
@@ -4487,7 +4483,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 0
-  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!1001 &587545455
@@ -7843,7 +7838,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 1
-  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1001 &1145622212
@@ -10419,7 +10413,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1500417875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12108,7 +12102,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1673597985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13130,7 +13124,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1001 &1795693229
@@ -14661,7 +14654,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 1
-  is_in_hand_mode: 0
   size_scale: 0.0045
   use_saved_meshes: 0
 --- !u!1 &2133151779
@@ -16068,9 +16060,6 @@ MonoBehaviour:
   hintTextString: ' Mode: uninitialized'
   generalControlsScript: {fileID: 3465647787329320719}
   planePublisher: {fileID: 1510830395}
-  pointClouds:
-  - {fileID: 112187588}
-  - {fileID: 545284150}
 --- !u!4 &3465647787329320715
 Transform:
   m_ObjectHideFlags: 0
@@ -26762,7 +26751,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
-  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013623013709022
@@ -27131,7 +27119,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
-  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013623153188747
@@ -27957,7 +27944,6 @@ MonoBehaviour:
   facedAngle: 0
   t: 0
   pS: 0
-  is_in_hand_mode: 0
   size_scale: 0.01
   use_saved_meshes: 0
 --- !u!4 &6584013624242923235
