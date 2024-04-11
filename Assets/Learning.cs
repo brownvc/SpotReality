@@ -15,7 +15,6 @@ public class Learning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(greenHand.position);
         sac = new SoftActorCritic(greenHand, goalObj);
     }
 
@@ -23,9 +22,10 @@ public class Learning : MonoBehaviour
     void Update()
     {
         //base  
-        var phi = np.array(new float[] { 0, 1, 2, 3, 4, 5, 0 });
-        var theta = np.ones((sac.actionSize, sac.featureSize));
-        sac.softmaxPi(theta, phi);
+        var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
+        var theta = np.ones((sac.actionSize, sac.featureSize), np.float32);
+        theta[11, 5] = 3;
+        Debug.Log(sac.softmaxPi(theta, phi));
     }
 
 }
@@ -174,36 +174,47 @@ public class SoftActorCritic
         return Vector3.Distance(agentTransform.position, goalTransform.position) < TERMINALDIST;
     }
 
+    // Replaces np.random.choice -- returns index of array based on weighted probability
+    private int randomChoice(NDArray probs)
+    {
+        double rand;
+        System.Random random = new System.Random();
+        double probAcc = 0d;
+        Debug.Log("probs: " + probs);
+        for(int i = 0; i < probs.shape[0]; i++)
+        {
+            probAcc += probs[i];
+
+            rand = np.random.uniform(0, 1, np.float64);
+            if (rand < probAcc)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
+
 
     // Softmax policy
     public Action softmaxPi(NDArray theta, NDArray stateFeats)
     {
         NDArray denom;
-        NDArray actionArr;
-        Action action;
         NDArray pi = np.zeros(actionSize);
 
         // Get the denominator
-        Debug.Log(theta.shape[1]);
-        Debug.Log(stateFeats.shape[0]);
-        var dot = np.dot(theta, stateFeats);
-        var exp = np.exp(dot);
-        denom = np.sum(exp);
+        var dot = np.sum(theta * stateFeats, 1, np.float64);
+        var exp = np.exp(dot, np.float64);
+        denom = np.sum(exp, np.float64);
 
         // Calculate the probability for each action
         for(int i = 0; i < pi.shape[0]; i++)
         {
-            pi[i] = np.exp(np.matmul(theta[i].T, stateFeats));
+            dot = np.sum(theta[i] * stateFeats, np.float64);
+            pi[i] = np.exp(dot, np.float64) / denom;
         }
 
-        Debug.Log(pi);
-
         // Randomly sample an action
-        actionArr = np.random.choice(actionSize, default, true, (double[])pi);
-        action = (Action)(int)actionArr;
-
-        // Randomly sample an action according to vals
-        return action;
+        return (Action)randomChoice(pi);
     }
 
 
