@@ -34,6 +34,26 @@ public class SoftActorCritic
     private Transform goalTransform;
     private const float TERMINALDIST = 0.5f;
 
+    public int featureSize = 8;
+
+    enum Action
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+        Forward,
+        Back,
+        RollP, // P = positive
+        RollN, // N = negative
+        YawP,
+        YawN,
+        PitchP,
+        PitchN,
+        NumActions
+    }
+
+
     public SoftActorCritic(Transform aT, Transform gT)
     {
         originalPos = agentTransform.position;
@@ -43,11 +63,64 @@ public class SoftActorCritic
     }
 
 
-    private void reset()
+    private float[] reset()
     {
+        float[] phiS;
 
+        // Reset the gripper to its original state, and return current state
+        agentTransform.position = originalPos;
+        agentTransform.rotation = originalRot;
+        phiS = phi();
+
+        return phiS;
     }
 
+    private void act(Action action)
+    {
+        float modifier = 0.1f;
+
+        switch(action)
+        {
+            case Action.Up:
+                agentTransform.Translate(Vector3.up * modifier);
+                break;
+            case Action.Down:
+                agentTransform.Translate(Vector3.down * modifier);
+                break;
+            case Action.Left:
+                agentTransform.Translate(Vector3.left * modifier);
+                break;
+            case Action.Right:
+                agentTransform.Translate(Vector3.right * modifier);
+                break;
+            case Action.Forward:
+                agentTransform.Translate(Vector3.forward * modifier);
+                break;
+            case Action.Back:
+                agentTransform.Translate(Vector3.back * modifier);
+                break;
+            case Action.RollP:
+                agentTransform.Rotate(new Vector3(0, 0, 1) * modifier);
+                break;
+            case Action.RollN:
+                agentTransform.Rotate(new Vector3(0, 0, -1) * modifier);
+                break;
+            case Action.YawP:
+                agentTransform.Rotate(new Vector3(0, 1, 0) * modifier);
+                break;
+            case Action.YawN:
+                agentTransform.Rotate(new Vector3(0, -1, 0) * modifier);
+                break;
+            case Action.PitchP:
+                agentTransform.Rotate(new Vector3(1, 0, 0) * modifier);
+                break;
+            case Action.PitchN:
+                agentTransform.Rotate(new Vector3(-1, 0, 0) * modifier);
+                break;
+            default:
+                break;
+        }
+    }
 
     public float[] featurized_reset()
     {
@@ -63,8 +136,16 @@ public class SoftActorCritic
         Quaternion rot = agentTransform.rotation;
         float term = terminal() ? 1f : 0f;
 
+        float [] phiS = new float[] { pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, rot.w, term };
+
+        // Assert that phiS is equal to the feature size
+        if (phiS.Length != featureSize)
+        {
+            throw new Exception("Need to set featureSize to equal length of features returned from phi()");
+        }
+
         // Return the positions, plus whether terminal
-        return new float[] { pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, rot.w, term };
+        return phiS;
 
         // TODO: add whether in a place to pick up the goal object
     }
@@ -97,7 +178,7 @@ public class SoftActorCritic
     private float[] softmaxPi(float[] theta, float[] stateFeats)
     {
         // Create the policy tensor
-        TensorShape thetaShape = new TensorShape(3);
+        TensorShape thetaShape = new TensorShape((int)Action.NumActions, featureSize);
         Tensor pi = new Tensor(thetaShape);
 
         // Get the denominator
