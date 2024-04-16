@@ -195,8 +195,7 @@ public class SoftActorCritic
     }
 
 
-    // Softmax policy
-    public Action softmaxPi(NDArray theta, NDArray stateFeats)
+    private NDArray<Action> softmaxDistribution(NDArray theta, NDArray stateFeats) 
     {
         NDArray denom;
         NDArray pi = np.zeros(actionSize);
@@ -212,9 +211,25 @@ public class SoftActorCritic
             dot = np.sum(theta[i] * stateFeats, np.float64);
             pi[i] = np.exp(dot, np.float64) / denom;
         }
+        return pi
+    }
 
+    // Softmax policy
+    public Action softmaxPi(NDArray theta, NDArray stateFeats)
+    {
         // Randomly sample an action
-        return (Action)randomChoice(pi);
+        return (Action)randomChoice(softmaxDistribution(theta, stateFeats));
+    }
+    public NDArray gradLogSoftmax(NDArray theta, NDArray stateFeats, int aIndex)
+    {
+        NDArray grad = np.zeros(theta.shape, np.float32);
+        grad[aIndex] += (stateFeats * (1 - softmaxDistribution(theta,stateFeats)[aIndex]))
+        for (int i=0; i<theta.shape[0]) 
+        {
+            if (i == aIndex) {continue}
+            grad[i] -= (stateFeats * softmaxDistribution(theta,stateFeats)[i])
+        }
+        return grad
     }
 
 
@@ -226,8 +241,6 @@ public class SoftActorCritic
 
         return (np.array(1), 2, 3);
     }
-
-
     //public float rollout()
-
 }
+
