@@ -1,0 +1,112 @@
+#pragma kernel ComputeDepthGradient
+#pragma kernel PerformNonMaxSuppression
+#pragma kernel ApplyHysteresisThresholding
+
+RWStructuredBuffer<float> depth_buffer;
+RWStructuredBuffer<float> depth_gradient;
+RWStructuredBuffer<float> suppressed_depth;
+RWStructuredBuffer<bool> confident_mask;
+
+int width;
+int height;
+float high_threshold;
+float low_threshold;
+
+[numthreads(16, 16, 1)] void ComputeDepthGradient(uint3 id
+                                                  : SV_DispatchThreadID) {
+  if (id.x >= width || id.y >= height)
+    return;
+
+  int index = id.y * width + id.x;
+
+  float dx = 0;
+  float dy = 0;
+
+  for (int i = -1; i <= 1; i++) {
+    for (int j = -1; j <= 1; j++) {
+      int x = id.x + j;
+      int y = id.y + i;
+
+      if (x >= 0 && x < width && y >= 0 && y < height) {
+        int neighborIndex = y * width + x;
+        float depth = depth_buffer[neighborIndex];
+
+        dx += depth * (j == 0 ? 2 : 1) * (i == 0 ? 2 : 1);
+        dy += depth * (i == 0 ? 2 : 1) * (j == 0 ? 2 : 1);
+      }
+    }
+  }
+
+  depth_gradient[index] = sqrt(dx * dx + dy * dy);
+}
+
+    [numthreads(16, 16, 1)] void PerformNonMaxSuppression(
+        uint3 id
+        : SV_DispatchThreadID) {
+  if (id.x >= width || id.y >= height)
+    return;
+
+  int index = id.y * width + id.x;
+
+  float depth = depth_gradient[index];
+  float maxDepth = depth;
+
+  for (int i = -1; i <= 1; i++) {
+    for (int j = -1; j <= 1; j++) {
+      int x = id.x + j;
+      int y = id.y + i;
+
+      if (x >= 0 && x < width && y >= 0 && y < height) {
+        int neighborIndex = y * width + x;
+        float neighborDepth = depth_gradient[neighborIndex];
+
+        if (neighborDepth > maxDepth) {
+          maxDepth = neighborDepth;
+        }
+      }
+    }
+  }
+
+  suppressed_depth[index] = (depth == maxDepth) ? depth : 0;
+}
+
+[numthreads(16, 16, 1)] void
+ApplyHysteresisThresholding(uint3 id
+                            : SV_DispatchThreadID) {
+  if (id.x >= width || id.y >= height)
+    return;
+
+  int index = id.y * width + id.x;
+
+  float depth = suppressed_depth[index];
+
+  if (depth >= high_threshold) {
+    confident_mask[index] = true;
+  } else if (depth >= low_threshold) {
+    bool isConfident = false;
+
+    for (int i = -1; i <= 1; i++) {
+      for (int j = -1; j <= 1; j++) {
+        int x = id.x + j;
+        int y = id.y + i;
+
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+          int neighborIndex = y * width + x;
+          float neighborDepth = suppressed_depth[neighborIndex];
+
+          if (neighborDepth >= high_threshold) {
+            isConfident = true;
+            break;
+          }
+        }
+      }
+
+      if (isConfident)
+        break;
+    }
+
+    confident_mask[index] = isConfident;
+  } else {
+    confident_mask[index] = false;
+  }
+}

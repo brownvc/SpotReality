@@ -29,6 +29,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public ComputeShader compute;
     public ComputeShader AverageShader;
+    public ComputeShader depthConfidenceShader;
     private ComputeBuffer meshPropertiesBuffer;
     private ComputeBuffer argsBuffer;
     private ComputeBuffer depthBuffer;
@@ -63,12 +64,17 @@ public class DrawMeshInstanced : MonoBehaviour
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
-    private float[] depth_ar_cbuffer; // the buffer that we maintain of the last depth_ar_cbuffer_length depth_ars
-    private int depth_ar_cbuffer_length = 10; // the maximum number of depth_ars to keep in the buffer
-    private int depth_ar_cbuffer_pos = 0; // the current position in the buffer
-    private float[] depth_ar_cbuffer_avg; // the average of the depth_ars in the buffer (may not be necessary)
-    private bool is_cbuffer_full = false; // boolean that determines whether the buffer is full
-    
+    // private float[] depth_ar_cbuffer; // the buffer that we maintain of the last depth_ar_cbuffer_length depth_ars
+    // private int depth_ar_cbuffer_length = 10; // the maximum number of depth_ars to keep in the buffer
+    // private int depth_ar_cbuffer_pos = 0; // the current position in the buffer
+    // private float[] depth_ar_cbuffer_avg; // the average of the depth_ars in the buffer (may not be necessary)
+    // private bool is_cbuffer_full = false; // boolean that determines whether the buffer is full
+    private float[] depth_ar_buffer; // the buffer that we maintain of the last depth_ar_buffer_length depth_ars
+    private int depth_ar_buffer_length = 5; // the number of depth_ars to keep in the buffer
+    private int depth_ar_buffer_pos = 0; // the current position in the buffer
+    private float depth_ar_high_threshold = 0.1f; // the high threshold for hysteresis thresholding
+    private float depth_ar_low_threshold = 0.05f; // the low threshold for hysteresis thresholding
+        
     private MeshProperties[] globalProps;
 
     //private MeshProperties[] generalUseProps;
@@ -113,7 +119,13 @@ public class DrawMeshInstanced : MonoBehaviour
 
 
 
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            // mesh_array_test_ for Depth Anything Images   
+            // using (var stream = File.Open("Assets/PointClouds/mesh_array_test_" + imageScriptIndex, FileMode.Open))
+            // mesh_array_test_*_normalized for Depth Anything Images normalized to lidar data
+            // using (var stream = File.Open("Assets/PointClouds/mesh_array_test_" + imageScriptIndex + "_normalized", FileMode.Open))
+            using (var stream = File.Open("Assets/PointClouds/mesh_array_test_" + imageScriptIndex + "_normalized", FileMode.Open))
+            
+            // using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                 {
@@ -148,7 +160,7 @@ public class DrawMeshInstanced : MonoBehaviour
             //        {
             //            depth_ar[i] = reader.ReadSingle();
             //        }
-            //    }
+            //    }x    
             //}
 
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -445,26 +457,97 @@ public class DrawMeshInstanced : MonoBehaviour
         else
         {
             depth_ar = depthSubscriber.getDepthArr();
-            depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
 
-            if (depth_ar_cbuffer == null)
+            if (depth_ar_buffer == null)
             {
-                depth_ar_cbuffer = new float[depth_ar_cbuffer_length * height * width];
-                depth_ar_shaderBuffer = new ComputeBuffer((int)depth_ar_cbuffer_length * (int)height * (int)width, sizeof(float));
-                averaged_buffer = new ComputeBuffer((int)width * (int)height, sizeof(float));
+                depth_ar_buffer = new float[depth_ar_buffer_length * height * width];
             }
-            else if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
+            else if (depth_ar_buffer_pos == depth_ar_buffer_length)
             {
-                depth_ar_cbuffer_pos = 0;
-                is_cbuffer_full = true;
+                depth_ar_buffer_pos = 0;
             }
-            
+
             for (int i = 0; i < depth_ar.Length; i++)
             {
-                depth_ar_cbuffer[depth_ar_cbuffer_pos * height * width + i] = depth_ar[i];
+                depth_ar_buffer[depth_ar_buffer_pos * height * width + i] = depth_ar[i];
             }
 
-            depth_ar_cbuffer_pos += 1;
+            depth_ar_buffer_pos++;
+
+            if (depth_ar_buffer_pos == depth_ar_buffer_length)
+            {
+                ComputeBuffer depthBufferGPU = new ComputeBuffer(depth_ar.Length, sizeof(float));
+                ComputeBuffer depthGradientGPU = new ComputeBuffer(depth_ar.Length, sizeof(float));
+                ComputeBuffer suppressedDepthGPU = new ComputeBuffer(depth_ar.Length, sizeof(float));
+                ComputeBuffer confidentMaskGPU = new ComputeBuffer(depth_ar.Length, sizeof(bool));
+
+                depthBufferGPU.SetData(depth_ar_buffer);
+
+                int kernelGradient = depthConfidenceShader.FindKernel("ComputeDepthGradient");
+                int kernelSuppression = depthConfidenceShader.FindKernel("PerformNonMaxSuppression");
+                int kernelThresholding = depthConfidenceShader.FindKernel("ApplyHysteresisThresholding");
+
+                depthConfidenceShader.SetBuffer(kernelGradient, "depth_buffer", depthBufferGPU);
+                depthConfidenceShader.SetBuffer(kernelGradient, "depth_gradient", depthGradientGPU);
+                depthConfidenceShader.SetInt("width", (int)width);
+                depthConfidenceShader.SetInt("height", (int)height);
+
+                depthConfidenceShader.SetBuffer(kernelSuppression, "depth_gradient", depthGradientGPU);
+                depthConfidenceShader.SetBuffer(kernelSuppression, "suppressed_depth", suppressedDepthGPU);
+
+                depthConfidenceShader.SetBuffer(kernelThresholding, "suppressed_depth", suppressedDepthGPU);
+                depthConfidenceShader.SetBuffer(kernelThresholding, "confident_mask", confidentMaskGPU);
+                depthConfidenceShader.SetFloat("high_threshold", depth_ar_high_threshold);
+                depthConfidenceShader.SetFloat("low_threshold", depth_ar_low_threshold);
+                int threadGroupsX = Mathf.CeilToInt(width / 16f);
+                int threadGroupsY = Mathf.CeilToInt(height / 16f);
+                depthConfidenceShader.Dispatch(kernelGradient, threadGroupsX, threadGroupsY, 1);
+                depthConfidenceShader.Dispatch(kernelSuppression, threadGroupsX, threadGroupsY, 1);
+                depthConfidenceShader.Dispatch(kernelThresholding, threadGroupsX, threadGroupsY, 1);
+                bool[] confidentMask = new bool[depth_ar.Length];
+                confidentMaskGPU.GetData(confidentMask);
+                float[] confidentDepthAr = new float[depth_ar.Length];
+                for (int i = 0; i < depth_ar.Length; i++)
+                {
+                    if (confidentMask[i])
+                    {
+                        confidentDepthAr[i] = depth_ar[i];
+                    }
+                    else
+                    {
+                        confidentDepthAr[i] = 0;
+                    }
+                }
+
+                depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(confidentDepthAr);
+
+                depthBufferGPU.Release();
+                depthGradientGPU.Release();
+                suppressedDepthGPU.Release();
+                confidentMaskGPU.Release();
+            }
+
+
+            // depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
+
+            // if (depth_ar_cbuffer == null)
+            // {
+            //     depth_ar_cbuffer = new float[depth_ar_cbuffer_length * height * width];
+            //     depth_ar_shaderBuffer = new ComputeBuffer((int)depth_ar_cbuffer_length * (int)height * (int)width, sizeof(float));
+            //     averaged_buffer = new ComputeBuffer((int)width * (int)height, sizeof(float));
+            // }
+            // else if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
+            // {
+            //     depth_ar_cbuffer_pos = 0;
+            //     is_cbuffer_full = true;
+            // }
+            
+            // for (int i = 0; i < depth_ar.Length; i++)
+            // {
+            //     depth_ar_cbuffer[depth_ar_cbuffer_pos * height * width + i] = depth_ar[i];
+            // }
+
+            // depth_ar_cbuffer_pos += 1;
 
             // starting code for averaging the depth_ar_cbuffer, will probably need to do this in compute shader
             //if (depth_ar_cbuffer_pos == depth_ar_cbuffer_length)
@@ -481,17 +564,17 @@ public class DrawMeshInstanced : MonoBehaviour
             //    }
             //}
 
-            if (is_cbuffer_full)
-            {
-                int kernel = AverageShader.FindKernel("CSMain");
-                depth_ar_shaderBuffer.SetData(depth_ar_cbuffer);
-                AverageShader.SetBuffer(kernel, "depth", depth_ar_shaderBuffer);
-                AverageShader.SetBuffer(kernel, "res", averaged_buffer);
-                AverageShader.SetInt("size", depth_ar_cbuffer_length);
-                AverageShader.Dispatch(kernel, 1, (int)height, 1);
+            // if (is_cbuffer_full)
+            // {
+            //     int kernel = AverageShader.FindKernel("CSMain");
+            //     depth_ar_shaderBuffer.SetData(depth_ar_cbuffer);
+            //     AverageShader.SetBuffer(kernel, "depth", depth_ar_shaderBuffer);
+            //     AverageShader.SetBuffer(kernel, "res", averaged_buffer);
+            //     AverageShader.SetInt("size", depth_ar_cbuffer_length);
+            //     AverageShader.Dispatch(kernel, 1, (int)height, 1);
 
-                averaged_buffer.GetData(depth_ar);
-            }
+            //     averaged_buffer.GetData(depth_ar);
+            // }
         }
 
         // save the point cloud if desired
