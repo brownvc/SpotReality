@@ -185,20 +185,38 @@ public class SoftActorCritic
     }
 
 
-    private double reward()
+    private double reward(NDArray newS, NDArray prevS)
     {
         // Return the inverse of the distance between the objects
-        float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
+        // float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
+
+        Vector3 newPosition = new Vector3 { x=newS[0], y=newS[1], z=newS[2] }
+        float newDistance = Vector3.Distance(newPosition, goalTransform.position);
+
+        Vector3 prevPosition = new Vector3 { x = prevS[0], y = prevS[1], z = prevS[2] }
+        float prevDistance = Vector3.Distance(prevPosition, goalTransform.position);
+
         //return -distance;
 
         // Account for getting very close
-        if (distance < TERMINALDIST)
+        if (newDistance < TERMINALDIST)
         {
-            return 1 / TERMINALDIST;
+            return 5 // / TERMINALDIST;
         }
-        else
+        else if (newDistance >= prevDistance)
         {
-            return 1 / distance;
+            return -.01 // - 1/newDistance // prevDistance - newDistance //1 / distance;
+        }
+        else if (newDistance < prevDistance)
+        {
+            if (1/newDistance > 1)
+            {
+                return 1
+            }
+            else
+            {
+                return 1 / newDistance
+            }
         }
 
         // TODO: reward more if pointing down        
@@ -281,7 +299,7 @@ public class SoftActorCritic
         act(action);
         NDArray newS = phi();
 
-        return (newS, reward(), terminal());
+        return (newS, reward(newS, prevS), terminal());
     }
     //public float rollout()
 
