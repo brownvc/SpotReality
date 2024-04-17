@@ -10,12 +10,16 @@ public class Learning : MonoBehaviour
     public Transform greenHand;
     public Transform goalObj;
     private SoftActorCritic sac;
-
+    private bool nvm;
 
     // Start is called before the first frame update
     void Start()
     {
         sac = new SoftActorCritic(greenHand, goalObj);
+        nvm = true;
+        InvokeRepeating("move", 0.1f, 0.1f);
+        InvokeRepeating("moveInv", 6f, 0.1f);
+
     }
 
     // Update is called once per frame
@@ -24,8 +28,26 @@ public class Learning : MonoBehaviour
         //base  
         var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
         var theta = np.ones((sac.actionSize, sac.featureSize), np.float32);
-        theta[11, 5] = 3;
-        Debug.Log(sac.softmaxPi(theta, phi));
+        int a = 3;
+        //theta[11, 5] = 3;
+        //Debug.Log(sac.softmaxPi(theta, phi));
+        theta[4, 5] = 3;
+        sac.gradLogSoftmax(theta, phi, 2);
+
+        
+    }
+
+    void move()
+    {
+        if (nvm)
+        {
+            sac.act(Action.PitchP);
+        }
+    }
+    void moveInv()
+    {
+        sac.act(Action.PitchN);
+        nvm = false;
     }
 
 }
@@ -79,7 +101,7 @@ public class SoftActorCritic
         return phi();
     }
 
-    private void act(Action action)
+    public void act(Action action)
     {
         float meterMovement = 0.1f;
         float degreeRotation = 9f;
@@ -179,22 +201,22 @@ public class SoftActorCritic
         double rand;
         System.Random random = new System.Random();
         double probAcc = 0d;
-        Debug.Log("probs: " + probs);
-        for(int i = 0; i < probs.shape[0]; i++)
+        rand = np.random.uniform(0, 1, np.float64);
+        for (int i = 0; i < probs.shape[0]; i++)
         {
             probAcc += probs[i];
 
-            rand = np.random.uniform(0, 1, np.float64);
             if (rand < probAcc)
             {
                 return i;
             }
         }
+
         return 0;
     }
 
 
-    private NDArray<Action> softmaxDistribution(NDArray theta, NDArray stateFeats) 
+    private NDArray softmaxDistribution(NDArray theta, NDArray stateFeats) 
     {
         NDArray denom;
         NDArray pi = np.zeros(actionSize);
@@ -210,7 +232,8 @@ public class SoftActorCritic
             dot = np.sum(theta[i] * stateFeats, np.float64);
             pi[i] = np.exp(dot, np.float64) / denom;
         }
-        return pi
+        Debug.Log(pi);
+        return pi;
     }
 
     // Softmax policy
@@ -222,17 +245,18 @@ public class SoftActorCritic
     public NDArray gradLogSoftmax(NDArray theta, NDArray stateFeats, int aIndex)
     {
         NDArray grad = np.zeros(theta.shape, np.float32);
-        grad[aIndex] += (stateFeats * (1 - softmaxDistribution(theta,stateFeats)[aIndex]))
-        for (int i=0; i<theta.shape[0]) 
+        grad[aIndex] += (stateFeats * (1 - softmaxDistribution(theta, stateFeats)[aIndex]));
+        for (int i=0; i<theta.shape[0]; i++) 
         {
-            if (i == aIndex) {continue}
-            grad[i] -= (stateFeats * softmaxDistribution(theta,stateFeats)[i])
+            if (i == aIndex) { continue; }
+            grad[i] -= (stateFeats * softmaxDistribution(theta, stateFeats)[i]);
         }
-        return grad
+        Debug.Log(grad);
+        return grad;
     }
 
 
-    //       phi(s), R,    terminal
+    //       phi(s),    R,    terminal
     private (NDArray, double, double) step()
     {
         // Take a step according to the policy
