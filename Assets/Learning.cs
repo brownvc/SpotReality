@@ -15,7 +15,7 @@ public class Learning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sac = new SoftActorCritic(greenHand, goalObj);
+        sac = new SoftActorCritic(greenHand, goalObj, 10000);
         nvm = true;
         InvokeRepeating("move", 0.1f, 0.1f);
         InvokeRepeating("moveInv", 6f, 0.1f);
@@ -77,19 +77,34 @@ public class SoftActorCritic
     private Transform agentTransform;
     private Transform goalTransform;
     private const float TERMINALDIST = 0.5f;
+    private NDArray thetaGlobal;
+    private NDArray wGlobal;
+    private int currentStep;
+    private int totalSteps;
+    private double alphaTheta;
+    private double alphaW;
+    private double I;
 
     public int featureSize = 7;
 
     public int actionSize { get; }
 
 
-    public SoftActorCritic(Transform aT, Transform gT)
+    public SoftActorCritic(Transform aT, Transform gT, int numSteps, double aTheta, double aW)
     {
         originalPos = aT.position;
         originalRot = aT.rotation;
         agentTransform = aT;
         goalTransform = gT;
         actionSize = (int)Action.NumActions;
+        thetaGlobal = np.zeros((actionSize, featureSize), np.float64);
+        wGlobal = np.zeros(featureSize);
+        wGlobal = wGlobal.astype(np.float64);
+        totalSteps = numSteps;
+        currentStep = 0;
+        alphaTheta = aTheta;
+        alphaW = aW;
+        I = 1;
     }
 
     private NDArray reset()
@@ -103,7 +118,7 @@ public class SoftActorCritic
 
     public void act(Action action)
     {
-        float meterMovement = 0.1f;
+        float meterMovement = 0.01f;
         float degreeRotation = 9f;
 
         switch(action)
@@ -174,6 +189,7 @@ public class SoftActorCritic
     {
         // Return the inverse of the distance between the objects
         float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
+        //return -distance;
 
         // Account for getting very close
         if (distance < TERMINALDIST)
@@ -257,20 +273,45 @@ public class SoftActorCritic
 
 
     //       phi(s),    R,    terminal
-    private (NDArray, double, double) step()
+    private (NDArray, double, bool) step(NDArray phiS, Action action)
     {
-        // Take a step according to the policy
+        NDArray prevS = phiS.copy();
 
-        return (np.array(1), 2, 3);
+        // Take the action
+        act(action);
+        NDArray newS = phi();
+
+        return (newS, reward(), terminal());
     }
     //public float rollout()
 
-    public (NDArray, NDArray) one_step_actor_critic(int num_samples, float alpha_theta, float alpha_w) 
+    public void oneSampleActorCritic() 
     {
-        NDArray theta = np.zeros((actionSize, featureSize), float32)
-        NDArray w = np.zeros(featureSize, float32)
+        (NDArray, double, bool) stepRet;
+        currentStep += 1;
 
-        
+        if (currentStep < totalSteps)
+        {
+            // Decide on an action
+            Action a = softmaxPi(thetaGlobal, wGlobal);
+
+            // Take a step
+            stepRet = step(phi(), a);
+
+            // compute vhat, delta
+
+            // Take gradient steps
+
+            // Modify I
+
+            if (terminal())
+            {
+                reset();
+                I = 1;
+            }
+        }
+
+        //return (np.zeros(1), np.zeros(1));
     }
 }
 
