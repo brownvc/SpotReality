@@ -70,7 +70,6 @@ public class SoftActorCritic
         actionSize = (int)Action.NumActions;
     }
 
-
     private NDArray reset()
     {
         // Reset the gripper to its original state, and return current state
@@ -238,9 +237,16 @@ public class SoftActorCritic
     {
         // Take a step according to the policy
 
-
         return (np.array(1), 2, 3);
     }
     //public float rollout()
+
+    public (NDArray, NDArray) one_step_actor_critic(int num_samples, float alpha_theta, float alpha_w) 
+    {
+        NDArray theta = np.zeros((actionSize, featureSize), float32)
+        NDArray w = np.zeros(featureSize, float32)
+
+        
+    }
 }
 
