@@ -10,44 +10,29 @@ public class Learning : MonoBehaviour
     public Transform greenHand;
     public Transform goalObj;
     private SoftActorCritic sac;
-    private bool nvm;
 
     // Start is called before the first frame update
     void Start()
     {
-        sac = new SoftActorCritic(greenHand, goalObj, 10000);
-        nvm = true;
-        InvokeRepeating("move", 0.1f, 0.1f);
-        InvokeRepeating("moveInv", 6f, 0.1f);
+        sac = new SoftActorCritic(greenHand, goalObj, 10000, 0.001, 0.001, 0.99);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //base  
-        var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
-        var theta = np.ones((sac.actionSize, sac.featureSize), np.float32);
-        int a = 3;
-        //theta[11, 5] = 3;
-        //Debug.Log(sac.softmaxPi(theta, phi));
-        theta[4, 5] = 3;
-        sac.gradLogSoftmax(theta, phi, 2);
+        ////base  
+        //var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
+        //var theta = np.ones((sac.actionSize, sac.featureSize), np.float32);
+        //int a = 3;
+        ////theta[11, 5] = 3;
+        ////Debug.Log(sac.softmaxPi(theta, phi));
+        //theta[4, 5] = 3;
+        //sac.gradLogSoftmax(theta, phi, 2);
 
+
+        sac.oneSampleActorCritic();
         
-    }
-
-    void move()
-    {
-        if (nvm)
-        {
-            sac.act(Action.PitchP);
-        }
-    }
-    void moveInv()
-    {
-        sac.act(Action.PitchN);
-        nvm = false;
     }
 
 }
@@ -76,7 +61,7 @@ public class SoftActorCritic
     private Quaternion originalRot;
     private Transform agentTransform;
     private Transform goalTransform;
-    private const float TERMINALDIST = 0.5f;
+    private const float TERMINALDIST = 0.05f;
     private NDArray thetaGlobal;
     private NDArray wGlobal;
     private int currentStep;
@@ -84,13 +69,14 @@ public class SoftActorCritic
     private double alphaTheta;
     private double alphaW;
     private double I;
+    private double gamma;
 
     public int featureSize = 7;
 
     public int actionSize { get; }
 
 
-    public SoftActorCritic(Transform aT, Transform gT, int numSteps, double aTheta, double aW)
+    public SoftActorCritic(Transform aT, Transform gT, int numSteps, double aTheta, double aW, double gamm)
     {
         originalPos = aT.position;
         originalRot = aT.rotation;
@@ -104,6 +90,7 @@ public class SoftActorCritic
         currentStep = 0;
         alphaTheta = aTheta;
         alphaW = aW;
+        gamma = gamm;
         I = 1;
     }
 
@@ -171,7 +158,21 @@ public class SoftActorCritic
         Quaternion rot = agentTransform.rotation;
         float term = terminal() ? 1f : 0f;
 
-        NDArray phiS = np.array(new float[] { pos.x, pos.y, pos.z, rot.eulerAngles.x, rot.eulerAngles.y, rot.eulerAngles.z, term });
+        NDArray phiS = np.array(new float[] {
+            pos.x,
+            pos.y,
+            pos.z,
+            rot.eulerAngles.x,
+            rot.eulerAngles.y,
+            rot.eulerAngles.z,
+            //pos.x*pos.x,
+            //pos.y*pos.y,
+            //pos.z*pos.z,
+            //rot.eulerAngles.x * rot.eulerAngles.x,
+            //rot.eulerAngles.y * rot.eulerAngles.y,
+            //rot.eulerAngles.z * rot.eulerAngles.z,
+            term 
+        }, np.float64);
 
         // Assert that phiS is equal to the feature size
         if (phiS.shape[0] != featureSize)
@@ -190,10 +191,10 @@ public class SoftActorCritic
         // Return the inverse of the distance between the objects
         // float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
 
-        Vector3 newPosition = new Vector3 { x=newS[0], y=newS[1], z=newS[2] }
+        Vector3 newPosition = new Vector3(newS[0], newS[1], newS[2]);
         float newDistance = Vector3.Distance(newPosition, goalTransform.position);
 
-        Vector3 prevPosition = new Vector3 { x = prevS[0], y = prevS[1], z = prevS[2] }
+        Vector3 prevPosition = new Vector3(prevS[0], prevS[1], prevS[2]);
         float prevDistance = Vector3.Distance(prevPosition, goalTransform.position);
 
         //return -distance;
@@ -201,26 +202,26 @@ public class SoftActorCritic
         // Account for getting very close
         if (newDistance < TERMINALDIST)
         {
-            return 5 // / TERMINALDIST;
+            return 5; // / TERMINALDIST;
         }
         else if (newDistance >= prevDistance)
         {
-            return -.01 // - 1/newDistance // prevDistance - newDistance //1 / distance;
+            return -.1; // - 1/newDistance // prevDistance - newDistance //1 / distance;
         }
         else if (newDistance < prevDistance)
         {
             if (1/newDistance > 1)
             {
-                return 1
+                return 1;
             }
             else
             {
-                return 1 / newDistance
+                return 1 / newDistance;
             }
         }
 
         // TODO: reward more if pointing down        
-
+        return 0;
     }
 
 
@@ -266,7 +267,6 @@ public class SoftActorCritic
             dot = np.sum(theta[i] * stateFeats, np.float64);
             pi[i] = np.exp(dot, np.float64) / denom;
         }
-        Debug.Log(pi);
         return pi;
     }
 
@@ -285,7 +285,6 @@ public class SoftActorCritic
             if (i == aIndex) { continue; }
             grad[i] -= (stateFeats * softmaxDistribution(theta, stateFeats)[i]);
         }
-        Debug.Log(grad);
         return grad;
     }
 
@@ -310,19 +309,42 @@ public class SoftActorCritic
 
         if (currentStep < totalSteps)
         {
+            // Store old state
+            NDArray obs = phi();
+
             // Decide on an action
             Action a = softmaxPi(thetaGlobal, wGlobal);
+            Debug.Log("Action: " + a);
 
             // Take a step
             stepRet = step(phi(), a);
+            NDArray newObs = stepRet.Item1;
+            double R = stepRet.Item2;  
+            bool term = stepRet.Item3;
 
             // compute vhat, delta
+            double vhatNew;
+            if (term)
+            {
+                vhatNew = 0;
+            }
+            else
+            {
+                vhatNew = np.sum((wGlobal * newObs).astype(np.float32));
+            }
 
             // Take gradient steps
+            Debug.Log("Reward: " + R);
+            double delta = R + gamma * vhatNew - np.sum((wGlobal * obs).astype(np.float32));
+            Debug.Log("dW: " + alphaW * delta * obs);
+            wGlobal += alphaW * delta * obs;
+            Debug.Log(alphaTheta * delta * I * gradLogSoftmax(thetaGlobal, obs, (int)a));
+            thetaGlobal += alphaTheta * delta * I * gradLogSoftmax(thetaGlobal, obs, (int)a);
 
             // Modify I
+            I *= gamma;
 
-            if (terminal())
+            if (term)
             {
                 reset();
                 I = 1;
