@@ -24,7 +24,7 @@ public class Learning : MonoBehaviour
         //base  
         var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
         var theta = np.ones((sac.actionSize, sac.featureSize), np.float32);
-        theta[11, 5] = 3;
+        //theta[11, 5] = 3;
         Debug.Log(sac.softmaxPi(theta, phi));
     }
 
@@ -180,17 +180,17 @@ public class SoftActorCritic
         double rand;
         System.Random random = new System.Random();
         double probAcc = 0d;
-        Debug.Log("probs: " + probs);
-        for(int i = 0; i < probs.shape[0]; i++)
+        rand = np.random.uniform(0, 1, np.float64);
+        for (int i = 0; i < probs.shape[0]; i++)
         {
             probAcc += probs[i];
 
-            rand = np.random.uniform(0, 1, np.float64);
             if (rand < probAcc)
             {
                 return i;
             }
         }
+
         return 0;
     }
 
