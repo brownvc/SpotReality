@@ -25,16 +25,16 @@ public class Learning : MonoBehaviour
     void Update()
     {
         //base  
-        var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
-        var theta = np.ones((12, 7), np.float32);
-        int a = 3;
+        //var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
+        //var theta = np.ones((12, 7), np.float32);
+        //int a = 3;
         //theta[11, 5] = 3;
         //Debug.Log(sac.softmaxPi(theta, phi));
-        theta[4, 5] = 3;
-        Debug.Log(sac.gradLogSoftmax(theta, phi, 2));
+        //theta[4, 5] = 3;
+        //Debug.Log(sac.gradLogSoftmax(theta, phi, 2));
 
 
-        //sac.rollout();
+        sac.rollout();
 
     }
 
@@ -49,12 +49,12 @@ public enum Action
     Right,
     Forward,
     Back,
-    //RollP, // P = positive
-    //RollN, // N = negative
-    //YawP,
-    //YawN,
-    //PitchP,
-    //PitchN,
+    RollP, // P = positive
+    RollN, // N = negative
+    YawP,
+    YawN,
+    PitchP,
+    PitchN,
     NumActions
 }
 
@@ -315,7 +315,6 @@ public class SoftActorCritic
         for (int i=0; i<theta.shape[0]; i++) 
         {
             if (i == aIndex) { continue; }
-            Debug.Log(softmaxDistribution(theta, stateFeats));
             grad[i] -= (stateFeats * softmaxDistribution(theta, stateFeats)[i]);
         }
         return grad;
@@ -416,7 +415,7 @@ public class SoftActorCritic
 
     private void reinforce()
     {
-        double sumD = 0;
+        NDArray sumD = np.zeros((thetaGlobal.shape[0], thetaGlobal.shape[1]));
         double discountedRet = 0;
         int episodeLength = 0;
 
@@ -429,7 +428,7 @@ public class SoftActorCritic
         // Get sum
         for(int i = 0; i < episodeLength; i++)
         {
-            Debug.Log(gradLogSoftmax(thetaGlobal, epFeatures[i], (int)epActions[i]));
+            sumD += gradLogSoftmax(thetaGlobal, epFeatures[i], (int)epActions[i]);
         }
 
         // Update weights
