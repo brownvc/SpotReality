@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using NumSharp;
+using UnityEngine.InputSystem.Android;
+using System.Drawing.Printing;
+using System.Linq;
 
 public class Learning : MonoBehaviour
 {
@@ -14,25 +17,25 @@ public class Learning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sac = new SoftActorCritic(greenHand, goalObj, 10000, 0.001, 0.001, 0.99);
+        sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.01, 0.01, 0.9999);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        ////base  
-        //var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
-        //var theta = np.ones((sac.actionSize, sac.featureSize), np.float32);
-        //int a = 3;
-        ////theta[11, 5] = 3;
-        ////Debug.Log(sac.softmaxPi(theta, phi));
-        //theta[4, 5] = 3;
-        //sac.gradLogSoftmax(theta, phi, 2);
+        //base  
+        var phi = np.array(new int[] { 0, 1, 2, 3, 4, 5, 0 }, np.float32);
+        var theta = np.ones((12, 7), np.float32);
+        int a = 3;
+        //theta[11, 5] = 3;
+        //Debug.Log(sac.softmaxPi(theta, phi));
+        theta[4, 5] = 3;
+        Debug.Log(sac.gradLogSoftmax(theta, phi, 2));
 
 
-        sac.oneSampleActorCritic();
-        
+        //sac.rollout();
+
     }
 
 }
@@ -46,12 +49,12 @@ public enum Action
     Right,
     Forward,
     Back,
-    RollP, // P = positive
-    RollN, // N = negative
-    YawP,
-    YawN,
-    PitchP,
-    PitchN,
+    //RollP, // P = positive
+    //RollN, // N = negative
+    //YawP,
+    //YawN,
+    //PitchP,
+    //PitchN,
     NumActions
 }
 
@@ -61,7 +64,7 @@ public class SoftActorCritic
     private Quaternion originalRot;
     private Transform agentTransform;
     private Transform goalTransform;
-    private const float TERMINALDIST = 0.05f;
+    private const float TERMINALDIST = 0.2f;
     private NDArray thetaGlobal;
     private NDArray wGlobal;
     private int currentStep;
@@ -70,8 +73,13 @@ public class SoftActorCritic
     private double alphaW;
     private double I;
     private double gamma;
+    private List<int> stepsPerRollout;
+    private int lastRolloutStart;
+    List<NDArray> epFeatures;
+    List<Action> epActions;
+    List<double> epRewards;
 
-    public int featureSize = 7;
+    public int featureSize = 2;
 
     public int actionSize { get; }
 
@@ -83,15 +91,22 @@ public class SoftActorCritic
         agentTransform = aT;
         goalTransform = gT;
         actionSize = (int)Action.NumActions;
-        thetaGlobal = np.zeros((actionSize, featureSize), np.float64);
+        thetaGlobal = np.zeros((actionSize, featureSize), np.float32);
         wGlobal = np.zeros(featureSize);
-        wGlobal = wGlobal.astype(np.float64);
+        wGlobal = wGlobal.astype(np.float32);
         totalSteps = numSteps;
         currentStep = 0;
         alphaTheta = aTheta;
         alphaW = aW;
         gamma = gamm;
         I = 1;
+        agentTransform.position = originalPos;
+        agentTransform.rotation = originalRot;
+        stepsPerRollout = new List<int>();
+        lastRolloutStart = 0;
+        epFeatures = new List<NDArray>();
+        epActions = new List<Action>();
+        epRewards = new List<double>();
     }
 
     private NDArray reset()
@@ -103,51 +118,80 @@ public class SoftActorCritic
         return phi();
     }
 
+    private bool outsideBoundary()
+    {
+        if (agentTransform.position.z < originalPos.z
+            || agentTransform.position.z > goalTransform.position.z
+            || agentTransform.position.y > originalPos.y
+            || agentTransform.position.y < goalTransform.position.y
+            || agentTransform.position.x > originalPos.x + 0.01f
+            || agentTransform.position.x < originalPos.x - 0.01f
+            )
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void act(Action action)
     {
-        float meterMovement = 0.01f;
+        float meterMovement = 0.05f;
         float degreeRotation = 9f;
+        Vector3 posMov = Vector3.zero;
+        Vector3 rotMov = Vector3.zero;
+        Vector3 startActPos = agentTransform.position;
+        Quaternion startActRot = agentTransform.rotation;
 
-        switch(action)
+        switch (action)
         {
             case Action.Up:
-                agentTransform.Translate(Vector3.up * meterMovement);
+                posMov = Vector3.up;
                 break;
             case Action.Down:
-                agentTransform.Translate(Vector3.down * meterMovement);
+                posMov = Vector3.down;
                 break;
             case Action.Left:
-                agentTransform.Translate(Vector3.left * meterMovement);
+                posMov = Vector3.left;
                 break;
             case Action.Right:
-                agentTransform.Translate(Vector3.right * meterMovement);
+                posMov = Vector3.right;
                 break;
             case Action.Forward:
-                agentTransform.Translate(Vector3.forward * meterMovement);
+                posMov = Vector3.forward;
                 break;
             case Action.Back:
-                agentTransform.Translate(Vector3.back * meterMovement);
+                posMov = Vector3.back;
                 break;
-            case Action.RollP:
-                agentTransform.Rotate(new Vector3(0, 0, 1) * degreeRotation);
-                break;
-            case Action.RollN:
-                agentTransform.Rotate(new Vector3(0, 0, -1) * degreeRotation);
-                break;
-            case Action.YawP:
-                agentTransform.Rotate(new Vector3(0, 1, 0) * degreeRotation);
-                break;
-            case Action.YawN:
-                agentTransform.Rotate(new Vector3(0, -1, 0) * degreeRotation);
-                break;
-            case Action.PitchP:
-                agentTransform.Rotate(new Vector3(1, 0, 0) * degreeRotation);
-                break;
-            case Action.PitchN:
-                agentTransform.Rotate(new Vector3(-1, 0, 0) * degreeRotation);
-                break;
+            //case Action.RollP:
+            //    rotMov = new Vector3(0, 0, 1);
+            //    break;
+            //case Action.RollN:
+            //    rotMov = new Vector3(0, 0, -1);
+            //    break;
+            //case Action.YawP:
+            //    rotMov = new Vector3(0, 1, 0);
+            //    break;
+            //case Action.YawN:
+            //    rotMov = new Vector3(0, -1, 0);
+            //    break;
+            //case Action.PitchP:
+            //    rotMov = new Vector3(1, 0, 0);
+            //    break;
+            //case Action.PitchN:
+            //    rotMov = new Vector3(-1, 0, 0);
+            //    break;
             default:
                 break;
+        }
+
+        agentTransform.Translate(posMov * meterMovement);
+        agentTransform.Rotate(rotMov * degreeRotation);
+
+        // Reset the position to the beginning of this function if we moved outside the boundary
+        if (outsideBoundary())
+        {
+            agentTransform.position = startActPos;
+            agentTransform.rotation = startActRot;
         }
     }
 
@@ -156,23 +200,32 @@ public class SoftActorCritic
     {
         Vector3 pos = agentTransform.position;
         Quaternion rot = agentTransform.rotation;
+        Vector3 goalPos = goalTransform.position;
+        Quaternion goalRot = goalTransform.rotation;
         float term = terminal() ? 1f : 0f;
 
         NDArray phiS = np.array(new float[] {
-            pos.x,
-            pos.y,
-            pos.z,
-            rot.eulerAngles.x,
-            rot.eulerAngles.y,
-            rot.eulerAngles.z,
+            //pos.x,
+            //pos.y,
+            //pos.z,
+            //rot.eulerAngles.x,
+            //rot.eulerAngles.y,
+            //rot.eulerAngles.z,
             //pos.x*pos.x,
             //pos.y*pos.y,
             //pos.z*pos.z,
+            //goalPos.x,
+            //goalPos.y,
+            //goalPos.z,
+            //goalPos.x * goalPos.x,
+            //goalPos.y * goalPos.y,
+            //goalPos.z * goalPos.z,
+            Vector3.Distance(goalTransform.position, agentTransform.position),
             //rot.eulerAngles.x * rot.eulerAngles.x,
             //rot.eulerAngles.y * rot.eulerAngles.y,
             //rot.eulerAngles.z * rot.eulerAngles.z,
-            term 
-        }, np.float64);
+            term
+        }, np.float32);
 
         // Assert that phiS is equal to the feature size
         if (phiS.shape[0] != featureSize)
@@ -186,7 +239,7 @@ public class SoftActorCritic
     }
 
 
-    private double reward(NDArray newS, NDArray prevS)
+    private double reward()
     {
         // Reward is dumb
 
@@ -194,42 +247,13 @@ public class SoftActorCritic
 
         // Maybe -1 all the way until the goal
 
+        float distance = Vector3.Distance(goalTransform.position, agentTransform.position);
 
-
-        // Return the inverse of the distance between the objects
-        // float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
-
-        Vector3 newPosition = new Vector3(newS[0], newS[1], newS[2]);
-        float newDistance = Vector3.Distance(newPosition, goalTransform.position);
-
-        Vector3 prevPosition = new Vector3(prevS[0], prevS[1], prevS[2]);
-        float prevDistance = Vector3.Distance(prevPosition, goalTransform.position);
-
-        //return -distance;
-
-        // Account for getting very close
-        if (newDistance < TERMINALDIST)
+        if (terminal())
         {
-            return 5; // / TERMINALDIST;
+            return 1;
         }
-        else if (newDistance >= prevDistance)
-        {
-            return -.1; // - 1/newDistance // prevDistance - newDistance //1 / distance;
-        }
-        else if (newDistance < prevDistance)
-        {
-            if (1/newDistance > 1)
-            {
-                return 1;
-            }
-            else
-            {
-                return 1 / newDistance;
-            }
-        }
-
-        // TODO: reward more if pointing down        
-        return 0;
+        return -1;
     }
 
 
@@ -244,7 +268,7 @@ public class SoftActorCritic
         double rand;
         System.Random random = new System.Random();
         double probAcc = 0d;
-        rand = np.random.uniform(0, 1, np.float64);
+        rand = random.NextDouble(); // np.random.uniform(0, 1, np.float32);
         for (int i = 0; i < probs.shape[0]; i++)
         {
             probAcc += probs[i];
@@ -265,15 +289,15 @@ public class SoftActorCritic
         NDArray pi = np.zeros(actionSize);
 
         // Get the denominator
-        var dot = np.sum(theta * stateFeats, 1, np.float64);
-        var exp = np.exp(dot, np.float64);
-        denom = np.sum(exp, np.float64);
+        var dot = np.sum(theta * stateFeats, 1, np.float32);
+        var exp = np.exp(dot, np.float32);
+        denom = np.sum(exp, np.float32);
 
         // Calculate the probability for each action
         for(int i = 0; i < pi.shape[0]; i++)
         {
-            dot = np.sum(theta[i] * stateFeats, np.float64);
-            pi[i] = np.exp(dot, np.float64) / denom;
+            dot = np.sum(theta[i] * stateFeats, np.float32);
+            pi[i] = np.exp(dot, np.float32) / denom;
         }
         return pi;
     }
@@ -291,6 +315,7 @@ public class SoftActorCritic
         for (int i=0; i<theta.shape[0]; i++) 
         {
             if (i == aIndex) { continue; }
+            Debug.Log(softmaxDistribution(theta, stateFeats));
             grad[i] -= (stateFeats * softmaxDistribution(theta, stateFeats)[i]);
         }
         return grad;
@@ -306,9 +331,114 @@ public class SoftActorCritic
         act(action);
         NDArray newS = phi();
 
-        return (newS, reward(newS, prevS), terminal());
+        return (newS, reward(), terminal());
     }
-    //public float rollout()
+
+
+    // used to be (List<NDArray>, List<Action>, List<double>)
+    public void rollout()
+    {
+        /*
+         * This function works like rollout except is designed to be called one step at a time.
+         * Once a rollout reaches the terminal state, Reinforce is called to update theta and the environment resets.
+         */
+
+        Action a;
+        NDArray obs;
+        bool term = false;
+        double R;
+
+        currentStep += 1;
+
+        if (currentStep < totalSteps)
+        {
+            obs = phi();
+
+            // get the action
+            a = softmaxPi(thetaGlobal, obs);
+            // take a step
+            (obs, R, term) = step(obs, a);
+            // add observations
+            epFeatures.Add(phi());
+            epActions.Add(a);
+            epRewards.Add(R);
+            obs = phi();
+
+            if (term)
+            {
+                // Call reinforce so it can update env
+                reinforce();
+
+                // Reset hand
+                reset();
+
+                // Reset globals for next rollout
+                epFeatures = new List<NDArray>();
+                epActions = new List<Action>();
+                epRewards = new List<double>();
+
+                // Initialize next features
+                epFeatures.Add(phi());
+
+                // Track steps taken
+                int stepsThisRollout = currentStep - lastRolloutStart;
+                stepsPerRollout.Add(stepsThisRollout);
+                string str = "";
+                foreach (int i in stepsPerRollout)
+                {
+                    str += i + ", ";
+                }
+                Debug.Log(str);
+                lastRolloutStart = currentStep;
+
+            }
+        }
+
+        //return (epFeatures, epActions, epRewards);
+    }
+
+
+    private double discountedReturn(NDArray epRewards)
+    {
+        double ret = 0;
+        NDArray gammaRet = np.zeros(epRewards.shape[0]);
+
+        for(int i = 0; i < epRewards.shape[0]; i++)
+        {
+            gammaRet[i] = Math.Pow(gamma, i);
+        }
+
+        ret = np.sum((gammaRet * epRewards).astype(np.float32));
+
+        return ret;
+    }
+
+
+    private void reinforce()
+    {
+        double sumD = 0;
+        double discountedRet = 0;
+        int episodeLength = 0;
+
+
+        episodeLength = epActions.Count;
+
+        // Get discounted returns
+        discountedRet = discountedReturn(np.array(epRewards).astype(np.float32));
+
+        // Get sum
+        for(int i = 0; i < episodeLength; i++)
+        {
+            Debug.Log(gradLogSoftmax(thetaGlobal, epFeatures[i], (int)epActions[i]));
+        }
+
+        // Update weights
+        thetaGlobal += alphaTheta * discountedRet * sumD;
+                                                                 
+    }
+
+
+
 
     public void oneSampleActorCritic() 
     {
@@ -337,7 +467,6 @@ public class SoftActorCritic
 
             // Decide on an action
             Action a = softmaxPi(thetaGlobal, wGlobal);
-            Debug.Log("Action: " + a);
 
             // Take a step
             stepRet = step(phi(), a);
@@ -357,11 +486,8 @@ public class SoftActorCritic
             }
 
             // Take gradient steps
-            Debug.Log("Reward: " + R);
             double delta = R + gamma * vhatNew - np.sum((wGlobal * obs).astype(np.float32));
-            Debug.Log("dW: " + alphaW * delta * obs);
             wGlobal += alphaW * delta * obs;
-            Debug.Log(alphaTheta * delta * I * gradLogSoftmax(thetaGlobal, obs, (int)a));
             thetaGlobal += alphaTheta * delta * I * gradLogSoftmax(thetaGlobal, obs, (int)a);
 
             // Modify I
@@ -369,9 +495,28 @@ public class SoftActorCritic
 
             if (term)
             {
+                Debug.Log("Reset");
                 reset();
                 I = 1;
+                int stepsThisRollout = currentStep - lastRolloutStart;
+                stepsPerRollout.Add(stepsThisRollout);
+                string str = "";
+                foreach(int i in stepsPerRollout)
+                {
+                    str += i + ", ";
+                }
+                Debug.Log(str);
+                lastRolloutStart = currentStep;
             }
+            if (currentStep % 400 == 0)
+            {
+                Debug.Log("Step " + currentStep);
+            }
+        }
+        else
+        {
+            Debug.Log("Theta: " + thetaGlobal);
+            Debug.Log("W: " + wGlobal);
         }
 
         //return (np.zeros(1), np.zeros(1));
