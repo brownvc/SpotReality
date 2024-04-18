@@ -188,6 +188,14 @@ public class SoftActorCritic
 
     private double reward(NDArray newS, NDArray prevS)
     {
+        // Reward is dumb
+
+        // Most obvious is you get +1 when reaching the goal
+
+        // Maybe -1 all the way until the goal
+
+
+
         // Return the inverse of the distance between the objects
         // float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
 
@@ -304,6 +312,21 @@ public class SoftActorCritic
 
     public void oneSampleActorCritic() 
     {
+        // One neural network that spits out a number and a distribution
+        // The number is the critic
+        // The second head is the actor
+        // Domain is your observations, range is R^d
+        // Now that we have the embedding, we feed it two an actor NN and a critic NN
+        // Actor spits out a probability distribution over actions
+        // Critic spits out a value
+
+        // For critic, loss is Mean squared TD error
+        // For actor, loss is TD error times log of softmax output (actor)
+
+        // Then call autograd to get the gradient of the NN with respect to its parameters
+
+        // Clean RL has implementations of everything, have a wrapper
+
         (NDArray, double, bool) stepRet;
         currentStep += 1;
 
