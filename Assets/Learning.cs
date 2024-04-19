@@ -13,11 +13,12 @@ public class Learning : MonoBehaviour
     public Transform greenHand;
     public Transform goalObj;
     private SoftActorCritic sac;
+    public bool useChoice;
 
     // Start is called before the first frame update
     void Start()
     {
-        sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.01, 0.01, 0.9999);
+        sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.0001, 0.0001, 0.999);
 
     }
 
@@ -36,6 +37,11 @@ public class Learning : MonoBehaviour
 
         sac.rollout();
 
+        if (useChoice)
+        {
+
+        }
+
     }
 
 }
@@ -49,10 +55,10 @@ public enum Action
     Right,
     Forward,
     Back,
-    RollP, // P = positive
-    RollN, // N = negative
-    YawP,
-    YawN,
+    //RollP, // P = positive
+    //RollN, // N = negative
+    //YawP,
+    //YawN,
     PitchP,
     PitchN,
     NumActions
@@ -78,6 +84,7 @@ public class SoftActorCritic
     List<NDArray> epFeatures;
     List<Action> epActions;
     List<double> epRewards;
+    public bool useOpt;
 
     public int featureSize = 2;
 
@@ -107,6 +114,7 @@ public class SoftActorCritic
         epFeatures = new List<NDArray>();
         epActions = new List<Action>();
         epRewards = new List<double>();
+        useOpt = false;
     }
 
     private NDArray reset()
@@ -174,12 +182,12 @@ public class SoftActorCritic
             //case Action.YawN:
             //    rotMov = new Vector3(0, -1, 0);
             //    break;
-            //case Action.PitchP:
-            //    rotMov = new Vector3(1, 0, 0);
-            //    break;
-            //case Action.PitchN:
-            //    rotMov = new Vector3(-1, 0, 0);
-            //    break;
+            case Action.PitchP:
+                rotMov = new Vector3(1, 0, 0);
+                break;
+            case Action.PitchN:
+                rotMov = new Vector3(-1, 0, 0);
+                break;
             default:
                 break;
         }
@@ -251,7 +259,11 @@ public class SoftActorCritic
 
         if (terminal())
         {
-            return 1;
+            // Only reward if pointing down
+            if(agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 100)
+            {
+                return 1000;
+            }
         }
         return -1;
     }
@@ -387,6 +399,7 @@ public class SoftActorCritic
                 {
                     str += i + ", ";
                 }
+                Debug.Log("Reward: " + epRewards[epRewards.Count - 1]);
                 Debug.Log(str);
                 lastRolloutStart = currentStep;
 
@@ -433,6 +446,8 @@ public class SoftActorCritic
 
         // Update weights
         thetaGlobal += alphaTheta * discountedRet * sumD;
+
+        //Debug.Log(thetaGlobal);
                                                                  
     }
 
