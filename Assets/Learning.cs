@@ -13,12 +13,12 @@ public class Learning : MonoBehaviour
     public Transform greenHand;
     public Transform goalObj;
     private SoftActorCritic sac;
-    public bool useChoice;
+    public bool useOpt;
 
     // Start is called before the first frame update
     void Start()
     {
-        sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.0001, 0.0001, 0.999);
+        sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.000005, 0.00005, 0.999);
 
     }
 
@@ -37,9 +37,9 @@ public class Learning : MonoBehaviour
 
         sac.rollout();
 
-        if (useChoice)
+        if (useOpt)
         {
-
+            sac.useOpt = true;
         }
 
     }
@@ -86,7 +86,7 @@ public class SoftActorCritic
     List<double> epRewards;
     public bool useOpt;
 
-    public int featureSize = 2;
+    public int featureSize = 3;
 
     public int actionSize { get; }
 
@@ -144,7 +144,7 @@ public class SoftActorCritic
     public void act(Action action)
     {
         float meterMovement = 0.05f;
-        float degreeRotation = 9f;
+        float degreeRotation = 1f;
         Vector3 posMov = Vector3.zero;
         Vector3 rotMov = Vector3.zero;
         Vector3 startActPos = agentTransform.position;
@@ -216,7 +216,7 @@ public class SoftActorCritic
             //pos.x,
             //pos.y,
             //pos.z,
-            //rot.eulerAngles.x,
+            rot.eulerAngles.x / 360,
             //rot.eulerAngles.y,
             //rot.eulerAngles.z,
             //pos.x*pos.x,
@@ -259,10 +259,15 @@ public class SoftActorCritic
 
         if (terminal())
         {
-            // Only reward if pointing down
-            if(agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 100)
+            Debug.Log("Agent x rot: " + agentTransform.rotation.eulerAngles.x);
+            // Only reward if pointing down above object
+            if(agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 90 && agentTransform.position.y > goalTransform.position.y)
             {
                 return 1000;
+            }
+            else
+            {
+                return 1;
             }
         }
         return -1;
@@ -318,6 +323,10 @@ public class SoftActorCritic
     public Action softmaxPi(NDArray theta, NDArray stateFeats)
     {
         // Randomly sample an action
+        if (useOpt)
+        {
+            return (Action)np.argmax(softmaxDistribution(theta, stateFeats));
+        }
         return (Action)randomChoice(softmaxDistribution(theta, stateFeats));
     }
     public NDArray gradLogSoftmax(NDArray theta, NDArray stateFeats, int aIndex)
@@ -399,7 +408,7 @@ public class SoftActorCritic
                 {
                     str += i + ", ";
                 }
-                Debug.Log("Reward: " + epRewards[epRewards.Count - 1]);
+                //Debug.Log("Reward: " + epRewards[epRewards.Count - 1]);
                 Debug.Log(str);
                 lastRolloutStart = currentStep;
 
