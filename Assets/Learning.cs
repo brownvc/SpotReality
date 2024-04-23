@@ -191,8 +191,12 @@ public class SoftActorCritic
         // Return the inverse of the distance between the objects
         // float distance = Vector3.Distance(agentTransform.position, goalTransform.position);
 
+        // TODO : Distances are not accurate 
         Vector3 newPosition = new Vector3(newS[0], newS[1], newS[2]);
         float newDistance = Vector3.Distance(newPosition, goalTransform.position);
+        Debug.Log("goal position: " + goalTransform.position)
+        // Debug.Log("new distance: " + newDistance + ", " + agentTransform.position.);
+        Debug.Log("newX: " + newS[2] + ", oldX: " + agentTransform.position.z);
 
         Vector3 prevPosition = new Vector3(prevS[0], prevS[1], prevS[2]);
         float prevDistance = Vector3.Distance(prevPosition, goalTransform.position);
@@ -204,13 +208,13 @@ public class SoftActorCritic
         {
             return 5; // / TERMINALDIST;
         }
-        else if (newDistance >= prevDistance)
+        else if (newDistance >= prevDistance) // If we are not moving towards the target
         {
             return -.1; // - 1/newDistance // prevDistance - newDistance //1 / distance;
         }
-        else if (newDistance < prevDistance)
+        else if (newDistance < prevDistance) // If we are moving towards the target
         {
-            if (1/newDistance > 1)
+            if (1/newDistance > 1) // Caps reward for moving towards the target to 1
             {
                 return 1;
             }
