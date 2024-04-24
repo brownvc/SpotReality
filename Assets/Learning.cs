@@ -14,7 +14,7 @@ public class Learning : MonoBehaviour
     public Transform goalObj;
     private SoftActorCritic sac;
     public bool useOpt;
-
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +44,13 @@ public class Learning : MonoBehaviour
 
     }
 
+    void OnDestroy()
+    {
+        sac.printWeights();
+    }
 }
+
+
 
 
 public enum Action
@@ -271,7 +277,7 @@ public class SoftActorCritic
         }
         if (currentStep % 100 == 0)
         {
-            Debug.Log("reward: " + -.005 * (currentStep - lastRolloutStart))
+            Debug.Log("reward: " + -.005 * (currentStep - lastRolloutStart));
         }
         return -.005*(currentStep - lastRolloutStart);
     }
@@ -464,6 +470,11 @@ public class SoftActorCritic
     }
 
 
+    public void printWeights()
+    {
+        Debug.Log("Theta: " + thetaGlobal);
+        Debug.Log("W: " + wGlobal);
+    }
 
 
     public void oneSampleActorCritic() 
