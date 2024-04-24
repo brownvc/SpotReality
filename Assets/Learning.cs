@@ -127,16 +127,27 @@ public class SoftActorCritic
             // };
 
             // Create the list of lists
+            // double[][] list = new double[][]
+            // {
+            // new double[] {0.031422511345937, 0.212453131750298, -0.0218344861315378, -0.0785889141526493, 0.00034958249290992},
+            // new double[] {-0.22498962355685, 0.207087498434513, 0.0543894052650787, -0.245977666736726, -0.00254067915457728},
+            // new double[] {-0.264986428763966, -0.117637147876635, -0.0473498872896212, -0.0961559692662337, 0.000349075265872792},
+            // new double[] {-0.607971532193491, -0.00272117804949102, -0.603987034116024, -0.34903435727116, 0.000353238132282678},
+            // new double[] {0.871191627889778, 0.071935431336154, 0.234355430996507, 0.46108782412158, 0.000447074351617141},
+            // new double[] {-0.395769363805432, -0.17757859716609, -0.0506487663608775, -0.157187938624172, 0.000351214405470739},
+            // new double[] {0.749163440609915, -0.112881679380638, 0.433751892096605, 0.512386110241525, 0.000342541782859778},
+            // new double[] {-0.158060606935189, -0.0806574779958731, 0.00132347181909295, -0.0465291273110982, 0.000347952727635685}
+            // };
             double[][] list = new double[][]
             {
-            new double[] {0.031422511345937, 0.212453131750298, -0.0218344861315378, -0.0785889141526493, 0.00034958249290992},
-            new double[] {-0.22498962355685, 0.207087498434513, 0.0543894052650787, -0.245977666736726, -0.00254067915457728},
-            new double[] {-0.264986428763966, -0.117637147876635, -0.0473498872896212, -0.0961559692662337, 0.000349075265872792},
-            new double[] {-0.607971532193491, -0.00272117804949102, -0.603987034116024, -0.34903435727116, 0.000353238132282678},
-            new double[] {0.871191627889778, 0.071935431336154, 0.234355430996507, 0.46108782412158, 0.000447074351617141},
-            new double[] {-0.395769363805432, -0.17757859716609, -0.0506487663608775, -0.157187938624172, 0.000351214405470739},
-            new double[] {0.749163440609915, -0.112881679380638, 0.433751892096605, 0.512386110241525, 0.000342541782859778},
-            new double[] {-0.158060606935189, -0.0806574779958731, 0.00132347181909295, -0.0465291273110982, 0.000347952727635685}
+                new double[] { 0.0181830470019604, 0.160137449867225, -0.102560896381722, -0.100325995295111, 0.000376578373871349 },
+                new double[] { -0.277513478245677, 0.205147927671313, -0.0018498067815981, -0.2370149013913, -0.0025177141727952 },
+                new double[] { -0.340186684415659, -0.13815865116341, -0.0794612111036826, -0.120589869379266, 0.000371813728074248 },
+                new double[] { -0.565688526784278, 0.0130413336167028, -0.631452321534621, -0.342492199013991, 0.000369076802778451 },
+                new double[] { 1.07119925473673, 0.00710089504899006, 0.171878876212245, 0.632953711417075, 0.000263063210694675 },
+                new double[] { -0.520615160041992, -0.111372908992269, -0.0865962398617954, -0.269497388302164, 0.000372099925858803 },
+                new double[] { 0.889395241553879, -0.0665227743830269, 0.561442687445505, 0.587684353062698, 0.000392509925671927 },
+                new double[] { -0.274773646646645, -0.0693732608708621, 0.168598941128973, -0.150717750730691, 0.000372572237890571 }
             };
 
             // Create the NumSharp array
@@ -319,15 +330,15 @@ public class SoftActorCritic
                 Debug.Log("Max steps exceeded " + _reward);
                 return _reward;
             }
-            if (agentTransform.rotation.eulerAngles.x > 70 && agentTransform.rotation.eulerAngles.x < 95 && agentTransform.position.y > goalTransform.position.y)
+            if (agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > goalTransform.position.y)
             {
                 double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
                 double num_steps = currentStep - lastRolloutStart;
                 double z_diff = Math.Abs(agentTransform.position.z - goalTransform.position.z);
                 // Debug.Log("angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
-                double deductions = (1.3 * angle_diff) + (1.1 * num_steps) + (100 * z_diff);
+                double deductions = (2 * angle_diff) + (1.6 * num_steps) + (100 * z_diff);
                 _reward = Math.Max(1000 - deductions, 2); // TODO change rate from 1 to .1 for both if starting with new weights
-                // Debug.Log("Max reward achieved " + _reward);
+                Debug.Log("Max reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
                 return _reward;
             }
             // else if (agentTransform.rotation.eulerAngles.x > 40 && agentTransform.rotation.eulerAngles.x < 150 && agentTransform.position.y > goalTransform.position.y)
@@ -344,8 +355,9 @@ public class SoftActorCritic
             // }
             else
             {
-                _reward = Math.Max(1 - ((.01 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.01 * (currentStep - lastRolloutStart))), .1);
-                // Debug.Log("Default reward achieved " + _reward);
+                // _reward = Math.Max(1 - ((.01 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.01 * (currentStep - lastRolloutStart))), .1);
+                _reward = 1 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
+                Debug.Log("Default reward achieved " + _reward);
                 return _reward;
             }
         }
@@ -485,15 +497,13 @@ public class SoftActorCritic
                 string str = "";
                 foreach (int i in stepsPerRollout)
                 {
-                    str += i + ", ";
+                    str = i + ", " + str;
                 }
                 //Debug.Log("Reward: " + epRewards[epRewards.Count - 1]);
-                if (stepsThisRollout < 90 && R > 800)
+                if (stepsThisRollout < 90 && R > 700)
                 {
-                    Debug.Log("Reward: " + R);
+                    Debug.Log("Reward: " + R + "    step hist: " + str);
                     Debug.Log("Theta: " + thetaGlobal);
-                    Debug.Log("W: " + wGlobal);
-                    Debug.Log(str);
                 }
                 // Debug.Log(str);
                 lastRolloutStart = currentStep;
