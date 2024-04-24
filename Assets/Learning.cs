@@ -46,7 +46,11 @@ public class Learning : MonoBehaviour
 
     void OnDestroy()
     {
-        sac.printWeights();
+        this.sac.printWeights();
+    }
+    void OnApplicationQuit()
+    {
+        this.sac.printWeights();
     }
 }
 
@@ -77,8 +81,8 @@ public class SoftActorCritic
     private Transform agentTransform;
     private Transform goalTransform;
     private const float TERMINALDIST = 0.2f;
-    private NDArray thetaGlobal;
-    private NDArray wGlobal;
+    public NDArray thetaGlobal;
+    public NDArray wGlobal;
     private int currentStep;
     private int totalSteps;
     private double alphaTheta;
@@ -104,7 +108,25 @@ public class SoftActorCritic
         agentTransform = aT;
         goalTransform = gT;
         actionSize = (int)Action.NumActions;
-        thetaGlobal = np.zeros((actionSize, featureSize), np.float32);
+        //thetaGlobal = np.zeros((actionSize, featureSize), np.float32);
+        // Load stored weights
+        // Create the list of lists
+        double[][] list = new double[][]
+        {
+            new double[] {-0.149857809813663, 0.224498940665993, -0.0792345530151628, -0.177251873976455, 0.000361198288136511},
+            new double[] {-0.091086138076753, 0.156258552130798, 0.0961937633306631, -0.150846945836251, -0.00252838801695558},
+            new double[] {-0.0759413055661327, -0.15986672132788, 0.0278787131705902, 0.0222744854063179, 0.000361198288136511},
+            new double[] {-0.520484433714969, -0.00918990814048947, -0.561558900436911, -0.296301709327981, 0.000361198288136511},
+            new double[] {0.718029441548807, 0.100051711304395, 0.182129467866025, 0.37409499252551, 0.000361198288136511},
+            new double[] {-0.307007049986844, -0.0879748156023372, -0.0919664440692011, -0.155647354275353, 0.000361198288136511},
+            new double[] {0.402485521373028, -0.181330827166818, 0.39327828344938, 0.345854110700327, 0.000361198288136511},
+            new double[] {0.0238617410417896, -0.0424469278527988, 0.0332796747936071, 0.0378242144014703, 0.000361198288136511}
+        };
+
+        // Create the NumSharp array
+        thetaGlobal = np.array(list);
+
+
         wGlobal = np.zeros(featureSize);
         wGlobal = wGlobal.astype(np.float32);
         totalSteps = numSteps;
@@ -189,10 +211,10 @@ public class SoftActorCritic
             //    rotMov = new Vector3(0, -1, 0);
             //    break;
             case Action.PitchP:
-                rotMov = new Vector3(5, 0, 0);
+                rotMov = new Vector3(3, 0, 0);
                 break;
             case Action.PitchN:
-                rotMov = new Vector3(-5, 0, 0);
+                rotMov = new Vector3(-3, 0, 0);
                 break;
             default:
                 break;
@@ -219,7 +241,7 @@ public class SoftActorCritic
         float term = terminal() ? 1f : 0f;
 
         NDArray phiS = np.array(new float[] {
-            //pos.x,
+            //pos.x, // uncomment this for randomized goal position
             pos.y,
             pos.z,
             rot.eulerAngles.x / 360,
@@ -228,9 +250,9 @@ public class SoftActorCritic
             //pos.x*pos.x,
             //pos.y*pos.y,
             //pos.z*pos.z,
-            //goalPos.x,
-            //goalPos.y,
-            //goalPos.z,
+            //goalPos.x, // uncomment this for randomized goal position
+            //goalPos.y, // uncomment this for randomized goal position
+            //goalPos.z, // uncomment this for randomized goal position
             //goalPos.x * goalPos.x,
             //goalPos.y * goalPos.y,
             //goalPos.z * goalPos.z,
@@ -258,25 +280,46 @@ public class SoftActorCritic
         // Reward is dumb
         // Most obvious is you get +1 when reaching the goal
         // Maybe -1 all the way until the goal
+        // TODO maybe have reward be based on the difference in angle between optimal angle and terminal angle
+        // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
+        // TODO add termination from main loop if weights converge
 
         float distance = Vector3.Distance(goalTransform.position, agentTransform.position);
 
         if (terminal())
         {
-            Debug.Log("Agent x rot: " + agentTransform.rotation.eulerAngles.x);
+            // Debug.Log("Agent x rot: " + agentTransform.rotation.eulerAngles.x);
             // Only reward if pointing down above object
+            double _reward;
+            if (Vector3.Distance(agentTransform.position, goalTransform.position) > TERMINALDIST)
+            {
+                _reward = -100 - (.0001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90)));
+                Debug.Log("Max steps exceeded " + _reward);
+                return _reward;
+            }
             if (agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 90 && agentTransform.position.y > goalTransform.position.y)
             {
-                Debug.Log("Max reward achieved");
-                return 1000;
+                _reward = 1000 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
+                Debug.Log("Max reward achieved " + _reward);
+                return _reward;
             }
-            else if (agentTransform.position.y > goalTransform.position.y)
+            else if (agentTransform.rotation.eulerAngles.x > 40 && agentTransform.rotation.eulerAngles.x < 150 && agentTransform.position.y > goalTransform.position.y)
             {
-                return 10;
+                _reward = 100 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
+                Debug.Log("Secondary reward achieved " + _reward);
+                return _reward;
+            }
+            else if (agentTransform.rotation.eulerAngles.x > 10 && agentTransform.rotation.eulerAngles.x < 180)
+            {
+                _reward = 15 - ((.001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.001 * (currentStep - lastRolloutStart)));
+                Debug.Log("Tertiary reward achieved " + _reward);
+                return _reward;
             }
             else
             {
-                return 1;
+                _reward = Math.Max(1 - ((.001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.001 * (currentStep - lastRolloutStart))), .1);
+                Debug.Log("Default reward achieved " + _reward);
+                return _reward;
             }
         }
         return -.005 * (currentStep - lastRolloutStart);
@@ -285,7 +328,7 @@ public class SoftActorCritic
 
     private bool terminal()
     {
-        return Vector3.Distance(agentTransform.position, goalTransform.position) < TERMINALDIST;
+        return Vector3.Distance(agentTransform.position, goalTransform.position) < TERMINALDIST || currentStep - lastRolloutStart > 10000;
     }
 
     // Replaces np.random.choice -- returns index of array based on weighted probability
@@ -418,6 +461,11 @@ public class SoftActorCritic
                     str += i + ", ";
                 }
                 //Debug.Log("Reward: " + epRewards[epRewards.Count - 1]);
+                if (stepsThisRollout < 80)
+                {
+                    Debug.Log("Theta: " + thetaGlobal);
+                    Debug.Log("W: " + wGlobal);
+                }
                 Debug.Log(str);
                 lastRolloutStart = currentStep;
 
@@ -545,9 +593,11 @@ public class SoftActorCritic
                 Debug.Log(str);
                 lastRolloutStart = currentStep;
             }
-            if (currentStep % 400 == 0)
+            if (currentStep - lastRolloutStart < 100) // TODO fix these, only hits if it happens to land on an exact multiple
             {
                 Debug.Log("Step " + currentStep);
+                Debug.Log("Theta: " + thetaGlobal);
+                Debug.Log("W: " + wGlobal);
             }
         }
         else
