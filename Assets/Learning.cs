@@ -183,10 +183,10 @@ public class SoftActorCritic
             //    rotMov = new Vector3(0, -1, 0);
             //    break;
             case Action.PitchP:
-                rotMov = new Vector3(1, 0, 0);
+                rotMov = new Vector3(5, 0, 0);
                 break;
             case Action.PitchN:
-                rotMov = new Vector3(-1, 0, 0);
+                rotMov = new Vector3(-5, 0, 0);
                 break;
             default:
                 break;
@@ -261,14 +261,19 @@ public class SoftActorCritic
             // Only reward if pointing down above object
             if(agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 90 && agentTransform.position.y > goalTransform.position.y)
             {
+                Debug.Log("Max reward achieved");
                 return 1000;
             }
             else
             {
-                return 1;
+                return 10;
             }
         }
-        return -.01*(currentStep - lastRolloutStart);
+        if (currentStep % 100 == 0)
+        {
+            Debug.Log("reward: " + -.005 * (currentStep - lastRolloutStart))
+        }
+        return -.005*(currentStep - lastRolloutStart);
     }
 
 
