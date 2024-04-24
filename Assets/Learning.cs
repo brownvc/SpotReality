@@ -18,7 +18,8 @@ public class Learning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.000005, 0.00005, 0.999);
+        bool use_stored_weights = true;
+        this.sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.000005, 0.00005, 0.999, use_stored_weights);
 
     }
 
@@ -101,30 +102,51 @@ public class SoftActorCritic
     public int actionSize { get; }
 
 
-    public SoftActorCritic(Transform aT, Transform gT, int numSteps, double aTheta, double aW, double gamm)
+    public SoftActorCritic(Transform aT, Transform gT, int numSteps, double aTheta, double aW, double gamm, bool use_stored_weights = true)
     {
         originalPos = aT.position;
         originalRot = aT.rotation;
         agentTransform = aT;
         goalTransform = gT;
         actionSize = (int)Action.NumActions;
-        //thetaGlobal = np.zeros((actionSize, featureSize), np.float32);
-        // Load stored weights
-        // Create the list of lists
-        double[][] list = new double[][]
-        {
-            new double[] {-0.149857809813663, 0.224498940665993, -0.0792345530151628, -0.177251873976455, 0.000361198288136511},
-            new double[] {-0.091086138076753, 0.156258552130798, 0.0961937633306631, -0.150846945836251, -0.00252838801695558},
-            new double[] {-0.0759413055661327, -0.15986672132788, 0.0278787131705902, 0.0222744854063179, 0.000361198288136511},
-            new double[] {-0.520484433714969, -0.00918990814048947, -0.561558900436911, -0.296301709327981, 0.000361198288136511},
-            new double[] {0.718029441548807, 0.100051711304395, 0.182129467866025, 0.37409499252551, 0.000361198288136511},
-            new double[] {-0.307007049986844, -0.0879748156023372, -0.0919664440692011, -0.155647354275353, 0.000361198288136511},
-            new double[] {0.402485521373028, -0.181330827166818, 0.39327828344938, 0.345854110700327, 0.000361198288136511},
-            new double[] {0.0238617410417896, -0.0424469278527988, 0.0332796747936071, 0.0378242144014703, 0.000361198288136511}
-        };
 
-        // Create the NumSharp array
-        thetaGlobal = np.array(list);
+        if (use_stored_weights)
+        {
+            // Load stored weights
+            // Create the list of lists
+            // double[][] list = new double[][]
+            // {
+            // new double[] {-0.149857809813663, 0.224498940665993, -0.0792345530151628, -0.177251873976455, 0.000361198288136511},
+            // new double[] {-0.091086138076753, 0.156258552130798, 0.0961937633306631, -0.150846945836251, -0.00252838801695558},
+            // new double[] {-0.0759413055661327, -0.15986672132788, 0.0278787131705902, 0.0222744854063179, 0.000361198288136511},
+            // new double[] {-0.520484433714969, -0.00918990814048947, -0.561558900436911, -0.296301709327981, 0.000361198288136511},
+            // new double[] {0.718029441548807, 0.100051711304395, 0.182129467866025, 0.37409499252551, 0.000361198288136511},
+            // new double[] {-0.307007049986844, -0.0879748156023372, -0.0919664440692011, -0.155647354275353, 0.000361198288136511},
+            // new double[] {0.402485521373028, -0.181330827166818, 0.39327828344938, 0.345854110700327, 0.000361198288136511},
+            // new double[] {0.0238617410417896, -0.0424469278527988, 0.0332796747936071, 0.0378242144014703, 0.000361198288136511}
+            // };
+
+            // Create the list of lists
+            double[][] list = new double[][]
+            {
+            new double[] {0.031422511345937, 0.212453131750298, -0.0218344861315378, -0.0785889141526493, 0.00034958249290992},
+            new double[] {-0.22498962355685, 0.207087498434513, 0.0543894052650787, -0.245977666736726, -0.00254067915457728},
+            new double[] {-0.264986428763966, -0.117637147876635, -0.0473498872896212, -0.0961559692662337, 0.000349075265872792},
+            new double[] {-0.607971532193491, -0.00272117804949102, -0.603987034116024, -0.34903435727116, 0.000353238132282678},
+            new double[] {0.871191627889778, 0.071935431336154, 0.234355430996507, 0.46108782412158, 0.000447074351617141},
+            new double[] {-0.395769363805432, -0.17757859716609, -0.0506487663608775, -0.157187938624172, 0.000351214405470739},
+            new double[] {0.749163440609915, -0.112881679380638, 0.433751892096605, 0.512386110241525, 0.000342541782859778},
+            new double[] {-0.158060606935189, -0.0806574779958731, 0.00132347181909295, -0.0465291273110982, 0.000347952727635685}
+            };
+
+            // Create the NumSharp array
+            thetaGlobal = np.array(list);
+        }
+        else
+        {
+            thetaGlobal = np.zeros((actionSize, featureSize), np.float32);
+        }
+
 
 
         wGlobal = np.zeros(featureSize);
@@ -297,28 +319,33 @@ public class SoftActorCritic
                 Debug.Log("Max steps exceeded " + _reward);
                 return _reward;
             }
-            if (agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 90 && agentTransform.position.y > goalTransform.position.y)
+            if (agentTransform.rotation.eulerAngles.x > 70 && agentTransform.rotation.eulerAngles.x < 95 && agentTransform.position.y > goalTransform.position.y)
             {
-                _reward = 1000 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
-                Debug.Log("Max reward achieved " + _reward);
+                double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
+                double num_steps = currentStep - lastRolloutStart;
+                double z_diff = Math.Abs(agentTransform.position.z - goalTransform.position.z);
+                // Debug.Log("angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
+                double deductions = (1.3 * angle_diff) + (1.1 * num_steps) + (100 * z_diff);
+                _reward = Math.Max(1000 - deductions, 2); // TODO change rate from 1 to .1 for both if starting with new weights
+                // Debug.Log("Max reward achieved " + _reward);
                 return _reward;
             }
-            else if (agentTransform.rotation.eulerAngles.x > 40 && agentTransform.rotation.eulerAngles.x < 150 && agentTransform.position.y > goalTransform.position.y)
-            {
-                _reward = 100 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
-                Debug.Log("Secondary reward achieved " + _reward);
-                return _reward;
-            }
-            else if (agentTransform.rotation.eulerAngles.x > 10 && agentTransform.rotation.eulerAngles.x < 180)
-            {
-                _reward = 15 - ((.001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.001 * (currentStep - lastRolloutStart)));
-                Debug.Log("Tertiary reward achieved " + _reward);
-                return _reward;
-            }
+            // else if (agentTransform.rotation.eulerAngles.x > 40 && agentTransform.rotation.eulerAngles.x < 150 && agentTransform.position.y > goalTransform.position.y)
+            // {
+            //     _reward = 100 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
+            //     Debug.Log("Secondary reward achieved " + _reward);
+            //     return _reward;
+            // }
+            // else if (agentTransform.rotation.eulerAngles.x > 10 && agentTransform.rotation.eulerAngles.x < 180)
+            // {
+            //     _reward = 15 - ((.001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.001 * (currentStep - lastRolloutStart)));
+            //     Debug.Log("Tertiary reward achieved " + _reward);
+            //     return _reward;
+            // }
             else
             {
-                _reward = Math.Max(1 - ((.001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.001 * (currentStep - lastRolloutStart))), .1);
-                Debug.Log("Default reward achieved " + _reward);
+                _reward = Math.Max(1 - ((.01 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.01 * (currentStep - lastRolloutStart))), .1);
+                // Debug.Log("Default reward achieved " + _reward);
                 return _reward;
             }
         }
@@ -461,12 +488,14 @@ public class SoftActorCritic
                     str += i + ", ";
                 }
                 //Debug.Log("Reward: " + epRewards[epRewards.Count - 1]);
-                if (stepsThisRollout < 80)
+                if (stepsThisRollout < 90 && R > 800)
                 {
+                    Debug.Log("Reward: " + R);
                     Debug.Log("Theta: " + thetaGlobal);
                     Debug.Log("W: " + wGlobal);
+                    Debug.Log(str);
                 }
-                Debug.Log(str);
+                // Debug.Log(str);
                 lastRolloutStart = currentStep;
 
             }
