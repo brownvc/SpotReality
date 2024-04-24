@@ -298,12 +298,8 @@ public class SoftActorCritic
 
     private double reward()
     {
-        // Reward is dumb
-        // Most obvious is you get +1 when reaching the goal
-        // Maybe -1 all the way until the goal
-        // TODO maybe have reward be based on the difference in angle between optimal angle and terminal angle
         // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
-        // TODO add termination from main loop if weights converge
+        // TODO scale reward based on if the position and orientation of the agent creates a ray that goes near center of the goal. Scale based on distance between closest point on ray and goal center. 
 
         float distance = Vector3.Distance(goalTransform.position, agentTransform.position);
 
@@ -312,7 +308,7 @@ public class SoftActorCritic
             // Debug.Log("Agent x rot: " + agentTransform.rotation.eulerAngles.x);
             // Only reward if pointing down above object
             double _reward;
-            if (Vector3.Distance(agentTransform.position, goalTransform.position) > TERMINALDIST)
+            if (distance > TERMINALDIST)
             {
                 _reward = -100 - (.0001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90)));
                 Debug.Log("Max steps exceeded " + _reward);
