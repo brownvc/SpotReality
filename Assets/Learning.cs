@@ -14,11 +14,11 @@ public class Learning : MonoBehaviour
     public Transform goalObj;
     private SoftActorCritic sac;
     public bool useOpt;
-   
+
     // Start is called before the first frame update
     void Start()
     {
-        sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.000005, 0.00005, 0.999);
+        this.sac = new SoftActorCritic(greenHand, goalObj, 1000000, 0.000005, 0.00005, 0.999);
 
     }
 
@@ -35,11 +35,11 @@ public class Learning : MonoBehaviour
         //Debug.Log(sac.gradLogSoftmax(theta, phi, 2));
 
 
-        sac.rollout();
+        this.sac.rollout();
 
         if (useOpt)
         {
-            sac.useOpt = true;
+            this.sac.useOpt = true;
         }
 
     }
@@ -265,21 +265,21 @@ public class SoftActorCritic
         {
             Debug.Log("Agent x rot: " + agentTransform.rotation.eulerAngles.x);
             // Only reward if pointing down above object
-            if(agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 90 && agentTransform.position.y > goalTransform.position.y)
+            if (agentTransform.rotation.eulerAngles.x > 60 && agentTransform.rotation.eulerAngles.x < 90 && agentTransform.position.y > goalTransform.position.y)
             {
                 Debug.Log("Max reward achieved");
                 return 1000;
             }
-            else
+            else if (agentTransform.position.y > goalTransform.position.y)
             {
                 return 10;
             }
+            else
+            {
+                return 1;
+            }
         }
-        if (currentStep % 100 == 0)
-        {
-            Debug.Log("reward: " + -.005 * (currentStep - lastRolloutStart));
-        }
-        return -.005*(currentStep - lastRolloutStart);
+        return -.005 * (currentStep - lastRolloutStart);
     }
 
 
@@ -309,7 +309,7 @@ public class SoftActorCritic
     }
 
 
-    private NDArray softmaxDistribution(NDArray theta, NDArray stateFeats) 
+    private NDArray softmaxDistribution(NDArray theta, NDArray stateFeats)
     {
         NDArray denom;
         NDArray pi = np.zeros(actionSize);
@@ -320,7 +320,7 @@ public class SoftActorCritic
         denom = np.sum(exp, np.float32);
 
         // Calculate the probability for each action
-        for(int i = 0; i < pi.shape[0]; i++)
+        for (int i = 0; i < pi.shape[0]; i++)
         {
             dot = np.sum(theta[i] * stateFeats, np.float32);
             pi[i] = np.exp(dot, np.float32) / denom;
@@ -342,7 +342,7 @@ public class SoftActorCritic
     {
         NDArray grad = np.zeros(theta.shape, np.float32);
         grad[aIndex] += (stateFeats * (1 - softmaxDistribution(theta, stateFeats)[aIndex]));
-        for (int i=0; i<theta.shape[0]; i++) 
+        for (int i = 0; i < theta.shape[0]; i++)
         {
             if (i == aIndex) { continue; }
             grad[i] -= (stateFeats * softmaxDistribution(theta, stateFeats)[i]);
@@ -433,7 +433,7 @@ public class SoftActorCritic
         double ret = 0;
         NDArray gammaRet = np.zeros(epRewards.shape[0]);
 
-        for(int i = 0; i < epRewards.shape[0]; i++)
+        for (int i = 0; i < epRewards.shape[0]; i++)
         {
             gammaRet[i] = Math.Pow(gamma, i);
         }
@@ -457,7 +457,7 @@ public class SoftActorCritic
         discountedRet = discountedReturn(np.array(epRewards).astype(np.float32));
 
         // Get sum
-        for(int i = 0; i < episodeLength; i++)
+        for (int i = 0; i < episodeLength; i++)
         {
             sumD += gradLogSoftmax(thetaGlobal, epFeatures[i], (int)epActions[i]);
         }
@@ -466,7 +466,7 @@ public class SoftActorCritic
         thetaGlobal += alphaTheta * discountedRet * sumD;
 
         //Debug.Log(thetaGlobal);
-                                                                 
+
     }
 
 
@@ -477,7 +477,7 @@ public class SoftActorCritic
     }
 
 
-    public void oneSampleActorCritic() 
+    public void oneSampleActorCritic()
     {
         // One neural network that spits out a number and a distribution
         // The number is the critic
@@ -508,7 +508,7 @@ public class SoftActorCritic
             // Take a step
             stepRet = step(phi(), a);
             NDArray newObs = stepRet.Item1;
-            double R = stepRet.Item2;  
+            double R = stepRet.Item2;
             bool term = stepRet.Item3;
 
             // compute vhat, delta
@@ -538,7 +538,7 @@ public class SoftActorCritic
                 int stepsThisRollout = currentStep - lastRolloutStart;
                 stepsPerRollout.Add(stepsThisRollout);
                 string str = "";
-                foreach(int i in stepsPerRollout)
+                foreach (int i in stepsPerRollout)
                 {
                     str += i + ", ";
                 }
