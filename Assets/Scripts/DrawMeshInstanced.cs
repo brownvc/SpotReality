@@ -334,10 +334,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
 
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
-        meshPropertiesBuffer.SetData(GetProperties());
 
         depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
-        depthBuffer.SetData(depth_ar);
 
         SetProperties();
         SetGOPosition();

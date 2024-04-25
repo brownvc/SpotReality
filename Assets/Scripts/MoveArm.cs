@@ -43,8 +43,6 @@ public class MoveArm : MonoBehaviour
     private bool isGreen = true;
     private float maxArmLength = .73f;
 
-
-    private bool showSpotBody = false;
     public Material translucentSpotMaterial;
     public Material opaqueSpotMaterial;
     public Material opaqueSpotArmMaterial;
@@ -57,8 +55,7 @@ public class MoveArm : MonoBehaviour
         // Set the dummy hand to the same location as the real hand
         dummyHandTransform.position = realHandTransform.position;
         dummyHandTransform.rotation = realHandTransform.rotation;
-        showSpotBody = false;
-        setSpotVisible(spotBody, showSpotBody);
+        setSpotVisible(spotBody, false);
     }
 
     void Update()
@@ -216,7 +213,6 @@ public class MoveArm : MonoBehaviour
     private void OnDisable()
     {
         armPublisher.enabled = false;
-        showSpotBody = false;
         setSpotVisible(spotBody, true);
     }
 }

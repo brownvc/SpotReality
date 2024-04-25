@@ -10381,7 +10381,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1500417875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12070,7 +12070,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1673597985
 MonoBehaviour:
   m_ObjectHideFlags: 0
