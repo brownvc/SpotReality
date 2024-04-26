@@ -727,6 +727,91 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GeometryType: 3
+--- !u!1 &79057205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 79057208}
+  - component: {fileID: 79057206}
+  - component: {fileID: 79057207}
+  m_Layer: 0
+  m_Name: ControlMode - Joy Stick Arm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &79057206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79057205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Joy Stick Arm
+  description: 
+  listOfControlMappings: 
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 3465647787827832880}
+  - {fileID: 3465647788475013931}
+  scriptsOfModeToEnable:
+  - {fileID: 79057206}
+--- !u!114 &79057207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79057205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36537bf059b7e344bc0aee22910a295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  spotBody: {fileID: 1399272934}
+  cloudsToFreeze2:
+  - {fileID: 112187588}
+  - {fileID: 545284150}
+  handExtUpdater: {fileID: 637838618}
+  handImageSubscriber: {fileID: 1510830378}
+  gripper: {fileID: 1510830367}
+  generalControls: {fileID: 3465647787329320719}
+  depthSubscribers:
+  - {fileID: 1673597984}
+  - {fileID: 1500417874}
+  translucentSpotMaterial: {fileID: 2100000, guid: 3a64d6ad8489c3d47a28f38d7928c8f8, type: 2}
+  opaqueSpotMaterial: {fileID: 2100000, guid: c1ca4f08be289874c86dbfa1786350e9, type: 2}
+  opaqueSpotArmMaterial: {fileID: 2100000, guid: 1009aa728b6bccd49a5691c631816ea4, type: 2}
+  translucentSpotArmMaterial: {fileID: 2100000, guid: 86f42008a474fbf4aba6368837fb6993, type: 2}
+--- !u!4 &79057208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79057205}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3465647787329320715}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &85328678 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7028366555832904936, guid: 9e0ce714b499a0244b783150484f38f4, type: 3}
@@ -16021,6 +16106,7 @@ MonoBehaviour:
   modes:
   - {fileID: 3465647788609732413}
   - {fileID: 5235943364053865581}
+  - {fileID: 79057206}
   UICanvases:
   - {fileID: 3465647789049534246}
   - {fileID: 5235943365319495258}
@@ -16049,6 +16135,7 @@ Transform:
   - {fileID: 2135201364}
   - {fileID: 1315557108}
   - {fileID: 1679772078}
+  - {fileID: 79057208}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
