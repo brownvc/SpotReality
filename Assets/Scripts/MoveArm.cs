@@ -6,6 +6,7 @@ using RosSharp.RosBridgeClient;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
+using Debug = UnityEngine.Debug;
 
 public class MoveArm : MonoBehaviour
 {
@@ -154,6 +155,7 @@ public class MoveArm : MonoBehaviour
 
             //// Set invisible or visible
             //setSpotVisible(spotBody, showSpotBody);
+            Debug.Log("dy b click");
 
             foreach(DrawMeshInstanced cloud in cloudsToFreeze)
             {

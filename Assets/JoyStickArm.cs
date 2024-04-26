@@ -6,6 +6,7 @@ using RosSharp.RosBridgeClient;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
+using Debug = UnityEngine.Debug;
 
 public class JoyStickArm : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class JoyStickArm : MonoBehaviour
     public InputActionReference RT1; // Changing how input actions are received
     public InputActionReference LT1; // Toggle for slow open and close
     public InputActionReference LAx; // Left joystick controls slow close and open with LT1 toggle
-    public InputActionReference bButton;
+    public InputActionReference bButton2;
     public Transform spotBody;
     public DrawMeshInstanced[] cloudsToFreeze2;
     public TransformUpdater handExtUpdater;
@@ -24,7 +25,7 @@ public class JoyStickArm : MonoBehaviour
     public VRGeneralControls generalControls;
     public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
 
-
+    private bool bButtonFlag = false;                                          
 
 
     public Material translucentSpotMaterial;
@@ -38,6 +39,7 @@ public class JoyStickArm : MonoBehaviour
     {
 
         setSpotVisible(spotBody, false);
+        bButtonFlag = true;
     }
 
     void Update()
@@ -79,13 +81,14 @@ public class JoyStickArm : MonoBehaviour
         }
 
         // Freeze or unfreeze the hand point cloud
-        if (bButton.action.WasPressedThisFrame())
+        if (bButton2.action.WasPressedThisFrame() && bButtonFlag)
         {
             //// Switch visibility
             //showSpotBody = !showSpotBody;
 
             //// Set invisible or visible
             //setSpotVisible(spotBody, showSpotBody);
+            Debug.Log("joystick b click");
 
             foreach (DrawMeshInstanced cloud in cloudsToFreeze2)
             {
@@ -146,5 +149,6 @@ public class JoyStickArm : MonoBehaviour
     {
         //armPublisher.enabled = false;
         setSpotVisible(spotBody, true);
+        bButtonFlag = false;
     }
 }

@@ -781,7 +781,7 @@ MonoBehaviour:
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton2: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
   cloudsToFreeze2:
   - {fileID: 112187588}
