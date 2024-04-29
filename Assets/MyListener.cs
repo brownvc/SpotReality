@@ -14,7 +14,10 @@ public class MyListener : MonoBehaviour
     bool running;
 
     public Transform greenHand;
+    public Transform targetTipTransform;
     public Transform goalObj;
+    public Transform greenFinger;
+    public Transform goalPlane;
     private PolicyGradient pg;
 
     private bool newResponse;
@@ -30,7 +33,7 @@ public class MyListener : MonoBehaviour
         newRequest = false;
         read = true;
 
-        pg = new PolicyGradient(greenHand, goalObj, 10000, 0, 0, 0);
+        pg = new PolicyGradient(greenHand, targetTipTransform, goalObj, greenFinger, goalPlane);
 
 
         // Receive on a separate thread so Unity doesn't freeze waiting for data
@@ -38,6 +41,7 @@ public class MyListener : MonoBehaviour
         thread = new Thread(ts);
         thread.Start();
     }
+
 
     void GetData()
     {
