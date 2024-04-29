@@ -82,11 +82,10 @@ public class PolicyGradient
         holdingObject = false;
         gripperOpen = false;
 
-        // Randomize target object location
-        var randZ = np.random.uniform(originalPos.z, goalPlaneTransform.position.z);
-        var randX = np.random.uniform(originalPos.x + 0.2f, goalPlaneTransform.position.x);
-
-        targetTransform.position = new Vector3(randX, targetTransform.position.y, randZ);
+        //// Randomize target object location
+        //var randZ = np.random.uniform(originalPos.z, goalPlaneTransform.position.z);
+        //var randX = np.random.uniform(originalPos.x + 0.2f, goalPlaneTransform.position.x);
+        //targetTransform.position = new Vector3(randX, targetTransform.position.y, randZ);
 
         return phi();
     }
@@ -97,8 +96,8 @@ public class PolicyGradient
             || agentTransform.position.z > goalPlaneTransform.position.z
             || agentTransform.position.y > originalPos.y
             || agentTransform.position.y < goalPlaneTransform.position.y
-            || agentTransform.position.x > originalPos.x + 0.05f
-            || agentTransform.position.x < goalPlaneTransform.position.x - 0.01f
+            || agentTransform.position.x > originalPos.x + 0.01f
+            || agentTransform.position.x < originalPos.x - 0.01f
             )
         {
             return true;
@@ -269,9 +268,9 @@ public class PolicyGradient
         //float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
 
         // Reward if you finished in the right state
-        if (terminal())
+        if (holdingObject)
         {
-            return 100;
+            return 10;
         }
 
 
@@ -293,8 +292,10 @@ public class PolicyGradient
         // Terminal if the target object is at the goal position and we have released the object
         //return (!holdingObject && (Vector3.Distance(targetTransform.position, goalPlaneTransform.position) < TERMINALDIST));
 
+        float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
+
         // Temporary -- terminal if holding object or taken too many steps
-        return (holdingObject);
+        return (holdingObject || Vector3.Distance(targetPosition(), agentTipTransform.position) < OBJDIST);
 
         // Old
         //return Vector3.Distance(agentTransform.position, targetTransform.position) < OBJDIST || currentStep - lastRolloutStart > 10000;
