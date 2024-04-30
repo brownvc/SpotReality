@@ -260,7 +260,7 @@ public class PolicyGradient
     }
 
 
-    private double reward()
+    private double _reward()
     {
         // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
         // TODO scale reward based on if the position and orientation of the agent creates a ray that goes near center of the goal. Scale based on distance between closest point on ray and goal center. 
@@ -284,6 +284,51 @@ public class PolicyGradient
         //}
 
         return 0; //-.005 * (currentStep - lastRolloutStart);
+    }
+    private double reward()
+    { 
+        float distance = Vector3.Distance(goalTransform.position, agentTransform.position);
+
+        // Debug.Log("Agent x rot: " + agentTransform.rotation.eulerAngles.x);
+        // Only reward if pointing down above object
+        double _reward;
+        if (distance > TERMINALDIST) // If rollout terminates without reaching goal state
+        {
+            _reward = -100 - (.0001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90)));
+            Debug.Log("Max steps exceeded " + _reward);
+            return _reward;
+        }
+        if (agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > goalTransform.position.y) // If we reach optimal goal state range
+        {
+            double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
+            double num_steps = currentStep - lastRolloutStart;
+            double z_diff = Math.Abs(agentTransform.position.z - goalTransform.position.z);
+            // Debug.Log("angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
+            double deductions = (2 * angle_diff) + (1.6 * num_steps) + (100 * z_diff);
+            _reward = Math.Max(1000 - deductions, 2); // TODO change rate from 1 to .1 for both if starting with new weights
+                                                        // Debug.Log("Max reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
+            return _reward;
+        }
+        // else if (agentTransform.rotation.eulerAngles.x > 40 && agentTransform.rotation.eulerAngles.x < 150 && agentTransform.position.y > goalTransform.position.y)
+        // {
+        //     _reward = 100 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
+        //     Debug.Log("Secondary reward achieved " + _reward);
+        //     return _reward;
+        // }
+        // else if (agentTransform.rotation.eulerAngles.x > 10 && agentTransform.rotation.eulerAngles.x < 180)
+        // {
+        //     _reward = 15 - ((.001 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.001 * (currentStep - lastRolloutStart)));
+        //     Debug.Log("Tertiary reward achieved " + _reward);
+        //     return _reward;
+        // }
+        else // If goal state is reached but orientation isn't optimal, give small reward based on offset from desired angle, minimum of .1
+        {
+            // _reward = Math.Max(1 - ((.01 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.01 * (currentStep - lastRolloutStart))), .1);
+            _reward = 1 - ((.1 * Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90))) + (.1 * (currentStep - lastRolloutStart)));
+            // Debug.Log("Default reward achieved " + _reward);
+            return _reward;
+        }
+        return -.005 * (currentStep - lastRolloutStart);
     }
 
 
