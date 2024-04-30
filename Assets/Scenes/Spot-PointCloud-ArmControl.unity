@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147699, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147701, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_Enabled
@@ -3671,7 +3671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &442599354
 Transform:
   m_ObjectHideFlags: 0
@@ -4423,7 +4423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &565983653
 Transform:
   m_ObjectHideFlags: 0
@@ -10426,7 +10426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4364515187611384172, guid: cf749af6239c9bb4eb099a888859e8f3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4364515187611384176, guid: cf749af6239c9bb4eb099a888859e8f3, type: 3}
       propertyPath: m_RootOrder
@@ -10607,7 +10607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1500417873
 Transform:
   m_ObjectHideFlags: 0
@@ -10705,7 +10705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1510830348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12296,7 +12296,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1673597983
 Transform:
   m_ObjectHideFlags: 0
@@ -13418,7 +13418,7 @@ MonoBehaviour:
   goalPlane: {fileID: 1226992849}
   stowPublisher: {fileID: 1510830356}
   gripperPublisher: {fileID: 1510830367}
-  realArm: 0
+  realArm: 1
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0

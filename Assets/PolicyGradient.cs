@@ -37,8 +37,8 @@ public class PolicyGradient
     private Transform goalPlaneTransform;
     private StowArm stowPublisher;
     private SetGripper gripperPublisher;
-    private const float OBJDIST = 0.1f; // Distance that gripper can be away from target object
-    private const float TERMINALDIST = 0.15f; // Distance that target object can be from 
+    private const float OBJDIST = 0.2f; // Distance that gripper can be away from target object
+    private const float TERMINALDIST = 0.1f; // Distance that target object can be from 
     public NDArray thetaGlobal;
     public NDArray wGlobal;
     private int currentStep;
@@ -100,9 +100,9 @@ public class PolicyGradient
     private bool outsideBoundary()
     {
         if (agentTransform.position.z < originalPos.z
-            || agentTransform.position.z > goalPlaneTransform.position.z
+            || agentTransform.position.z > targetTransform.position.z + 0.5f
             || agentTransform.position.y > originalPos.y
-            || agentTransform.position.y < goalPlaneTransform.position.y
+            || agentTransform.position.y < targetTransform.position.y
             || agentTransform.position.x > originalPos.x + 0.01f
             || agentTransform.position.x < originalPos.x - 0.01f
             )
@@ -127,8 +127,8 @@ public class PolicyGradient
 
     public void act(Action action)
     {
-        float meterMovement = 0.02f;
-        float degreeRotation = 1f;
+        float meterMovement = 0.05f;
+        float degreeRotation = 5f;
         Vector3 posMov = Vector3.zero;
         Vector3 rotMov = Vector3.zero;
         Vector3 startActPos = agentTransform.position;
@@ -167,10 +167,10 @@ public class PolicyGradient
             //    rotMov = new Vector3(0, -1, 0);
             //    break;
             case Action.PitchP:
-                rotMov = new Vector3(3, 0, 0);
+                rotMov = new Vector3(1, 0, 0);
                 break;
             case Action.PitchN:
-                rotMov = new Vector3(-3, 0, 0);
+                rotMov = new Vector3(-1, 0, 0);
                 break;
             case Action.OpenGripper:
                 // Simulate physics of dropping the object
@@ -292,13 +292,21 @@ public class PolicyGradient
         // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
         // TODO scale reward based on if the position and orientation of the agent creates a ray that goes near center of the goal. Scale based on distance between closest point on ray and goal center. 
 
-        //float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
+        float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
 
         // Reward if you finished in the right state
         if (holdingObject)
         {
             return 1000;
         }
+
+        var angleMult = angleCorrect() ? 0.5f : 1f;
+
+        if (distance < OBJDIST*2)
+        {
+            return -0.5 * angleMult;
+        }
+
 
 
         //if (agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y)
@@ -310,7 +318,7 @@ public class PolicyGradient
         //    return 0;
         //}
 
-        return -1; //-.005 * (currentStep - lastRolloutStart);
+        return -2 * angleMult; //-.005 * (currentStep - lastRolloutStart);
     }
 
 
