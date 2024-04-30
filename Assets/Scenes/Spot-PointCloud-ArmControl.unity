@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -347,7 +347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &38613785
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1015,7 +1015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &112187587
 Transform:
   m_ObjectHideFlags: 0
@@ -2434,7 +2434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 257268600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 0.399, z: 0.279}
+  m_LocalPosition: {x: 0.026, y: 0.57, z: -0.004}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4267,7 +4267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &545284149
 Transform:
   m_ObjectHideFlags: 0
@@ -10640,7 +10640,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1500417875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10705,7 +10705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1510830348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12329,7 +12329,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1673597985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13416,6 +13416,9 @@ MonoBehaviour:
   goalObj: {fileID: 257268604}
   greenFinger: {fileID: 1658837045}
   goalPlane: {fileID: 1226992849}
+  stowPublisher: {fileID: 1510830356}
+  gripperPublisher: {fileID: 1510830367}
+  realArm: 0
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14628,7 +14631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2049993858
 Transform:
   m_ObjectHideFlags: 0

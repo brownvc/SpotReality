@@ -4,6 +4,7 @@ using UnityEngine;
 using NumSharp;
 using System;
 using System.Text.Json;
+using RosSharp.RosBridgeClient;
 
 public enum Action
 {
@@ -26,6 +27,7 @@ public enum Action
 
 public class PolicyGradient
 {
+    private bool realArm; // Is this deployed on the real arm
     private Vector3 originalPos;
     private Quaternion originalRot;
     private Transform agentTransform;
@@ -33,7 +35,9 @@ public class PolicyGradient
     private Transform targetTransform;
     private Transform fingerTransform;
     private Transform goalPlaneTransform;
-    private const float OBJDIST = 0.15f; // Distance that gripper can be away from target object
+    private StowArm stowPublisher;
+    private SetGripper gripperPublisher;
+    private const float OBJDIST = 0.1f; // Distance that gripper can be away from target object
     private const float TERMINALDIST = 0.15f; // Distance that target object can be from 
     public NDArray thetaGlobal;
     public NDArray wGlobal;
@@ -51,16 +55,19 @@ public class PolicyGradient
     private bool holdingObject; // Is the object being held by the gripper?
 
 
-    public PolicyGradient(Transform aT, Transform targetTip, Transform gT, Transform finger, Transform plane)
+    public PolicyGradient(Transform agentT, Transform targetTip, Transform goalT, Transform finger, Transform plane, StowArm stowPub, SetGripper gripPub, bool real)
     {
-        originalPos = aT.position;
-        originalRot = aT.rotation;
-        agentTransform = aT;
+        originalPos = agentT.position;
+        originalRot = agentT.rotation;
+        agentTransform = agentT;
         agentTipTransform = targetTip;
-        targetTransform = gT;
+        targetTransform = goalT;
         goalPlaneTransform = plane;
+        stowPublisher = stowPub;
+        gripperPublisher = gripPub;
         fingerTransform = finger;
         actionSize = (int)Action.NumActions;
+        realArm = real;
 
         wGlobal = np.zeros(featureSize);
         wGlobal = wGlobal.astype(np.float32);
@@ -173,7 +180,17 @@ public class PolicyGradient
                     targetTransform.position = new Vector3(targetTransform.position.x, goalPlaneTransform.position.y, targetTransform.position.z);
                 }
                 gripperOpen = true;
-                fingerTransform.rotation = Quaternion.Euler(270,0,0);
+
+                // If real, actually open the gripper
+                if (realArm)
+                {
+                    gripperPublisher.openGripper();
+                }
+                else
+                {
+                    fingerTransform.rotation = Quaternion.Euler(270, 0, 0);
+                }
+
                 break;
             case Action.CloseGripper:
                 // Figure out if we just grabbed the object -- Gripper must have just closed, must be in right angle, and need to be above the object
@@ -181,14 +198,24 @@ public class PolicyGradient
                     && 
                     Vector3.Distance(targetPosition(), agentTipTransform.position) < OBJDIST 
                     && angleCorrect()
-                    && agentTransform.position.y > targetPosition().y - 0.02f
+                    && agentTransform.position.y > targetPosition().y - 0f
                     )
                 {
                     holdingObject = true;
                 }
 
                 gripperOpen = false;
-                fingerTransform.rotation = new Quaternion(0, 0, 0, 0);
+
+                // If real, actually close the gripper
+                if (realArm)
+                {
+                    gripperPublisher.closeGripper();
+                }
+                else
+                {
+                    fingerTransform.rotation = new Quaternion(0, 0, 0, 0);
+                }
+
                 break;
             default:
                 break;
@@ -270,7 +297,7 @@ public class PolicyGradient
         // Reward if you finished in the right state
         if (holdingObject)
         {
-            return 10;
+            return 1000;
         }
 
 
@@ -283,7 +310,7 @@ public class PolicyGradient
         //    return 0;
         //}
 
-        return 0; //-.005 * (currentStep - lastRolloutStart);
+        return -1; //-.005 * (currentStep - lastRolloutStart);
     }
 
 
@@ -295,7 +322,7 @@ public class PolicyGradient
         float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
 
         // Temporary -- terminal if holding object or taken too many steps
-        return (holdingObject || Vector3.Distance(targetPosition(), agentTipTransform.position) < OBJDIST);
+        return (holdingObject || stepsThisRollout > 2000f);
 
         // Old
         //return Vector3.Distance(agentTransform.position, targetTransform.position) < OBJDIST || currentStep - lastRolloutStart > 10000;
@@ -308,6 +335,12 @@ public class PolicyGradient
         act(action);
         NDArray newS = phi();
 
+        // If this is on the real arm, wait 2 seconds
+        if (realArm)
+        {
+            // Wait 2s
+            System.Threading.Thread.Sleep(2);
+        }
         return (newS, reward(), terminal());
     }
 
@@ -325,6 +358,12 @@ public class PolicyGradient
         if (term)
         {
             if (stepsThisRollout < 2000f) Debug.Log("Got there");
+
+            // Stow arm if real robot
+            if (realArm)
+            {
+                stowPublisher.Stow();
+            }
             return toSerial("update_weights", R, obs);
         }
         // If not terminal, ask python for the next action
