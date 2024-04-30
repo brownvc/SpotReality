@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using UnityEngine;
 using System.Threading;
+using RosSharp.RosBridgeClient;
 
 public class MyListener : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class MyListener : MonoBehaviour
     public Transform goalObj;
     public Transform greenFinger;
     public Transform goalPlane;
+    public StowArm stowPublisher;
+    public SetGripper gripperPublisher;
+    public bool realArm;
     private PolicyGradient pg;
 
     private bool newResponse;
@@ -33,7 +37,7 @@ public class MyListener : MonoBehaviour
         newRequest = false;
         read = true;
 
-        pg = new PolicyGradient(greenHand, targetTipTransform, goalObj, greenFinger, goalPlane);
+        pg = new PolicyGradient(greenHand, targetTipTransform, goalObj, greenFinger, goalPlane, stowPublisher, gripperPublisher, realArm);
 
 
         // Receive on a separate thread so Unity doesn't freeze waiting for data
@@ -86,6 +90,12 @@ public class MyListener : MonoBehaviour
         }
         if (newRequest)
         {
+            // If using the real arm, wait two seconds to send response
+            if (realArm)
+            {
+                Thread.Sleep(200);
+            }
+
             // Send a request back
             buffer = Encoding.UTF8.GetBytes(request);
             nwStream.Write(buffer, 0, buffer.Length);
