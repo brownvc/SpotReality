@@ -762,10 +762,9 @@ MonoBehaviour:
   listOfControlMappings: 
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
-  - {fileID: 3465647787827832880}
   - {fileID: 3465647788475013931}
   scriptsOfModeToEnable:
-  - {fileID: 79057206}
+  - {fileID: 79057207}
 --- !u!114 &79057207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,9 +780,9 @@ MonoBehaviour:
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  bButton2: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
-  cloudsToFreeze2:
+  cloudsToFreeze:
   - {fileID: 112187588}
   - {fileID: 545284150}
   handExtUpdater: {fileID: 637838618}
@@ -16104,8 +16103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currMode: 0
   modes:
-  - {fileID: 3465647788609732413}
   - {fileID: 5235943364053865581}
+  - {fileID: 3465647788609732413}
   - {fileID: 79057206}
   UICanvases:
   - {fileID: 3465647789049534246}
@@ -22945,7 +22944,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5235943364053865583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 481b63c4dd93fcb44ae08589b42311f5, type: 3}
   m_Name: 

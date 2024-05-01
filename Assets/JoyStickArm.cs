@@ -16,17 +16,15 @@ public class JoyStickArm : MonoBehaviour
     public InputActionReference RT1; // Changing how input actions are received
     public InputActionReference LT1; // Toggle for slow open and close
     public InputActionReference LAx; // Left joystick controls slow close and open with LT1 toggle
-    public InputActionReference bButton2;
+    public InputActionReference bButton;
     public Transform spotBody;
-    public DrawMeshInstanced[] cloudsToFreeze2;
+    public DrawMeshInstanced[] cloudsToFreeze;
     public TransformUpdater handExtUpdater;
     public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
     public VRGeneralControls generalControls;
     public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
-
-    private bool bButtonFlag = false;                                          
-
+                                    
 
     public Material translucentSpotMaterial;
     public Material opaqueSpotMaterial;
@@ -34,12 +32,10 @@ public class JoyStickArm : MonoBehaviour
     public Material translucentSpotArmMaterial;
 
 
-
     private void OnEnable()
     {
 
         setSpotVisible(spotBody, false);
-        bButtonFlag = true;
     }
 
     void Update()
@@ -79,18 +75,18 @@ public class JoyStickArm : MonoBehaviour
             // turn off dummy hand tracking
             //armPublisher.enabled = false;
         }
-
+        
         // Freeze or unfreeze the hand point cloud
-        if (bButton2.action.WasPressedThisFrame() && bButtonFlag)
+        if (bButton.action.WasPressedThisFrame())
         {
             //// Switch visibility
             //showSpotBody = !showSpotBody;
 
             //// Set invisible or visible
             //setSpotVisible(spotBody, showSpotBody);
-            Debug.Log("joystick b click");
+            Debug.Log("jy B click");
 
-            foreach (DrawMeshInstanced cloud in cloudsToFreeze2)
+            foreach (DrawMeshInstanced cloud in cloudsToFreeze)
             {
                 cloud.toggleFreezeCloud();
             }
@@ -149,6 +145,5 @@ public class JoyStickArm : MonoBehaviour
     {
         //armPublisher.enabled = false;
         setSpotVisible(spotBody, true);
-        bButtonFlag = false;
     }
 }
