@@ -1,0 +1,46 @@
+#pragma kernel CSMain
+
+RWStructuredBuffer<float> depth;
+RWStructuredBuffer<int> mask;
+
+#define H 480
+#define W 640
+
+float depthThreshold;
+float edgeThreshold;
+
+[numthreads(1, 1, 1)] void CSMain(uint3 id
+                                  : SV_DispatchThreadID) {
+  int index = id.y * W + id.x;
+  float currentDepth = depth[index];
+
+  if (currentDepth == 0) {
+    mask[index] = 1;
+    return;
+  }
+
+  if (currentDepth > depthThreshold) {
+    float minDepthDiff = 1e6;
+
+    for (int i = -1; i <= 1; i++) {
+      for (int j = -1; j <= 1; j++) {
+        int neighborIndex = (id.y + i) * W + (id.x + j);
+        if (neighborIndex >= 0 && neighborIndex < W * H) {
+          float neighborDepth = depth[neighborIndex];
+          if (neighborDepth > 0) {
+            float depthDiff = abs(currentDepth - neighborDepth);
+            minDepthDiff = min(minDepthDiff, depthDiff);
+          }
+        }
+      }
+    }
+
+    if (minDepthDiff > edgeThreshold) {
+      mask[index] = 1;
+    } else {
+      mask[index] = 0;
+    }
+  } else {
+    mask[index] = 1;
+  }
+}

@@ -7,6 +7,7 @@ public class DepthPipeline : MonoBehaviour
     public ComputeShader DilateEmptyShader;
     public ComputeShader MedianBlurShader;
     public ComputeShader BilateralFilterShader;
+    public ComputeShader HysteresisThresholdShader;
 
     private RenderTexture depthTexture;
     private ComputeBuffer depthBuffer;
@@ -21,22 +22,32 @@ public class DepthPipeline : MonoBehaviour
         depthBuffer = new ComputeBuffer(depth.Length, sizeof(float));
         depthBuffer.SetData(depth);
 
+        // Hysteresis thresholding
+        ComputeBuffer maskBuffer = new ComputeBuffer(depth.Length, sizeof(int));
+
+        kernel = HysteresisThresholdShader.FindKernel("CSMain");
+        HysteresisThresholdShader.SetBuffer(kernel, "depth", depthBuffer);
+        HysteresisThresholdShader.SetBuffer(kernel, "mask", maskBuffer);
+        HysteresisThresholdShader.SetFloat("depthThreshold", 3.0f);
+        HysteresisThresholdShader.SetFloat("edgeThreshold", 0.5f);
+        HysteresisThresholdShader.Dispatch(kernel, 1, H, 1);     
+      
         // [NV] - Unabridged version of pipeline on branch depth_origin
-        // Median blur to remove outliers
+        // Median blur
         kernel = MedianBlurShader.FindKernel("CSMain");
         MedianBlurShader.SetBuffer(kernel, "depth", depthBuffer);
         MedianBlurShader.Dispatch(kernel, 1, H, 1);
-
-        // Hole fill
+        // Apply morphological operations only to depth samples likely not on edges
         kernel = DilateEmptyShader.FindKernel("CSMain");
         DilateEmptyShader.SetBuffer(kernel, "depth", depthBuffer);
+        DilateEmptyShader.SetBuffer(kernel, "mask", maskBuffer);
         DilateEmptyShader.SetInt("kernelSize", 9);
         DilateEmptyShader.Dispatch(kernel, 1, H, 1);
 
-        // Fill large holes with masked dilations
         for (int i = 0; i < 3; i++)
         {
             DilateEmptyShader.SetBuffer(kernel, "depth", depthBuffer);
+            DilateEmptyShader.SetBuffer(kernel, "mask", maskBuffer);
             DilateEmptyShader.SetInt("kernelSize", 5);
             DilateEmptyShader.Dispatch(kernel, 1, H, 1);
         }
@@ -46,15 +57,16 @@ public class DepthPipeline : MonoBehaviour
         MedianBlurShader.SetBuffer(kernel, "depth", depthBuffer);
         MedianBlurShader.Dispatch(kernel, 1, H, 1);
 
+        // Bilateral filtering
         kernel = BilateralFilterShader.FindKernel("CSMain");
         BilateralFilterShader.SetBuffer(kernel, "depth", depthBuffer);
         BilateralFilterShader.Dispatch(kernel, 1, H, 1);
 
-        float[] res = new float[depth.Length];
-        depthBuffer.GetData(res);
+        depthBuffer.GetData(depth);
 
         depthBuffer.Release();
+        maskBuffer.Release();
 
-        return res;
+        return depth;
     }
 }

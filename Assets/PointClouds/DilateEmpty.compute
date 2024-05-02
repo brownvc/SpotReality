@@ -1,27 +1,30 @@
 #pragma kernel CSMain
+
 #define H 480
 #define W 640
 
 RWBuffer<float> depth;
+RWBuffer<int> mask;
 int kernelSize;
 
 // dim is (1, H, 1)
-[numthreads(W, 1, 1)]
-void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
-{
-    uint index = threadId.x + groupId.y * W;
-    float maxVal = 0.0f;
+[numthreads(W, 1, 1)] void CSMain(uint3 groupId
+                                  : SV_GroupID, uint3 threadId
+                                  : SV_GroupThreadID) {
+  uint index = threadId.x + groupId.y * W;
+  float maxVal = 0.0f;
+  int kernelRadius = (kernelSize - 1) / 2;
 
-    int kernelRadius = (kernelSize - 1) / 2;
-    if (depth[index] <= 0.1f && threadId.x >= 2 && threadId.x < W - 2 && groupId.y >= 2 && groupId.y < H - 2)
-    {
-        for (int dy = -kernelRadius; dy <= kernelRadius; ++dy) {
-            for (int dx = -kernelRadius; dx <= kernelRadius; ++dx) {
-                uint new_depth_idx = threadId.x + dx + (groupId.y + dy) * W;
-                maxVal = max(maxVal, depth[new_depth_idx]);
-            }
+  if (mask[index] == 1 && threadId.x >= 2 && threadId.x < W - 2 &&
+      groupId.y >= 2 && groupId.y < H - 2) {
+    for (int dy = -kernelRadius; dy <= kernelRadius; ++dy) {
+      for (int dx = -kernelRadius; dx <= kernelRadius; ++dx) {
+        uint new_depth_idx = threadId.x + dx + (groupId.y + dy) * W;
+        if (mask[new_depth_idx] == 1) {
+          maxVal = max(maxVal, depth[new_depth_idx]);
         }
-
-        depth[index] = maxVal;
+      }
     }
+    depth[index] = maxVal;
+  }
 }
