@@ -1082,6 +1082,7 @@ MonoBehaviour:
   DilateEmptyShader: {fileID: 7200000, guid: 7fd713d7adcae4826ab12d10fcc03aec, type: 3}
   MedianBlurShader: {fileID: 7200000, guid: 14fdb67d737a940d9b52aa85bc433c4e, type: 3}
   BilateralFilterShader: {fileID: 7200000, guid: de5fad40eed61475a9b6301740aab4be, type: 3}
+  HysteresisThresholdShader: {fileID: 7200000, guid: 17b17522979264796bc24f836151f807, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -4229,6 +4230,7 @@ MonoBehaviour:
   DilateEmptyShader: {fileID: 7200000, guid: 7fd713d7adcae4826ab12d10fcc03aec, type: 3}
   MedianBlurShader: {fileID: 7200000, guid: 14fdb67d737a940d9b52aa85bc433c4e, type: 3}
   BilateralFilterShader: {fileID: 7200000, guid: de5fad40eed61475a9b6301740aab4be, type: 3}
+  HysteresisThresholdShader: {fileID: 7200000, guid: 17b17522979264796bc24f836151f807, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
