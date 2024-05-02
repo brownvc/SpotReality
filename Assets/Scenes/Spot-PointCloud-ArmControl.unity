@@ -762,7 +762,7 @@ MonoBehaviour:
   listOfControlMappings: 
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
-  - {fileID: 3465647788475013931}
+  - {fileID: 3465647787827832880}
   scriptsOfModeToEnable:
   - {fileID: 79057207}
 --- !u!114 &79057207
@@ -780,6 +780,7 @@ MonoBehaviour:
   RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   spotBody: {fileID: 1399272934}
   cloudsToFreeze:
@@ -788,6 +789,7 @@ MonoBehaviour:
   handExtUpdater: {fileID: 637838618}
   handImageSubscriber: {fileID: 1510830378}
   gripper: {fileID: 1510830367}
+  joyArmPublisher: {fileID: 1510830396}
   generalControls: {fileID: 3465647787329320719}
   depthSubscribers:
   - {fileID: 1673597984}
@@ -10524,6 +10526,7 @@ GameObject:
   - component: {fileID: 1510830394}
   - component: {fileID: 1510830393}
   - component: {fileID: 1510830395}
+  - component: {fileID: 1510830396}
   m_Layer: 0
   m_Name: RosConnector
   m_TagString: Untagged
@@ -11150,6 +11153,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Topic: /set_far_plane
+--- !u!114 &1510830396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510830347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c89037ccf8d45f4f8271acdeacb181f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/arm_move
 --- !u!1 &1513893764
 GameObject:
   m_ObjectHideFlags: 0
@@ -22944,7 +22960,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5235943364053865583}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 481b63c4dd93fcb44ae08589b42311f5, type: 3}
   m_Name: 

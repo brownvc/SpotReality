@@ -16,12 +16,17 @@ public class JoyStickArm : MonoBehaviour
     public InputActionReference RT1; // Changing how input actions are received
     public InputActionReference LT1; // Toggle for slow open and close
     public InputActionReference LAx; // Left joystick controls slow close and open with LT1 toggle
+    public InputActionReference RAx; // Right joystick controls slow close and open with LT1 toggle
     public InputActionReference bButton;
     public Transform spotBody;
     public DrawMeshInstanced[] cloudsToFreeze;
     public TransformUpdater handExtUpdater;
     public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
+
+    // joyadd
+    public JoyArmPublisher joyArmPublisher;
+
     public VRGeneralControls generalControls;
     public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
                                     
@@ -42,6 +47,25 @@ public class JoyStickArm : MonoBehaviour
     {
         Vector3 locationChange;
         Quaternion rotationChange;
+
+        if (RT1.action.IsPressed())
+        {
+            Vector2 laxMove = LAx.action.ReadValue<Vector2>();
+            float armFrontBack = laxMove.y;
+            float armRotate = laxMove.x;
+            armFrontBack = armFrontBack / 5.0f;
+            armRotate = -armRotate / 5.0f;
+
+            Vector2 raxMove = RAx.action.ReadValue<Vector2>();
+            float armUpDown = raxMove.y / 5.0f;
+            joyArmPublisher.setCoordinate(armFrontBack, armRotate, armUpDown);
+
+            
+
+
+
+        }
+
 
 
         // Change the gripper percentage
