@@ -41,8 +41,9 @@ public class JoyStickArm : MonoBehaviour
     private double armFrontBack;
     private double armLeftRight;
     private double armUpDown;
-    private double gripperRotate;
-    private double gripperSwing;
+    private float gripperRotate;
+    private float gripperSwing;
+    private float gripperNod;
 
 
     private void OnEnable()
@@ -52,14 +53,15 @@ public class JoyStickArm : MonoBehaviour
         armFrontBack = 0.0d;
         armLeftRight = 0.0d;
         armUpDown = 0.0d;
-        gripperRotate = 0.0d;
-        gripperSwing = 0.0d;
+        gripperRotate = 0.0f;
+        gripperSwing = 0.0f;
+        gripperNod = 0.0f;
     }
 
     void Update()
     {
         Vector3 locationChange;
-        Quaternion rotationChange;
+        Quaternion rotationChange = new Quaternion(0f, 0f, 0f, 0f);
 
         // read left and right joystick movement
         Vector2 laxMove = LAx.action.ReadValue<Vector2>();
@@ -71,8 +73,59 @@ public class JoyStickArm : MonoBehaviour
             // gripper rotation
             if (RT1.action.IsPressed())
             {
-                Debug.Log("rt1 pressed");
-                joyArmPublisher.setCoordinate(0.0f, 0.0f, 0.0f, 0.3f);
+                //gripperSwing = laxMove
+
+
+                //double thetaAngle = Math.PI / 4;
+                //double cosAngle = Math.Cos(thetaAngle);
+                //double sinAngle = Math.Sin(thetaAngle);
+
+                //.x = (float)cosAngle;
+                //rotationChange.y = (float)sinAngle;
+                //rotationChange.z = 0;
+                //rotationChange.w = 0;
+
+                if (gripperNod > 45f)
+                {
+                    gripperNod = 45f;
+                }
+                else if (gripperNod < -90f)
+                {
+                    gripperNod = -90f;
+                }
+                else
+                {
+                    
+                    gripperNod += (float)(0.2d * Math.Tan(1.55d * (double)raxMove.y));
+                }
+
+
+
+                if (gripperSwing > 45f)
+                {
+                    gripperSwing = 45f;
+                }
+                else if (gripperSwing < -45f)
+                {
+                    gripperSwing = -45f;
+                }
+                else
+                {
+
+                    gripperSwing += (float)(0.2d * Math.Tan(1.55d * (double)laxMove.x));
+                }
+
+                //gripperNod += raxMove.y * 5f;
+
+
+                float degree = 30f;
+
+                // (rotate,nod,swing)
+                rotationChange = Quaternion.Euler(0f, -gripperNod, gripperSwing);
+
+
+                //Debug.Log("rt1 pressed");
+                joyArmPublisher.setCoordinate(0.0f, 0.0f, 0.0f, rotationChange);
             }
             else
             // move arm using a velocity mapping by trigonometric functions
@@ -88,7 +141,7 @@ public class JoyStickArm : MonoBehaviour
                 armUpDown = 0.01d * Math.Tan(1.55d * armUpDown);
 
                 // publish the coordinate (convert double to float)
-                joyArmPublisher.setCoordinate((float)armFrontBack, (float)armLeftRight, (float)armUpDown, 0.0f);
+                joyArmPublisher.setCoordinate((float)armFrontBack, (float)armLeftRight, (float)armUpDown, rotationChange);
 
 
                 //armFrontBack = (Math.Log(1 + armFrontBack) / Math.Log(2.2)) * 0.1d;

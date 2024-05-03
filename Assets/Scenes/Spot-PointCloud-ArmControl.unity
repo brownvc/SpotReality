@@ -11165,7 +11165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c89037ccf8d45f4f8271acdeacb181f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot/arm_move
+  Topic: /spot/joystick_arm_pose_stamped
+  FrameId: Unity
 --- !u!1 &1513893764
 GameObject:
   m_ObjectHideFlags: 0
