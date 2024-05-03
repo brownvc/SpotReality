@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,17 +52,31 @@ public class JoyStickArm : MonoBehaviour
         if (RT1.action.IsPressed())
         {
             Vector2 laxMove = LAx.action.ReadValue<Vector2>();
-            float armFrontBack = laxMove.y;
-            float armRotate = laxMove.x;
-            armFrontBack = armFrontBack / 5.0f;
-            armRotate = -armRotate / 5.0f;
+            //float armFrontBack = laxMove.y;
+            //float armRotate = laxMove.x;
+            //armFrontBack = Math.Sign(armFrontBack) *0.01f;//armFrontBack / 5.0f;
+            //armRotate = Math.Sign(armRotate) * -0.01f;//-armRotate / 5.0f;
+
+            double armFrontBack = laxMove.y;
+            double armRotate = laxMove.x;
+
+            //armFrontBack = (Math.Log(1 + armFrontBack) / Math.Log(2.2)) * 0.1d;
+            //armRotate = - (Math.Log(1 + armRotate) / Math.Log(2.2)) * 0.1d;
+
+            //armFrontBack = armFrontBack / 50.0f;
+            //armRotate = -armRotate / 50.0f;
+
+            armFrontBack = 0.05d * Math.Tan(1.5d * armFrontBack);
+            armRotate = -0.05d * Math.Tan(1.5d * armRotate);
+
 
             Vector2 raxMove = RAx.action.ReadValue<Vector2>();
-            float armUpDown = raxMove.y / 5.0f;
-            joyArmPublisher.setCoordinate(armFrontBack, armRotate, armUpDown);
+            //float armUpDown = Math.Sign(raxMove.y) * 0.01f;//raxMove.y / 5.0f;
+            double armUpDown = raxMove.y;
+            armUpDown = 0.05d * Math.Tan(1.5d * armUpDown);
 
-            
-
+            //float armUpDown = raxMove.y / 50.0f;
+            joyArmPublisher.setCoordinate((float)armFrontBack, (float)armRotate, (float)armUpDown);
 
 
         }
