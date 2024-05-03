@@ -5,6 +5,7 @@ using NumSharp;
 using System;
 using System.Text.Json;
 using RosSharp.RosBridgeClient;
+using UnityEngine.UIElements;
 
 public enum Action
 {
@@ -304,23 +305,33 @@ public class PolicyGradient
 
         // var angleMult = angleCorrect() ? 0.5f : 1f;
 
-        if (distance < OBJDIST*2 && y > targetPosition().y - 0f)
+        reward = -1;
+
+        float max_dist = OBJDIST*4;
+
+        if (distance < max_dist && y > targetPosition().y - 0f)
         {
-            reward = -0.5;
-            // return -0.5 * angleMult;
-        } else 
-        {
-            reward = -1;
+            float scale_fact = distance/max_dist;
+            reward = reward + 1 - scale_fact;
         }
 
-        if (distance < OBJDIST && y > targetPosition().y - 0f)
-        {
-            reward = -0.25;
-        }
+        // if (distance < OBJDIST*2 && y > targetPosition().y - 0f)
+        // {
+        //     reward = -0.5;
+        //     // return -0.5 * angleMult;
+        // } else 
+        // {
+        //     reward = -1;
+        // }
+
+        // if (distance < OBJDIST && y > targetPosition().y - 0f)
+        // {
+        //     reward = -0.25;
+        // }
 
         if (angleCorrect()) 
         {
-            reward = reward*0.5;
+            reward = reward*0.7;
         }
 
         return reward;
