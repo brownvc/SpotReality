@@ -38,10 +38,22 @@ public class JoyStickArm : MonoBehaviour
     public Material translucentSpotArmMaterial;
 
 
+    private double armFrontBack;
+    private double armLeftRight;
+    private double armUpDown;
+    private double gripperRotate;
+    private double gripperSwing;
+
+
     private void OnEnable()
     {
 
         setSpotVisible(spotBody, false);
+        armFrontBack = 0.0d;
+        armLeftRight = 0.0d;
+        armUpDown = 0.0d;
+        gripperRotate = 0.0d;
+        gripperSwing = 0.0d;
     }
 
     void Update()
@@ -49,35 +61,43 @@ public class JoyStickArm : MonoBehaviour
         Vector3 locationChange;
         Quaternion rotationChange;
 
-        if (RT1.action.IsPressed())
+        // read left and right joystick movement
+        Vector2 laxMove = LAx.action.ReadValue<Vector2>();
+        Vector2 raxMove = RAx.action.ReadValue<Vector2>();
+
+        // if any move start, start publish
+        if (laxMove.x != 0 || laxMove.y != 0 || raxMove.y !=0)
         {
-            Vector2 laxMove = LAx.action.ReadValue<Vector2>();
-            //float armFrontBack = laxMove.y;
-            //float armRotate = laxMove.x;
-            //armFrontBack = Math.Sign(armFrontBack) *0.01f;//armFrontBack / 5.0f;
-            //armRotate = Math.Sign(armRotate) * -0.01f;//-armRotate / 5.0f;
+            // gripper rotation
+            if (RT1.action.IsPressed())
+            {
+                Debug.Log("rt1 pressed");
+                joyArmPublisher.setCoordinate(0.0f, 0.0f, 0.0f, 0.3f);
+            }
+            else
+            // move arm using a velocity mapping by trigonometric functions
+            {
+                // left joystick
+                armFrontBack = laxMove.y;
+                armLeftRight = laxMove.x;
+                armFrontBack = 0.01d * Math.Tan(1.55d * armFrontBack);
+                armLeftRight = -0.01d * Math.Tan(1.55d * armLeftRight);
 
-            double armFrontBack = laxMove.y;
-            double armRotate = laxMove.x;
+                // right joystick
+                armUpDown = raxMove.y;
+                armUpDown = 0.01d * Math.Tan(1.55d * armUpDown);
 
-            //armFrontBack = (Math.Log(1 + armFrontBack) / Math.Log(2.2)) * 0.1d;
-            //armRotate = - (Math.Log(1 + armRotate) / Math.Log(2.2)) * 0.1d;
-
-            //armFrontBack = armFrontBack / 50.0f;
-            //armRotate = -armRotate / 50.0f;
-
-            armFrontBack = 0.05d * Math.Tan(1.5d * armFrontBack);
-            armRotate = -0.05d * Math.Tan(1.5d * armRotate);
+                // publish the coordinate (convert double to float)
+                joyArmPublisher.setCoordinate((float)armFrontBack, (float)armLeftRight, (float)armUpDown, 0.0f);
 
 
-            Vector2 raxMove = RAx.action.ReadValue<Vector2>();
-            //float armUpDown = Math.Sign(raxMove.y) * 0.01f;//raxMove.y / 5.0f;
-            double armUpDown = raxMove.y;
-            armUpDown = 0.05d * Math.Tan(1.5d * armUpDown);
+                //armFrontBack = (Math.Log(1 + armFrontBack) / Math.Log(2.2)) * 0.1d;
+                //armRotate = - (Math.Log(1 + armRotate) / Math.Log(2.2)) * 0.1d;
 
-            //float armUpDown = raxMove.y / 50.0f;
-            joyArmPublisher.setCoordinate((float)armFrontBack, (float)armRotate, (float)armUpDown);
-
+                //armFrontBack = armFrontBack / 50.0f;
+                //armRotate = -armRotate / 50.0f;
+                //armUpDown = raxMove.y / 50.0f;
+            }
 
         }
 
@@ -123,7 +143,6 @@ public class JoyStickArm : MonoBehaviour
 
             //// Set invisible or visible
             //setSpotVisible(spotBody, showSpotBody);
-            Debug.Log("jy B click");
 
             foreach (DrawMeshInstanced cloud in cloudsToFreeze)
             {

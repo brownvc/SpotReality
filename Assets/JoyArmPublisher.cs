@@ -31,13 +31,13 @@ namespace RosSharp.RosBridgeClient
 
  
 
-        public void setCoordinate(float x, float y, float z)
+        public void setCoordinate(float x, float y, float z, float qx)
         {
-            Vector3 angularVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+            Vector3 angularVelocity = new Vector3(0.0f, qx, 0.0f);
             message.linear = new MessageTypes.Geometry.Vector3(x, y, z);
-            message.angular = new MessageTypes.Geometry.Vector3(0.0f, 0.0f, 0.0f);
+            //message.angular = new MessageTypes.Geometry.Vector3(qx, 0.0f, 0.0f);
 
-            //message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
+            message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
             Publish(message);
         }
 
