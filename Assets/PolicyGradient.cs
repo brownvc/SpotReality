@@ -309,7 +309,7 @@ public class PolicyGradient
 
         float max_dist = OBJDIST*5;
 
-        if (distance < max_dist && y > targetPosition().y - 0f)
+        if (distance < max_dist && y > targetPosition().y - 1f)
         {
             float scale_fact = distance/max_dist;
             reward = reward + 1 - scale_fact;
