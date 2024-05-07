@@ -105,7 +105,7 @@ public class PolicyGradient
             || agentTransform.position.y > originalPos.y
             || agentTransform.position.y < targetTransform.position.y
             || agentTransform.position.x > (originalPos.x + 0.2f)
-            || agentTransform.position.x < (originalPos.x - 0.2f)
+            || agentTransform.position.x < (originalPos.x - 0.4f)
             )
         {
             return true;
@@ -289,7 +289,7 @@ public class PolicyGradient
 
     private double reward()
     { 
-        float distance = Vector3.Distance(targetTransform.position, agentTipTransform.position);
+        float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
         double _reward;
         double angle_weight = 0.0;
         double step_weight = 0.0;
@@ -305,14 +305,16 @@ public class PolicyGradient
             }
             double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
 
-            _reward = Math.Max(100 - deductions, 1); 
+            _reward = Math.Max(1000 - deductions, 1); 
             Debug.Log("High reward achieved " + _reward + "     steps: " + stepsThisRollout);
             return _reward;
         }
 
 
 
-        _reward = -1 - (10 * distance);
+        _reward = -1 - (10 * (distance*distance));
+        //Debug.Log("Low reward achieved " + _reward);
+
         return _reward;
     }
 
