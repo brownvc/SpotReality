@@ -287,7 +287,6 @@ public class PolicyGradient
     }
 
 
-<<<<<<< HEAD
     private double reward()
     {
         // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
@@ -298,9 +297,10 @@ public class PolicyGradient
         double reward = 0;
 
         // Reward if you finished in the right state
-        if (holdingObject)
+        // if (holdingObject)
+        if (distance < OBJDIST)
         {
-            return 400;
+            return 300;
         }
 
         // var angleMult = angleCorrect() ? 0.5f : 1f;
@@ -354,36 +354,6 @@ public class PolicyGradient
     //     double angle_weight = .01;
     //     double step_weight = 0.0;
     //     double z_weight = 100;
-=======
-
-    private double reward()
-    {
-        float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
-        double _reward;
-        double angle_weight = .05;
-        double z_weight = (agentTipTransform.position.z > targetTransform.position.z) ? 100 : 25;
-
-        if (distance < OBJDIST)
-        {
-            double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
-            double z_diff = Math.Abs(agentTipTransform.position.z - targetTransform.position.z);
-            double deductions = (angle_weight * (angle_diff * angle_diff)) + (z_weight * z_diff);
-            _reward = Math.Max(1000 - deductions, 100);
-            Debug.Log("reward achieved " + _reward + "     steps: " + stepsThisRollout);
-            return _reward;
-        }
-        _reward = -1 - (10 * (distance * distance));
-        //Debug.Log("Low reward achieved " + _reward);
-        return _reward;
-    }
-    private double _reward()
-    { 
-        float distance = Vector3.Distance(targetTransform.position, agentTipTransform.position);
-        double _reward;
-        double angle_weight = .01;
-        double step_weight = 0.0;
-        double z_weight = 100;
->>>>>>> 98481491475069a1ce23781566ae97bfacf2b4a7
 
     //     if (holdingObject)
     //     {
