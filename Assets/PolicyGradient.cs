@@ -292,29 +292,19 @@ public class PolicyGradient
         float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
         double _reward;
         double angle_weight = 0.0;
-        double step_weight = 0.0;
-        double z_weight = 100;
+        double z_weight = (agentTipTransform.position.z > targetTransform.position.z) ? 100 : 25;
 
-        if (distance < OBJDIST) // && agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y) // If we reach optimal goal state range
+        if (distance < OBJDIST) 
         {
             double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
             double z_diff = Math.Abs(agentTipTransform.position.z - targetTransform.position.z);
-            if (agentTipTransform.position.z > targetTransform.position.z)
-            {
-                z_weight /= 4;
-            }
-            double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
-
+            double deductions = (angle_weight * (angle_diff*angle_diff)) + (z_weight * z_diff);
             _reward = Math.Max(1000 - deductions, 1); 
             Debug.Log("High reward achieved " + _reward + "     steps: " + stepsThisRollout);
             return _reward;
         }
-
-
-
         _reward = -1 - (10 * (distance*distance));
         //Debug.Log("Low reward achieved " + _reward);
-
         return _reward;
     }
 
