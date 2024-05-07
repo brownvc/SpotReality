@@ -22,21 +22,22 @@ public class DepthPipeline : MonoBehaviour
         depthBuffer = new ComputeBuffer(depth.Length, sizeof(float));
         depthBuffer.SetData(depth);
 
-        // Hysteresis thresholding
         ComputeBuffer maskBuffer = new ComputeBuffer(depth.Length, sizeof(int));
+        int[] maskData = new int[depth.Length];
+        for (int i = 0; i < maskData.Length/2; i++)
+        {
+            maskData[i] = 1;
+        }
+        maskBuffer.SetData(maskData);
 
         kernel = HysteresisThresholdShader.FindKernel("CSMain");
         HysteresisThresholdShader.SetBuffer(kernel, "depth", depthBuffer);
         HysteresisThresholdShader.SetBuffer(kernel, "mask", maskBuffer);
-        HysteresisThresholdShader.SetFloat("depthThreshold", 3.0f);
-        HysteresisThresholdShader.SetFloat("edgeThreshold", 0.5f);
+        HysteresisThresholdShader.SetFloat("depthThreshold", 2.0f);
+        HysteresisThresholdShader.SetFloat("edgeThreshold", 0.1f);
         HysteresisThresholdShader.Dispatch(kernel, 1, H, 1);     
       
         // [NV] - Unabridged version of pipeline on branch depth_origin
-        // Median blur
-        kernel = MedianBlurShader.FindKernel("CSMain");
-        MedianBlurShader.SetBuffer(kernel, "depth", depthBuffer);
-        MedianBlurShader.Dispatch(kernel, 1, H, 1);
         // Apply morphological operations only to depth samples likely not on edges
         kernel = DilateEmptyShader.FindKernel("CSMain");
         DilateEmptyShader.SetBuffer(kernel, "depth", depthBuffer);
@@ -66,7 +67,6 @@ public class DepthPipeline : MonoBehaviour
 
         depthBuffer.Release();
         maskBuffer.Release();
-
         return depth;
     }
 }

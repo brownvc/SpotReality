@@ -15,7 +15,7 @@ float edgeThreshold;
   float currentDepth = depth[index];
 
   if (currentDepth == 0) {
-    mask[index] = 1;
+    mask[index] = 0;
     return;
   }
 
@@ -41,6 +41,6 @@ float edgeThreshold;
       mask[index] = 0;
     }
   } else {
-    mask[index] = 1;
+    mask[index] = 0;
   }
 }
