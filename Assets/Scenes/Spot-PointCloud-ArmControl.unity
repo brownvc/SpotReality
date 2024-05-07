@@ -13418,7 +13418,7 @@ MonoBehaviour:
   goalPlane: {fileID: 1226992849}
   stowPublisher: {fileID: 1510830356}
   gripperPublisher: {fileID: 1510830367}
-  realArm: 1
+  realArm: 0
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0

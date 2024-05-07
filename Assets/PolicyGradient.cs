@@ -5,6 +5,7 @@ using NumSharp;
 using System;
 using System.Text.Json;
 using RosSharp.RosBridgeClient;
+using UnityEngine.UIElements;
 
 public enum Action
 {
@@ -194,8 +195,8 @@ public class PolicyGradient
                 break;
             case Action.CloseGripper:
                 // Figure out if we just grabbed the object -- Gripper must have just closed, must be in right angle, and need to be above the object
-                if (gripperOpen
-                    && 
+                if (
+                    gripperOpen && 
                     Vector3.Distance(targetPosition(), agentTipTransform.position) < OBJDIST 
                     && angleCorrect()
                     && agentTransform.position.y > targetPosition().y - 0f
@@ -293,21 +294,47 @@ public class PolicyGradient
         // TODO scale reward based on if the position and orientation of the agent creates a ray that goes near center of the goal. Scale based on distance between closest point on ray and goal center. 
 
         float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
+        float y = agentTransform.position.y;
+        double reward = 0;
 
         // Reward if you finished in the right state
         if (holdingObject)
         {
-            return 1000;
+            return 750;
         }
 
-        var angleMult = angleCorrect() ? 0.5f : 1f;
+        // var angleMult = angleCorrect() ? 0.5f : 1f;
 
-        if (distance < OBJDIST*2)
+        reward = -1;
+
+        float max_dist = OBJDIST*4;
+
+        if (distance < max_dist && y > targetPosition().y - 0f)
         {
-            return -0.5 * angleMult;
+            float scale_fact = distance/max_dist;
+            reward = reward + 1 - scale_fact;
         }
 
+        // if (distance < OBJDIST*2 && y > targetPosition().y - 0f)
+        // {
+        //     reward = -0.5;
+        //     // return -0.5 * angleMult;
+        // } else 
+        // {
+        //     reward = -1;
+        // }
 
+        // if (distance < OBJDIST && y > targetPosition().y - 0f)
+        // {
+        //     reward = -0.25;
+        // }
+
+        if (angleCorrect()) 
+        {
+            reward = reward*0.7;
+        }
+
+        return reward;
 
         //if (agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y)
         //{
@@ -318,7 +345,7 @@ public class PolicyGradient
         //    return 0;
         //}
 
-        return -2 * angleMult; //-.005 * (currentStep - lastRolloutStart);
+        // return -2 * angleMult; //-.005 * (currentStep - lastRolloutStart);
     }
     private double reward()
     { 
@@ -338,7 +365,7 @@ public class PolicyGradient
             Debug.Log("Max reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + stepsThisRollout + ", z_diff: " + z_diff);
             return _reward;
         }
-        if (distance < OBJDIST) // && agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y) // If we reach optimal goal state range
+        if (distance < .1) // && agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y) // If we reach optimal goal state range
         {
             double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
             double z_diff = Math.Abs(agentTipTransform.position.z - targetTransform.position.z);
@@ -346,7 +373,6 @@ public class PolicyGradient
             {
                 z_weight /= 4;
             }
-            // Debug.Log("angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
             double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
 
             _reward = Math.Max(100 - deductions, 1); // TODO change rate from 1 to .1 for both if starting with new weights
