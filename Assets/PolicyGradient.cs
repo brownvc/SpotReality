@@ -288,66 +288,28 @@ public class PolicyGradient
     }
 
 
-    private double _reward()
-    {
-        // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
-        // TODO scale reward based on if the position and orientation of the agent creates a ray that goes near center of the goal. Scale based on distance between closest point on ray and goal center. 
 
-        float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
-        float y = agentTransform.position.y;
-        double reward = 0;
-
-        // Reward if you finished in the right state
-        if (holdingObject)
-        {
-            return 750;
-        }
-
-        // var angleMult = angleCorrect() ? 0.5f : 1f;
-
-        reward = -1;
-
-        float max_dist = OBJDIST*4;
-
-        if (distance < max_dist && y > targetPosition().y - 0f)
-        {
-            float scale_fact = distance/max_dist;
-            reward = reward + 1 - scale_fact;
-        }
-
-        // if (distance < OBJDIST*2 && y > targetPosition().y - 0f)
-        // {
-        //     reward = -0.5;
-        //     // return -0.5 * angleMult;
-        // } else 
-        // {
-        //     reward = -1;
-        // }
-
-        // if (distance < OBJDIST && y > targetPosition().y - 0f)
-        // {
-        //     reward = -0.25;
-        // }
-
-        if (angleCorrect()) 
-        {
-            reward = reward*0.7;
-        }
-
-        return reward;
-
-        //if (agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y)
-        //{
-        //    return 0;
-        //}
-        //if (terminal())
-        //{
-        //    return 0;
-        //}
-
-        // return -2 * angleMult; //-.005 * (currentStep - lastRolloutStart);
-    }
     private double reward()
+    {
+        float distance = Vector3.Distance(targetPosition(), agentTipTransform.position);
+        double _reward;
+        double angle_weight = .05;
+        double z_weight = (agentTipTransform.position.z > targetTransform.position.z) ? 100 : 25;
+
+        if (distance < OBJDIST)
+        {
+            double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
+            double z_diff = Math.Abs(agentTipTransform.position.z - targetTransform.position.z);
+            double deductions = (angle_weight * (angle_diff * angle_diff)) + (z_weight * z_diff);
+            _reward = Math.Max(1000 - deductions, 100);
+            Debug.Log("reward achieved " + _reward + "     steps: " + stepsThisRollout);
+            return _reward;
+        }
+        _reward = -1 - (10 * (distance * distance));
+        //Debug.Log("Low reward achieved " + _reward);
+        return _reward;
+    }
+    private double _reward()
     { 
         float distance = Vector3.Distance(targetTransform.position, agentTipTransform.position);
         double _reward;
