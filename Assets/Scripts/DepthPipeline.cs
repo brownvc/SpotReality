@@ -8,6 +8,7 @@ public class DepthPipeline : MonoBehaviour
     public ComputeShader MedianBlurShader;
     public ComputeShader BilateralFilterShader;
     public ComputeShader HysteresisThresholdShader;
+    public ComputeShader OutlierShader;
 
     private RenderTexture depthTexture;
     private ComputeBuffer depthBuffer;
@@ -22,13 +23,20 @@ public class DepthPipeline : MonoBehaviour
         depthBuffer = new ComputeBuffer(depth.Length, sizeof(float));
         depthBuffer.SetData(depth);
 
+
         ComputeBuffer maskBuffer = new ComputeBuffer(depth.Length, sizeof(int));
         int[] maskData = new int[depth.Length];
-        for (int i = 0; i < maskData.Length/2; i++)
+        for (int i = 0; i < maskData.Length; i++)
         {
             maskData[i] = 1;
         }
         maskBuffer.SetData(maskData);
+
+        kernel = OutlierShader.FindKernel("CSMain");
+        OutlierShader.SetBuffer(kernel, "depth", depthBuffer);
+        OutlierShader.SetInt("windowSize", 7);
+        OutlierShader.SetFloat("outlierThreshold", 0.05f);
+        OutlierShader.Dispatch(kernel, 1, H, 1);
 
         kernel = HysteresisThresholdShader.FindKernel("CSMain");
         HysteresisThresholdShader.SetBuffer(kernel, "depth", depthBuffer);
@@ -39,11 +47,11 @@ public class DepthPipeline : MonoBehaviour
       
         // [NV] - Unabridged version of pipeline on branch depth_origin
         // Apply morphological operations only to depth samples likely not on edges
-        kernel = DilateEmptyShader.FindKernel("CSMain");
-        DilateEmptyShader.SetBuffer(kernel, "depth", depthBuffer);
-        DilateEmptyShader.SetBuffer(kernel, "mask", maskBuffer);
-        DilateEmptyShader.SetInt("kernelSize", 9);
-        DilateEmptyShader.Dispatch(kernel, 1, H, 1);
+        // kernel = DilateEmptyShader.FindKernel("CSMain");
+        // DilateEmptyShader.SetBuffer(kernel, "depth", depthBuffer);
+        // DilateEmptyShader.SetBuffer(kernel, "mask", maskBuffer);
+        // DilateEmptyShader.SetInt("kernelSize", 9);
+        // DilateEmptyShader.Dispatch(kernel, 1, H, 1);
 
         for (int i = 0; i < 3; i++)
         {

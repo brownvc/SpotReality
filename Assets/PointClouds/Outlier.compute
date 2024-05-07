@@ -1,0 +1,48 @@
+#pragma kernel CSMain
+
+RWStructuredBuffer<float> depth;
+
+#define H 480
+#define W 640
+
+int windowSize;
+float outlierThreshold;
+
+[numthreads(1, 1, 1)] void CSMain(uint3 id
+                                  : SV_DispatchThreadID) {
+  int index = id.y * W + id.x;
+  float currentDepth = depth[index];
+
+  if (currentDepth == 0) {
+    return;
+  }
+
+  int halfWindowSize = windowSize / 2;
+  int neighborCount = 0;
+  float depthSum = 0;
+
+  for (int i = -halfWindowSize; i <= halfWindowSize; i++) {
+    for (int j = -halfWindowSize; j <= halfWindowSize; j++) {
+      int neighborIndex = (id.y + i) * W + (id.x + j);
+      if (neighborIndex >= 0 && neighborIndex < W * H &&
+          neighborIndex != index) {
+        float neighborDepth = depth[neighborIndex];
+        if (neighborDepth > 0) {
+          depthSum += neighborDepth;
+          neighborCount++;
+        }
+      }
+    }
+  }
+
+  if (neighborCount > 0) {
+    float averageDepth = depthSum / neighborCount;
+    float depthDifference = abs(currentDepth - averageDepth);
+
+    if (depthDifference > outlierThreshold) {
+      depth[index] = 0;
+    }
+  } else {
+    depth[index] = 0;
+  }
+}
