@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147699, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1191683252055147701, guid: 34ce56c51daa33941a7874c79e7b65dc, type: 3}
       propertyPath: m_Enabled
@@ -10426,7 +10426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4364515187611384172, guid: cf749af6239c9bb4eb099a888859e8f3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4364515187611384176, guid: cf749af6239c9bb4eb099a888859e8f3, type: 3}
       propertyPath: m_RootOrder
@@ -14631,7 +14631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2049993858
 Transform:
   m_ObjectHideFlags: 0
@@ -24098,7 +24098,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.01481998, z: 0.11745}
+  m_ConnectedAnchor: {x: 0, y: 0.0148200095, z: 0.11745001}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -24309,8 +24309,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5323045367923062791}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 0.27782, z: 0.45}
+  m_LocalRotation: {x: 0.6955994, y: 0, z: 0, w: 0.71843}
+  m_LocalPosition: {x: 0.02, y: 0.27782, z: 0.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24320,7 +24320,7 @@ Transform:
   - {fileID: 5323045367799548200}
   m_Father: {fileID: 1399272934}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 88.15, y: 0, z: 0}
 --- !u!54 &5323045367923062785
 Rigidbody:
   m_ObjectHideFlags: 0
