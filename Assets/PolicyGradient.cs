@@ -30,7 +30,6 @@ public class PolicyGradient
 {
     private bool realArm; // Is this deployed on the real arm
     private Vector3 originalPos;
-    private Quaternion originalRot;
     private Transform agentTransform;
     private Transform agentTipTransform;
     private Transform targetTransform;
@@ -59,7 +58,7 @@ public class PolicyGradient
     public PolicyGradient(Transform agentT, Transform targetTip, Transform goalT, Transform finger, Transform plane, StowArm stowPub, SetGripper gripPub, bool real)
     {
         originalPos = agentT.position;
-        originalRot = agentT.rotation;
+        // originalRot = agentT.rotation;
         agentTransform = agentT;
         agentTipTransform = targetTip;
         targetTransform = goalT;
@@ -74,7 +73,7 @@ public class PolicyGradient
         wGlobal = wGlobal.astype(np.float32);
         currentStep = 0;
         agentTransform.position = originalPos;
-        agentTransform.rotation = originalRot;
+        // agentTransform.rotation = originalRot;
         lastRolloutStart = 0;
         useOpt = false;
 
@@ -85,7 +84,7 @@ public class PolicyGradient
     {
         // Reset the gripper to its original state, and return current state
         agentTransform.position = originalPos;
-        agentTransform.rotation = originalRot;
+        // agentTransform.rotation = originalRot;
         stepsThisRollout = 0;
         holdingObject = false;
         gripperOpen = false;
@@ -288,7 +287,7 @@ public class PolicyGradient
     }
 
 
-    private double _reward()
+    private double reward()
     {
         // TODO factor in total cumulative change in pitch as a negative, to prevent spiraling. try to find a way to penalize moving back and forth less, and focus on spirals
         // TODO scale reward based on if the position and orientation of the agent creates a ray that goes near center of the goal. Scale based on distance between closest point on ray and goal center. 
@@ -300,14 +299,14 @@ public class PolicyGradient
         // Reward if you finished in the right state
         if (holdingObject)
         {
-            return 750;
+            return 400;
         }
 
         // var angleMult = angleCorrect() ? 0.5f : 1f;
 
         reward = -1;
 
-        float max_dist = OBJDIST*4;
+        float max_dist = OBJDIST*5;
 
         if (distance < max_dist && y > targetPosition().y - 0f)
         {
@@ -329,10 +328,10 @@ public class PolicyGradient
         //     reward = -0.25;
         // }
 
-        if (angleCorrect()) 
-        {
-            reward = reward*0.7;
-        }
+        // if (angleCorrect()) 
+        // {
+        //     reward = reward*0.7;
+        // }
 
         return reward;
 
@@ -347,46 +346,46 @@ public class PolicyGradient
 
         // return -2 * angleMult; //-.005 * (currentStep - lastRolloutStart);
     }
-    private double reward()
-    { 
-        float distance = Vector3.Distance(targetTransform.position, agentTipTransform.position);
-        double _reward;
-        double angle_weight = .01;
-        double step_weight = 0.0;
-        double z_weight = 100;
+    // private double reward()
+    // { 
+    //     float distance = Vector3.Distance(targetTransform.position, agentTipTransform.position);
+    //     double _reward;
+    //     double angle_weight = .01;
+    //     double step_weight = 0.0;
+    //     double z_weight = 100;
 
-        if (holdingObject)
-        {
-            double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
-            double z_diff = Math.Abs(agentTransform.position.z - targetTransform.position.z);
-            // Debug.Log("angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
-            double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
-            _reward = Math.Max(1000 - deductions, 100); // TODO change rate from 1 to .1 for both if starting with new weights
-            Debug.Log("Max reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + stepsThisRollout + ", z_diff: " + z_diff);
-            return _reward;
-        }
-        if (distance < .1) // && agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y) // If we reach optimal goal state range
-        {
-            double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
-            double z_diff = Math.Abs(agentTipTransform.position.z - targetTransform.position.z);
-            if (agentTipTransform.position.z > targetTransform.position.z)
-            {
-                z_weight /= 4;
-            }
-            double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
+    //     if (holdingObject)
+    //     {
+    //         double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
+    //         double z_diff = Math.Abs(agentTransform.position.z - targetTransform.position.z);
+    //         // Debug.Log("angle: " + angle_diff + ", steps: " + num_steps + ", z_diff: " + z_diff);
+    //         double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
+    //         _reward = Math.Max(1000 - deductions, 100); // TODO change rate from 1 to .1 for both if starting with new weights
+    //         Debug.Log("Max reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + stepsThisRollout + ", z_diff: " + z_diff);
+    //         return _reward;
+    //     }
+    //     if (distance < .1) // && agentTransform.rotation.eulerAngles.x > 80 && agentTransform.rotation.eulerAngles.x < 100 && agentTransform.position.y > targetTransform.position.y) // If we reach optimal goal state range
+    //     {
+    //         double angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
+    //         double z_diff = Math.Abs(agentTipTransform.position.z - targetTransform.position.z);
+    //         if (agentTipTransform.position.z > targetTransform.position.z)
+    //         {
+    //             z_weight /= 4;
+    //         }
+    //         double deductions = (angle_weight * (angle_diff*angle_diff)) + (step_weight * stepsThisRollout) + (z_weight * z_diff);
 
-            _reward = Math.Max(100 - deductions, 1); // TODO change rate from 1 to .1 for both if starting with new weights
-            Debug.Log("High reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + stepsThisRollout + ", z_diff: " + z_diff);
-            return _reward;
-        }
+    //         _reward = Math.Max(100 - deductions, 1); // TODO change rate from 1 to .1 for both if starting with new weights
+    //         Debug.Log("High reward achieved " + _reward + "        angle: " + angle_diff + ", steps: " + stepsThisRollout + ", z_diff: " + z_diff);
+    //         return _reward;
+    //     }
 
-        //_reward = -.005 * (stepsThisRollout);
-        double _angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
+    //     //_reward = -.005 * (stepsThisRollout);
+    //     double _angle_diff = Math.Abs(Mathf.DeltaAngle(agentTransform.rotation.eulerAngles.x, 90));
 
-        _reward = -1 - ((2*distance) +  (.01 * (_angle_diff*_angle_diff)));
-        //Debug.Log((currentStep-lastRolloutStart).ToString() + ", " + _reward);
-        return _reward;
-    }
+    //     _reward = -1 - ((2*distance) +  (.01 * (_angle_diff*_angle_diff)));
+    //     //Debug.Log((currentStep-lastRolloutStart).ToString() + ", " + _reward);
+    //     return _reward;
+    // }
 
 
     private bool terminal()
