@@ -758,8 +758,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modeName: Joy Stick Arm
-  description: 
-  listOfControlMappings: 
+  description: Arm movement using the joysticks
+  listOfControlMappings: "Arm Controls:\nMove robot arm: \n1. Front/Backward by push/pull
+    left joystick \n2. Left/Right by push left/right left joystick\n3. Up/Downward
+    by push/pull right joystick \n\nGripper movement:\n1. Nod: Hold top right trigger
+    and push/pull right joystick \n2. Swing: Hold top right trigger and push left/right
+    left joystick \n3. Rotate: Hold top left trigger and push left/right left joystick
+    \nViewing Controls:\nSwitch between 2D and 3D views: Click X on left controller\nRotate
+    your perspective in the scene: Move the right joystick\nMove your position in
+    the scene: Move the left joystick\nMove up in the scene: Click/Press the right
+    joystick\nMove down in the scene: Click/Press the left joystick\nToggle spot
+    body transparency: Click B on the right controller\n\n\nSystem Controls:\nSwitch
+    Modes - Click A on the right controller\nToggle UI - Click Y on the left controller"
   controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   objectsOfModeToEnable:
   - {fileID: 3465647787827832880}

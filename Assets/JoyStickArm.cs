@@ -71,60 +71,27 @@ public class JoyStickArm : MonoBehaviour
         if (laxMove.x != 0 || laxMove.y != 0 || raxMove.y !=0)
         {
             // gripper rotation
-            if (RT1.action.IsPressed())
+            if (LT1.action.IsPressed())
             {
-                //gripperSwing = laxMove
+                gripperRotate = Math.Sign(laxMove.y) * 3.1415f / 8f;
+                rotationChange.x = gripperRotate;
 
+                joyArmPublisher.setCoordinate(0.0f, 0.0f, 0.0f, rotationChange);
+            }
+            // gripper nod and swing
+            else if (RT1.action.IsPressed())
+            {
 
-                //double thetaAngle = Math.PI / 4;
-                //double cosAngle = Math.Cos(thetaAngle);
-                //double sinAngle = Math.Sin(thetaAngle);
+                gripperNod = Math.Sign(raxMove.y) * 3.1415f / 12f;
 
-                //.x = (float)cosAngle;
-                //rotationChange.y = (float)sinAngle;
-                //rotationChange.z = 0;
-                //rotationChange.w = 0;
-
-                if (gripperNod > 45f)
-                {
-                    gripperNod = 45f;
-                }
-                else if (gripperNod < -90f)
-                {
-                    gripperNod = -90f;
-                }
-                else
-                {
-                    
-                    gripperNod += (float)(0.2d * Math.Tan(1.55d * (double)raxMove.y));
-                }
-
-
-
-                if (gripperSwing > 45f)
-                {
-                    gripperSwing = 45f;
-                }
-                else if (gripperSwing < -45f)
-                {
-                    gripperSwing = -45f;
-                }
-                else
-                {
-
-                    gripperSwing += (float)(0.2d * Math.Tan(1.55d * (double)laxMove.x));
-                }
-
-                //gripperNod += raxMove.y * 5f;
-
-
-                float degree = 30f;
+                gripperSwing = Math.Sign(laxMove.x) * 3.1415f / 12f;
 
                 // (rotate,nod,swing)
-                rotationChange = Quaternion.Euler(0f, -gripperNod, gripperSwing);
+                //rotationChange = Quaternion.Euler(0f, -gripperNod, gripperSwing);
+                
+                rotationChange.y = -gripperNod;
+                rotationChange.z = -gripperSwing;
 
-
-                //Debug.Log("rt1 pressed");
                 joyArmPublisher.setCoordinate(0.0f, 0.0f, 0.0f, rotationChange);
             }
             else
@@ -143,13 +110,6 @@ public class JoyStickArm : MonoBehaviour
                 // publish the coordinate (convert double to float)
                 joyArmPublisher.setCoordinate((float)armFrontBack, (float)armLeftRight, (float)armUpDown, rotationChange);
 
-
-                //armFrontBack = (Math.Log(1 + armFrontBack) / Math.Log(2.2)) * 0.1d;
-                //armRotate = - (Math.Log(1 + armRotate) / Math.Log(2.2)) * 0.1d;
-
-                //armFrontBack = armFrontBack / 50.0f;
-                //armRotate = -armRotate / 50.0f;
-                //armUpDown = raxMove.y / 50.0f;
             }
 
         }
@@ -157,36 +117,31 @@ public class JoyStickArm : MonoBehaviour
 
 
         // Change the gripper percentage
-        if (LT1.action.IsPressed())
-        {
-            Vector2 leftMove = LAx.action.ReadValue<Vector2>();
-            if (leftMove.y < 0)
-            {
-                if (generalControls.gripperPercentage > 0)
-                {
-                    generalControls.gripperPercentage -= 0.25f;
-                    gripper.setGripperPercentage(generalControls.gripperPercentage);
-                    generalControls.gripperOpen = false;
-                }
+        //if (LT1.action.IsPressed())
+        //{
+        //    Vector2 leftMove = LAx.action.ReadValue<Vector2>();
+        //    if (leftMove.y < 0)
+        //    {
+        //        if (generalControls.gripperPercentage > 0)
+        //        {
+        //            generalControls.gripperPercentage -= 0.25f;
+        //            gripper.setGripperPercentage(generalControls.gripperPercentage);
+        //            generalControls.gripperOpen = false;
+        //        }
 
-            }
-            if (leftMove.y > 0)
-            {
-                if (generalControls.gripperPercentage < 100.0f)
-                {
-                    generalControls.gripperPercentage += 0.25f;
-                    gripper.setGripperPercentage(generalControls.gripperPercentage);
-                    generalControls.gripperOpen = true;
-                }
-            }
+        //    }
+        //    if (leftMove.y > 0)
+        //    {
+        //        if (generalControls.gripperPercentage < 100.0f)
+        //        {
+        //            generalControls.gripperPercentage += 0.25f;
+        //            gripper.setGripperPercentage(generalControls.gripperPercentage);
+        //            generalControls.gripperOpen = true;
+        //        }
+        //    }
 
-        }
-        else
-        {
+        //}
 
-            // turn off dummy hand tracking
-            //armPublisher.enabled = false;
-        }
         
         // Freeze or unfreeze the hand point cloud
         if (bButton.action.WasPressedThisFrame())
