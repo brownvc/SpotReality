@@ -1,0 +1,5 @@
+# Documentation Approach
+SpotReality is a complex Unity application. The files in this folder will attempt to document the full range of functionality with a top-down approach starting from root GameObjects. Each relevant top-level GameObject has its own file or folder, which will explain the that object's role in the overall application, and how each of its child objects and components fit in. The documentation will all be for the Spot-PointCloud-ArmControl scene, which is the main version of the project.
+
+## Undocumented Objects
+The "XR Interaction Manager", "XR Origin", and "EventSystem" GameObjects do not have their own documentation files, because they were imported from open source libraries to allow the system to interact with the VR headset. You can read documentation about the process that set up those objects [here](https://xrbootcamp.com/unity-vr-tutorial-for-beginners/). Additionally, the RobotArmIK object does not have documentation because it is for a feature that is not implemented.
