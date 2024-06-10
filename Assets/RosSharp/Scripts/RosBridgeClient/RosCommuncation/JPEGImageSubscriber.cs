@@ -16,6 +16,7 @@ limitations under the License.
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.IO;
 
 namespace RosSharp.RosBridgeClient
 {                                            
@@ -40,6 +41,10 @@ namespace RosSharp.RosBridgeClient
         public double latest_time;
         private bool frameUpdated;
 
+        private double temp_time;
+
+        private string camera_pos_str;
+
         protected override void Start()
         {
 			base.Start();
@@ -60,6 +65,16 @@ namespace RosSharp.RosBridgeClient
             bufferInd = 0;
             imgBuffer = new MessageTypes.Sensor.Image[bufferLength];
             frameUpdated = false;
+
+            camera_pos_str = "none";
+            if (Topic == "/spot/stream_image/frontright_fisheye_image/image")
+            {
+                camera_pos_str = "frontright";
+            }
+            else if (Topic == "/spot/stream_image/frontleft_fisheye_image/image")
+            {
+                camera_pos_str = "frontleft";
+            }
 
         }
 
@@ -113,6 +128,11 @@ namespace RosSharp.RosBridgeClient
                 Debug.Log("Time to sync with depth: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
             }
 
+            byte[] bytes = texture2D.EncodeToPNG();
+            string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + temp_time;
+            UnityEngine.Debug.Log("create: " + filename);
+            File.WriteAllBytes(filename, bytes);
+
             frameUpdated = true;
             isMessageReceived = false;
         }
@@ -153,6 +173,8 @@ namespace RosSharp.RosBridgeClient
             {
                 Debug.Log(closestTime);
             }
+
+            temp_time = depthTime;
 
             return closestInd;
         }

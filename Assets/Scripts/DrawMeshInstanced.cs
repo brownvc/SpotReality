@@ -164,7 +164,7 @@ public class DrawMeshInstanced : MonoBehaviour
             //}
 
             Stopwatch stopwatch = Stopwatch.StartNew();
-                
+
             // if (imageScriptIndex == 0)
             // {
             //depth_ar = GetComponent<DepthPipeline>().PreprocessDepth(depth_ar);
