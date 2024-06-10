@@ -90,6 +90,8 @@ namespace RosSharp.RosBridgeClient
             clearCbuf = false;
             turnDepthOnTime = 0f;
             depthUpdated = false;
+
+            UnityEngine.Debug.Log("Subscriber topic: " + Topic);
         }
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
@@ -177,46 +179,46 @@ namespace RosSharp.RosBridgeClient
 
                 image_data[j] = depthVal;
 
-                if (useDepthHistory)
-                {
-                    // Update this index in pixcount and sum arrays
-                    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
-                    {
-                        // Decrement from counts
-                        image_data_pixcount[j] -= 1;
+                //if (useDepthHistory)
+                //{
+                //    // Update this index in pixcount and sum arrays
+                //    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
+                //    {
+                //        // Decrement from counts
+                //        image_data_pixcount[j] -= 1;
 
-                        // subtract from sum
-                        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
-                    }
-                    if (depthVal > 0f)
-                    {
-                        // Increment to counts
-                        image_data_pixcount[j] += 1;
+                //        // subtract from sum
+                //        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
+                //    }
+                //    if (depthVal > 0f)
+                //    {
+                //        // Increment to counts
+                //        image_data_pixcount[j] += 1;
 
-                        // Add to sum
-                        image_data_sum[j] += depthVal;
-                    }
+                //        // Add to sum
+                //        image_data_sum[j] += depthVal;
+                //    }
 
-                    // Store this value in the buffer
-                    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
-                }
+                //    // Store this value in the buffer
+                //    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
+                //}
 
                 j++;
             }
 
 
-            // Average depth frames
-            if (useDepthHistory) // If robot is not moving
-            {
-                // Normalize
-                for (j = 0; j < image_data.Length; j++)
-                {
-                    if (image_data_pixcount[j] > 0)
-                    {
-                        image_data[j] = image_data_sum[j] / image_data_pixcount[j];
-                    }
-                }
-            }
+            //// Average depth frames
+            //if (useDepthHistory) // If robot is not moving
+            //{
+            //    // Normalize
+            //    for (j = 0; j < image_data.Length; j++)
+            //    {
+            //        if (image_data_pixcount[j] > 0)
+            //        {
+            //            image_data[j] = image_data_sum[j] / image_data_pixcount[j];
+            //        }
+            //    }
+            //}
 
             image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
 
