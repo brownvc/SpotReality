@@ -129,7 +129,7 @@ namespace RosSharp.RosBridgeClient
             }
 
             byte[] bytes = texture2D.EncodeToPNG();
-            string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + temp_time;
+            string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + temp_time + ".png";
             UnityEngine.Debug.Log("create: " + filename);
             File.WriteAllBytes(filename, bytes);
 
