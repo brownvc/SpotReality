@@ -116,9 +116,6 @@ public class DrawMeshInstanced : MonoBehaviour
         // Use saved meshes
         if (use_saved_meshes)
         {
-
-
-
             // mesh_array_test_ for Depth Anything Images   
             // using (var stream = File.Open("Assets/PointClouds/mesh_array_test_" + imageScriptIndex, FileMode.Open))
             // mesh_array_test_*_normalized for Depth Anything Images normalized to lidar data

@@ -1068,7 +1068,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 1
+  use_saved_meshes: 0
 --- !u!114 &112187589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4243,7 +4243,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 1
+  use_saved_meshes: 0
 --- !u!114 &545284151
 MonoBehaviour:
   m_ObjectHideFlags: 0

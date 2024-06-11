@@ -157,24 +157,24 @@ namespace RosSharp.RosBridgeClient
                 incrate = 2;
             }
 
-            // Initialize the buffer containing past frame values for each pixel
-            if (image_data_cbuffer == null)
-            {
-                image_data_cbuffer_pos = 0;
-                image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
-                image_data_pixcount = new byte[image_data.Length];
-                image_data_sum = new float[image_data.Length];
-            }
-            else if (clearCbuf)
-            {
-                image_data_cbuffer_pos = 0;
-                Array.Clear(image_data_cbuffer, 0, image_data_cbuffer.Length);
-                Array.Clear(image_data_pixcount, 0, image_data_pixcount.Length);
-                Array.Clear(image_data_sum, 0, image_data_sum.Length);
+            //// Initialize the buffer containing past frame values for each pixel
+            //if (image_data_cbuffer == null)
+            //{
+            //    image_data_cbuffer_pos = 0;
+            //    image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
+            //    image_data_pixcount = new byte[image_data.Length];
+            //    image_data_sum = new float[image_data.Length];
+            //}
+            //else if (clearCbuf)
+            //{
+            //    image_data_cbuffer_pos = 0;
+            //    Array.Clear(image_data_cbuffer, 0, image_data_cbuffer.Length);
+            //    Array.Clear(image_data_pixcount, 0, image_data_pixcount.Length);
+            //    Array.Clear(image_data_sum, 0, image_data_sum.Length);
 
-                // Don't need to keep clearing buffer
-                clearCbuf = false;
-            }
+            //    // Don't need to keep clearing buffer
+            //    clearCbuf = false;
+            //}
 
             byte[] bytes = new byte[2];
             int j = 0;
@@ -196,48 +196,48 @@ namespace RosSharp.RosBridgeClient
 
                 image_data[j] = depthVal;
 
-                if (useDepthHistory)
-                {
-                    // Update this index in pixcount and sum arrays
-                    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
-                    {
-                        // Decrement from counts
-                        image_data_pixcount[j] -= 1;
+                //if (useDepthHistory)
+                //{
+                //    // Update this index in pixcount and sum arrays
+                //    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
+                //    {
+                //        // Decrement from counts
+                //        image_data_pixcount[j] -= 1;
 
-                        // subtract from sum
-                        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
-                    }
-                    if (depthVal > 0f)
-                    {
-                        // Increment to counts
-                        image_data_pixcount[j] += 1;
+                //        // subtract from sum
+                //        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
+                //    }
+                //    if (depthVal > 0f)
+                //    {
+                //        // Increment to counts
+                //        image_data_pixcount[j] += 1;
 
-                        // Add to sum
-                        image_data_sum[j] += depthVal;
-                    }
+                //        // Add to sum
+                //        image_data_sum[j] += depthVal;
+                //    }
 
-                    // Store this value in the buffer
-                    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
-                }
+                //    // Store this value in the buffer
+                //    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
+                //}
 
                 j++;
             }
 
 
-            // Average depth frames
-            if (useDepthHistory) // If robot is not moving
-            {
-                // Normalize
-                for (j = 0; j < image_data.Length; j++)
-                {
-                    if (image_data_pixcount[j] > 0)
-                    {
-                        image_data[j] = image_data_sum[j] / image_data_pixcount[j];
-                    }
-                }
-            }
+            //// Average depth frames
+            //if (useDepthHistory) // If robot is not moving
+            //{
+            //    // Normalize
+            //    for (j = 0; j < image_data.Length; j++)
+            //    {
+            //        if (image_data_pixcount[j] > 0)
+            //        {
+            //            image_data[j] = image_data_sum[j] / image_data_pixcount[j];
+            //        }
+            //    }
+            //}
 
-            image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
+            //image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
 
             // Copy into the final return array and timestamp
             globalData = new float[image_data.Length];
