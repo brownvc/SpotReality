@@ -59,6 +59,8 @@ namespace RosSharp.RosBridgeClient
 
         private string camera_pos_str;
 
+        private bool start_collect;
+
         /* struct to hold the recency of a depth value */
         private struct DepthInfo
         {
@@ -245,17 +247,22 @@ namespace RosSharp.RosBridgeClient
 
             string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/depth/" + timestamp_synced;
             UnityEngine.Debug.Log("create: " + filename);
-            using (FileStream file = File.Create(filename))
+            start_collect = transform.parent.Find("Trigger").GetComponent<CollectionStarter>().start;
+            if (start_collect)
             {
-                using (BinaryWriter writer = new BinaryWriter(file))
+                using (FileStream file = File.Create(filename))
                 {
-                    writer.Write((int)globalData.Length);
-                    foreach (float value in globalData)
+                    using (BinaryWriter writer = new BinaryWriter(file))
                     {
-                        writer.Write(value);
+                        writer.Write((int)globalData.Length);
+                        foreach (float value in globalData)
+                        {
+                            writer.Write(value);
+                        }
                     }
                 }
             }
+            
 
             // Debugging info
             if (printMessageProcRate)

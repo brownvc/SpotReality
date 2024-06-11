@@ -44,6 +44,7 @@ namespace RosSharp.RosBridgeClient
         private double temp_time;
 
         private string camera_pos_str;
+        private bool start_collect;
 
         protected override void Start()
         {
@@ -128,10 +129,17 @@ namespace RosSharp.RosBridgeClient
                 Debug.Log("Time to sync with depth: " + totalSeconds.ToString("0.0000") + " seconds, " + (1 / totalSeconds).ToString("0.00") + " hz");
             }
 
-            byte[] bytes = texture2D.EncodeToPNG();
-            string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + temp_time + ".png";
-            UnityEngine.Debug.Log("create: " + filename);
-            File.WriteAllBytes(filename, bytes);
+            start_collect = transform.parent.Find("Trigger").GetComponent<CollectionStarter>().start;
+            
+            if (start_collect)
+            {
+                byte[] bytes = texture2D.EncodeToPNG();
+                string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + temp_time + ".png";
+                UnityEngine.Debug.Log("create: " + filename);
+                File.WriteAllBytes(filename, bytes);
+            }
+
+            
 
             frameUpdated = true;
             isMessageReceived = false;
