@@ -25,6 +25,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 
 namespace RosSharp.RosBridgeClient
 {
@@ -56,6 +57,10 @@ namespace RosSharp.RosBridgeClient
 
         private Thread messageThread;
 
+        private string camera_pos_str;
+
+        private bool start_collect = true;
+
 
         /* struct to hold the recency of a depth value */
         private struct DepthInfo
@@ -74,6 +79,7 @@ namespace RosSharp.RosBridgeClient
 
         protected override void Start()
         {
+
             base.Start();
 
             lastMessageRetrieved = DateTime.Now;
@@ -86,10 +92,22 @@ namespace RosSharp.RosBridgeClient
 
             globalData = new float[1];
             timestamp_synced = 0d;
-            useDepthHistory = true;
+            useDepthHistory = false;
             clearCbuf = false;
             turnDepthOnTime = 0f;
             depthUpdated = false;
+
+            UnityEngine.Debug.Log("Subscriber topic: " + Topic);
+
+            camera_pos_str = "none";
+            if (Topic == "/spot/stream_image/frontright_depth_in_visual_frame/image")
+            {
+                camera_pos_str = "frontright";
+            }
+            else if (Topic == "/spot/stream_image/frontleft_depth_in_visual_frame/image")
+            {
+                camera_pos_str = "frontleft";
+            }
         }
 
         protected override void ReceiveMessage(MessageTypes.Sensor.Image image)
@@ -127,6 +145,8 @@ namespace RosSharp.RosBridgeClient
             float[] image_data = new float[1];
             int incrate;
 
+            timestamp_synced = timestamp_proc.secs + timestamp_proc.nsecs * 0.000000001;
+
             if (compressed)
             {
                 image_data = new float[data.Length];
@@ -138,24 +158,24 @@ namespace RosSharp.RosBridgeClient
                 incrate = 2;
             }
 
-            // Initialize the buffer containing past frame values for each pixel
-            if (image_data_cbuffer == null)
-            {
-                image_data_cbuffer_pos = 0;
-                image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
-                image_data_pixcount = new byte[image_data.Length];
-                image_data_sum = new float[image_data.Length];
-            }
-            else if (clearCbuf)
-            {
-                image_data_cbuffer_pos = 0;
-                Array.Clear(image_data_cbuffer, 0, image_data_cbuffer.Length);
-                Array.Clear(image_data_pixcount, 0, image_data_pixcount.Length);
-                Array.Clear(image_data_sum, 0, image_data_sum.Length);
+            //// Initialize the buffer containing past frame values for each pixel
+            //if (image_data_cbuffer == null)
+            //{
+            //    image_data_cbuffer_pos = 0;
+            //    image_data_cbuffer = new float[image_data.Length, image_data_cbuffer_length];
+            //    image_data_pixcount = new byte[image_data.Length];
+            //    image_data_sum = new float[image_data.Length];
+            //}
+            //else if (clearCbuf)
+            //{
+            //    image_data_cbuffer_pos = 0;
+            //    Array.Clear(image_data_cbuffer, 0, image_data_cbuffer.Length);
+            //    Array.Clear(image_data_pixcount, 0, image_data_pixcount.Length);
+            //    Array.Clear(image_data_sum, 0, image_data_sum.Length);
 
-                // Don't need to keep clearing buffer
-                clearCbuf = false;
-            }
+            //    // Don't need to keep clearing buffer
+            //    clearCbuf = false;
+            //}
 
             byte[] bytes = new byte[2];
             int j = 0;
@@ -177,55 +197,74 @@ namespace RosSharp.RosBridgeClient
 
                 image_data[j] = depthVal;
 
-                if (useDepthHistory)
-                {
-                    // Update this index in pixcount and sum arrays
-                    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
-                    {
-                        // Decrement from counts
-                        image_data_pixcount[j] -= 1;
+                //if (useDepthHistory)
+                //{
+                //    // Update this index in pixcount and sum arrays
+                //    if (image_data_cbuffer[j, image_data_cbuffer_pos] > 0f)
+                //    {
+                //        // Decrement from counts
+                //        image_data_pixcount[j] -= 1;
 
-                        // subtract from sum
-                        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
-                    }
-                    if (depthVal > 0f)
-                    {
-                        // Increment to counts
-                        image_data_pixcount[j] += 1;
+                //        // subtract from sum
+                //        image_data_sum[j] -= image_data_cbuffer[j, image_data_cbuffer_pos];
+                //    }
+                //    if (depthVal > 0f)
+                //    {
+                //        // Increment to counts
+                //        image_data_pixcount[j] += 1;
 
-                        // Add to sum
-                        image_data_sum[j] += depthVal;
-                    }
+                //        // Add to sum
+                //        image_data_sum[j] += depthVal;
+                //    }
 
-                    // Store this value in the buffer
-                    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
-                }
+                //    // Store this value in the buffer
+                //    image_data_cbuffer[j, image_data_cbuffer_pos] = depthVal;
+                //}
 
                 j++;
             }
 
 
-            // Average depth frames
-            if (useDepthHistory) // If robot is not moving
-            {
-                // Normalize
-                for (j = 0; j < image_data.Length; j++)
-                {
-                    if (image_data_pixcount[j] > 0)
-                    {
-                        image_data[j] = image_data_sum[j] / image_data_pixcount[j];
-                    }
-                }
-            }
+            //// Average depth frames
+            //if (useDepthHistory) // If robot is not moving
+            //{
+            //    // Normalize
+            //    for (j = 0; j < image_data.Length; j++)
+            //    {
+            //        if (image_data_pixcount[j] > 0)
+            //        {
+            //            image_data[j] = image_data_sum[j] / image_data_pixcount[j];
+            //        }
+            //    }
+            //}
 
-            image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
+            //image_data_cbuffer_pos = (image_data_cbuffer_pos + 1) % image_data_cbuffer_length;
 
             // Copy into the final return array and timestamp
             globalData = new float[image_data.Length];
             Array.Copy(image_data, globalData, image_data.Length);
 
-            // Set timestamps
-            timestamp_synced = timestamp_proc.secs + timestamp_proc.nsecs * 0.000000001;
+
+
+            string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/depth/" + timestamp_synced;
+            UnityEngine.Debug.Log("create: " + filename);
+            //start_collect = transform.parent.Find("Trigger").GetComponent<CollectionStarter>().start;
+            start_collect = false;
+            if (start_collect)
+            {
+                using (FileStream file = File.Create(filename))
+                {
+                    using (BinaryWriter writer = new BinaryWriter(file))
+                    {
+                        writer.Write((int)globalData.Length);
+                        foreach (float value in globalData)
+                        {
+                            writer.Write(value);
+                        }
+                    }
+                }
+            }
+
 
             // Debugging info
             if (printMessageProcRate)

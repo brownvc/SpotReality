@@ -16,6 +16,7 @@ limitations under the License.
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.IO;
 
 namespace RosSharp.RosBridgeClient
 {                                            
@@ -40,6 +41,11 @@ namespace RosSharp.RosBridgeClient
         public double latest_time;
         private bool frameUpdated;
 
+        private double temp_time;
+
+        private string camera_pos_str;
+        private bool start_collect;
+
         protected override void Start()
         {
 			base.Start();
@@ -60,6 +66,16 @@ namespace RosSharp.RosBridgeClient
             bufferInd = 0;
             imgBuffer = new MessageTypes.Sensor.Image[bufferLength];
             frameUpdated = false;
+
+            camera_pos_str = "none";
+            if (Topic == "/spot/stream_image/frontright_fisheye_image/image")
+            {
+                camera_pos_str = "frontright";
+            }
+            else if (Topic == "/spot/stream_image/frontleft_fisheye_image/image")
+            {
+                camera_pos_str = "frontleft";
+            }
 
         }
 
@@ -88,6 +104,21 @@ namespace RosSharp.RosBridgeClient
 
             isMessageReceived = true;
             lastMessageRetrieved = DateTime.Now;
+
+            //start_collect = true;
+
+            //if (start_collect)
+            //{
+            //    UnityEngine.Debug.Log("start==================================");
+            //    texture2D.LoadImage(image.data);
+            //    texture2D.Apply();
+            //    meshRenderer.material.SetTexture("_MainTex", texture2D);
+
+            //    byte[] bytes = texture2D.EncodeToPNG();
+            //    string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + latest_time + ".png";
+            //    UnityEngine.Debug.Log("create: " + filename);
+            //    File.WriteAllBytes(filename, bytes);
+            //}
         }
 
         /// <summary>
@@ -105,6 +136,10 @@ namespace RosSharp.RosBridgeClient
                 texture2D.LoadImage(imgBuffer[closestInd].data);
                 texture2D.Apply();
                 meshRenderer.material.SetTexture("_MainTex", texture2D);
+
+                //string filename = "Assets/PointClouds/rawdata/" + camera_pos_str + "/color/" + latest_time + ".png";
+                //UnityEngine.Debug.Log("create: " + filename);
+                //File.WriteAllBytes(filename, texture2D.EncodeToPNG());
             }
 
             if (printSyncTime)
