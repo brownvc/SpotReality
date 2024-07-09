@@ -1940,12 +1940,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontright_depth_in_visual_frame/image
+  Topic: /spot/stream_image2/frontright_depth_in_visual_frame/image
   TimeStep: 0
   timestamp_synced: 0
   printMessageReceiveRate: 0
-  printMessageProcRate: 0
-  compressed: 1
+  printMessageProcRate: 1
+  compressed: 0
 --- !u!114 &92912755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1961,7 +1961,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9091
 --- !u!4 &92912756
 Transform:
   m_ObjectHideFlags: 0
@@ -4915,7 +4915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot/stream_image/back_depth_in_visual_frame/image
+  Topic: /spot/stream_image2/back_depth_in_visual_frame/image
   TimeStep: 0
   timestamp_synced: 0
   printMessageReceiveRate: 0
@@ -4933,7 +4933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot/stream_image/back_fisheye_image/image
+  Topic: /spot/stream_image2/back_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -4954,7 +4954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
+  Topic: /spot/stream_image2/frontright_depth_in_visual_frame/image
   TimeStep: 0
   timestamp_synced: 0
   printMessageReceiveRate: 0
@@ -4972,7 +4972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontright_fisheye_image/image
+  Topic: /spot/stream_image2/frontright_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -4993,7 +4993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/hand_depth_in_hand_color_frame/image
+  Topic: /spot/stream_image2/hand_depth_in_hand_color_frame/image
   TimeStep: 0
   timestamp_synced: 0
   printMessageReceiveRate: 0
@@ -5011,7 +5011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/hand_color_image/image
+  Topic: /spot/stream_image2/hand_color_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -5032,7 +5032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontleft_depth_in_visual_frame/image
+  Topic: /spot/stream_image2/frontleft_depth_in_visual_frame/image
   TimeStep: 0
   timestamp_synced: 0
   printMessageReceiveRate: 0
@@ -5050,7 +5050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontleft_fisheye_image/image
+  Topic: /spot/stream_image2/frontleft_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -5202,7 +5202,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9091
 --- !u!114 &233055501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6728,7 +6728,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9091
 --- !u!114 &312512958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6741,7 +6741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontleft_fisheye_image/image
+  Topic: /spot/stream_image2/frontleft_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -8219,7 +8219,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9090
 --- !u!1 &447658809
 GameObject:
   m_ObjectHideFlags: 8
@@ -9871,12 +9871,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontleft_depth_in_visual_frame/image
+  Topic: /spot/stream_image2/frontleft_depth_in_visual_frame/image
   TimeStep: 0
   timestamp_synced: 0
   printMessageReceiveRate: 0
-  printMessageProcRate: 0
-  compressed: 1
+  printMessageProcRate: 1
+  compressed: 0
 --- !u!114 &548133930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9892,7 +9892,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9091
 --- !u!4 &548133931
 Transform:
   m_ObjectHideFlags: 0
@@ -10049,7 +10049,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9090
 --- !u!1 &569239754
 GameObject:
   m_ObjectHideFlags: 0
@@ -12461,7 +12461,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9091
 --- !u!114 &694562552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12474,7 +12474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /spot2/stream_image/frontright_fisheye_image/image
+  Topic: /spot/stream_image2/frontright_fisheye_image/image
   TimeStep: 0
   meshRenderer: {fileID: 1823382995}
   texture2D: {fileID: 0}
@@ -25326,7 +25326,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1500417875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25342,7 +25342,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9090
 --- !u!1001 &1504149720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25583,7 +25583,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9090
 --- !u!114 &1510830350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28464,7 +28464,7 @@ MonoBehaviour:
   timestamp_synced: 0
   printMessageReceiveRate: 0
   printMessageProcRate: 0
-  compressed: 1
+  compressed: 0
 --- !u!114 &1673597985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28480,7 +28480,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 1
-  RosBridgeServerUrl: ws://138.16.160.231:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9090
 --- !u!1 &1673816713
 GameObject:
   m_ObjectHideFlags: 0
