@@ -2780,7 +2780,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.055, y: 0, z: -0.29784995}
+  m_ConnectedAnchor: {x: -0.054999948, y: 0, z: -0.29784995}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -4377,7 +4377,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.110944994, y: 0, z: 0.000000059604645}
+  m_ConnectedAnchor: {x: -0.110944934, y: 0, z: 0.000000059604645}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -4513,6 +4513,118 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9090ae501ff9cd459bec5271d40249c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &209851506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 209851507}
+  - component: {fileID: 209851510}
+  - component: {fileID: 209851509}
+  - component: {fileID: 209851508}
+  m_Layer: 0
+  m_Name: ControlMode - Dynamic Arm (new gripper)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &209851507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209851506}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34038937, y: -0.30017084, z: 0.6909096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &209851508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209851506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481b63c4dd93fcb44ae08589b42311f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armPublisher: {fileID: 1510830355}
+  rightController: {fileID: 3465647787827832880}
+  dummyHandTransform: {fileID: 0}
+  realHandTransform: {fileID: 0}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 0}
+  LAx: {fileID: 0}
+  bButton: {fileID: 0}
+  spotBody: {fileID: 0}
+  cloudsToFreeze: []
+  handExtUpdater: {fileID: 0}
+  handImageSubscriber: {fileID: 0}
+  gripper: {fileID: 0}
+  generalControls: {fileID: 0}
+  depthSubscribers: []
+  armBase: {fileID: 0}
+  ghostArm: {fileID: 0}
+  ghostFinger: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  translucentSpotMaterial: {fileID: 0}
+  opaqueSpotMaterial: {fileID: 0}
+  opaqueSpotArmMaterial: {fileID: 0}
+  translucentSpotArmMaterial: {fileID: 0}
+--- !u!114 &209851509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209851506}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1843fa84dacc7bb4faa5630a83674fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gArmPublisher: {fileID: 1510830385}
+  sliderValues: {fileID: 1801742125}
+  rightHand: {fileID: 3465647787827832883}
+  targetPos: {fileID: 0}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controlInUnity: 0
+--- !u!114 &209851510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209851506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Dynamic Arm
+  description: Dynamic arm movement using the position of the right joystick
+  listOfControlMappings: "[UPDATE THESE - NOT UPDATED]\n\nRight Trigger - Hold to
+    update the real arm\n\nLeft Axis - WASD in Virtual Scene\nRight Axis - Rotate
+    head\n\nX - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes
+    (next)\nLeft Gripper - Stow arm\nRight Gripper - Open/Close hand\n\n"
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 3465647787827832880}
+  - {fileID: 0}
+  scriptsOfModeToEnable:
+  - {fileID: 209851508}
 --- !u!1 &227033718
 GameObject:
   m_ObjectHideFlags: 8
@@ -5110,7 +5222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52fc27a45e102f4887ead8f92259aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /cmd_vel
+  Topic: /spot2/cmd_vel
   save: 0
 --- !u!114 &233055498
 MonoBehaviour:
@@ -5959,8 +6071,8 @@ MonoBehaviour:
   depth_image: {fileID: 0}
   imageScriptIndex: 0
   material: {fileID: 2100000, guid: 3c1a4b03052f19446853c10f0cc7f32c, type: 2}
-  depthSubscriber: {fileID: 1673597984}
-  colorSubscriber: {fileID: 442599355}
+  depthSubscriber: {fileID: 548133929}
+  colorSubscriber: {fileID: 312512958}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 91226eeebf6e12e4c842141808974e0e, type: 3}
   target: {fileID: 3465647789006909972}
@@ -6443,7 +6555,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
+  m_ConnectedAnchor: {x: 0.000000059604645, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -6634,6 +6746,158 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0768174edffea91409ee4bccd12a6b18, type: 3}
   m_PrefabInstance: {fileID: 1190399494}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &304101495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 304101498}
+  - component: {fileID: 304101497}
+  - component: {fileID: 304101496}
+  m_Layer: 0
+  m_Name: Non-VR UI Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &304101496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304101495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Mode Unset (0)
+
+
+    Keyboard Controls:
+
+    WASD - move spot
+
+    QE
+    - rotate spot
+
+    R - stow arm (retract)
+
+    T - toggle modes
+
+    OP - open/close
+    gripper
+
+    K - kill motors'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &304101497
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304101495}
+  m_CullTransparentMesh: 1
+--- !u!224 &304101498
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304101495}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 537393575}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 247.8, y: -59}
+  m_SizeDelta: {x: 403.2, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &309000065
 GameObject:
   m_ObjectHideFlags: 0
@@ -8608,7 +8872,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.110944994, y: 0, z: 0}
+  m_ConnectedAnchor: {x: -0.110944934, y: 0, z: 0}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -9653,6 +9917,108 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsBaseLink: 0
+--- !u!1 &537393574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 537393575}
+  - component: {fileID: 537393578}
+  - component: {fileID: 537393577}
+  - component: {fileID: 537393576}
+  m_Layer: 0
+  m_Name: Non-VR UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &537393575
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537393574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 304101498}
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &537393576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537393574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &537393577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537393574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &537393578
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537393574}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 1
+  m_TargetDisplay: 0
 --- !u!1 &542073866
 GameObject:
   m_ObjectHideFlags: 0
@@ -11719,7 +12085,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.01481998, z: 0.11745}
+  m_ConnectedAnchor: {x: -0.000000018626451, y: 0.01481998, z: 0.11745}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -13323,7 +13689,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.055, y: 0, z: 0.29785}
+  m_ConnectedAnchor: {x: 0.054999948, y: 0, z: 0.29785}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -14051,7 +14417,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
+  m_ConnectedAnchor: {x: -0.000000059604645, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -16440,7 +16806,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.110944994, y: 0, z: 0}
+  m_ConnectedAnchor: {x: 0.110944934, y: 0, z: 0}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -16982,6 +17348,7 @@ GameObject:
   - component: {fileID: 991331606}
   - component: {fileID: 991331607}
   - component: {fileID: 991331608}
+  - component: {fileID: 991331609}
   m_Layer: 0
   m_Name: ScriptRunner
   m_TagString: Untagged
@@ -17046,6 +17413,24 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &991331609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991331604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe01f66464dbb44bb68af5f044b1ace, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spot: {fileID: 594476507}
+  spot2: {fileID: 2040494291}
+  ros: {fileID: 2049993857}
+  ros2: {fileID: 1575767056}
+  con: {fileID: 3465647787329320718}
+  con2: {fileID: 2079104495}
 --- !u!1001 &994116547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17112,6 +17497,60 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1236845971}
   m_SourcePrefab: {fileID: 100100000, guid: a3fb9810019761f47b22fdbc96907ab3, type: 3}
+--- !u!1 &999337573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 999337574}
+  - component: {fileID: 999337575}
+  m_Layer: 0
+  m_Name: ControlMode - Flight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &999337574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999337573}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &999337575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999337573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Flight
+  description: Fly around in the virtual scene
+  listOfControlMappings: "Left Axis - WASD in Virtual Scene\nRight Axis - Rotate
+    head\n\nX - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes
+    (next)\nLeft Gripper - Stow arm\nRight Gripper - Open/Close hand\n"
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 1728635186}
+  - {fileID: 3465647787827832880}
+  scriptsOfModeToEnable: []
 --- !u!1 &1002754512
 GameObject:
   m_ObjectHideFlags: 0
@@ -18361,7 +18800,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.110944994, y: 0, z: 0.000000059604645}
+  m_ConnectedAnchor: {x: 0.110944934, y: 0, z: 0.000000059604645}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -18712,7 +19151,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.055, y: 0, z: 0.29785}
+  m_ConnectedAnchor: {x: -0.054999948, y: 0, z: 0.29785}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -19170,6 +19609,83 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 2e4a75257dd1b5f48abf48baa743754b, type: 2}
+--- !u!1 &1150771145
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1150771146}
+  - component: {fileID: 1150771148}
+  - component: {fileID: 1150771147}
+  m_Layer: 0
+  m_Name: ControlMode - Ghost Arm (static arm)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1150771146
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150771145}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34038937, y: -0.30017084, z: 0.6909096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150771147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150771145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1843fa84dacc7bb4faa5630a83674fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gArmPublisher: {fileID: 1510830385}
+  sliderValues: {fileID: 1801742125}
+  rightHand: {fileID: 3465647787827832883}
+  targetPos: {fileID: 0}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controlInUnity: 0
+--- !u!114 &1150771148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150771145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Ghost Arm
+  description: Static Arm movement using IK
+  listOfControlMappings: "[UPDATE THESE - NOT UPDATED]\n\nRight Trigger - Update
+    the real arm\n\nLeft Axis - WASD in Virtual Scene\nRight Axis - Rotate head\n\nX
+    - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes (next)\nLeft
+    Gripper - Stow arm\nRight Gripper - Open/Close hand\n\n"
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 6584013622637314591}
+  - {fileID: 1427222904568994937}
+  - {fileID: 1728635186}
+  - {fileID: 0}
+  scriptsOfModeToEnable:
+  - {fileID: 1150771147}
 --- !u!1 &1151519812
 GameObject:
   m_ObjectHideFlags: 0
@@ -21040,7 +21556,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.055, y: 0, z: -0.29784995}
+  m_ConnectedAnchor: {x: 0.054999948, y: 0, z: -0.29784995}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -21564,8 +22080,8 @@ MonoBehaviour:
   depth_image: {fileID: 0}
   imageScriptIndex: 2
   material: {fileID: 2100000, guid: 6a9437ddeb7b6d94da56980b5f900744, type: 2}
-  depthSubscriber: {fileID: 1500417874}
-  colorSubscriber: {fileID: 565983654}
+  depthSubscriber: {fileID: 92912754}
+  colorSubscriber: {fileID: 694562552}
   savePointCloud: 0
   compute: {fileID: 7200000, guid: 11f006e6df9b1c14e97fe62b00245f7d, type: 3}
   target: {fileID: 3465647789006909972}
@@ -23666,6 +24182,122 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3122a7138a008c14f83e8b3df6286693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1410340858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1410340859}
+  - component: {fileID: 1410340862}
+  - component: {fileID: 1410340861}
+  - component: {fileID: 1410340860}
+  m_Layer: 0
+  m_Name: ControlMode - Static Arm (new gripper)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1410340859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410340858}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34038937, y: -0.30017084, z: 0.6909096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1410340860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410340858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481b63c4dd93fcb44ae08589b42311f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armPublisher: {fileID: 1510830355}
+  rightController: {fileID: 3465647787827832880}
+  dummyHandTransform: {fileID: 0}
+  realHandTransform: {fileID: 0}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 0}
+  LAx: {fileID: 0}
+  bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  spotBody: {fileID: 1399272934}
+  cloudsToFreeze: []
+  handExtUpdater: {fileID: 0}
+  handImageSubscriber: {fileID: 0}
+  gripper: {fileID: 0}
+  generalControls: {fileID: 0}
+  depthSubscribers: []
+  armBase: {fileID: 0}
+  ghostArm: {fileID: 0}
+  ghostFinger: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  translucentSpotMaterial: {fileID: 0}
+  opaqueSpotMaterial: {fileID: 0}
+  opaqueSpotArmMaterial: {fileID: 0}
+  translucentSpotArmMaterial: {fileID: 0}
+--- !u!114 &1410340861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410340858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06c3826d95b8b76448426a3cb1a82ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gArmPublisher: {fileID: 1510830385}
+  sliderValues: {fileID: 1801742125}
+  rightHand: {fileID: 3465647787827832883}
+  targetPos: {fileID: 5323045367923062784}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controlInUnity: 0
+--- !u!114 &1410340862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410340858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Static Arm - New Gripper
+  description: Static Arm movement using IK
+  listOfControlMappings: "[UPDATE THESE - NOT UPDATED]\n\nRight Trigger - Update
+    the real arm\n\nLeft Axis - WASD in Virtual Scene\nRight Axis - Rotate head\n\nX
+    - EMERGENCY STOP (kill motors)\nY - toggle UI\nB - \nA - Switch modes (next)\nLeft
+    Gripper - Stow arm\nRight Gripper - Open/Close hand\n\n"
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 6584013622637314591}
+  - {fileID: 1427222904568994937}
+  - {fileID: 1728635186}
+  - {fileID: 5323045367923062791}
+  - {fileID: 3465647787827832880}
+  scriptsOfModeToEnable:
+  - {fileID: 1410340862}
+  - {fileID: 1410340860}
 --- !u!1001 &1411374575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25641,7 +26273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52fc27a45e102f4887ead8f92259aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Topic: /cmd_vel
+  Topic: /spot/cmd_vel
   save: 0
 --- !u!114 &1510830355
 MonoBehaviour:
@@ -29397,7 +30029,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.02, y: 1.27782, z: -0.49}
+  m_ConnectedAnchor: {x: 1.1899999, y: 1.27782, z: -0.49}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -29819,6 +30451,131 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9090ae501ff9cd459bec5271d40249c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1728635186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1728635191}
+  - component: {fileID: 1728635190}
+  - component: {fileID: 1728635189}
+  - component: {fileID: 1728635188}
+  - component: {fileID: 1728635187}
+  m_Layer: 0
+  m_Name: Locomotion System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1728635187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728635186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658b0460657135c4c98e625bb91d3388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goHigher: {fileID: -577649520916242105, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  goLower: {fileID: 9220027740127852921, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  cameraOffset: {fileID: 3465647788663781134}
+  mainCamera: {fileID: 3465647789006909972}
+  speed: 0.01
+--- !u!114 &1728635188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728635186}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2213c36610e3b1c4bbf886810ed9db12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 1728635190}
+  m_TurnAmount: 45
+  m_DebounceTime: 0.5
+  m_EnableTurnLeftRight: 1
+  m_EnableTurnAround: 1
+  m_DelayTime: 0
+  m_LeftHandSnapTurnAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Left Hand Snap Turn
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: a1d07c24-ca50-422a-a23f-685d9fabf63b
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -7374733323251553461, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_RightHandSnapTurnAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Right Hand Snap Turn
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: a7b54797-6974-4f75-81d0-42b9c15ef1e0
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+--- !u!114 &1728635189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728635186}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 1728635190}
+  m_DelayTime: 0
+--- !u!114 &1728635190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728635186}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a5df2202a8b96488c744be3bd0c33e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Timeout: 10
+  m_XROrigin: {fileID: 3465647789265011312}
+--- !u!4 &1728635191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728635186}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1738008845
 GameObject:
   m_ObjectHideFlags: 0
@@ -29988,7 +30745,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
+  m_ConnectedAnchor: {x: 0.000000059604645, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -30871,7 +31628,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.32050002, z: 0.025000036}
+  m_ConnectedAnchor: {x: -0.000000059604645, y: -0.32050002, z: 0.025000036}
   serializedVersion: 2
   m_UseSpring: 0
   m_Spring:
@@ -31094,6 +31851,102 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 227990b11a9bb4049980e5914768578f, type: 3}
+--- !u!1 &1801742124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1801742127}
+  - component: {fileID: 1801742126}
+  - component: {fileID: 1801742125}
+  m_Layer: 0
+  m_Name: ControlMode - Manual Arm (sliders)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1801742125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801742124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 095ee0c49c8655146a0473cc10350935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sh0Slider: {fileID: 3465647787572215055}
+  sh1Slider: {fileID: 3465647789238525233}
+  el0Slider: {fileID: 3465647787497049402}
+  el1Slider: {fileID: 3465647789089808992}
+  wr0Slider: {fileID: 3465647788635674654}
+  wr1Slider: {fileID: 3465647787373898018}
+  GArmPublisher: {fileID: 1510830385}
+  fromInspector: 0
+  inspectorVals:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  sliders:
+  - {fileID: 3465647787572215055}
+  - {fileID: 3465647789238525233}
+  - {fileID: 3465647787497049402}
+  - {fileID: 3465647789089808992}
+  - {fileID: 3465647788635674654}
+  - {fileID: 3465647787373898018}
+--- !u!114 &1801742126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801742124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Manual Arm
+  description: Moving the arm with angle inputs given by sliders
+  listOfControlMappings: "Right trigger - manipulate sliders\n\nLeft Axis - WASD
+    in Virtual Scene\nRight Axis - Rotate head\n\nX - EMERGENCY STOP (kill motors)\nY
+    - toggle UI\nB - \nA - Switch modes (next)\nLeft Gripper - Stow arm\nRight Gripper
+    - Open/Close hand"
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 6584013622637314591}
+  - {fileID: 3465647787572215057}
+  - {fileID: 1728635186}
+  - {fileID: 3465647789238525239}
+  - {fileID: 1728635186}
+  - {fileID: 1728635186}
+  - {fileID: 1728635186}
+  scriptsOfModeToEnable:
+  - {fileID: 1801742125}
+--- !u!4 &1801742127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801742124}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34038937, y: -0.30017084, z: 0.6909096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1805315598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33545,6 +34398,124 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 6adbb8ed07d31464ca4e8409e7ab85b3, type: 2}
+--- !u!1 &1957783855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1957783858}
+  - component: {fileID: 1957783856}
+  - component: {fileID: 1957783857}
+  m_Layer: 0
+  m_Name: ControlMode - Drive
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1957783856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957783855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Drive
+  description: Drive the dog
+  listOfControlMappings: 'Drive Mode Controls:
+
+    Move the robot forward/back/left/right:
+    Move the left joystick
+
+    Rotate the robot: Move the right joystick
+
+    Make
+    robot shorter: Click/press left joystick
+
+    Make robot taller: Click/press
+    right joystick
+
+
+
+    Viewing Controls:
+
+    Switch between 2D and 3D views:
+    Click X on left controller
+
+    Arm Controls:
+
+    Close/Open robot hand: Click
+    bottom right gripper
+
+    Stow Arm: Click bottom left gripper
+
+
+
+    System Controls:
+
+    Switch
+    Modes - Click A on the right controller
+
+    Toggle UI - Click Y on the left
+    controller'
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 3465647787827832880}
+  scriptsOfModeToEnable:
+  - {fileID: 1957783857}
+--- !u!114 &1957783857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957783855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f70c27fb348ca47adefa5c7121c984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  rightPress: {fileID: -577649520916242105, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  leftPress: {fileID: 9220027740127852921, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  drive: {fileID: 233055497}
+  drive2: {fileID: 233055497}
+  depthSubscribers:
+  - {fileID: 548133929}
+  - {fileID: 92912754}
+  colorSubscribers:
+  - {fileID: 312512958}
+  - {fileID: 694562552}
+  odometrySubscriber: {fileID: 233055498}
+  pointClouds:
+  - {fileID: 242688609}
+  - {fileID: 1306061118}
+  defaultLow: 0
+--- !u!4 &1957783858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957783855}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1974991265
 GameObject:
   m_ObjectHideFlags: 0
@@ -34060,6 +35031,165 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: b88e89459e6666f4aa0337d4bfbe04e9, type: 2}
+--- !u!1 &2014583769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014583773}
+  - component: {fileID: 2014583770}
+  - component: {fileID: 2014583772}
+  - component: {fileID: 2014583771}
+  m_Layer: 0
+  m_Name: ControlMode - Dynamic Arm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2014583770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014583769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85251ed4bea18343bb5e932eee53687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modeName: Dynamic Arm
+  description: Dynamic arm movement using the position of the right controller
+  listOfControlMappings: 'Arm Controls:
+
+    Move robot arm: Hold the top trigger
+    and drag your hand to goal location
+
+    Close robot hand slowly: Hold top left
+    trigger and pull left joystick downwards
+
+    Open robot hand slowly: Hold top
+    left trigger and pull left joystick upwards
+
+    Close/Open robot hand: Click
+    bottom right gripper
+
+    Stow Arm: Click bottom left gripper
+
+
+
+    Viewing
+    Controls:
+
+    Switch between 2D and 3D views: Click X on left controller
+
+    Rotate
+    your perspective in the scene: Move the right joystick
+
+    Move your position
+    in the scene: Move the left joystick
+
+    Move up in the scene: Click/Press the
+    right joystick
+
+    Move down in the scene: Click/Press the left joystick
+
+    Toggle
+    spot body transparency: Click B on the right controller
+
+
+
+    System Controls:
+
+    Switch
+    Modes - Click A on the right controller
+
+    Toggle UI - Click Y on the left
+    controller'
+  controls: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  objectsOfModeToEnable:
+  - {fileID: 3465647787827832880}
+  - {fileID: 1703291597}
+  - {fileID: 1728635186}
+  scriptsOfModeToEnable:
+  - {fileID: 2014583771}
+--- !u!114 &2014583771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014583769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481b63c4dd93fcb44ae08589b42311f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armPublisher: {fileID: 233055502}
+  rightController: {fileID: 3465647787827832880}
+  dummyHandTransform: {fileID: 1703291598}
+  realHandTransform: {fileID: 870217004}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bButton: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  spotBody: {fileID: 1617654295}
+  cloudsToFreeze:
+  - {fileID: 112187588}
+  - {fileID: 545284150}
+  handExtUpdater: {fileID: 1504149723}
+  handImageSubscriber: {fileID: 233055493}
+  gripper: {fileID: 233055494}
+  generalControls: {fileID: 2079104496}
+  depthSubscribers:
+  - {fileID: 92912754}
+  - {fileID: 548133929}
+  armBase: {fileID: 1953689412}
+  ghostArm: {fileID: 109880669}
+  ghostFinger: {fileID: 904707730}
+  greenMaterial: {fileID: 2100000, guid: 111cc6f7903b08549a403a883034988d, type: 2}
+  redMaterial: {fileID: 2100000, guid: 7cff8448fe4a5bf42b1263fa906be561, type: 2}
+  translucentSpotMaterial: {fileID: 2100000, guid: 3a64d6ad8489c3d47a28f38d7928c8f8, type: 2}
+  opaqueSpotMaterial: {fileID: 2100000, guid: c1ca4f08be289874c86dbfa1786350e9, type: 2}
+  opaqueSpotArmMaterial: {fileID: 2100000, guid: 1009aa728b6bccd49a5691c631816ea4, type: 2}
+  translucentSpotArmMaterial: {fileID: 2100000, guid: 86f42008a474fbf4aba6368837fb6993, type: 2}
+--- !u!114 &2014583772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014583769}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1843fa84dacc7bb4faa5630a83674fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gArmPublisher: {fileID: 233055480}
+  sliderValues: {fileID: 1801742125}
+  rightHand: {fileID: 3465647787827832883}
+  targetPos: {fileID: 0}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controlInUnity: 0
+--- !u!4 &2014583773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014583769}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.34038937, y: -0.30017084, z: 0.6909096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079104498}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2017928285
 GameObject:
   m_ObjectHideFlags: 8
@@ -34897,6 +36027,115 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9090ae501ff9cd459bec5271d40249c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2079104495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079104498}
+  - component: {fileID: 2079104497}
+  - component: {fileID: 2079104496}
+  m_Layer: 0
+  m_Name: CONTROL SYSTEM 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2079104496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079104495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7043a871cda2b74e9ac544616ed54ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 5235943365672514837}
+  hintUI: {fileID: 5235943365298683351}
+  LAxB: {fileID: 7810139833929723061, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LX: {fileID: -4450001596844576706, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LY: {fileID: 9148794882427830696, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT2: {fileID: -4486440786153861441, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAxB: {fileID: -3092645619780316101, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RA: {fileID: -5303886795616406269, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RB: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT2: {fileID: 1452166284691580520, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  gripperOpen: 0
+  gripperPercentage: 0
+  killSpot: {fileID: 233055495}
+  stow: {fileID: 233055496}
+  gripper: {fileID: 233055494}
+  manager: {fileID: 2079104497}
+  body: {fileID: 1617654294}
+  pointClouds:
+  - {fileID: 242688609}
+  - {fileID: 1306061118}
+  toggleObjects:
+  - {fileID: 944201361}
+  - {fileID: 1646176755}
+  - {fileID: 1243440614}
+  - {fileID: 1156904540}
+  - {fileID: 10179180}
+  - {fileID: 710129522}
+  depthSubscribers: []
+--- !u!114 &2079104497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079104495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d7f5e641ff7b864399f7b558e4ee86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currMode: 0
+  modes:
+  - {fileID: 1957783856}
+  - {fileID: 2014583770}
+  UICanvases:
+  - {fileID: 304101496}
+  - {fileID: 5235943365319495258}
+  hintText: {fileID: 5235943365568112135}
+  hintTextString: ' Mode: uninitialized'
+  generalControlsScript: {fileID: 2079104496}
+  planePublisher: {fileID: 1510830395}
+--- !u!4 &2079104498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079104495}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.25179458, y: 0.63646543, z: -0.11766231}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 537393575}
+  - {fileID: 1728635191}
+  - {fileID: 1801742127}
+  - {fileID: 999337574}
+  - {fileID: 2014583773}
+  - {fileID: 1957783858}
+  - {fileID: 1150771146}
+  - {fileID: 209851507}
+  - {fileID: 1410340859}
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2087826501
 GameObject:
   m_ObjectHideFlags: 0
@@ -36186,7 +37425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1427222904568994942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36194,7 +37433,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427222904568994937}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec18f272cdf3e704196131d48566ee83, type: 3}
   m_Name: 
@@ -40747,7 +41986,9 @@ MonoBehaviour:
   RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   rightPress: {fileID: -577649520916242105, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   leftPress: {fileID: 9220027740127852921, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   drive: {fileID: 1510830354}
+  drive2: {fileID: 233055497}
   depthSubscribers:
   - {fileID: 1673597984}
   - {fileID: 1500417874}
