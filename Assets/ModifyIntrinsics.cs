@@ -7,6 +7,7 @@ public class ModifyIntrinsics : MonoBehaviour
 {
     public IntrinsicsSubscriber intrinsicsSubscriber;
     public GetIntrinsics getIntrinsicsScript;
+    
 
     // Point clouds -- must be in the same order of the images in the ROS script
     public List<DrawMeshInstanced> clouds;
@@ -16,6 +17,8 @@ public class ModifyIntrinsics : MonoBehaviour
     {
         Invoke("getIntrinsics", 3);
         InvokeRepeating("modifyCloudIntrinsics", 4, 2);
+        Debug.Log(intrinsicsSubscriber != null);
+        Debug.Log(getIntrinsicsScript != null);
     }
 
     // Update is called once per frame

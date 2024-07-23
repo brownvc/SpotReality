@@ -17,7 +17,10 @@ public class VRDriveSpot : MonoBehaviour
     public InputActionReference RAx;
     public InputActionReference rightPress;
     public InputActionReference leftPress;
+    public InputActionReference RT1;
     public RosSharp.RosBridgeClient.MoveSpot drive;
+    //todo: add spot 2 drive
+    public RosSharp.RosBridgeClient.MoveSpot drive2;
     public RawImageSubscriber[] depthSubscribers;
     public JPEGImageSubscriber[] colorSubscribers; // Must be in the same order as depthSubscribers
     public OdometrySubscriber odometrySubscriber;
@@ -89,7 +92,15 @@ public class VRDriveSpot : MonoBehaviour
             // Set movement so only one direction is moved with the left stick at a time
             if (Mathf.Abs(leftMove.x) > Mathf.Abs(leftMove.y)) { leftMove.y = 0; }
             else if (Mathf.Abs(leftMove.y) > Mathf.Abs(leftMove.x)) { leftMove.x = 0; }
-            drive.drive(leftMove, rightMove.x, height);
+
+            if (RT1.action.IsPressed()) {
+                drive.drive(leftMove, rightMove.x, height);
+            } else
+            {
+                drive2.drive(leftMove, rightMove.x, height);
+            }
+                
+            //todo:add spot 2 drive
 
             // Pause depth history for 1.5 seconds
             foreach (RawImageSubscriber ds in depthSubscribers)

@@ -49,7 +49,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.7.0",
+      "version": "1.4.4",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -108,7 +108,7 @@
       }
     },
     "com.unity.xr.core-utils": {
-      "version": "2.2.3",
+      "version": "2.1.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
