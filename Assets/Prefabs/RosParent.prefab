@@ -1,0 +1,1193 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &364829488165536127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829488165536126}
+  - component: {fileID: 364829488165536112}
+  - component: {fileID: 364829488165536113}
+  m_Layer: 0
+  m_Name: BackColorSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &364829488165536126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488165536127}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829488165536112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488165536127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/back_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488165536113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488165536127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.160.231:9090
+--- !u!1 &364829488432928146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829488432928150}
+  - component: {fileID: 364829488432928138}
+  - component: {fileID: 364829488432928151}
+  - component: {fileID: 364829488432928148}
+  - component: {fileID: 364829488432928149}
+  - component: {fileID: 364829488432928137}
+  - component: {fileID: 364829488432928139}
+  - component: {fileID: 364829488432928141}
+  - component: {fileID: 364829488432928140}
+  - component: {fileID: 364829488432928134}
+  - component: {fileID: 364829488432928179}
+  - component: {fileID: 364829488432928186}
+  - component: {fileID: 364829488432928181}
+  - component: {fileID: 364829488432928187}
+  - component: {fileID: 364829488432928178}
+  - component: {fileID: 364829488432928189}
+  - component: {fileID: 364829488432928182}
+  - component: {fileID: 364829488432928188}
+  - component: {fileID: 364829488432928183}
+  - component: {fileID: 364829488432928191}
+  - component: {fileID: 364829488432928180}
+  - component: {fileID: 364829488432928177}
+  - component: {fileID: 364829488432928169}
+  - component: {fileID: 364829488432928168}
+  - component: {fileID: 364829488432928171}
+  - component: {fileID: 364829488432928170}
+  - component: {fileID: 364829488432928173}
+  - component: {fileID: 364829488432928174}
+  - component: {fileID: 364829488432928161}
+  - component: {fileID: 364829488432928175}
+  - component: {fileID: 364829488432928172}
+  - component: {fileID: 364829488432928163}
+  - component: {fileID: 364829488432928160}
+  - component: {fileID: 364829488432928162}
+  m_Layer: 0
+  m_Name: RosConnector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364829488432928150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.04801667}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829488432928138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd956d9f8c3a37d4a9bc58d12f905fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/arm_pose_stamped
+  PublishedTransform: {fileID: 0}
+  Offset: {fileID: 0}
+  FrameId: Unity
+--- !u!114 &364829488432928151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8346600dd4db234680344092ad74320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UrdfRobot: {fileID: 0}
+--- !u!114 &364829488432928148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.161.49:9090
+--- !u!114 &364829488432928149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe4cf3b1dd3507418f7ec019f9193ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /joint_states
+  TimeStep: 0
+  JointNames:
+  - front_left_hip_x
+  - front_left_hip_y
+  - front_left_knee
+  - front_right_hip_x
+  - front_right_hip_y
+  - front_right_knee
+  - rear_left_hip_x
+  - rear_left_hip_y
+  - rear_left_knee
+  - rear_right_hip_x
+  - rear_right_hip_y
+  - rear_right_knee
+  - arm_shoulder_0
+  - arm_shoulder_1
+  - arm_elbow_0
+  - arm_elbow_1
+  - arm_wrist_0
+  - arm_wrist_1
+  - arm_f1x
+  JointStateWriters:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &364829488432928137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57574a16cdc8b64408e42846c7ae13fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/odometry
+  TimeStep: 0
+  PublishedPosition: {x: 0, y: 0, z: 0}
+  PublishedRotation: {x: 0, y: 0, z: 0, w: 0}
+  timeStamp: 0
+--- !u!114 &364829488432928139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52fc27a45e102f4887ead8f92259aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /cmd_vel
+  save: 0
+--- !u!114 &364829488432928141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2522203410d8cbc49bc44a343b404f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/arm_stow
+--- !u!114 &364829488432928140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c91f347e2210d34c94880dd90dfd2e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/kill_motor
+--- !u!114 &364829488432928134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a38d89eaeabe6643bb3a58e1d5d0147, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/set_gripper
+--- !u!114 &364829488432928179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontleft_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488432928186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488432928181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/hand_color_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488432928187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/hand_depth_in_hand_color_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488432928178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontright_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488432928189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488432928182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/back_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488432928188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/back_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488432928183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/left_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488432928191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/left_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488432928180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/right_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488432928177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/right_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488432928169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae1d8da5a3c0644bb98a540ca597dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: 
+  JointStateReaders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  FrameId: Unity
+--- !u!114 &364829488432928168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2d2453755faef6429558d1a0db98ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armPublisher: {fileID: 364829488432928171}
+  moveGArmWithInspector: 0
+  ghostArmFromInspector:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+--- !u!114 &364829488432928171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657e0f4efb83fda468b5923c3512d066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /move_arm_once
+  published: []
+--- !u!114 &364829488432928170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/hand_extrinsics
+  TimeStep: 0
+  data: 
+--- !u!114 &364829488432928173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/back_fisheye_extrinsics
+  TimeStep: 0
+  data: 
+--- !u!114 &364829488432928174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/frontleft_fisheye_extrinsics
+  TimeStep: 0
+  data: 
+--- !u!114 &364829488432928161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/frontright_fisheye_extrinsics
+  TimeStep: 0
+  data: 
+--- !u!114 &364829488432928175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/left_fisheye_extrinsics
+  TimeStep: 0
+  data: 
+--- !u!114 &364829488432928172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c18dd85b068194398cf479e6bbd467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/right_fisheye_extrinsics
+  TimeStep: 0
+  data: 
+--- !u!114 &364829488432928163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c0a90ff0b03814c89e036a4537d566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/get_intrinsics
+--- !u!114 &364829488432928160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2752c01a6c4586141b1ecd4a8125fd41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/intrinsics
+  TimeStep: 0
+  intrinsics: []
+  messageReceived: 0
+--- !u!114 &364829488432928162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488432928146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88939c1bdf2550342b6c7d1f2d5ef028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /set_far_plane
+--- !u!1 &364829488451824585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829488451824584}
+  - component: {fileID: 364829488451824587}
+  - component: {fileID: 364829488451824586}
+  m_Layer: 0
+  m_Name: FrontRightDepthSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364829488451824584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488451824585}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829488451824587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488451824585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontright_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488451824586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488451824585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.161.49:9090
+--- !u!1 &364829488546951303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829488546951302}
+  - component: {fileID: 364829488546951353}
+  - component: {fileID: 364829488546951352}
+  m_Layer: 0
+  m_Name: FrontLeftDepthSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364829488546951302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488546951303}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829488546951353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488546951303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88981aeb3483944785bdbed96c04bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontleft_depth_in_visual_frame/image
+  TimeStep: 0
+  timestamp_synced: 0
+  printMessageReceiveRate: 0
+  printMessageProcRate: 0
+  compressed: 0
+--- !u!114 &364829488546951352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488546951303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.161.49:9090
+--- !u!1 &364829488568208746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829488568208749}
+  - component: {fileID: 364829488568208751}
+  - component: {fileID: 364829488568208748}
+  m_Layer: 0
+  m_Name: RightColorSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &364829488568208749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488568208746}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829488568208751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488568208746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/right_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829488568208748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488568208746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.160.231:9090
+--- !u!1 &364829488969467928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829488969467931}
+  m_Layer: 0
+  m_Name: RosParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364829488969467931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829488969467928}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.04801667}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 364829488451824584}
+  - {fileID: 364829489648147772}
+  - {fileID: 364829488546951302}
+  - {fileID: 364829489509507875}
+  - {fileID: 364829488432928150}
+  - {fileID: 364829490081954315}
+  - {fileID: 364829488568208749}
+  - {fileID: 364829488165536126}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &364829489509507872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829489509507875}
+  - component: {fileID: 364829489509507874}
+  - component: {fileID: 364829489509507877}
+  m_Layer: 0
+  m_Name: FrontLeftColorSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364829489509507875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829489509507872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829489509507874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829489509507872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontleft_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 364829488546951353}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829489509507877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829489509507872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.161.49:9090
+--- !u!1 &364829489648147773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829489648147772}
+  - component: {fileID: 364829489648147775}
+  - component: {fileID: 364829489648147774}
+  m_Layer: 0
+  m_Name: FrontRightColorSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364829489648147772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829489648147773}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829489648147775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829489648147773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/frontright_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 364829488451824587}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829489648147774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829489648147773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.161.49:9090
+--- !u!1 &364829490081954312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364829490081954315}
+  - component: {fileID: 364829490081954317}
+  - component: {fileID: 364829490081954314}
+  m_Layer: 0
+  m_Name: LeftColorSubscriber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &364829490081954315
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829490081954312}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 364829488969467931}
+  m_RootOrder: -2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364829490081954317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829490081954312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441fcddae936d184f8196aeed41a9f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Topic: /spot/stream_image/left_fisheye_image/image
+  TimeStep: 0
+  meshRenderer: {fileID: 0}
+  texture2D: {fileID: 0}
+  associatedDepth: {fileID: 0}
+  printRate: 0
+  printSyncTime: 0
+  printClosestTime: 0
+  latest_time: 0
+--- !u!114 &364829490081954314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364829490081954312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff98778ae051cfd40a6e4effdf851ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsTimeout: 10
+  Serializer: 0
+  protocol: 1
+  RosBridgeServerUrl: ws://138.16.160.231:9090
