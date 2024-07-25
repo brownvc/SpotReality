@@ -83,6 +83,9 @@ public class VRDriveSpot : MonoBehaviour
         leftMove = LAx.action.ReadValue<Vector2>() * 0.5f;
         leftMove.x *= 0.5f;
 
+        Debug.Log(rightMove);
+        Debug.Log(leftMove);
+
         // Move the robot if any adjustments have been made
         if (rightMove.x != 0f || leftMove.magnitude != 0f || heightChanged)
         {
@@ -97,6 +100,8 @@ public class VRDriveSpot : MonoBehaviour
                 ds.pauseDepthHistory(1.5f);
             }
         }
+
+
     }
 
 
