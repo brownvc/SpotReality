@@ -31,7 +31,6 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public RawImageSubscriber depthSubscriber;  // ROS subscriber that holds the depth array
     public JPEGImageSubscriber colorSubscriber; // ROS subscriber holding the color image
-    public bool savePointCloud;                 // allow user to save point cloud
 
     public ComputeShader compute;
     private ComputeBuffer meshPropertiesBuffer;
@@ -58,21 +57,15 @@ public class DrawMeshInstanced : MonoBehaviour
     public float facedAngle;
     public float t;
     public float pS;    // point scalar
-    //public uint counter;
-    //private uint numUpdates;
 
     public float size_scale; //hack to current pointcloud viewing
     
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
-    private float[] depth_ar_0;
-    private float[] depth_ar_1;
 
     private MeshProperties[] globalProps;
 
-    //private MeshProperties[] generalUseProps;
-    
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -87,7 +80,69 @@ public class DrawMeshInstanced : MonoBehaviour
         }
     }
 
-    private void Setup()
+    private void Update()
+    {
+        int kernel = compute.FindKernel("CSMain");
+        //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
+        SetProperties();
+        compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
+        compute.SetFloat("t", t);
+
+        UpdateTexture();
+        // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
+        // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
+        compute.Dispatch(kernel, Mathf.CeilToInt(population / 64f), 1, 1);
+        Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
+    }
+
+    private void SetProperties()                        
+    {
+        int kernel = compute.FindKernel("CSMain");        
+        material.SetFloat("a", target.eulerAngles.y * 0.00872f * 2.0f);
+        material.SetFloat("pS", pS);
+        material.SetTexture("_colorMap",color_image);
+
+        depthBuffer.SetData(depth_ar);
+        meshPropertiesBuffer.SetData(globalProps);
+
+        material.SetBuffer("_Properties", meshPropertiesBuffer);
+        compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
+        compute.SetBuffer(kernel, "_Depth", depthBuffer);
+    }
+
+    private void UpdateTexture()
+    {
+        if (use_saved_meshes || freezeCloud) {
+            return;
+        }
+
+        // Get the depth and color
+        color_image = colorSubscriber.texture2D;
+        depth_ar = depthSubscriber.getDepthArr();
+        depth_ar = depthCompletion.complete_depth(depth_ar, color_image);
+    }
+
+    private void OnDisable()
+    {
+        // Release gracefully.
+        if (meshPropertiesBuffer != null)
+        {
+            meshPropertiesBuffer.Release();
+        }
+        meshPropertiesBuffer = null;
+
+        if (argsBuffer != null)
+        {
+            argsBuffer.Release();
+        }
+        argsBuffer = null;
+    }
+
+    // =============================================================================== //
+    //                                     INIT                                        //
+    // =============================================================================== //
+
+    private void OnEnable()
     {
         pS = 1.0f;
 
@@ -97,7 +152,6 @@ public class DrawMeshInstanced : MonoBehaviour
         Mesh mesh = CreateQuad(size_scale, size_scale);
         this.mesh = mesh;
 
-        //generalUseProps = new MeshProperties[population];
 
         // Use saved meshes
         if (use_saved_meshes)
@@ -126,104 +180,28 @@ public class DrawMeshInstanced : MonoBehaviour
             }
             color_image = new Texture2D(1, 1);
             color_image.LoadImage(bytes);
-            
+
             // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
             depth_image.SetPixelData(depth_ar, 0);
 
-            
+
 
             //color_image = Resources.Load<Texture2D>("Assets/PointClouds/Color_" + imageScriptIndex + ".png");
         }
-        else 
-        { 
+        else
+        {
             depth_ar = new float[height * width];
             // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
-            depth_image.SetPixelData(depth_ar, 0);
         }
 
-        globalProps = GetProperties();
+        globalProps = new MeshProperties[population];
 
-
-        //inp_stm.Close();
-
-        // Boundary surrounding the meshes we will be drawing.  Used for occlusion.
-        // bounds = new Bounds(transform.position, Vector3.one * (range + 1));
         bounds = new Bounds(Vector3.zero, Vector3.one * (range + 1));
 
-        // Pass 1 / width and 1 / height to material shader
-        // [2023-10-30][JHT] Why do we need to do this? That data is (almost) all in 'screenData' that gets passed in later.
-        material.SetFloat("width",1.0f / width);
-        material.SetFloat("height", 1.0f / height);
-        material.SetInt("w", (int)width);
-        //material.SetFloat("a",target.rotation.y * 0);
-        //Debug.Log(auxTarget.eulerAngles);
-        material.SetFloat("a", get_target_rota());
-        material.SetFloat("pS", pS);
-
-        Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
-        compute.SetVector("intrinsics",intr);
-        material.SetVector("intrinsics", intr);
-
-        Vector4 screenData = new Vector4((float)width, (float)height, 1/(float)width, FY);
-        compute.SetVector("screenData", screenData);
-        material.SetVector("screenData", screenData);
-
-        compute.SetFloat("samplingSize", downsample);
-        material.SetFloat("samplingSize", downsample);
-
+        InitializeMaterials();
         InitializeBuffers();
-
-    }
-
-    private float get_target_rota()
-    {
-        //Debug.Log(convert_angle(target.eulerAngles.y).ToString() + "     " + convert_angle(auxTarget.eulerAngles.y).ToString());
-        if (auxTarget == null || true) { return convert_angle(target.eulerAngles.y) * 2; }
-        else {
-            return convert_angle(target.eulerAngles.y) + convert_angle(auxTarget.eulerAngles.y);
-        }    
-    }
-
-    private float convert_angle(float a) // Unity is giving me the sin of an angle when I just want the angle
-    {
-        //a = (a + 180) % 360 - 180;
-        return a * (float)0.00872;
-    }
-
-    private MeshProperties[] GetProperties()
-    {
-        // Initialize buffer with the given population.
-        //MeshProperties[] properties = new MeshProperties[population];
-
-        //return properties;
-        MeshProperties[] properties = new MeshProperties[population];
-
-        if (width == 0 || height == 0 || depth_ar == null || depth_ar.Length == 0 || true)
-        {
-            return properties;
-        }
-
-
-        // uint x;
-        // uint y;
-        // uint depth_idx;
-        uint i; 
-
-        
-        for (uint pop_i = 0; pop_i < population; pop_i++)
-        {
-            i = pop_i * downsample;
-            MeshProperties props = new MeshProperties();
-
-            props.pos = new Vector4(0, 0, 0, 1); ;
-
-            properties[pop_i] = props;
-            
-        }
-        
-        return (properties);
     }
 
     private void InitializeBuffers()
@@ -244,41 +222,20 @@ public class DrawMeshInstanced : MonoBehaviour
         // Initialize buffer with the given population.
         MeshProperties[] properties = new MeshProperties[population];
 
-
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
-        meshPropertiesBuffer.SetData(GetProperties());
 
         depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
-        depthBuffer.SetData(depth_ar);
-
-        SetProperties();
-        SetGOPosition();
     }
 
-    private void SetGOPosition()
+    private void InitializeMaterials()
     {
-        compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
-        // compute.SetMatrix("_GOPose", Matrix4x4.TRS(Vector3.zero, transform.rotation, new Vector3(1, 1, 1)));
-    }
-
-    private void SetProperties()
-    {
-        int kernel = compute.FindKernel("CSMain");
-
-        //if (globalProps == null)// && use_saved_meshes)
-        //{
-        //    globalProps = GetProperties();
-        //}
-        
-
-        meshPropertiesBuffer.SetData(globalProps);
-        material.SetFloat("a", get_target_rota());
+        // Pass 1 / width and 1 / height to material shader
+        // [2023-10-30][JHT] Why do we need to do this? That data is (almost) all in 'screenData' that gets passed in later.
+        material.SetFloat("width", 1.0f / width);
+        material.SetFloat("height", 1.0f / height);
+        material.SetInt("w", (int)width);
+        material.SetFloat("a", target.eulerAngles.y * 0.00872f * 2.0f);
         material.SetFloat("pS", pS);
-        depthBuffer.SetData(depth_ar);
-        material.SetBuffer("_Properties", meshPropertiesBuffer);
-        material.SetTexture("_colorMap",color_image);
-        compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
-        compute.SetBuffer(kernel, "_Depth", depthBuffer);
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
         compute.SetVector("intrinsics", intr);
@@ -290,79 +247,6 @@ public class DrawMeshInstanced : MonoBehaviour
 
         compute.SetFloat("samplingSize", downsample);
         material.SetFloat("samplingSize", downsample);
-    }
-
-    private void UpdateTexture()
-    {
-        if (use_saved_meshes || freezeCloud) {
-            //Debug.Log("use_saved_meshes");
-            //Debug.Log("UpdateTexture, Time: " + UnityEngine.Time.realtimeSinceStartup);
-            return;
-        }
-
-        // Get the depth and color
-        color_image = colorSubscriber.texture2D;
-        if (t == 0)
-        {
-            depth_ar = new float[width * height];
-        }
-        else
-        {
-            depth_ar_0 = depth_ar;
-            depth_ar_1 = depth_ar_0;
-            depth_ar = depthSubscriber.getDepthArr();
-
-            depth_ar = depthCompletion.complete_depth(depth_ar, color_image);
-        }
-
-        // save the point cloud if desired
-        if (savePointCloud)
-        {
-            using (FileStream file = File.Create("Assets/PointClouds/mesh_array_" + imageScriptIndex))
-            {
-                using (BinaryWriter writer = new BinaryWriter(file))
-                {
-                    writer.Write((int)depth_ar.Length);
-                    foreach (float value in depth_ar)
-                    {
-                        writer.Write(value);
-                    }
-                }
-            }
-
-            byte[] bytes = color_image.EncodeToPNG();
-            File.WriteAllBytes("Assets/PointClouds/Color_" + imageScriptIndex + ".png", bytes);
-        }
-
-    }
-
-    private void Update()
-    {
-        
-        //Debug.Log("UPDATE");
-        int kernel = compute.FindKernel("CSMain");
-        //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
-        //transform.LookAt(target);
-        SetProperties();
-        SetGOPosition();
-        compute.SetFloat("t",t);
-
-        UpdateTexture();
-        // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
-        // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
-        compute.Dispatch(kernel, Mathf.CeilToInt(population / 64f), 1, 1);
-        Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
-    }
-
-    private Vector4 pixel_to_vision_frame(uint i, uint j, float depth)
-    {
-
-        float x = (j - CX) * depth / FX;
-        float y = (i - CY) * depth / FY;
-
-        Vector4 ret = new Vector4(x, y, depth,1f);
-        return (ret);
-
     }
 
     // Actually a cube, not a quad
@@ -409,11 +293,15 @@ public class DrawMeshInstanced : MonoBehaviour
         return mesh;
     }
 
+    // =============================================================================== //
+    //                                     PUBLIC                                        //
+    // =============================================================================== //
+
     public void toggleFreezeCloud()
     {
         float[] temp_depth;
         Texture2D temp_texture;
-        
+
 
         freezeCloud = !freezeCloud;
 
@@ -429,32 +317,5 @@ public class DrawMeshInstanced : MonoBehaviour
             temp_texture.Apply();
             color_image = temp_texture;
         }
-    }
-
-    private void Start()
-    {
-        // See OnEnable
-    }
-
-
-    private void OnDisable()
-    {
-        // Release gracefully.
-        if (meshPropertiesBuffer != null)
-        {
-            meshPropertiesBuffer.Release();
-        }
-        meshPropertiesBuffer = null;
-
-        if (argsBuffer != null)
-        {
-            argsBuffer.Release();
-        }
-        argsBuffer = null;
-    }
-
-    private void OnEnable()
-    {
-        Setup();
     }
 }
