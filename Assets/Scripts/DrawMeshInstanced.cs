@@ -105,13 +105,6 @@ public class DrawMeshInstanced : MonoBehaviour
 
         pS = 1.0f;
 
-        //size_scale = 0.002f;
-        //width = 640;
-        //height = 480;
-        //width = 424;
-        //height = 240;
-        //counter = 0;
-        //numUpdates = 0;
         total_population = height * width;
         population = (uint)(total_population / downsample);
 
@@ -147,11 +140,6 @@ public class DrawMeshInstanced : MonoBehaviour
             }
             color_image = new Texture2D(1, 1);
             color_image.LoadImage(bytes);
-
-            if (activate_depth_estimation)
-            {
-                depth_ar = estimate_depth(depth_ar, color_image);
-            }
             
             // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
@@ -160,32 +148,6 @@ public class DrawMeshInstanced : MonoBehaviour
             
 
             //color_image = Resources.Load<Texture2D>("Assets/PointClouds/Color_" + imageScriptIndex + ".png");
-        }
-        else if (false)// Read in new scene data from ROS? 
-        {
-            depth_ar = new float[height * width];
-            // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
-            depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
-            depth_image.SetPixelData(depth_ar, 0);
-            int counter = 0;
-
-            StreamReader inp_stm = new StreamReader("./Assets/PointClouds/color2_depth_unity.txt");
-
-            GameObject rosConnector = GameObject.Find("RosConnector");
-            //ImageSubscriber imageScript = rosConnector.GetComponents<ImageSubscriber>()[2];
-
-            while (!inp_stm.EndOfStream)
-            {
-                string inp_ln = inp_stm.ReadLine();
-                string[] split_arr = inp_ln.Split(',');
-                foreach (var spli in split_arr)
-                {
-                    depth_ar[counter] = float.Parse(spli);
-                    counter += 1;
-                    //Debug.Log(spli);
-                }
-                // Do Something with the input. 
-            }
         }
         else 
         { 
@@ -269,73 +231,7 @@ public class DrawMeshInstanced : MonoBehaviour
             i = pop_i * downsample;
             MeshProperties props = new MeshProperties();
 
-            
-            //x = i % (width);
-            //y = (uint)Mathf.Floor(i / width);
-            
-            /*
-            depth_idx = (width * (height - y - 1)) + (width - x - 1);
-
-            if (depth_idx >= depth_ar.Length)
-            {
-                continue;
-            }
-            */
-            /*
-            Vector3 position = Vector3.one;
-
-
-            position = new Vector4(10000, 1000, 1000, 1);
-            */
-            /*
-            if (depth_ar[depth_idx] == 0)
-            {
-                
-
-                props.pos = new Vector4(0,0,0,1);
-                //properties[pop_i].pos = new Vector4(0, 0, 0, 1);
-
-                //props.mat = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), Vector3.one * 0);
-                //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
-
-                props.color = new Vector4(0, 0, 0, 1);
-                //properties[pop_i].color = new Vector4(0, 0, 0, 1);
-
-                //properties[pop_i] = props;
-                continue;
-
-            }
-            else
-            {
-                //position = new Vector3(10000, 1000, 1000);
-                position = pixel_to_vision_frame(x, y, depth_ar[depth_idx]); //TODO: Get 4x4 matrix instead
-            }
-            */
-
-            //Quaternion rotation = Quaternion.Euler(0, 0, 0);
-            //Vector3 scale = Vector3.one * 1;
-            //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
-            //props.mat = Matrix4x4.TRS(position + some_noise, rotation, scale);
-
-
-            //props.color = Color.Lerp(Color.red, Color.blue, Random.value);
-
-            //Vector3 some_noise = new Vector3(Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range), Random.Range(-noise_range, noise_range));
-            //Vector3 intermediatePos = position + some_noise;
-
             props.pos = new Vector4(0, 0, 0, 1); ;
-            //props.color.x = (float)i;
-            //props.color.y = (float)y;
-            //props.color.z = 1;//(float)depth_ar[depth_idx];
-
-            //props.color = color_image.GetPixel((int)(width-x)-1, (int)y);
-            //props.color[3] = 1.0f;
-            
-            //properties[pop_i].pos = position;
-
-            //properties[pop_i].color = color_image.GetPixel((int)(width - x) - 1, (int)y);
-            //properties[pop_i].color[3] = 1.0f;
-            //props.color = new Color(0, 0, 0, 0);
 
             properties[pop_i] = props;
             
@@ -471,21 +367,6 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private float[] preprocess_depth(float[] depth_data)
     {
-        //float avg = 0.0f;
-        //int count = 0;
-        //for (int i = 0; i < depth_data.Length; i++)
-        //{
-        //    if (depth_data[i] > 0) { avg += depth_data[i]; count += 1; }
-        //}
-        //avg /= count;
-
-        //for (int i = 0; i < depth_data.Length; i++)
-        //{
-        //    if (depth_data[i] < 0 || depth_data[i] > avg * 10.0f)
-        //    {
-        //        depth_data[i] = 0;
-        //    }
-        //}
 
         for (int i = 0; i < depth_data.Length; i++)
         {
@@ -540,29 +421,15 @@ public class DrawMeshInstanced : MonoBehaviour
         SetGOPosition();
         compute.SetFloat("t",t);
 
-        //update the color image
-        //counter += 1;
         UpdateTexture();
-        //Debug.Log("UPDATE");
-        //DateTime localTime = DateTime.Now;
-        //float deltaTime = Time.deltaTime;
-        //long microseconds = localTime.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
-        //Debug.Log("updates per second: " + (counter/Time.realtimeSinceStartup).ToString() + " updates: " + counter.ToString() + " deltaTime: " + Time.realtimeSinceStartup.ToString());
-
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
         // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 64f), 1, 1);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
-        //numUpdates += 1;
     }
 
     private Vector4 pixel_to_vision_frame(uint i, uint j, float depth)
     {
-        //int CX = 320;
-        //int CY = 240;
-        
-        //float FX = (float)552.029101;
-        //float FY = (float)552.029101;
 
         float x = (j - CX) * depth / FX;
         float y = (i - CY) * depth / FY;
@@ -571,77 +438,6 @@ public class DrawMeshInstanced : MonoBehaviour
         return (ret);
 
     }
-
-    //private Mesh CreateQuad(float width = 1f, float height = 1f, float depth = 1f)
-    //{
-    //    // Create a quad mesh.
-    //    var mesh = new Mesh();
-
-    //    float w = width * .5f;
-    //    float h = height * .5f;
-    //    float d = depth * .5f;
-
-    //    var vertices = new Vector3[8] {
-    //        new Vector3(-w, -h, -d),
-    //        new Vector3(w, -h, -d),
-    //        new Vector3(w, h, -d),
-    //        new Vector3(-w, h, -d),
-    //        new Vector3(-w, -h, d),
-    //        new Vector3(w, -h, d),
-    //        new Vector3(w, h, d),
-    //        new Vector3(-w, h, d)
-    //    };
-
-    //    var tris = new int[3 * 2 * 6] {
-    //        0, 3, 1,
-    //        3, 2, 1,
-
-    //        0,4,5,
-    //        0,5,1,
-
-    //        1,5,2,
-    //        2,5,6,
-
-    //        7,3,6,
-    //        3,6,2,
-
-    //        0,4,3,
-    //        4,7,3,
-
-    //        4,7,5,
-    //        7,5,6
-    //    };
-
-    //    var normals = new Vector3[8] {
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-    //        -Vector3.forward,
-
-    //    };
-
-    //    var uv = new Vector2[8] {
-    //        new Vector2(0, 0),
-    //        new Vector2(1, 0),
-    //        new Vector2(1, 1),
-    //        new Vector2(0, 1),
-    //        new Vector2(0, 0),
-    //        new Vector2(1, 0),
-    //        new Vector2(1, 1),
-    //        new Vector2(0, 1),
-    //    };
-
-    //    mesh.vertices = vertices;
-    //    mesh.triangles = tris;
-    //    mesh.normals = normals;
-    //    mesh.uv = uv;
-
-    //    return mesh;
-    //}
 
     // Actually a cube, not a quad
     private Mesh CreateQuad(float width = 1f, float height = 1f)
@@ -687,44 +483,6 @@ public class DrawMeshInstanced : MonoBehaviour
         return mesh;
     }
 
-    private Mesh CreateTri(float width = 1f, float height = 1f)
-    {
-        // Create a quad mesh.
-        var mesh = new Mesh();
-
-        float w = width * .5f;
-        float h = height * .5f;
-        var vertices = new Vector3[3] {
-            new Vector3(-w, -h, 0),
-            new Vector3(w, -h, 0),
-            new Vector3(-w, h, 0)
-        };
-
-        var tris = new int[3] {
-            // lower left tri.
-            0, 2, 1
-        };
-
-        var normals = new Vector3[3] {
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward,
-        };
-
-        var uv = new Vector2[3] {
-            new Vector2(0, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1),
-        };
-
-        mesh.vertices = vertices;
-        mesh.triangles = tris;
-        mesh.normals = normals;
-        mesh.uv = uv;
-
-        return mesh;
-    }
-
     public void toggleFreezeCloud()
     {
         float[] temp_depth;
@@ -745,11 +503,6 @@ public class DrawMeshInstanced : MonoBehaviour
             temp_texture.Apply();
             color_image = temp_texture;
         }
-    }
-
-    public void setCloudFreeze(bool freeze)
-    {
-        freezeCloud = freeze;
     }
 
     private void Start()
