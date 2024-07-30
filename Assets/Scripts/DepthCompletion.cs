@@ -88,7 +88,7 @@ public class DepthCompletion : MonoBehaviour
             }
         }
 
-        if (activate_averaging && activate_depth_estimation)
+        if (activate_averaging)
         { 
             average_shader.SetInt("buffer_pos", buffer_pos);
 

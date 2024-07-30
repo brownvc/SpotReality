@@ -33,7 +33,7 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
         {
             int idx = i * WIDTH * HEIGHT + index;
             float weight = confidence_buffer[idx];
-            //weight = 0.5;
+            //weight = 1.0;
             weighted_sum += depth_buffer[idx] * weight;
             total_weight += weight;
         }

@@ -1041,7 +1041,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   depthCompletion: {fileID: 112187589}
   y_bound: 0.5
-  confidence_threshold: 0.1
+  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
   depth_image: {fileID: 0}
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
-  activate_averaging: 0
+  activate_averaging: 1
   activate_depth_preprocess: 0
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
@@ -3548,7 +3548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   depthCompletion: {fileID: 545284151}
   y_bound: 0.5
-  confidence_threshold: 0.1
+  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
   depth_image: {fileID: 0}
@@ -3585,7 +3585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
-  activate_averaging: 0
+  activate_averaging: 1
   activate_depth_preprocess: 0
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
