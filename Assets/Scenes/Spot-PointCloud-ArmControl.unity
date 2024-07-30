@@ -1082,7 +1082,7 @@ MonoBehaviour:
   activate_depth_preprocess: 0
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 9f97b25d633acc946b24761aa20f7bdb, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: ebbac29e979c18643b4886759ff1cb9d, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -3589,7 +3589,7 @@ MonoBehaviour:
   activate_depth_preprocess: 0
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 9f97b25d633acc946b24761aa20f7bdb, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: ebbac29e979c18643b4886759ff1cb9d, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
