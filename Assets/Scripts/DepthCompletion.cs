@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Sentis;
 using UnityEngine;
+using static Unity.Sentis.Model;
 
 public class DepthCompletion : MonoBehaviour
 {
@@ -9,11 +10,27 @@ public class DepthCompletion : MonoBehaviour
     public bool activate_averaging;
     public bool activate_depth_preprocess;
 
-    public float lower_bound, upper_bound;
+    public int num_frames;
+    float[,] depth_buffer;
+    float[,] confidence_buffer;
+    int buffer_pos = 0;
+
+    public ComputeShader average_shader;
+    private ComputeBuffer depthBufferCompute;
+    private ComputeBuffer confidenceBufferCompute;
+    private ComputeBuffer depthArCompute;
+    private ComputeBuffer confidenceArCompute;
+
+    //public bool activate_margin_cut;
+    //public int l_margin, r_margin, b_margin, t_margin;
+
+    //public float lower_bound, upper_bound;
 
     public ModelAsset modelAsset;
     Model runtimeModel;
     IWorker worker;
+
+    float[] confidence_ar;
 
 
     // Start is called before the first frame update
@@ -21,6 +38,9 @@ public class DepthCompletion : MonoBehaviour
     {
         runtimeModel = ModelLoader.Load(modelAsset);
         worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, runtimeModel);
+
+        confidence_buffer = new float[num_frames, 480 * 640];
+        depth_buffer = new float[num_frames, 480 * 640];
     }
 
     // Update is called once per frame
@@ -29,16 +49,55 @@ public class DepthCompletion : MonoBehaviour
 
     }
 
-    public float[] complete_depth(float[] depth_ar, Texture2D color_image)
+    public (float[], float[]) complete_depth(float[] depth_ar, Texture2D color_image)
     {
-        if (activate_depth_preprocess)
-        {
-            depth_ar = preprocess(depth_ar);
-        }
+       
+        //if (activate_depth_preprocess)
+        //{
+        //    depth_ar = preprocess(depth_ar);
+        //}
         if (activate_depth_estimation)
         {
-            depth_ar = complete(depth_ar, color_image);
+            (depth_ar, confidence_ar) = complete(depth_ar, color_image);
         }
+        else
+        {
+            confidence_ar = new float[480 * 640];
+            for (int i = 0; i < confidence_ar.Length; i++) 
+            {
+                confidence_ar[i] = 1.0f;
+            }
+        }
+
+        if (activate_averaging && activate_depth_estimation)
+        {
+            int kernel = average_shader.FindKernel("CSMain");
+            average_shader.SetInt("num_frames", num_frames);
+            average_shader.SetInt("buffer_pos", buffer_pos);
+
+            depthBufferCompute.SetData(depth_ar);
+            confidenceBufferCompute.SetData(confidence_buffer);
+            depthBufferCompute.SetData(depth_buffer);
+            confidenceArCompute.SetData(confidence_ar);
+
+            average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
+            average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
+            average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
+            average_shader.SetBuffer(kernel, "confidence_ar", confidenceArCompute);
+
+            average_shader.Dispatch(kernel, 640 / 8, 480 / 8, 1);
+            depthArCompute.GetData(depth_ar);
+            confidenceArCompute.GetData(confidence_ar);
+
+            buffer_pos = (buffer_pos + 1) % num_frames;
+        }
+
+        //if (activate_margin_cut)
+        //{
+        //    depth_ar = cut_margin(depth_ar);
+        //}
+
+
         //if (activate_averaging)
         //{
         //    for (int i = 0; i < depth_ar.Length; i++)
@@ -49,27 +108,79 @@ public class DepthCompletion : MonoBehaviour
         //    depth_ar = complete(depth_ar, color_image);
         //}
 
-        return depth_ar;
+        return (depth_ar, confidence_ar);
     }
 
-    private float[] preprocess(float[] depth_data)
+    //private float[] cut_margin(float[] depth_data)
+    //{
+    //    int width = 640;
+    //    int height = 480;
+
+    //    // Validate input dimensions
+    //    if (depth_data.Length != width * height)
+    //    {
+    //        Debug.LogError("Invalid depth data dimensions.");
+    //        return depth_data;
+    //    }
+
+    //    // Create a copy of the depth data to modify
+    //    float[] modified_data = (float[])depth_data.Clone();
+
+    //    // Set top margin to 0
+    //    for (int y = 0; y < t_margin; y++)
+    //    {
+    //        for (int x = 0; x < width; x++)
+    //        {
+    //            modified_data[y * width + x] = 0;
+    //        }
+    //    }
+
+    //    // Set bottom margin to 0
+    //    for (int y = height - b_margin; y < height; y++)
+    //    {
+    //        for (int x = 0; x < width; x++)
+    //        {
+    //            modified_data[y * width + x] = 0;
+    //        }
+    //    }
+
+    //    // Set left margin to 0
+    //    for (int y = 0; y < height; y++)
+    //    {
+    //        for (int x = 0; x < l_margin; x++)
+    //        {
+    //            modified_data[y * width + x] = 0;
+    //        }
+    //    }
+
+    //    // Set right margin to 0
+    //    for (int y = 0; y < height; y++)
+    //    {
+    //        for (int x = width - r_margin; x < width; x++)
+    //        {
+    //            modified_data[y * width + x] = 0;
+    //        }
+    //    }
+
+    //    return modified_data;
+    //}
+
+    //private float[] preprocess(float[] depth_data)
+    //{
+
+    //    for (int i = 0; i < depth_data.Length; i++)
+    //    {
+    //        if (depth_data[i] < lower_bound || depth_data[i] > upper_bound)
+    //        {
+    //            depth_data[i] = 0.0f;
+    //        }
+
+    //    }
+    //    return depth_data;
+    //}
+
+    private (float[], float[]) complete(float[] depth_data, Texture2D color_data)
     {
-
-        for (int i = 0; i < depth_data.Length; i++)
-        {
-            if (depth_data[i] < lower_bound || depth_data[i] > upper_bound)
-            {
-                depth_data[i] = 0.0f;
-            }
-
-        }
-        return depth_data;
-    }
-
-    private float[] complete(float[] depth_data, Texture2D color_data)
-    {
-
-
         TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
         TensorShape color_shape = new TensorShape(1, 3, 480, 640);
 
@@ -84,9 +195,25 @@ public class DepthCompletion : MonoBehaviour
         };
 
         worker.Execute(input_tensors);
-        TensorFloat outputTensor = worker.PeekOutput() as TensorFloat;
-        outputTensor.CompleteOperationsAndDownload();
-        float[] output_depth = outputTensor.ToReadOnlyArray();
+        //TensorFloat outputTensor = worker.PeekOutput() as TensorFloat;
+        //outputTensor.CompleteOperationsAndDownload();
+        //float[] output_depth = outputTensor.ToReadOnlyArray();
+
+        //foreach (var key in input_tensors.Keys)
+        //{
+        //    input_tensors[key].Dispose();
+        //}
+        //input_tensors.Clear();
+
+        //return output_depth;
+
+        TensorFloat depth_outputTensor = worker.PeekOutput("output_depth") as TensorFloat;
+        depth_outputTensor.CompleteOperationsAndDownload();
+        float[] output_depth = depth_outputTensor.ToReadOnlyArray();
+
+        TensorFloat confidence_outputTensor = worker.PeekOutput("output_confidence") as TensorFloat;
+        confidence_outputTensor.CompleteOperationsAndDownload();
+        float[] output_confidence = confidence_outputTensor.ToReadOnlyArray();
 
         foreach (var key in input_tensors.Keys)
         {
@@ -94,6 +221,7 @@ public class DepthCompletion : MonoBehaviour
         }
         input_tensors.Clear();
 
-        return output_depth;
+        return (output_depth, output_confidence);
+
     }
 }

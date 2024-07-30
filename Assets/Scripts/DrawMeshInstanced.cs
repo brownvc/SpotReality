@@ -18,7 +18,9 @@ using UnityEngine.InputSystem;
 public class DrawMeshInstanced : MonoBehaviour
 {
     public DepthCompletion depthCompletion;
-    
+    public float y_bound;
+    private ComputeBuffer material_confidence;
+    public float confidence_threshold;
 
     public float range;
 
@@ -63,6 +65,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
+    private float[] confidence_ar = new float[480 * 640];
 
     private MeshProperties[] globalProps;
 
@@ -87,11 +90,16 @@ public class DrawMeshInstanced : MonoBehaviour
         SetProperties();
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
         compute.SetFloat("t", t);
+        compute.SetFloat("y_bound", y_bound);
 
         UpdateTexture();
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
         // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
-        compute.Dispatch(kernel, Mathf.CeilToInt(population / 64f), 1, 1);
+        compute.Dispatch(kernel, Mathf.CeilToInt(population / 6f), 1, 1);
+
+        material_confidence.SetData(confidence_ar);
+        material.SetBuffer("confidence", material_confidence);
+        material.SetFloat("confidence_threshold", confidence_threshold);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
     }
 
@@ -119,7 +127,8 @@ public class DrawMeshInstanced : MonoBehaviour
         // Get the depth and color
         color_image = colorSubscriber.texture2D;
         depth_ar = depthSubscriber.getDepthArr();
-        depth_ar = depthCompletion.complete_depth(depth_ar, color_image);
+
+        (depth_ar, confidence_ar) = depthCompletion.complete_depth(depth_ar, color_image);
     }
 
     private void OnDisable()
@@ -225,6 +234,8 @@ public class DrawMeshInstanced : MonoBehaviour
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
 
         depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
+
+        material_confidence = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
     }
 
     private void InitializeMaterials()
