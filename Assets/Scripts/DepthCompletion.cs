@@ -73,6 +73,13 @@ public class DepthCompletion : MonoBehaviour
         depthBufferCompute.SetData(depth_buffer);
         average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
         average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
+    
+        // confidence
+        confidence_ar = new float[480 * 640];
+        for (int i = 0; i < confidence_ar.Length; i++)
+        {
+            confidence_ar[i] = 1.0f;
+        }
     }
 
     // Update is called once per frame
@@ -296,12 +303,6 @@ public class DepthCompletion : MonoBehaviour
             input_tensors[key].Dispose();
         }
         input_tensors.Clear();
-
-        confidence_ar = new float[480 * 640];
-        for (int i = 0; i < confidence_ar.Length; i++)
-        {
-            confidence_ar[i] = 1.0f;
-        }
 
         return (output_depth, confidence_ar);
 

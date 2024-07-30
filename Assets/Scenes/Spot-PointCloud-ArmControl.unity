@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
   activate_averaging: 1
-  use_BPNet: 0
+  use_BPNet: 1
   fx: 329.64
   cx: 318
   fy: 328.62
@@ -3591,7 +3591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
   activate_averaging: 1
-  use_BPNet: 0
+  use_BPNet: 1
   fx: 330.699
   cx: 309
   fy: 329.77
@@ -10603,7 +10603,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 1599918337}
   DisplayInertiaGizmo: 0
   rigidbodyDataSource: 0
-  Mass: 1.9046991
+  Mass: 1.904699
   CenterOfMass: {x: 0, y: 0, z: 0}
   InertiaTensor: {x: 1, y: 1, z: 1}
   InertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
