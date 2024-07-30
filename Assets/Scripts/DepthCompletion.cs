@@ -80,17 +80,17 @@ public class DepthCompletion : MonoBehaviour
             average_shader.SetInt("num_frames", num_frames);
             average_shader.SetInt("buffer_pos", buffer_pos);
 
-            depthBufferCompute.SetData(depth_ar);
+            depthArCompute.SetData(depth_ar);
+            confidenceArCompute.SetData(confidence_ar);
             confidenceBufferCompute.SetData(confidence_buffer);
             depthBufferCompute.SetData(depth_buffer);
-            confidenceArCompute.SetData(confidence_ar);
 
             average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
             average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
             average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
             average_shader.SetBuffer(kernel, "confidence_ar", confidenceArCompute);
 
-            average_shader.Dispatch(kernel, 640 / 8, 480 / 8, 1);
+            average_shader.Dispatch(kernel, 1, 480, 1);
             depthArCompute.GetData(depth_ar);
             confidenceArCompute.GetData(confidence_ar);
 

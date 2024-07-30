@@ -10,32 +10,32 @@ int num_frames;
 // Buffers
 RWStructuredBuffer<float> depth_ar;
 RWStructuredBuffer<float> confidence_ar;
-StructuredBuffer<float> depth_buffer;
-StructuredBuffer<float> confidence_buffer;
+RWStructuredBuffer<float> depth_buffer;
+RWStructuredBuffer<float> confidence_buffer;
 
 // buffer pos
 int buffer_pos;
 
-[numthreads(8, 8, 1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+[numthreads(WIDTH, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
-    int index = id.x + id.y * WIDTH;
+    int index = threadId.x + groupId.y * WIDTH;
     
-    if (id.x < WIDTH && id.y < HEIGHT)
+    if (threadId.x < WIDTH && groupId.y < HEIGHT)
     {
-        //depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
-        //confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
+        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
+        confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
 
-        //float weighted_sum = 0.0;
-        //float total_weight = 0.0;
+        float weighted_sum = 0.0;
+        float total_weight = 0.0;
         
-        //for (int i = 0; i < num_frames; i++)
-        //{
-        //    int idx = i * WIDTH * HEIGHT + index;
-        //    float weight = confidence_buffer[idx];
-        //    weighted_sum += depth_buffer[idx] * weight;
-        //    total_weight += weight;
-        //}
+        for (int i = 0; i < num_frames; i++)
+        {
+            int idx = i * WIDTH * HEIGHT + index;
+            float weight = confidence_buffer[idx];
+            weighted_sum += depth_buffer[idx] * weight;
+            total_weight += weight;
+        }
 
         //if (total_weight > 0.0)
         //{
