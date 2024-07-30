@@ -97,7 +97,10 @@ Shader "Custom/InstancedIndirectColor" {
                 if (confidence[instanceID] > confidence_threshold) {
                     o.color = tex2Dlod(_colorMap, coor);
                 } else {
-                    o.color = float4(0.0, 0.0, 0.0, 1.0);
+                    //o.color = float4(0.0, 0.0, 0.0, 0.0);
+                    o.vertex.x = 0.0;
+                    o.vertex.y = 0.0;
+                    o.vertex.z = 0.0;
                 }
 
                 //o.uv = TRANSFORM_TEX (i.texcoord, _colorMap);

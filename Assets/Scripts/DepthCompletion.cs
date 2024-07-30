@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Sentis;
 using UnityEngine;
 using static Unity.Sentis.Model;
+using System;
 
 public class DepthCompletion : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class DepthCompletion : MonoBehaviour
 
     float[] confidence_ar;
 
+    private DateTime current_time;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +58,7 @@ public class DepthCompletion : MonoBehaviour
 
     public (float[], float[]) complete_depth(float[] depth_ar, Texture2D color_image)
     {
-       
+        current_time = DateTime.Now;
         //if (activate_depth_preprocess)
         //{
         //    depth_ar = preprocess(depth_ar);
@@ -90,9 +92,11 @@ public class DepthCompletion : MonoBehaviour
             average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
             average_shader.SetBuffer(kernel, "confidence_ar", confidenceArCompute);
 
-            average_shader.Dispatch(kernel, 1, 480, 1);
+            average_shader.Dispatch(kernel, 640 / 128, 480 / 480, 1);
             depthArCompute.GetData(depth_ar);
             confidenceArCompute.GetData(confidence_ar);
+            depthBufferCompute.GetData(depth_buffer);
+            confidenceBufferCompute.GetData(confidence_buffer);
 
             buffer_pos = (buffer_pos + 1) % num_frames;
         }
@@ -112,6 +116,8 @@ public class DepthCompletion : MonoBehaviour
         //    }
         //    depth_ar = complete(depth_ar, color_image);
         //}
+
+        UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
 
         return (depth_ar, confidence_ar);
     }

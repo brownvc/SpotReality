@@ -16,10 +16,10 @@ RWStructuredBuffer<float> confidence_buffer;
 // buffer pos
 int buffer_pos;
 
-[numthreads(WIDTH, 1, 1)]
-void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+[numthreads(128, 480, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    int index = threadId.x + groupId.y * WIDTH;
+    int index = id.x + id.y * WIDTH;
     
     if (threadId.x < WIDTH && groupId.y < HEIGHT)
     {
@@ -33,19 +33,21 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
         {
             int idx = i * WIDTH * HEIGHT + index;
             float weight = confidence_buffer[idx];
+            //weight = 0.5;
             weighted_sum += depth_buffer[idx] * weight;
             total_weight += weight;
         }
 
-        //if (total_weight > 0.0)
-        //{
-        //    depth_ar[index] = weighted_sum / total_weight;
-        //    confidence_ar[index] = total_weight / num_frames;
-        //}
-        //else
-        //{
-        //    depth_ar[index] = 0.0;
-        //    confidence_ar[index] = 0.0;
-        //}
+        if (total_weight > 0.0)
+        {
+            depth_ar[index] = weighted_sum / total_weight;
+            confidence_ar[index] = total_weight / num_frames;
+        }
+        else
+        {
+            depth_ar[index] = 0.0;
+            confidence_ar[index] = 0.0;
+        }
+
     }
 }
