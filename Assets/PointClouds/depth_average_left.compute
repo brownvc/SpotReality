@@ -16,10 +16,10 @@ RWStructuredBuffer<float> confidence_buffer;
 // buffer pos
 int buffer_pos;
 
-[numthreads(128, 480, 1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+[numthreads(WIDTH, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
-    int index = id.x + id.y * WIDTH;
+    int index = threadId.x + groupId.y * WIDTH;
     
     if (threadId.x < WIDTH && groupId.y < HEIGHT)
     {

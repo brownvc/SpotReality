@@ -3588,7 +3588,7 @@ MonoBehaviour:
   activate_averaging: 0
   activate_depth_preprocess: 0
   num_frames: 20
-  average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
+  average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: 9f97b25d633acc946b24761aa20f7bdb, type: 3}
 --- !u!1 &549220550
 GameObject:

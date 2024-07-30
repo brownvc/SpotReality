@@ -1,0 +1,53 @@
+#pragma kernel CSMain
+
+// Size of the buffers
+#define WIDTH 640
+#define HEIGHT 480
+
+// Number of frames
+int num_frames;
+
+// Buffers
+RWStructuredBuffer<float> depth_ar;
+RWStructuredBuffer<float> confidence_ar;
+RWStructuredBuffer<float> depth_buffer;
+RWStructuredBuffer<float> confidence_buffer;
+
+// buffer pos
+int buffer_pos;
+
+[numthreads(WIDTH, 1, 1)]
+void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    int index = threadId.x + groupId.y * WIDTH;
+    
+    if (threadId.x < WIDTH && groupId.y < HEIGHT)
+    {
+        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
+        confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
+
+        float weighted_sum = 0.0;
+        float total_weight = 0.0;
+        
+        for (int i = 0; i < num_frames; i++)
+        {
+            int idx = i * WIDTH * HEIGHT + index;
+            float weight = confidence_buffer[idx];
+            //weight = 0.5;
+            weighted_sum += depth_buffer[idx] * weight;
+            total_weight += weight;
+        }
+
+        if (total_weight > 0.0)
+        {
+            depth_ar[index] = weighted_sum / total_weight;
+            confidence_ar[index] = total_weight / num_frames;
+        }
+        else
+        {
+            depth_ar[index] = 0.0;
+            confidence_ar[index] = 0.0;
+        }
+
+    }
+}

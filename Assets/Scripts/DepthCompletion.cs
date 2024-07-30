@@ -35,6 +35,8 @@ public class DepthCompletion : MonoBehaviour
 
     private DateTime current_time;
 
+    int kernel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +50,16 @@ public class DepthCompletion : MonoBehaviour
         confidenceBufferCompute = new ComputeBuffer(num_frames * 480 * 640, sizeof(float));
         depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
         confidenceArCompute = new ComputeBuffer(480 * 640, sizeof(float));
+
+        // kernel
+        kernel = average_shader.FindKernel("CSMain");
+
+        average_shader.SetInt("num_frames", num_frames);
+
+        confidenceBufferCompute.SetData(confidence_buffer);
+        depthBufferCompute.SetData(depth_buffer);
+        average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
+        average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
     }
 
     // Update is called once per frame
@@ -77,26 +89,20 @@ public class DepthCompletion : MonoBehaviour
         }
 
         if (activate_averaging && activate_depth_estimation)
-        {
-            int kernel = average_shader.FindKernel("CSMain");
-            average_shader.SetInt("num_frames", num_frames);
+        { 
             average_shader.SetInt("buffer_pos", buffer_pos);
 
             depthArCompute.SetData(depth_ar);
             confidenceArCompute.SetData(confidence_ar);
-            confidenceBufferCompute.SetData(confidence_buffer);
-            depthBufferCompute.SetData(depth_buffer);
 
-            average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
-            average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
             average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
             average_shader.SetBuffer(kernel, "confidence_ar", confidenceArCompute);
 
-            average_shader.Dispatch(kernel, 640 / 128, 480 / 480, 1);
+            average_shader.Dispatch(kernel, 1, 480, 1);
             depthArCompute.GetData(depth_ar);
             confidenceArCompute.GetData(confidence_ar);
-            depthBufferCompute.GetData(depth_buffer);
-            confidenceBufferCompute.GetData(confidence_buffer);
+            //depthBufferCompute.GetData(depth_buffer);
+            //confidenceBufferCompute.GetData(confidence_buffer);
 
             buffer_pos = (buffer_pos + 1) % num_frames;
         }
