@@ -41,6 +41,11 @@ public class DepthCompletion : MonoBehaviour
 
         confidence_buffer = new float[num_frames, 480 * 640];
         depth_buffer = new float[num_frames, 480 * 640];
+
+        depthBufferCompute = new ComputeBuffer(num_frames * 480 * 640, sizeof(float));
+        confidenceBufferCompute = new ComputeBuffer(num_frames * 480 * 640, sizeof(float));
+        depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        confidenceArCompute = new ComputeBuffer(480 * 640, sizeof(float));
     }
 
     // Update is called once per frame

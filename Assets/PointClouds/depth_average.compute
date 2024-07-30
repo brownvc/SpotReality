@@ -23,29 +23,29 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     
     if (id.x < WIDTH && id.y < HEIGHT)
     {
-        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
-        confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
+        //depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
+        //confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
 
-        float weighted_sum = 0.0;
-        float total_weight = 0.0;
+        //float weighted_sum = 0.0;
+        //float total_weight = 0.0;
         
-        for (int i = 0; i < num_frames; i++)
-        {
-            int idx = i * WIDTH * HEIGHT + index;
-            float weight = confidence_buffer[idx];
-            weighted_sum += depth_buffer[idx] * weight;
-            total_weight += weight;
-        }
+        //for (int i = 0; i < num_frames; i++)
+        //{
+        //    int idx = i * WIDTH * HEIGHT + index;
+        //    float weight = confidence_buffer[idx];
+        //    weighted_sum += depth_buffer[idx] * weight;
+        //    total_weight += weight;
+        //}
 
-        if (total_weight > 0.0)
-        {
-            depth_ar[index] = weighted_sum / total_weight;
-            confidence_ar[index] = total_weight / num_frames;
-        }
-        else
-        {
-            depth_ar[index] = 0.0;
-            confidence_ar[index] = 0.0;
-        }
+        //if (total_weight > 0.0)
+        //{
+        //    depth_ar[index] = weighted_sum / total_weight;
+        //    confidence_ar[index] = total_weight / num_frames;
+        //}
+        //else
+        //{
+        //    depth_ar[index] = 0.0;
+        //    confidence_ar[index] = 0.0;
+        //}
     }
 }
