@@ -6,6 +6,7 @@
 
 // Number of frames
 int num_frames;
+bool median_averaging;
 
 // Buffers
 RWStructuredBuffer<float> depth_ar;

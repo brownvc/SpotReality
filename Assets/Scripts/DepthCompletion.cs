@@ -10,6 +10,7 @@ public class DepthCompletion : MonoBehaviour
 {
     public bool activate_depth_estimation;
     public bool activate_averaging;
+    public bool median_averaging;
     //public bool activate_depth_preprocess;
     public bool use_BPNet;
     public float fx, cx, fy, cy;
@@ -119,6 +120,7 @@ public class DepthCompletion : MonoBehaviour
         if (activate_averaging)
         { 
             average_shader.SetInt("buffer_pos", buffer_pos);
+            average_shader.SetBool("median_averaging", median_averaging);
 
             depthArCompute.SetData(depth_ar);
             confidenceArCompute.SetData(confidence_ar);
