@@ -1079,10 +1079,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
   activate_averaging: 1
-  activate_depth_preprocess: 0
+  use_BPNet: 0
+  fx: 329.64
+  cx: 318
+  fy: 328.62
+  cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: ebbac29e979c18643b4886759ff1cb9d, type: 3}
+  modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -3586,10 +3591,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
   activate_averaging: 1
-  activate_depth_preprocess: 0
+  use_BPNet: 0
+  fx: 330.699
+  cx: 309
+  fy: 329.77
+  cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: ebbac29e979c18643b4886759ff1cb9d, type: 3}
+  modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8

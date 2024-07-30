@@ -4,12 +4,15 @@ using Unity.Sentis;
 using UnityEngine;
 using static Unity.Sentis.Model;
 using System;
+using UnityEngine.VFX;
 
 public class DepthCompletion : MonoBehaviour
 {
     public bool activate_depth_estimation;
     public bool activate_averaging;
-    public bool activate_depth_preprocess;
+    //public bool activate_depth_preprocess;
+    public bool use_BPNet;
+    public float fx, cx, fy, cy;
 
     public int num_frames;
     float[,] depth_buffer;
@@ -28,10 +31,12 @@ public class DepthCompletion : MonoBehaviour
     //public float lower_bound, upper_bound;
 
     public ModelAsset modelAsset;
+    public ModelAsset modelAssetBP;
     Model runtimeModel;
     IWorker worker;
 
     float[] confidence_ar;
+    float[] k_ar;
 
     private DateTime current_time;
 
@@ -40,7 +45,15 @@ public class DepthCompletion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        runtimeModel = ModelLoader.Load(modelAsset);
+        if (use_BPNet)
+        {
+            runtimeModel = ModelLoader.Load(modelAssetBP);
+        }
+        else
+        {
+            runtimeModel = ModelLoader.Load(modelAsset);
+        }
+
         worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, runtimeModel);
 
         confidence_buffer = new float[num_frames, 480 * 640];
@@ -77,7 +90,15 @@ public class DepthCompletion : MonoBehaviour
         //}
         if (activate_depth_estimation)
         {
-            (depth_ar, confidence_ar) = complete(depth_ar, color_image);
+            if (use_BPNet) 
+            {
+                k_ar = new float[] { fx, 0.0f, cx, 0.0f, fy, cy, 0.0f, 0.0f, 1.0f };
+                (depth_ar, confidence_ar) = bp_complete(depth_ar, color_image, k_ar);
+            }
+            else
+            {
+                (depth_ar, confidence_ar) = complete(depth_ar, color_image);
+            }
         }
         else
         {
@@ -239,6 +260,50 @@ public class DepthCompletion : MonoBehaviour
         input_tensors.Clear();
 
         return (output_depth, output_confidence);
+    }
+
+    private (float[], float[]) bp_complete(float[] depth_data, Texture2D color_data, float[] k_data)
+    {
+        TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
+        TensorShape color_shape = new TensorShape(1, 3, 480, 640);
+        TensorShape k_shape = new TensorShape(1, 3, 3);
+
+        TensorFloat depth_tensor = new TensorFloat(depth_shape, depth_data);
+        TensorFloat color_tensor = TextureConverter.ToTensor(color_data, channels: 3);
+        TensorFloat k_tensor = new TensorFloat(k_shape, k_data);
+        color_tensor.Reshape(color_shape);
+
+        Dictionary<string, Tensor> input_tensors = new Dictionary<string, Tensor>()
+        {
+            { "sparseDepth", depth_tensor },
+            { "K", k_tensor },
+            { "img", color_tensor },
+        };
+
+        worker.Execute(input_tensors);
+        TensorFloat outputTensor = worker.PeekOutput() as TensorFloat;
+        outputTensor.CompleteOperationsAndDownload();
+        float[] output_depth = outputTensor.ToReadOnlyArray();
+
+        foreach (var key in input_tensors.Keys)
+        {
+            input_tensors[key].Dispose();
+        }
+        input_tensors.Clear();
+
+        foreach (var key in input_tensors.Keys)
+        {
+            input_tensors[key].Dispose();
+        }
+        input_tensors.Clear();
+
+        confidence_ar = new float[480 * 640];
+        for (int i = 0; i < confidence_ar.Length; i++)
+        {
+            confidence_ar[i] = 1.0f;
+        }
+
+        return (output_depth, confidence_ar);
 
     }
 }
