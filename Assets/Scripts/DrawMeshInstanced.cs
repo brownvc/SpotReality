@@ -101,18 +101,37 @@ public class DrawMeshInstanced : MonoBehaviour
         // Use saved meshes
         if (use_saved_meshes)
         {
-            using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+            if (imageScriptIndex == 3)
             {
-                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                using (var stream = File.Open("Assets/PointClouds/d0", FileMode.Open))
                 {
-                    int length = reader.ReadInt32();
-                    depth_ar = new float[length];
-                    for (int i = 0; i < length; i++)
+                    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                     {
-                        depth_ar[i] = reader.ReadSingle();
+                        int length = reader.ReadInt32();
+                        depth_ar = new float[length];
+                        for (int i = 0; i < length; i++)
+                        {
+                            depth_ar[i] = reader.ReadSingle();
+                        }
                     }
                 }
             }
+            else
+            {
+                using (var stream = File.Open("Assets/PointClouds/mesh_array_" + imageScriptIndex, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                    {
+                        int length = reader.ReadInt32();
+                        depth_ar = new float[length];
+                        for (int i = 0; i < length; i++)
+                        {
+                            depth_ar[i] = reader.ReadSingle();
+                        }
+                    }
+                }
+            }
+            
             // [2023-10-30][JHT] TODO Complete. What is the depth width/height? Is it really 'width' and 'height'?
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
             depth_image.SetPixelData(depth_ar, 0);

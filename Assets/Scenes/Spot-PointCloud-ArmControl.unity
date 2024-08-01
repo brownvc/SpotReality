@@ -1161,7 +1161,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -4292,7 +4292,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
