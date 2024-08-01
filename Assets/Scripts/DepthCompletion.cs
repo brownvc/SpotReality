@@ -25,6 +25,7 @@ public class DepthCompletion : MonoBehaviour
     private ComputeBuffer confidenceBufferCompute;
     private ComputeBuffer depthArCompute;
     private ComputeBuffer confidenceArCompute;
+    private ComputeBuffer tempDataCompute;
 
     //public bool activate_margin_cut;
     //public int l_margin, r_margin, b_margin, t_margin;
@@ -64,6 +65,7 @@ public class DepthCompletion : MonoBehaviour
         confidenceBufferCompute = new ComputeBuffer(num_frames * 480 * 640, sizeof(float));
         depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
         confidenceArCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        tempDataCompute = new ComputeBuffer(20, sizeof(float));
 
         // kernel
         kernel = average_shader.FindKernel("CSMain");
@@ -74,7 +76,8 @@ public class DepthCompletion : MonoBehaviour
         depthBufferCompute.SetData(depth_buffer);
         average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
         average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
-    
+        average_shader.SetBuffer(kernel, "tempData", tempDataCompute);
+
         // confidence
         confidence_ar = new float[480 * 640];
         for (int i = 0; i < confidence_ar.Length; i++)

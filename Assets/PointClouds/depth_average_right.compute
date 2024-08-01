@@ -13,8 +13,8 @@ RWStructuredBuffer<float> depth_ar;
 RWStructuredBuffer<float> confidence_ar;
 RWStructuredBuffer<float> depth_buffer;
 RWStructuredBuffer<float> confidence_buffer;
+RWStructuredBuffer<float> tempData;
 
-float tempData[20];
 
 // buffer pos
 int buffer_pos;
