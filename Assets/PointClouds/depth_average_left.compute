@@ -7,13 +7,13 @@
 // Number of frames
 int num_frames;
 bool median_averaging;
+bool activate_fast_median_calculation;
 
 // Buffers
 RWStructuredBuffer<float> depth_ar;
 RWStructuredBuffer<float> confidence_ar;
 RWStructuredBuffer<float> depth_buffer;
 RWStructuredBuffer<float> confidence_buffer;
-RWStructuredBuffer<float> tempData;
 
 // buffer pos
 int buffer_pos;
@@ -22,39 +22,64 @@ int buffer_pos;
 void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
     int index = threadId.x + groupId.y * WIDTH;
-    float tmp[20];
+    float depth_value = depth_ar[index];
     
     if (threadId.x < WIDTH && groupId.y < HEIGHT)
     {
-        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
-        confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
+        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_value;
 
         if (median_averaging)
         {
-            for (int q = 0; q < num_frames; q++)
+            if (activate_fast_median_calculation)
             {
-                int idx = q * WIDTH * HEIGHT + index;
-                tmp[q] = depth_buffer[idx];
-            }
-
-            int i, j;
-            float key;
-            int n = 20;
-            for (i = 1; i < n; i++) 
-            {
-                key = tmp[i];
-                j = i - 1;
-
-                while (j >= 0 && tmp[j] > key) {
-                    tmp[j + 1] = tmp[j];
-                    j = j - 1;
+                for (int i = buffer_pos; i > 0 && depth_buffer[i * WIDTH * HEIGHT + index] < depth_buffer[(i - 1) * WIDTH * HEIGHT + index]; --i) 
+                {
+                    int index1 = i * WIDTH * HEIGHT + index;
+                    int index0 = (i - 1) * WIDTH * HEIGHT + index;
+                    int temp = depth_buffer[index1];
+                    depth_buffer[index1] = depth_buffer[index0];
+                    depth_buffer[index0] = temp;
                 }
-                tmp[j + 1] = key;
+
+                for (int i = buffer_pos; i < num_frames - 1 && depth_buffer[i * WIDTH * HEIGHT + index] > depth_buffer[(i + 1) * WIDTH * HEIGHT + index]; ++i) 
+                {
+                    int index1 = i * WIDTH * HEIGHT + index;
+                    int index0 = (i + 1) * WIDTH * HEIGHT + index;
+                    int temp = depth_buffer[index1];
+                    depth_buffer[index1] = depth_buffer[index0];
+                    depth_buffer[index0] = temp;
+                }
             }
-            depth_ar[index] = tmp[10];
+            else
+            {
+                float tmp[20];
+                for (int q = 0; q < num_frames; q++)
+                {
+                    int idx = q * WIDTH * HEIGHT + index;
+                    tmp[q] = depth_buffer[idx];
+                }
+
+                int i, j;
+                float key;
+                int n = 20;
+                for (i = 1; i < n; i++) 
+                {
+                    key = tmp[i];
+                    j = i - 1;
+
+                    while (j >= 0 && tmp[j] > key) {
+                        tmp[j + 1] = tmp[j];
+                        j = j - 1;
+                    }
+                    tmp[j + 1] = key;
+                }
+                depth_ar[index] = tmp[10];
+            } 
         }
         else
         {
+            confidence_buffer[buffer_pos * WIDTH * HEIGHT + index] = confidence_ar[index];
+
             float weighted_sum = 0.0;
             float total_weight = 0.0;
         
