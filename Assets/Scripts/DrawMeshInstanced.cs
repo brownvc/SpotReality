@@ -65,6 +65,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
+    private float[] depth_ar_saved;
     private float[] confidence_ar = new float[480 * 640];
 
     private MeshProperties[] globalProps;
@@ -110,6 +111,9 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("pS", pS);
         material.SetTexture("_colorMap",color_image);
 
+        //meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
+        //depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
+        //globalProps = new MeshProperties[population];
         depthBuffer.SetData(depth_ar);
         meshPropertiesBuffer.SetData(globalProps);
 
@@ -121,12 +125,14 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         if (use_saved_meshes || freezeCloud) {
-            return;
+            depth_ar = depth_ar_saved;
         }
-
-        // Get the depth and color
-        color_image = colorSubscriber.texture2D;
-        depth_ar = depthSubscriber.getDepthArr();
+        else
+        {
+            // Get the depth and color
+            color_image = colorSubscriber.texture2D;
+            depth_ar = depthSubscriber.getDepthArr();
+        }
 
         (depth_ar, confidence_ar) = depthCompletion.complete_depth(depth_ar, color_image);
     }
@@ -194,8 +200,9 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
             depth_image.SetPixelData(depth_ar, 0);
 
+            depth_ar_saved = depth_ar;
 
-
+            //(depth_ar, confidence_ar) = depthCompletion.complete_depth(depth_ar, color_image);
             //color_image = Resources.Load<Texture2D>("Assets/PointClouds/Color_" + imageScriptIndex + ".png");
         }
         else
@@ -232,6 +239,7 @@ public class DrawMeshInstanced : MonoBehaviour
         MeshProperties[] properties = new MeshProperties[population];
 
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
+        meshPropertiesBuffer.SetData(globalProps);
 
         depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
 

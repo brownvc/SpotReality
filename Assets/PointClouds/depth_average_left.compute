@@ -15,7 +15,6 @@ RWStructuredBuffer<float> depth_buffer;
 RWStructuredBuffer<float> confidence_buffer;
 RWStructuredBuffer<float> tempData;
 
-
 // buffer pos
 int buffer_pos;
 
@@ -23,6 +22,7 @@ int buffer_pos;
 void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
     int index = threadId.x + groupId.y * WIDTH;
+    float tmp[20];
     
     if (threadId.x < WIDTH && groupId.y < HEIGHT)
     {
@@ -34,7 +34,7 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
             for (int q = 0; q < num_frames; q++)
             {
                 int idx = q * WIDTH * HEIGHT + index;
-                tempData[q] = depth_buffer[idx];
+                tmp[q] = depth_buffer[idx];
             }
 
             int i, j;
@@ -42,16 +42,16 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
             int n = 20;
             for (i = 1; i < n; i++) 
             {
-                key = tempData[i];
+                key = tmp[i];
                 j = i - 1;
 
-                while (j >= 0 && tempData[j] > key) {
-                    tempData[j + 1] = tempData[j];
+                while (j >= 0 && tmp[j] > key) {
+                    tmp[j + 1] = tmp[j];
                     j = j - 1;
                 }
-                tempData[j + 1] = key;
+                tmp[j + 1] = key;
             }
-            depth_ar[index] = tempData[10];
+            depth_ar[index] = tmp[10];
         }
         else
         {
