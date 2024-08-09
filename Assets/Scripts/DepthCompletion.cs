@@ -76,6 +76,8 @@ public class DepthCompletion : MonoBehaviour
         depthBufferCompute.SetData(depth_buffer);
         average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
         average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
+        //average_shader.SetBool("median_averaging", median_averaging);
+        //average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
 
         // confidence
         confidence_ar = new float[480 * 640];

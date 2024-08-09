@@ -49,6 +49,7 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
                     depth_buffer[index1] = depth_buffer[index0];
                     depth_buffer[index0] = temp;
                 }
+                depth_ar[index] = depth_buffer[10 * WIDTH * HEIGHT + index];
             }
             else
             {
