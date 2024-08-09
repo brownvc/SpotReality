@@ -286,7 +286,10 @@ namespace RosSharp.RosBridgeClient
 
         private void OnDestroy()
         {
-            messageThread.Abort();
+            if (messageThread != null)
+            {
+                messageThread.Abort();
+            }
         }
 
 

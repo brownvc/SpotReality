@@ -17,8 +17,8 @@ public class ModifyIntrinsics : MonoBehaviour
     {
         Invoke("getIntrinsics", 3);
         InvokeRepeating("modifyCloudIntrinsics", 4, 2);
-        Debug.Log(intrinsicsSubscriber != null);
-        Debug.Log(getIntrinsicsScript != null);
+        Debug.Log("Intrinsics Subscriber: " + intrinsicsSubscriber != null);
+        Debug.Log("Get Intrinsics Script: " + getIntrinsicsScript != null);
     }
 
     // Update is called once per frame

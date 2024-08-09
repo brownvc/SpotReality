@@ -70,7 +70,6 @@ namespace RosSharp.RosBridgeClient
         private void OnClosed(object sender, EventArgs e)
         {
             IsConnected.Reset();
-            Debug.Log("Disconnected from RosBridge: " + RosBridgeServerUrl);
         }
     }
 }
