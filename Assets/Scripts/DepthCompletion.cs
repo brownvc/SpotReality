@@ -76,8 +76,6 @@ public class DepthCompletion : MonoBehaviour
         depthBufferCompute.SetData(depth_buffer);
         average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
         average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
-        //average_shader.SetBool("median_averaging", median_averaging);
-        //average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
 
         // confidence
         confidence_ar = new float[480 * 640];
@@ -133,12 +131,12 @@ public class DepthCompletion : MonoBehaviour
             depthArCompute.GetData(depth_ar);
             confidenceArCompute.GetData(confidence_ar);
 
-            if (buffer_pos == num_frames - 1)
+            if (buffer_pos == num_frames - 2)
             {
                 activate_fast_median_calculation = true;
             }
 
-            buffer_pos = (buffer_pos + 1) % num_frames;
+            buffer_pos = (buffer_pos + 1) % (num_frames - 1);
         }
 
         UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");

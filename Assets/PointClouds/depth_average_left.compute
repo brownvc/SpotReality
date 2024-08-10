@@ -25,36 +25,54 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
     float depth_value = depth_ar[index];
     
     if (threadId.x < WIDTH && groupId.y < HEIGHT)
-    {
+    {   
+        float old_value = depth_buffer[buffer_pos * WIDTH * HEIGHT + index];
         depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_value;
 
         if (median_averaging)
         {
             if (activate_fast_median_calculation)
-            {
-                for (int i = buffer_pos; i > 0 && depth_buffer[i * WIDTH * HEIGHT + index] < depth_buffer[(i - 1) * WIDTH * HEIGHT + index]; --i) 
-                {
-                    int index1 = i * WIDTH * HEIGHT + index;
-                    int index0 = (i - 1) * WIDTH * HEIGHT + index;
-                    int temp = depth_buffer[index1];
-                    depth_buffer[index1] = depth_buffer[index0];
-                    depth_buffer[index0] = temp;
-                }
+            { // TODO : check the case of old_value being the median
+                float median_value = depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index];
 
-                for (int i = buffer_pos; i < num_frames - 1 && depth_buffer[i * WIDTH * HEIGHT + index] > depth_buffer[(i + 1) * WIDTH * HEIGHT + index]; ++i) 
+
+                if ((old_value - median_value) * (depth_value - median_value) > 0) // The new value and the old are on the same side
                 {
-                    int index1 = i * WIDTH * HEIGHT + index;
-                    int index0 = (i + 1) * WIDTH * HEIGHT + index;
-                    int temp = depth_buffer[index1];
-                    depth_buffer[index1] = depth_buffer[index0];
-                    depth_buffer[index0] = temp;
+                    depth_ar[index] = median_value;
                 }
-                depth_ar[index] = depth_buffer[10 * WIDTH * HEIGHT + index];
+                else
+                {
+                    float new_med = -1;
+                    int dir = -1;
+                    int count = 0;
+                    if (old_value < median_value) dir = 1; 
+                    else if (old_value == median_value && depth_value > median_value) dir = 1;
+
+                    for (int i = 0; i < 19; i++)
+                    {
+                        float depth_i = depth_buffer[i * WIDTH * HEIGHT + index];
+                        if (depth_i * dir > median_value * dir)
+                        {
+                            count ++;
+                            if (depth_i * dir < new_med * dir || new_med == -1)
+                            { 
+                                new_med = depth_buffer[i * WIDTH * HEIGHT + index];  
+                            }
+                        }
+                    }
+                    if (count >= 10) 
+                    {
+                        depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index] = new_med;    
+                    }
+                    depth_ar[index] = depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index];
+                }
+                //depth_ar[index] = depth_buffer[9 * WIDTH * HEIGHT + index];
+                //depth_ar[index] = median_value;
             }
             else
             {
-                float tmp[20];
-                for (int q = 0; q < num_frames; q++)
+                float tmp[19];
+                for (int q = 0; q < num_frames - 1; q++)
                 {
                     int idx = q * WIDTH * HEIGHT + index;
                     tmp[q] = depth_buffer[idx];
@@ -62,7 +80,7 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 
                 int i, j;
                 float key;
-                int n = 20;
+                int n = num_frames - 1;
                 for (i = 1; i < n; i++) 
                 {
                     key = tmp[i];
@@ -74,7 +92,8 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
                     }
                     tmp[j + 1] = key;
                 }
-                depth_ar[index] = tmp[10];
+                depth_ar[index] = tmp[9];
+                depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index] = tmp[9];
             } 
         }
         else
