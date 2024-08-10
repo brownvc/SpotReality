@@ -124,7 +124,12 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void UpdateTexture()
     {
-        if (use_saved_meshes || freezeCloud) {
+        if (freezeCloud)
+        {
+            return;
+        }
+
+        if (use_saved_meshes) {
             depth_ar = depth_ar_saved;
         }
         else
@@ -318,23 +323,22 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public void toggleFreezeCloud()
     {
-        float[] temp_depth;
-        Texture2D temp_texture;
-
+        //float[] temp_depth;
+        //Texture2D temp_texture;
 
         freezeCloud = !freezeCloud;
 
         // if turning on freeze, deep copy arrays
-        if (freezeCloud)
-        {
-            temp_depth = new float[depth_ar.Length];
-            Array.Copy(depth_ar, temp_depth, depth_ar.Length);
-            depth_ar = temp_depth;
+        //if (freezeCloud)
+        //{
+            //temp_depth = new float[depth_ar.Length];
+            //Array.Copy(depth_ar, temp_depth, depth_ar.Length);
+            //depth_ar = temp_depth;
 
-            temp_texture = new Texture2D(color_image.width, color_image.height);
-            temp_texture.SetPixels(color_image.GetPixels());
-            temp_texture.Apply();
-            color_image = temp_texture;
-        }
+            //temp_texture = new Texture2D(color_image.width, color_image.height);
+            //temp_texture.SetPixels(color_image.GetPixels());
+            //temp_texture.Apply();
+            //color_image = temp_texture;
+        //}
     }
 }
