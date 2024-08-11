@@ -1005,6 +1005,7 @@ GameObject:
   - component: {fileID: 112187587}
   - component: {fileID: 112187588}
   - component: {fileID: 112187589}
+  - component: {fileID: 112187590}
   m_Layer: 0
   m_Name: front_left_cloud
   m_TagString: Untagged
@@ -1039,6 +1040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 5235943364053865583}
+  Drive: {fileID: 3465647788609728707}
   depthCompletion: {fileID: 112187589}
   y_bound: 0.5
   confidence_threshold: 0
@@ -1089,6 +1092,30 @@ MonoBehaviour:
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: 5a6bc8d6c722ede40af4366607a5cff5, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
+--- !u!114 &112187590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112187586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 612f17ee30a21604381cf5d8f3604cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LAxB: {fileID: 7810139833929723061, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LX: {fileID: -4450001596844576706, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LY: {fileID: 9148794882427830696, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT2: {fileID: -4486440786153861441, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAxB: {fileID: -3092645619780316101, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RA: {fileID: -5303886795616406269, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RB: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT2: {fileID: 1452166284691580520, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &124656486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,6 +1528,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -2389,6 +2418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -3518,6 +3549,7 @@ GameObject:
   - component: {fileID: 545284149}
   - component: {fileID: 545284150}
   - component: {fileID: 545284151}
+  - component: {fileID: 545284152}
   m_Layer: 0
   m_Name: front_right_cloud
   m_TagString: Untagged
@@ -3552,6 +3584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 5235943364053865583}
+  Drive: {fileID: 3465647788609728707}
   depthCompletion: {fileID: 545284151}
   y_bound: 0.5
   confidence_threshold: 0
@@ -3602,6 +3636,30 @@ MonoBehaviour:
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: 5a6bc8d6c722ede40af4366607a5cff5, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
+--- !u!114 &545284152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545284148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 612f17ee30a21604381cf5d8f3604cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LAxB: {fileID: 7810139833929723061, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LAx: {fileID: -7200697809519490574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LX: {fileID: -4450001596844576706, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LY: {fileID: 9148794882427830696, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT1: {fileID: 3822761148180028221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  LT2: {fileID: -4486440786153861441, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAxB: {fileID: -3092645619780316101, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RAx: {fileID: -7794696981129359310, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RA: {fileID: -5303886795616406269, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RB: {fileID: -1831249676805717338, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT1: {fileID: -3570894362129129593, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  RT2: {fileID: 1452166284691580520, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &549220550
 GameObject:
   m_ObjectHideFlags: 8
@@ -3834,6 +3892,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -7084,6 +7144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -12192,6 +12254,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -13726,6 +13790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -25884,6 +25950,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -26254,6 +26322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0
@@ -27081,6 +27151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Arm: {fileID: 0}
+  Drive: {fileID: 0}
   depthCompletion: {fileID: 0}
   y_bound: 0
   confidence_threshold: 0

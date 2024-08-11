@@ -17,6 +17,9 @@ using UnityEngine.InputSystem;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
+    public GameObject Arm;
+    public GameObject Drive;
+
     public DepthCompletion depthCompletion;
     public float y_bound;
     private ComputeBuffer material_confidence;
@@ -122,9 +125,20 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
+    private bool spot_moving_status()
+    {
+        if (GetComponent<DepthCompletion>().buffer_prepare_status())
+        {
+            return GetComponent<SpotMovingDetection>().is_moving();
+        }
+        return true;
+    }
+
     private void UpdateTexture()
     {
-        if (freezeCloud)
+        //Debug.Log(spot_moving_status());
+
+        if (freezeCloud || spot_moving_status() == false)
         {
             return;
         }
@@ -323,22 +337,22 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public void toggleFreezeCloud()
     {
-        //float[] temp_depth;
-        //Texture2D temp_texture;
+        float[] temp_depth;
+        Texture2D temp_texture;
 
         freezeCloud = !freezeCloud;
 
-        // if turning on freeze, deep copy arrays
-        //if (freezeCloud)
-        //{
-            //temp_depth = new float[depth_ar.Length];
-            //Array.Copy(depth_ar, temp_depth, depth_ar.Length);
-            //depth_ar = temp_depth;
+        //if turning on freeze, deep copy arrays
+        if (freezeCloud)
+        {
+            temp_depth = new float[depth_ar.Length];
+            Array.Copy(depth_ar, temp_depth, depth_ar.Length);
+            depth_ar = temp_depth;
 
-            //temp_texture = new Texture2D(color_image.width, color_image.height);
-            //temp_texture.SetPixels(color_image.GetPixels());
-            //temp_texture.Apply();
-            //color_image = temp_texture;
-        //}
+            temp_texture = new Texture2D(color_image.width, color_image.height);
+            temp_texture.SetPixels(color_image.GetPixels());
+            temp_texture.Apply();
+            color_image = temp_texture;
+        }
     }
 }

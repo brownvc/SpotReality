@@ -54,6 +54,13 @@ public class VRDriveSpot : MonoBehaviour
         depthsTempChanged = new bool[pointClouds.Length];
     }
 
+    //public bool is_moving()
+    //{
+    //    bool status1 = leftPress.action.IsPressed() && (height - HEIGHT_INC) > HEIGHT_MIN;
+    //    bool status2 = rightPress.action.IsPressed() && (height + HEIGHT_INC) < HEIGHT_MAX;
+    //    return status1 || status2;
+    //}
+
     void Update()
     {
         Vector2 leftMove;

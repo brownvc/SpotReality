@@ -46,6 +46,12 @@ public class DepthCompletion : MonoBehaviour
     int kernel;
 
     // Start is called before the first frame update
+
+    public bool buffer_prepare_status()
+    {
+        return activate_fast_median_calculation; 
+    }
+
     void Start()
     {
         if (use_BPNet)

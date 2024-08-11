@@ -60,6 +60,10 @@ public class MoveArm : MonoBehaviour
         showSpotBody = false;
         setSpotVisible(spotBody, showSpotBody);
     }
+    //public bool is_moving()
+    //{
+    //    return RT1.action.IsPressed() || LT1.action.IsPressed();
+    //}
 
     void Update()
     {
