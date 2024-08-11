@@ -14,11 +14,15 @@ using Debug = UnityEngine.Debug;
 using Unity.Sentis;
 using static UnityEngine.Analytics.IAnalytic;
 using UnityEngine.InputSystem;
+using System.Runtime.InteropServices;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
     public GameObject Arm;
     public GameObject Drive;
+    public bool freeze_without_action;
+    public int latency_frames;
+    bool ready_to_freeze = false;
 
     public DepthCompletion depthCompletion;
     public float y_bound;
@@ -125,20 +129,35 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
+    private IEnumerator ToggleReadyToFreezeAfterDelay()
+    {
+        yield return new WaitForSeconds(3.0f);
+        ready_to_freeze = true;
+    }
+
     private bool spot_moving_status()
     {
         if (GetComponent<DepthCompletion>().buffer_prepare_status())
         {
-            return GetComponent<SpotMovingDetection>().is_moving();
+            bool res = GetComponent<SpotMovingDetection>().is_moving() || !freeze_without_action;
+            if (res)
+            {
+                ready_to_freeze = false;
+            }
+            else
+            {
+                StartCoroutine(ToggleReadyToFreezeAfterDelay());
+            }
+            return res;
         }
         return true;
     }
 
     private void UpdateTexture()
     {
+        print(ready_to_freeze);
         //Debug.Log(spot_moving_status());
-
-        if (freezeCloud || spot_moving_status() == false)
+        if (freezeCloud || (spot_moving_status() == false && ready_to_freeze))
         {
             return;
         }
