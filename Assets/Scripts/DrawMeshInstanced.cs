@@ -77,6 +77,9 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private MeshProperties[] globalProps;
 
+    private float deltaTime = 0.0f;
+    private float timer = 0.0f;
+
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -109,6 +112,17 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetBuffer("confidence", material_confidence);
         material.SetFloat("confidence_threshold", confidence_threshold);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
+
+        // get current fps
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        timer += Time.unscaledDeltaTime;
+
+        if (timer >= 1.0f) // Log FPS every second
+        {
+            float fps = 1.0f / deltaTime;
+            Debug.Log("FPS: " + Mathf.Ceil(fps));
+            timer = 0.0f; // Reset timer after logging
+        }
     }
 
     private void SetProperties()                        
@@ -129,35 +143,46 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetBuffer(kernel, "_Depth", depthBuffer);
     }
 
-    private IEnumerator ToggleReadyToFreezeAfterDelay()
+    private IEnumerator ToggleReadyToFreezeAfterDelay(float waitTime)
     {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(waitTime);
         ready_to_freeze = true;
     }
 
-    private bool spot_moving_status()
+    //private bool spot_moving_status()
+    //{
+    //    if (GetComponent<DepthCompletion>().buffer_prepare_status())
+    //    {
+    //        bool is_moving = GetComponent<SpotMovingDetection>().is_moving() || !freeze_without_action;
+    //        if (is_moving)
+    //        {
+    //            ready_to_freeze = false;
+    //        }
+    //        else
+    //        {
+    //            if (!ready_to_freeze)
+    //            {
+    //                StartCoroutine(ToggleReadyToFreezeAfterDelay());
+    //            }
+    //        }
+    //        return is_moving;
+    //    }
+    //    return true;
+    //}
+
+    public void continue_update()
     {
-        if (GetComponent<DepthCompletion>().buffer_prepare_status())
+        if (ready_to_freeze)
         {
-            bool res = GetComponent<SpotMovingDetection>().is_moving() || !freeze_without_action;
-            if (res)
-            {
-                ready_to_freeze = false;
-            }
-            else
-            {
-                StartCoroutine(ToggleReadyToFreezeAfterDelay());
-            }
-            return res;
+            StartCoroutine(ToggleReadyToFreezeAfterDelay(1.0f / 30.0f * latency_frames));
+            ready_to_freeze = false;
         }
-        return true;
     }
 
     private void UpdateTexture()
     {
-        print(ready_to_freeze);
-        //Debug.Log(spot_moving_status());
-        if (freezeCloud || (spot_moving_status() == false && ready_to_freeze))
+        //Debug.Log(ready_to_freeze);
+        if (freezeCloud || ready_to_freeze)
         {
             return;
         }
@@ -197,6 +222,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(ToggleReadyToFreezeAfterDelay(10.0f));
+
         pS = 1.0f;
 
         total_population = height * width;

@@ -41,9 +41,9 @@ namespace RosSharp.RosBridgeClient
         //private byte[] image_data_pixcount;    // number of non-zero values in each pixel's history
         //private int image_data_cbuffer_pos;    // tracker for spot in image_data_cbuffer
         //private int image_data_cbuffer_length; // number of frames to average depth over
-        private bool useDepthHistory;          // whether to use depth buffer for averaging, or just use current frame
-        private bool clearCbuf;                // whether to clear image_data_cbuffer at beginning of next message
-        private float turnDepthOnTime;         // when to turn depth history back 
+        //private bool useDepthHistory;          // whether to use depth buffer for averaging, or just use current frame
+        //private bool clearCbuf;                // whether to clear image_data_cbuffer at beginning of next message
+        //private float turnDepthOnTime;         // when to turn depth history back 
 
         public bool printMessageReceiveRate;
         public bool printMessageProcRate;
@@ -86,9 +86,9 @@ namespace RosSharp.RosBridgeClient
 
             globalData = new float[1];
             timestamp_synced = 0d;
-            useDepthHistory = true;
-            clearCbuf = false;
-            turnDepthOnTime = 0f;
+            //useDepthHistory = true;
+            //clearCbuf = false;
+            //turnDepthOnTime = 0f;
             depthUpdated = false;
         }
 
@@ -239,14 +239,14 @@ namespace RosSharp.RosBridgeClient
 
         private void Update()
         {
-            // UnityEngine.Debug.Log((DateTime.Now - lastUpdate).TotalSeconds);
-            lastUpdate = DateTime.Now;
+            //// UnityEngine.Debug.Log((DateTime.Now - lastUpdate).TotalSeconds);
+            //lastUpdate = DateTime.Now;
 
-            // Turn depth history back on after the allotted time has passed
-            if (useDepthHistory == false && UnityEngine.Time.time > turnDepthOnTime)
-            {
-                turnDepthOn();
-            }
+            //// Turn depth history back on after the allotted time has passed
+            //if (useDepthHistory == false && UnityEngine.Time.time > turnDepthOnTime)
+            //{
+            //    turnDepthOn();
+            //}
         }
 
         public bool newDepthAvailable()
@@ -266,23 +266,23 @@ namespace RosSharp.RosBridgeClient
         // Turn off depth history for specified time
         public void pauseDepthHistory(float howLong)
         {
-            // If depth history already off, no need to clear cbuf
-            if (useDepthHistory)
-            {
-                clearCbuf = true;
-                useDepthHistory = false;
-            }
+            //// If depth history already off, no need to clear cbuf
+            //if (useDepthHistory)
+            //{
+            //    clearCbuf = true;
+            //    useDepthHistory = false;
+            //}
 
-            // Turn depth on after time has passed             
-            turnDepthOnTime = UnityEngine.Time.time + howLong;
+            //// Turn depth on after time has passed             
+            //turnDepthOnTime = UnityEngine.Time.time + howLong;
         }
 
         // Turn depth info back on
-        private void turnDepthOn()
-        {
-            useDepthHistory = true;
-            clearCbuf = false;
-        }
+        //private void turnDepthOn()
+        //{
+        //    useDepthHistory = true;
+        //    clearCbuf = false;
+        //}
 
         private void OnDestroy()
         {

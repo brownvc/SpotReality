@@ -41,7 +41,7 @@ public class VRGeneralControls : MonoBehaviour
     private float point_cloud_t;
 
     /* Raw Image Subscribers */
-    public RawImageSubscriber[] depthSubscribers;
+    //public RawImageSubscriber[] depthSubscribers;
 
     /* Track time in 2D vs 3D fields */
     private Stopwatch threed_time;
@@ -104,9 +104,13 @@ public class VRGeneralControls : MonoBehaviour
         {
             stow.Stow();
             // Pause depth history for 1.5 seconds
-            foreach (RawImageSubscriber ds in depthSubscribers)
+            //foreach (RawImageSubscriber ds in depthSubscribers)
+            //{
+            //    ds.pauseDepthHistory(1.5f);
+            //}
+            foreach (DrawMeshInstanced ds in pointClouds)
             {
-                ds.pauseDepthHistory(1.5f);
+                ds.continue_update();
             }
         }
 

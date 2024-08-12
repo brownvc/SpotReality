@@ -24,7 +24,8 @@ public class MoveArm : MonoBehaviour
     public JPEGImageSubscriber handImageSubscriber;
     public SetGripper gripper;
     public VRGeneralControls generalControls;
-    public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
+    //public DrawMeshInstanced[] pointCloudRenderers;
+    //public RawImageSubscriber[] depthSubscribers; // all depth subscribers except back, because if hand could move in front of a camera, depth history should be off
 
     // private MessageTypes.Geometry.Twist message;
     private bool triggerWasPressed = false;
@@ -113,13 +114,18 @@ public class MoveArm : MonoBehaviour
                 }
             }
 
-            // Pause depth history for 1.5 seconds
-            foreach (RawImageSubscriber ds in depthSubscribers)
+            //// Pause depth history for 1.5 seconds
+            //foreach (RawImageSubscriber ds in depthSubscribers)
+            //{
+            //    ds.pauseDepthHistory(1.5f);
+            //}
+
+            foreach (DrawMeshInstanced ds in cloudsToFreeze)
             {
-                ds.pauseDepthHistory(1.5f);
+                ds.continue_update();
             }
         }
-       // Change the gripper percentage
+        // Change the gripper percentage
         else if (LT1.action.IsPressed())
         {
             Vector2 leftMove = LAx.action.ReadValue<Vector2>();

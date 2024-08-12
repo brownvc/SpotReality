@@ -18,7 +18,7 @@ public class VRDriveSpot : MonoBehaviour
     public InputActionReference rightPress;
     public InputActionReference leftPress;
     public RosSharp.RosBridgeClient.MoveSpot drive;
-    public RawImageSubscriber[] depthSubscribers;
+    //public RawImageSubscriber[] depthSubscribers;
     public JPEGImageSubscriber[] colorSubscribers; // Must be in the same order as depthSubscribers
     public OdometrySubscriber odometrySubscriber;
     public DrawMeshInstanced[] pointClouds;
@@ -102,9 +102,14 @@ public class VRDriveSpot : MonoBehaviour
             drive.drive(leftMove, rightMove.x, height);
 
             // Pause depth history for 1.5 seconds
-            foreach (RawImageSubscriber ds in depthSubscribers)
+            //foreach (RawImageSubscriber ds in depthSubscribers)
+            //{
+            //    ds.pauseDepthHistory(1.5f);
+            //}
+
+            foreach (DrawMeshInstanced ds in pointClouds)
             {
-                ds.pauseDepthHistory(1.5f);
+                ds.continue_update();
             }
         }
 

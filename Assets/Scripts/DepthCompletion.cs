@@ -145,7 +145,7 @@ public class DepthCompletion : MonoBehaviour
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
         }
 
-        UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
+        //UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
 
         return (depth_ar, confidence_ar);
     }

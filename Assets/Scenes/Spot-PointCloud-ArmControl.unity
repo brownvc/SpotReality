@@ -1043,7 +1043,7 @@ MonoBehaviour:
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
   freeze_without_action: 1
-  latency_frames: 60
+  latency_frames: 300
   depthCompletion: {fileID: 112187589}
   y_bound: 0.5
   confidence_threshold: 0
@@ -1083,8 +1083,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
-  activate_averaging: 1
-  median_averaging: 1
+  activate_averaging: 0
+  median_averaging: 0
   use_BPNet: 0
   fx: 329.64
   cx: 318
@@ -1101,7 +1101,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112187586}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 612f17ee30a21604381cf5d8f3604cd9, type: 3}
   m_Name: 
@@ -3593,7 +3593,7 @@ MonoBehaviour:
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
   freeze_without_action: 1
-  latency_frames: 60
+  latency_frames: 300
   depthCompletion: {fileID: 545284151}
   y_bound: 0.5
   confidence_threshold: 0
@@ -3633,8 +3633,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
-  activate_averaging: 1
-  median_averaging: 1
+  activate_averaging: 0
+  median_averaging: 0
   use_BPNet: 0
   fx: 330.699
   cx: 309
@@ -3651,7 +3651,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545284148}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 612f17ee30a21604381cf5d8f3604cd9, type: 3}
   m_Name: 
@@ -8328,7 +8328,6 @@ MonoBehaviour:
   handImageSubscriber: {fileID: 0}
   gripper: {fileID: 0}
   generalControls: {fileID: 0}
-  depthSubscribers: []
   armBase: {fileID: 0}
   ghostArm: {fileID: 0}
   ghostFinger: {fileID: 0}
@@ -11521,7 +11520,6 @@ MonoBehaviour:
   handImageSubscriber: {fileID: 0}
   gripper: {fileID: 0}
   generalControls: {fileID: 0}
-  depthSubscribers: []
   armBase: {fileID: 0}
   ghostArm: {fileID: 0}
   ghostFinger: {fileID: 0}
@@ -15331,7 +15329,6 @@ MonoBehaviour:
   - {fileID: 1156904540}
   - {fileID: 10179180}
   - {fileID: 710129522}
-  depthSubscribers: []
 --- !u!222 &3465647787365961320
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19044,9 +19041,6 @@ MonoBehaviour:
   rightPress: {fileID: -577649520916242105, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   leftPress: {fileID: 9220027740127852921, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   drive: {fileID: 1510830354}
-  depthSubscribers:
-  - {fileID: 1673597984}
-  - {fileID: 1500417874}
   colorSubscribers:
   - {fileID: 442599355}
   - {fileID: 565983654}
@@ -22207,9 +22201,6 @@ MonoBehaviour:
   handImageSubscriber: {fileID: 1510830380}
   gripper: {fileID: 1510830367}
   generalControls: {fileID: 3465647787329320719}
-  depthSubscribers:
-  - {fileID: 1500417874}
-  - {fileID: 1673597984}
   armBase: {fileID: 1994087620}
   ghostArm: {fileID: 4980462626297936253}
   ghostFinger: {fileID: 4980462624635889862}
