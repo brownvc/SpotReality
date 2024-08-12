@@ -182,7 +182,7 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         //Debug.Log(ready_to_freeze);
-        if (freezeCloud || ready_to_freeze)
+        if (freezeCloud || (ready_to_freeze && freeze_without_action))
         {
             return;
         }
