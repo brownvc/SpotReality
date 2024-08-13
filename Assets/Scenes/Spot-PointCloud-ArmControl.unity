@@ -1092,7 +1092,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 5a6bc8d6c722ede40af4366607a5cff5, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 3f2efa81726e4cd49a9d9b7f007e84e1, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &112187590
 MonoBehaviour:
@@ -3642,7 +3642,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 5a6bc8d6c722ede40af4366607a5cff5, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 3f2efa81726e4cd49a9d9b7f007e84e1, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &545284152
 MonoBehaviour:
