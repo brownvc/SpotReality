@@ -112,7 +112,7 @@ public class DepthCompletion : MonoBehaviour
                 (depth_ar, confidence_ar) = complete(depth_ar, color_image);
             }
         }
-        else
+        else if (activate_averaging)
         {
             confidence_ar = new float[480 * 640];
             for (int i = 0; i < confidence_ar.Length; i++) 
