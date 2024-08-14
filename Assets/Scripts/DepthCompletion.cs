@@ -122,7 +122,7 @@ public class DepthCompletion : MonoBehaviour
         }
 
         if (activate_averaging)
-        { 
+        {
             average_shader.SetInt("buffer_pos", buffer_pos);
             average_shader.SetBool("median_averaging", median_averaging);
             average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);

@@ -1070,6 +1070,9 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0.051
+  delta_z: 0
 --- !u!114 &112187589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1560,6 +1563,9 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!1 &177439707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,6 +2458,9 @@ MonoBehaviour:
   pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!4 &299861281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0768174edffea91409ee4bccd12a6b18, type: 3}
@@ -3620,6 +3629,9 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!114 &545284151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3930,6 +3942,9 @@ MonoBehaviour:
   pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!1001 &587545455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7184,6 +7199,9 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!1001 &1145622212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12294,6 +12312,9 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!1001 &1795693229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13832,6 +13853,9 @@ MonoBehaviour:
   pS: 1
   size_scale: 0.0045
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!1 &2133151779
 GameObject:
   m_ObjectHideFlags: 0
@@ -25987,6 +26011,9 @@ MonoBehaviour:
   pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!4 &6584013623013709022
 Transform:
   m_ObjectHideFlags: 0
@@ -26361,6 +26388,9 @@ MonoBehaviour:
   pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!4 &6584013623153188747
 Transform:
   m_ObjectHideFlags: 0
@@ -27192,6 +27222,9 @@ MonoBehaviour:
   pS: 0
   size_scale: 0.01
   use_saved_meshes: 0
+  delta_x: 0
+  delta_y: 0
+  delta_z: 0
 --- !u!4 &6584013624242923235
 Transform:
   m_ObjectHideFlags: 0

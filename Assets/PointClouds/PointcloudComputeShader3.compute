@@ -13,6 +13,10 @@ float samplingSize;
 float t;
 float y_bound;
 
+float dx;
+float dy;
+float dz;
+
 // We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
 // imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
 [numthreads(64, 1, 1)]
@@ -40,6 +44,10 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     //float4 pos = {.x,_Properties[id.x].pos.y,_Properties[id.x].pos.z,1.0};
 
     float4 final_pos = mul(_GOPose, pos);
+
+    final_pos.x = final_pos.x + dx;
+    final_pos.y = final_pos.y + dy;
+    final_pos.z = final_pos.z + dz;
 
     if (final_pos.y < y_bound)
     {

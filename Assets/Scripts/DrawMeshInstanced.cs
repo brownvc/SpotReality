@@ -80,6 +80,10 @@ public class DrawMeshInstanced : MonoBehaviour
     private float deltaTime = 0.0f;
     private float timer = 0.0f;
 
+    public float delta_x;
+    public float delta_y;
+    public float delta_z;
+
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -102,6 +106,10 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
         compute.SetFloat("t", t);
         compute.SetFloat("y_bound", y_bound);
+
+        compute.SetFloat("dx", delta_x);
+        compute.SetFloat("dy", delta_y);
+        compute.SetFloat("dz", delta_z);
 
         UpdateTexture();
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
