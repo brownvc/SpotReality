@@ -45,6 +45,8 @@ public class DepthCompletion : MonoBehaviour
 
     int kernel;
 
+    bool prev_depth_estimation;
+
     // Start is called before the first frame update
 
     public bool buffer_prepare_status()
@@ -54,6 +56,8 @@ public class DepthCompletion : MonoBehaviour
 
     void Start()
     {
+        prev_depth_estimation = activate_depth_estimation;
+
         if (use_BPNet)
         {
             runtimeModel = ModelLoader.Load(modelAssetBP);
@@ -94,7 +98,15 @@ public class DepthCompletion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (prev_depth_estimation != activate_depth_estimation)
+        //{
+        //    Debug.Log("change state");
+        //    average_shader.SetBool("clear_buffer", true);
+        //    average_shader.Dispatch(kernel, 1, 480, 1);
+        //}
 
+        //// Update previousState for the next frame
+        //prev_depth_estimation = activate_depth_estimation;
     }
 
     public (float[], float[]) complete_depth(float[] depth_ar, Texture2D color_image)
@@ -102,6 +114,7 @@ public class DepthCompletion : MonoBehaviour
         current_time = DateTime.Now;
         if (activate_depth_estimation)
         {
+            Debug.Log("here");
             if (use_BPNet) 
             {
                 k_ar = new float[] { fx, 0.0f, cx, 0.0f, fy, cy, 0.0f, 0.0f, 1.0f };
@@ -123,6 +136,16 @@ public class DepthCompletion : MonoBehaviour
 
         if (activate_averaging)
         {
+            if (prev_depth_estimation != activate_depth_estimation)
+            {
+                average_shader.SetBool("clear_buffer", true);
+                prev_depth_estimation = activate_depth_estimation;
+            }
+            else
+            {
+                average_shader.SetBool("clear_buffer", false);
+            }
+                
             average_shader.SetInt("buffer_pos", buffer_pos);
             average_shader.SetBool("median_averaging", median_averaging);
             average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
