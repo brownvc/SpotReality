@@ -22320,7 +22320,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5235943364498651658}
   - component: {fileID: 5235943364498651653}
-  - component: {fileID: 5235943364498651659}
   m_Layer: 0
   m_Name: XR Interaction Manager
   m_TagString: Untagged
@@ -22357,18 +22356,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5235943364498651659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5235943364498651652}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d64a8652c592d44d9c83014aea58236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5235943364700437153
 GameObject:
   m_ObjectHideFlags: 0
@@ -23298,7 +23285,7 @@ MonoBehaviour:
   SecondsTimeout: 10
   Serializer: 0
   protocol: 0
-  RosBridgeServerUrl: ws://192.168.0.1:9090
+  RosBridgeServerUrl: ws://138.16.161.49:9090
 --- !u!114 &5323045367923062787
 MonoBehaviour:
   m_ObjectHideFlags: 0

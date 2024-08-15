@@ -224,6 +224,11 @@ public class DrawMeshInstanced : MonoBehaviour
         argsBuffer = null;
     }
 
+    private void OnDestroy()
+    {
+        OnDisable();
+    }
+
     // =============================================================================== //
     //                                     INIT                                        //
     // =============================================================================== //

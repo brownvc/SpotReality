@@ -114,7 +114,7 @@ public class DepthCompletion : MonoBehaviour
         current_time = DateTime.Now;
         if (activate_depth_estimation)
         {
-            Debug.Log("here");
+            //Debug.Log("here");
             if (use_BPNet) 
             {
                 k_ar = new float[] { fx, 0.0f, cx, 0.0f, fy, cy, 0.0f, 0.0f, 1.0f };
@@ -230,19 +230,25 @@ public class DepthCompletion : MonoBehaviour
         outputTensor.CompleteOperationsAndDownload();
         float[] output_depth = outputTensor.ToReadOnlyArray();
 
+        // manage mem
         foreach (var key in input_tensors.Keys)
         {
             input_tensors[key].Dispose();
         }
         input_tensors.Clear();
 
-        foreach (var key in input_tensors.Keys)
-        {
-            input_tensors[key].Dispose();
-        }
-        input_tensors.Clear();
+        outputTensor.Dispose();
 
         return (output_depth, confidence_ar);
 
+    }
+
+    void OnDestroy()
+    {
+        depthBufferCompute.Release();
+        confidenceBufferCompute.Release();
+        depthArCompute.Release();
+        confidenceArCompute.Release();
+        worker.Dispose();
     }
 }
