@@ -157,27 +157,6 @@ public class DrawMeshInstanced : MonoBehaviour
         ready_to_freeze = true;
     }
 
-    //private bool spot_moving_status()
-    //{
-    //    if (GetComponent<DepthCompletion>().buffer_prepare_status())
-    //    {
-    //        bool is_moving = GetComponent<SpotMovingDetection>().is_moving() || !freeze_without_action;
-    //        if (is_moving)
-    //        {
-    //            ready_to_freeze = false;
-    //        }
-    //        else
-    //        {
-    //            if (!ready_to_freeze)
-    //            {
-    //                StartCoroutine(ToggleReadyToFreezeAfterDelay());
-    //            }
-    //        }
-    //        return is_moving;
-    //    }
-    //    return true;
-    //}
-
     public void continue_update()
     {
         if (ready_to_freeze)
@@ -190,7 +169,7 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         //Debug.Log(ready_to_freeze);
-        if (freezeCloud || (ready_to_freeze && freeze_without_action))
+        if (freezeCloud || (ready_to_freeze && freeze_without_action && !GetComponent<SpotMovingDetection>().is_moving()))
         {
             return;
         }

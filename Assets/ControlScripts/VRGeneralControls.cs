@@ -33,6 +33,7 @@ public class VRGeneralControls : MonoBehaviour
     public RosSharp.RosBridgeClient.StowArm stow;
     public RosSharp.RosBridgeClient.SetGripper gripper;
     public ModeManager manager;
+    public DepthCompletion[] depth_completion;
 
     /* Toggle Point Cloud */
     public GameObject body;
@@ -135,6 +136,23 @@ public class VRGeneralControls : MonoBehaviour
             }
         }
 
+        /* Switch averaging mode if RT1 trigger is pressed */
+        if (RT1.action.WasPressedThisFrame())
+        {
+            foreach (DepthCompletion d in depth_completion)
+            {
+                d.switch_averaging_mode();
+            }
+        }
+
+        /* Activate/deactivate depth completion if LT1 trigger is pressed */
+        if (LT1.action.WasPressedThisFrame())
+        {
+            foreach (DepthCompletion d in depth_completion)
+            {
+                d.switch_depth_setimation_mode();
+            }
+        }
     }
 
     public void toggleUI()

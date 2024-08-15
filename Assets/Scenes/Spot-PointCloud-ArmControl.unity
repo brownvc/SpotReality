@@ -1043,7 +1043,7 @@ MonoBehaviour:
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
   freeze_without_action: 1
-  latency_frames: 150
+  latency_frames: 200
   depthCompletion: {fileID: 112187589}
   y_bound: 0.5
   confidence_threshold: 0
@@ -1085,9 +1085,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25cf82332814848a603a2ec3427fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
-  activate_averaging: 1
-  median_averaging: 1
+  activate_depth_estimation: 0
+  activate_averaging: 0
+  median_averaging: 0
   use_BPNet: 0
   fx: 329.64
   cx: 318
@@ -3602,7 +3602,7 @@ MonoBehaviour:
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
   freeze_without_action: 1
-  latency_frames: 150
+  latency_frames: 200
   depthCompletion: {fileID: 545284151}
   y_bound: 0.5
   confidence_threshold: 0
@@ -3644,9 +3644,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25cf82332814848a603a2ec3427fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
-  activate_averaging: 1
-  median_averaging: 1
+  activate_depth_estimation: 0
+  activate_averaging: 0
+  median_averaging: 0
   use_BPNet: 0
   fx: 330.699
   cx: 309
@@ -15342,6 +15342,9 @@ MonoBehaviour:
   stow: {fileID: 1510830356}
   gripper: {fileID: 1510830367}
   manager: {fileID: 3465647787329320714}
+  depth_completion:
+  - {fileID: 112187589}
+  - {fileID: 545284151}
   body: {fileID: 1399272930}
   pointClouds:
   - {fileID: 112187588}

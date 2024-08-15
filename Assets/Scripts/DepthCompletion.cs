@@ -45,7 +45,7 @@ public class DepthCompletion : MonoBehaviour
 
     int kernel;
 
-    bool prev_depth_estimation;
+    bool clear_buffer = false;
 
     // Start is called before the first frame update
 
@@ -56,8 +56,6 @@ public class DepthCompletion : MonoBehaviour
 
     void Start()
     {
-        prev_depth_estimation = activate_depth_estimation;
-
         if (use_BPNet)
         {
             runtimeModel = ModelLoader.Load(modelAssetBP);
@@ -100,6 +98,40 @@ public class DepthCompletion : MonoBehaviour
     {
     }
 
+    // close, weighted, median
+    public void switch_averaging_mode()
+    {
+        if (!activate_averaging)
+        {
+            activate_averaging = true;
+            median_averaging = false;
+        }
+        else if (median_averaging) 
+        {
+            activate_averaging = false;
+            median_averaging = false;
+        }
+        else
+        {
+            activate_averaging = true;
+            median_averaging = true;
+        }
+
+        GetComponent<DrawMeshInstanced>().continue_update();
+        activate_fast_median_calculation = false;
+        buffer_pos = 0;
+        clear_buffer = true;
+    }
+    
+    public void switch_depth_setimation_mode()
+    {
+        activate_depth_estimation = !activate_depth_estimation;
+        GetComponent<DrawMeshInstanced>().continue_update();
+        activate_fast_median_calculation = false;
+        buffer_pos = 0;
+        clear_buffer = true;
+    }
+
     public (float[], float[]) complete_depth(float[] depth_ar, Texture2D color_image)
     {
         if (depth_ar == null || depth_ar.Length != 480 * 640)
@@ -135,12 +167,12 @@ public class DepthCompletion : MonoBehaviour
             }
         }
 
-        if (activate_averaging)
+        if (activate_averaging || (clear_buffer && activate_depth_estimation))
         {
-            if (prev_depth_estimation != activate_depth_estimation)
+            if (clear_buffer)
             {
                 average_shader.SetBool("clear_buffer", true);
-                prev_depth_estimation = activate_depth_estimation;
+                clear_buffer = false;
             }
             else
             {

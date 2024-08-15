@@ -46,13 +46,6 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 
         if (median_averaging)
         {
-
-            if (depth_value < 0.01f && old_value >= 0.01f)
-            {
-                 depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = old_value;
-                 depth_value = old_value;
-            }
-
             if (activate_fast_median_calculation)
             { // TODO : check the case of old_value being the median
                 float median_value = depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index];
