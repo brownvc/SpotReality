@@ -98,20 +98,21 @@ public class DepthCompletion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (prev_depth_estimation != activate_depth_estimation)
-        //{
-        //    Debug.Log("change state");
-        //    average_shader.SetBool("clear_buffer", true);
-        //    average_shader.Dispatch(kernel, 1, 480, 1);
-        //}
-
-        //// Update previousState for the next frame
-        //prev_depth_estimation = activate_depth_estimation;
     }
 
     public (float[], float[]) complete_depth(float[] depth_ar, Texture2D color_image)
     {
-        current_time = DateTime.Now;
+        if (depth_ar == null || depth_ar.Length != 480 * 640)
+        {
+            depth_ar = new float[480 * 640];
+        }
+
+        if (color_image == null || color_image.width < 640 || color_image.height < 480)
+        {
+            color_image = new Texture2D(640, 480);
+        }
+
+            current_time = DateTime.Now;
         if (activate_depth_estimation)
         {
             //Debug.Log("here");
@@ -204,6 +205,11 @@ public class DepthCompletion : MonoBehaviour
         }
         input_tensors.Clear();
 
+        depth_tensor.Dispose();
+        color_tensor.Dispose();
+        confidence_outputTensor.Dispose();
+        depth_outputTensor.Dispose();
+
         return (output_depth, output_confidence);
     }
 
@@ -237,6 +243,9 @@ public class DepthCompletion : MonoBehaviour
         }
         input_tensors.Clear();
 
+        depth_tensor.Dispose();
+        color_tensor.Dispose();
+        k_tensor.Dispose();
         outputTensor.Dispose();
 
         return (output_depth, confidence_ar);

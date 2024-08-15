@@ -222,6 +222,18 @@ public class DrawMeshInstanced : MonoBehaviour
             argsBuffer.Release();
         }
         argsBuffer = null;
+
+        if (depthBuffer != null)
+        {
+            depthBuffer.Release();
+        }
+        depthBuffer = null;
+
+        if (material_confidence != null)
+        {
+            material_confidence.Release();
+        }
+        material_confidence = null;
     }
 
     private void OnDestroy()
