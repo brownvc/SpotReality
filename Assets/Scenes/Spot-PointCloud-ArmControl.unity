@@ -1045,8 +1045,8 @@ MonoBehaviour:
   freeze_without_action: 1
   latency_frames: 200
   depthCompletion: {fileID: 112187589}
-  y_bound: 0
-  confidence_threshold: 0
+  y_bound: 0.5
+  confidence_threshold: 0.0001
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
   depth_image: {fileID: 0}
@@ -1095,7 +1095,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 3f2efa81726e4cd49a9d9b7f007e84e1, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 850150b74b705f94d93a2d442a879990, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &112187590
 MonoBehaviour:
@@ -3604,8 +3604,8 @@ MonoBehaviour:
   freeze_without_action: 1
   latency_frames: 200
   depthCompletion: {fileID: 545284151}
-  y_bound: 0
-  confidence_threshold: 0
+  y_bound: 0.5
+  confidence_threshold: 0.0001
   range: 1e+13
   color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
   depth_image: {fileID: 0}
@@ -3654,7 +3654,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 3f2efa81726e4cd49a9d9b7f007e84e1, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 850150b74b705f94d93a2d442a879990, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &545284152
 MonoBehaviour:

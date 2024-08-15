@@ -84,6 +84,8 @@ public class DrawMeshInstanced : MonoBehaviour
     public float delta_y;
     public float delta_z;
 
+    bool freeze_lock = false;
+
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -135,6 +137,11 @@ public class DrawMeshInstanced : MonoBehaviour
         //    Debug.Log("FPS: " + Mathf.Ceil(fps));
         //    timer = 0.0f; // Reset timer after logging
         //}
+
+        if (GetComponent<SpotMovingDetection>().is_moving())
+        {
+            continue_update();
+        }
     }
 
     private void SetProperties()                        
@@ -157,13 +164,15 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private IEnumerator ToggleReadyToFreezeAfterDelay(float waitTime)
     {
+        freeze_lock = true;
         yield return new WaitForSeconds(waitTime);
         ready_to_freeze = true;
+        freeze_lock = false;
     }
 
     public void continue_update()
     {
-        if (ready_to_freeze)
+        if (ready_to_freeze & !freeze_lock)
         {
             StartCoroutine(ToggleReadyToFreezeAfterDelay(1.0f / 30.0f * latency_frames));
             ready_to_freeze = false;
@@ -173,7 +182,7 @@ public class DrawMeshInstanced : MonoBehaviour
     private void UpdateTexture()
     {
         //Debug.Log(ready_to_freeze);
-        if (freezeCloud || (ready_to_freeze && freeze_without_action && !GetComponent<SpotMovingDetection>().is_moving()))
+        if (freezeCloud || (ready_to_freeze && freeze_without_action))
         {
             return;
         }
