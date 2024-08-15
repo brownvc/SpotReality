@@ -11,7 +11,8 @@ float4 intrinsics;
 float4 screenData;
 float samplingSize;
 float t;
-float y_bound;
+float y_min;
+float z_max;
 
 float dx;
 float dy;
@@ -48,17 +49,10 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     final_pos.y = final_pos.y + dy;
     final_pos.z = final_pos.z + dz;
 
-    if (final_pos.y < y_bound)
+    if (final_pos.y < y_min || final_pos.z < -0.0f || final_pos.z > z_max)
     {
         final_pos.y = 0.0f;
         final_pos.z = 0.0f;
-        final_pos.x = 0.0f;
-        final_pos.w = 0.0f;
-    }
-    if (final_pos.z < -0.0f)
-    {
-        final_pos.z = 0.0f;
-        final_pos.y = 0.0f;
         final_pos.x = 0.0f;
         final_pos.w = 0.0f;
     }

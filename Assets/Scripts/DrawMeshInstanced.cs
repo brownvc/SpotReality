@@ -25,7 +25,9 @@ public class DrawMeshInstanced : MonoBehaviour
     bool ready_to_freeze = false;
 
     public DepthCompletion depthCompletion;
-    public float y_bound;
+    public float y_min;
+    public float z_max;
+
     private ComputeBuffer material_confidence;
     public float confidence_threshold;
 
@@ -107,7 +109,8 @@ public class DrawMeshInstanced : MonoBehaviour
         SetProperties();
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
         compute.SetFloat("t", t);
-        compute.SetFloat("y_bound", y_bound);
+        compute.SetFloat("y_min", y_min);
+        compute.SetFloat("z_max", z_max);
 
         compute.SetFloat("dx", delta_x);
         compute.SetFloat("dy", delta_y);
@@ -127,21 +130,21 @@ public class DrawMeshInstanced : MonoBehaviour
         //argsBuffer.SetData(args);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
 
-        //// get current fps
-        //deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        //timer += Time.unscaledDeltaTime;
+        // get current fps
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        timer += Time.unscaledDeltaTime;
 
-        //if (timer >= 1.0f) // Log FPS every second
-        //{
-        //    float fps = 1.0f / deltaTime;
-        //    Debug.Log("FPS: " + Mathf.Ceil(fps));
-        //    timer = 0.0f; // Reset timer after logging
-        //}
-
-        if (GetComponent<SpotMovingDetection>().is_moving())
+        if (timer >= 1.0f) // Log FPS every second
         {
-            continue_update();
+            float fps = 1.0f / deltaTime;
+            Debug.Log("FPS: " + Mathf.Ceil(fps));
+            timer = 0.0f; // Reset timer after logging
         }
+
+        //if (GetComponent<SpotMovingDetection>().is_moving())
+        //{
+        //    continue_update();
+        //}
     }
 
     private void SetProperties()                        
