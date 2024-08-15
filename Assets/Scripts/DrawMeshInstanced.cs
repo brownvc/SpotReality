@@ -119,6 +119,10 @@ public class DrawMeshInstanced : MonoBehaviour
         material_confidence.SetData(confidence_ar);
         material.SetBuffer("confidence", material_confidence);
         material.SetFloat("confidence_threshold", confidence_threshold);
+        //uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
+        //argsBuffer.GetData(args);
+        //args[0] += 480 * 640;
+        //argsBuffer.SetData(args);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
 
         //// get current fps
