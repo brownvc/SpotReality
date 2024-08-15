@@ -1042,8 +1042,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
-  freeze_without_action: 0
-  latency_frames: 300
+  freeze_without_action: 1
+  latency_frames: 150
   depthCompletion: {fileID: 112187589}
   y_bound: 0.5
   confidence_threshold: 0
@@ -3601,8 +3601,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
-  freeze_without_action: 0
-  latency_frames: 300
+  freeze_without_action: 1
+  latency_frames: 150
   depthCompletion: {fileID: 545284151}
   y_bound: 0.5
   confidence_threshold: 0
