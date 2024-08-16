@@ -9,6 +9,8 @@ int num_frames;
 bool median_averaging;
 bool activate_fast_median_calculation;
 bool clear_buffer;
+bool activate_edge_detection;
+float edgeThreshold;
 
 // Buffers
 RWStructuredBuffer<float> depth_ar;
@@ -16,6 +18,25 @@ RWStructuredBuffer<float> depth_buffer;
 
 // buffer pos
 int buffer_pos;
+
+// Sobel filter kernels
+int2 SobelX[9] = {
+    int2(-1, -1), int2(0, -1), int2(1, -1),
+    int2(-1,  0), int2(0,  0), int2(1,  0),
+    int2(-1,  1), int2(0,  1), int2(1,  1)
+};
+
+float SobelXWeights[9] = {
+    -1,  0,  1,
+    -2,  0,  2,
+    -1,  0,  1
+};
+
+float SobelYWeights[9] = {
+    -1, -2, -1,
+     0,  0,  0,
+     1,  2,  1
+};
 
 [numthreads(32, 32, 1)]
 void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
@@ -125,6 +146,29 @@ void CSMain(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
             }
             
             depth_ar[index] = weighted_sum / total_weight;
+        }
+
+        if (activate_edge_detection)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                int2 pixelCoords = int2(xIndex, yIndex);
+                int2 sampleCoords = pixelCoords + SobelX[i];
+
+                if (sampleCoords.x >= 0 && sampleCoords.x < WIDTH && sampleCoords.y >= 0 && sampleCoords.y < HEIGHT)
+                {
+                    float depth = depth_ar[sampleCoords.x + sampleCoords.y * WIDTH;];
+
+                    gradX += depth * SobelXWeights[i];
+                    gradY += depth * SobelYWeights[i];
+                }
+            }
+            float edgeStrength = sqrt(gradX * gradX + gradY * gradY);
+
+            if (edgeStrength > edgeThreshold)
+            {
+                depth_ar[index] = 0.0;
+            }
         }
     }
 }
