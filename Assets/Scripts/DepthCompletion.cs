@@ -12,6 +12,9 @@ public class DepthCompletion : MonoBehaviour
     public bool activate_depth_estimation;
     public bool mean_averaging;
     public bool median_averaging;
+    public bool edge_detection;
+
+    public float edge_threshold;
 
     public bool use_BPNet;
     public float fx, cx, fy, cy;
@@ -138,7 +141,7 @@ public class DepthCompletion : MonoBehaviour
             }
         }
 
-        if (mean_averaging || median_averaging || (clear_buffer && activate_depth_estimation))
+        if (mean_averaging || median_averaging || (clear_buffer && activate_depth_estimation) || edge_detection)
         {
             if (clear_buffer)
             {
@@ -148,7 +151,10 @@ public class DepthCompletion : MonoBehaviour
             average_shader.SetBool("clear_buffer", clear_buffer);
 
             average_shader.SetInt("buffer_pos", buffer_pos);
+            average_shader.SetFloat("edgeThreshold", edge_threshold);
             average_shader.SetBool("median_averaging", median_averaging);
+            average_shader.SetBool("edge_detection", edge_detection);
+            average_shader.SetBool("mean_averaging", mean_averaging);
             average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
 
             depthArCompute.SetData(depth_ar);
