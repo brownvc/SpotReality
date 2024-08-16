@@ -133,11 +133,6 @@ public class DrawMeshInstanced : MonoBehaviour
             Debug.Log("FPS: " + Mathf.Ceil(fps));
             timer = 0.0f; // Reset timer after logging
         }
-
-        //if (GetComponent<SpotMovingDetection>().is_moving())
-        //{
-        //    continue_update();
-        //}
     }
 
     private void SetProperties()                        
@@ -161,6 +156,7 @@ public class DrawMeshInstanced : MonoBehaviour
     private IEnumerator ToggleReadyToFreezeAfterDelay(float waitTime)
     {
         freeze_lock = true;
+
         yield return new WaitForSeconds(waitTime);
         ready_to_freeze = true;
         freeze_lock = false;
@@ -229,7 +225,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(ToggleReadyToFreezeAfterDelay(10.0f));
+        StartCoroutine(ToggleReadyToFreezeAfterDelay(1.0f));
 
         pS = 1.0f;
 

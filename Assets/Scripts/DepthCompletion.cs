@@ -10,9 +10,9 @@ using System.Runtime.Remoting.Messaging;
 public class DepthCompletion : MonoBehaviour
 {
     public bool activate_depth_estimation;
-    public bool activate_averaging;
+    public bool mean_averaging;
     public bool median_averaging;
-    //public bool activate_depth_preprocess;
+
     public bool use_BPNet;
     public float fx, cx, fy, cy;
 
@@ -26,11 +26,6 @@ public class DepthCompletion : MonoBehaviour
     private ComputeBuffer depthBufferCompute;
     private ComputeBuffer depthArCompute;
 
-    //public bool activate_margin_cut;
-    //public int l_margin, r_margin, b_margin, t_margin;
-
-    //public float lower_bound, upper_bound;
-
     public ModelAsset modelAsset;
     public ModelAsset modelAssetBP;
     Model runtimeModel;
@@ -39,12 +34,8 @@ public class DepthCompletion : MonoBehaviour
     float[] k_ar;
 
     private DateTime current_time;
-
     int kernel;
-
     bool clear_buffer = false;
-
-    // Start is called before the first frame update
 
     public bool buffer_prepare_status()
     {
@@ -72,7 +63,6 @@ public class DepthCompletion : MonoBehaviour
         kernel = average_shader.FindKernel("CSMain");
 
         average_shader.SetInt("num_frames", num_frames);
-
         depthBufferCompute.SetData(depth_buffer);
         average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
     }
@@ -80,25 +70,29 @@ public class DepthCompletion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<SpotMovingDetection>().is_moving())
+        {
+            Debug.Log("close");
+        }
     }
 
     // close, weighted, median
     public void switch_averaging_mode()
     {
-        if (!activate_averaging)
+        if (!mean_averaging && !median_averaging)
         {
-            activate_averaging = true;
+            mean_averaging = true;
             median_averaging = false;
         }
-        else if (median_averaging) 
+        else if (mean_averaging && !median_averaging) 
         {
-            activate_averaging = false;
-            median_averaging = false;
+            mean_averaging = false;
+            median_averaging = true;
         }
         else
         {
-            activate_averaging = true;
-            median_averaging = true;
+            mean_averaging = false;
+            median_averaging = false;
         }
 
         GetComponent<DrawMeshInstanced>().continue_update();
@@ -144,26 +138,21 @@ public class DepthCompletion : MonoBehaviour
             }
         }
 
-        if (activate_averaging || (clear_buffer && activate_depth_estimation))
+        if (mean_averaging || median_averaging || (clear_buffer && activate_depth_estimation))
         {
             if (clear_buffer)
             {
-                average_shader.SetBool("clear_buffer", true);
                 clear_buffer = false;
             }
-            else
-            {
-                average_shader.SetBool("clear_buffer", false);
-            }
+                
+            average_shader.SetBool("clear_buffer", clear_buffer);
 
             average_shader.SetInt("buffer_pos", buffer_pos);
             average_shader.SetBool("median_averaging", median_averaging);
             average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
 
             depthArCompute.SetData(depth_ar);
-
             average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
-
 
             int groupsX = (640 + 32 - 1) / 32;
             int groupsY = (480 + 32 - 1) / 32;
@@ -176,13 +165,9 @@ public class DepthCompletion : MonoBehaviour
             }
 
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
-
-            
         }
 
-        //UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
-
-        if (activate_averaging) 
+        if (mean_averaging || median_averaging) 
         {
             return output;
         }
