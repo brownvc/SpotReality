@@ -40,8 +40,6 @@ Shader "Custom/InstancedIndirectColor" {
             float pS;                   // point scalar
 
             StructuredBuffer<MeshProperties> _Properties;
-            StructuredBuffer<float> confidence;
-            float confidence_threshold;
 
             v2f vert(appdata_t i, uint instanceID: SV_InstanceID) {
                 v2f o;
@@ -93,15 +91,6 @@ Shader "Custom/InstancedIndirectColor" {
                 coor.x = uv.x; coor.y = uv.y;
                 //float4 coor = {0.2,0.5,0.0,0.0};
                 o.color = tex2Dlod(_colorMap, coor);
-
-                if (confidence[instanceID] > confidence_threshold) {
-                    o.color = tex2Dlod(_colorMap, coor);
-                } else {
-                    //o.color = float4(0.0, 0.0, 0.0, 0.0);
-                    o.vertex.x = 0.0;
-                    o.vertex.y = 0.0;
-                    o.vertex.z = 0.0;
-                }
 
                 //o.uv = TRANSFORM_TEX (i.texcoord, _colorMap);
                 //o.color.r = _Properties[instanceID].pos.w * 100000;

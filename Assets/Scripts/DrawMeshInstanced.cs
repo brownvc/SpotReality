@@ -28,9 +28,6 @@ public class DrawMeshInstanced : MonoBehaviour
     public float y_min;
     public float z_max;
 
-    private ComputeBuffer material_confidence;
-    public float confidence_threshold;
-
     public float range;
 
     public Texture2D color_image;
@@ -75,7 +72,6 @@ public class DrawMeshInstanced : MonoBehaviour
     private bool freezeCloud = false; // boolean that freezes this point cloud
     private float[] depth_ar;
     private float[] depth_ar_saved;
-    private float[] confidence_ar = new float[480 * 640];
 
     private MeshProperties[] globalProps;
 
@@ -121,9 +117,6 @@ public class DrawMeshInstanced : MonoBehaviour
         // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 6f), 1, 1);
 
-        material_confidence.SetData(confidence_ar);
-        material.SetBuffer("confidence", material_confidence);
-        material.SetFloat("confidence_threshold", confidence_threshold);
         //uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         //argsBuffer.GetData(args);
         //args[0] += 480 * 640;
@@ -200,7 +193,7 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_ar = depthSubscriber.getDepthArr();
         }
 
-        (depth_ar, confidence_ar) = depthCompletion.complete_depth(depth_ar, color_image);
+        depth_ar = depthCompletion.complete_depth(depth_ar, color_image);
     }
 
     private void OnDisable()
@@ -223,12 +216,6 @@ public class DrawMeshInstanced : MonoBehaviour
             depthBuffer.Release();
         }
         depthBuffer = null;
-
-        if (material_confidence != null)
-        {
-            material_confidence.Release();
-        }
-        material_confidence = null;
     }
 
     private void OnDestroy()
@@ -327,8 +314,6 @@ public class DrawMeshInstanced : MonoBehaviour
         meshPropertiesBuffer.SetData(globalProps);
 
         depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
-
-        material_confidence = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
     }
 
     private void InitializeMaterials()

@@ -20,14 +20,11 @@ public class DepthCompletion : MonoBehaviour
 
     public int num_frames;
     float[,] depth_buffer;
-    float[,] confidence_buffer;
     int buffer_pos = 0;
 
     public ComputeShader average_shader;
     private ComputeBuffer depthBufferCompute;
-    private ComputeBuffer confidenceBufferCompute;
     private ComputeBuffer depthArCompute;
-    private ComputeBuffer confidenceArCompute;
 
     //public bool activate_margin_cut;
     //public int l_margin, r_margin, b_margin, t_margin;
@@ -39,7 +36,6 @@ public class DepthCompletion : MonoBehaviour
     Model runtimeModel;
     IWorker worker;
 
-    float[] confidence_ar;
     float[] k_ar;
 
     private DateTime current_time;
@@ -67,31 +63,18 @@ public class DepthCompletion : MonoBehaviour
         }
 
         worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, runtimeModel);
-
-        confidence_buffer = new float[num_frames, 480 * 640];
         depth_buffer = new float[num_frames, 480 * 640];
 
         depthBufferCompute = new ComputeBuffer(num_frames * 480 * 640, sizeof(float));
-        confidenceBufferCompute = new ComputeBuffer(num_frames * 480 * 640, sizeof(float));
         depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
-        confidenceArCompute = new ComputeBuffer(480 * 640, sizeof(float));
 
         // kernel
         kernel = average_shader.FindKernel("CSMain");
 
         average_shader.SetInt("num_frames", num_frames);
 
-        confidenceBufferCompute.SetData(confidence_buffer);
         depthBufferCompute.SetData(depth_buffer);
         average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
-        average_shader.SetBuffer(kernel, "confidence_buffer", confidenceBufferCompute);
-
-        // confidence
-        confidence_ar = new float[480 * 640];
-        for (int i = 0; i < confidence_ar.Length; i++)
-        {
-            confidence_ar[i] = 1.0f;
-        }
     }
 
     // Update is called once per frame
@@ -133,7 +116,7 @@ public class DepthCompletion : MonoBehaviour
         clear_buffer = true;
     }
 
-    public (float[], float[]) complete_depth(float[] depth_ar, Texture2D color_image)
+    public float[] complete_depth(float[] depth_ar, Texture2D color_image)
     {
         float[] output = new float[480 * 640];
 
@@ -150,23 +133,14 @@ public class DepthCompletion : MonoBehaviour
         current_time = DateTime.Now;
         if (activate_depth_estimation)
         {
-            //Debug.Log("here");
             if (use_BPNet) 
             {
                 k_ar = new float[] { fx, 0.0f, cx, 0.0f, fy, cy, 0.0f, 0.0f, 1.0f };
-                (depth_ar, confidence_ar) = bp_complete(depth_ar, color_image, k_ar);
+                depth_ar = bp_complete(depth_ar, color_image, k_ar);
             }
             else
             {
-                (depth_ar, confidence_ar) = complete(depth_ar, color_image);
-            }
-        }
-        else if (activate_averaging)
-        {
-            confidence_ar = new float[480 * 640];
-            for (int i = 0; i < confidence_ar.Length; i++) 
-            {
-                confidence_ar[i] = 1.0f;
+                depth_ar = complete(depth_ar, color_image);
             }
         }
 
@@ -181,20 +155,20 @@ public class DepthCompletion : MonoBehaviour
             {
                 average_shader.SetBool("clear_buffer", false);
             }
-                
+
             average_shader.SetInt("buffer_pos", buffer_pos);
             average_shader.SetBool("median_averaging", median_averaging);
             average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
 
             depthArCompute.SetData(depth_ar);
-            confidenceArCompute.SetData(confidence_ar);
 
             average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
-            average_shader.SetBuffer(kernel, "confidence_ar", confidenceArCompute);
 
-            average_shader.Dispatch(kernel, 1, 480, 1);
+
+            int groupsX = (640 + 32 - 1) / 32;
+            int groupsY = (480 + 32 - 1) / 32;
+            average_shader.Dispatch(kernel, groupsX, groupsY, 1);
             depthArCompute.GetData(output);
-            confidenceArCompute.GetData(confidence_ar);
 
             if (buffer_pos == num_frames - 2)
             {
@@ -203,15 +177,19 @@ public class DepthCompletion : MonoBehaviour
 
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
 
-            return (output, confidence_ar);
+            
         }
 
         //UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
 
-        return (depth_ar, confidence_ar);
+        if (activate_averaging) 
+        {
+            return output;
+        }
+        return depth_ar;
     }
 
-    private (float[], float[]) complete(float[] depth_data, Texture2D color_data)
+    private float[] complete(float[] depth_data, Texture2D color_data)
     {
         TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
         TensorShape color_shape = new TensorShape(1, 3, 480, 640);
@@ -234,7 +212,7 @@ public class DepthCompletion : MonoBehaviour
 
         TensorFloat confidence_outputTensor = worker.PeekOutput("output_confidence") as TensorFloat;
         confidence_outputTensor.CompleteOperationsAndDownload();
-        float[] output_confidence = confidence_outputTensor.ToReadOnlyArray();
+        float[] output_confidence = depth_outputTensor.ToReadOnlyArray();
 
         foreach (var key in input_tensors.Keys)
         {
@@ -244,13 +222,13 @@ public class DepthCompletion : MonoBehaviour
 
         depth_tensor.Dispose();
         color_tensor.Dispose();
-        confidence_outputTensor.Dispose();
         depth_outputTensor.Dispose();
+        confidence_outputTensor.Dispose();
 
-        return (output_depth, output_confidence);
+        return output_depth;
     }
 
-    private (float[], float[]) bp_complete(float[] depth_data, Texture2D color_data, float[] k_data)
+    private float[] bp_complete(float[] depth_data, Texture2D color_data, float[] k_data)
     {
         TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
         TensorShape color_shape = new TensorShape(1, 3, 480, 640);
@@ -285,16 +263,14 @@ public class DepthCompletion : MonoBehaviour
         k_tensor.Dispose();
         outputTensor.Dispose();
 
-        return (output_depth, confidence_ar);
+        return output_depth;
 
     }
 
     void OnDestroy()
     {
         depthBufferCompute.Release();
-        confidenceBufferCompute.Release();
         depthArCompute.Release();
-        confidenceArCompute.Release();
         worker.Dispose();
     }
 }

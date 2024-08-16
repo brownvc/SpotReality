@@ -1042,12 +1042,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
-  freeze_without_action: 0
+  freeze_without_action: 1
   latency_frames: 200
   depthCompletion: {fileID: 112187589}
   y_min: 0.5
   z_max: 100
-  confidence_threshold: 0.0001
   range: 1e+13
   color_image: {fileID: 2800000, guid: 789577b837423da42a16b064727159f3, type: 3}
   depth_image: {fileID: 0}
@@ -1069,7 +1068,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  size_scale: 0.0035
+  size_scale: 0.0045
   use_saved_meshes: 0
   delta_x: 0
   delta_y: 0.02
@@ -1086,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25cf82332814848a603a2ec3427fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
+  activate_depth_estimation: 0
   activate_averaging: 0
   median_averaging: 0
   use_BPNet: 0
@@ -1096,7 +1095,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 850150b74b705f94d93a2d442a879990, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 125c3fe67628f5942acb87cf1533a710, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &112187590
 MonoBehaviour:
@@ -1541,7 +1540,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: c42e37b95e20fb04f872bdd0b7807356, type: 3}
   depth_image: {fileID: 0}
@@ -2437,7 +2435,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: dfea5aa704a473b44a7084371cd065fb, type: 3}
   depth_image: {fileID: 0}
@@ -3604,12 +3601,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arm: {fileID: 5235943364053865583}
   Drive: {fileID: 3465647788609728707}
-  freeze_without_action: 0
+  freeze_without_action: 1
   latency_frames: 200
   depthCompletion: {fileID: 545284151}
   y_min: 0.5
   z_max: 100
-  confidence_threshold: 0.0001
   range: 1e+13
   color_image: {fileID: 2800000, guid: b894a62b0d72ca0479753bc424b7fe2b, type: 3}
   depth_image: {fileID: 0}
@@ -3631,7 +3627,7 @@ MonoBehaviour:
   facedAngle: 0
   t: 1
   pS: 1
-  size_scale: 0.0035
+  size_scale: 0.0045
   use_saved_meshes: 0
   delta_x: 0
   delta_y: 0
@@ -3648,7 +3644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25cf82332814848a603a2ec3427fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
+  activate_depth_estimation: 0
   activate_averaging: 0
   median_averaging: 0
   use_BPNet: 0
@@ -3658,7 +3654,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 850150b74b705f94d93a2d442a879990, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 05c8202b5894a384ca88136745d3d4ab, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &545284152
 MonoBehaviour:
@@ -3923,7 +3919,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
   depth_image: {fileID: 0}
@@ -7181,7 +7176,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 3c04cbdd3edffc0448f55c44039436fa, type: 3}
   depth_image: {fileID: 0}
@@ -12295,7 +12289,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 253e55a43371139418b8b85ea7658166, type: 3}
   depth_image: {fileID: 0}
@@ -13837,7 +13830,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 2800000, guid: 500926c50d135d14f88f797ffc7a96f3, type: 3}
   depth_image: {fileID: 0}
@@ -25986,7 +25978,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 0}
   depth_image: {fileID: 0}
@@ -26364,7 +26355,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 0}
   depth_image: {fileID: 0}
@@ -27199,7 +27189,6 @@ MonoBehaviour:
   depthCompletion: {fileID: 0}
   y_min: 0
   z_max: 0
-  confidence_threshold: 0
   range: 1e+13
   color_image: {fileID: 0}
   depth_image: {fileID: 0}
