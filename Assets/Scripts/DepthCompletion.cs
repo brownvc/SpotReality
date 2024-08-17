@@ -168,8 +168,8 @@ public class DepthCompletion : MonoBehaviour
             depthArCompute.SetData(depth_ar);
             average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
 
-            int groupsX = (640 + 32 - 1) / 32;
-            int groupsY = (480 + 32 - 1) / 32;
+            int groupsX = (640 + 16 - 1) / 16;
+            int groupsY = (480 + 16 - 1) / 16;
             average_shader.Dispatch(kernel, groupsX, groupsY, 1);
             depthArCompute.GetData(output);
 
