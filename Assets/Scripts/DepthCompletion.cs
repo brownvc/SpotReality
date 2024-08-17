@@ -37,8 +37,18 @@ public class DepthCompletion : MonoBehaviour
     float[] k_ar;
 
     private DateTime current_time;
-    int kernel;
     bool clear_buffer = false;
+
+    int edge_kernel;
+    int mean_kernel;
+    int clear_kernel;
+    int median_kernel;
+    int fast_median_kernel;
+
+    int groupsX = (640 + 16 - 1) / 16;
+    int groupsY = (480 + 16 - 1) / 16;
+
+    float[] output = new float[480 * 640];
 
     public bool buffer_prepare_status()
     {
@@ -63,20 +73,24 @@ public class DepthCompletion : MonoBehaviour
         depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
 
         // kernel
-        kernel = average_shader.FindKernel("CSMain");
+        edge_kernel = average_shader.FindKernel("EdgeDetection");
+        mean_kernel = average_shader.FindKernel("MeanAveraging");
+        clear_kernel = average_shader.FindKernel("ClearBuffer");
+        median_kernel = average_shader.FindKernel("MedianAveragingNaive");
+        fast_median_kernel = average_shader.FindKernel("MedianAveragingFast");
 
         average_shader.SetInt("num_frames", num_frames);
         depthBufferCompute.SetData(depth_buffer);
-        average_shader.SetBuffer(kernel, "depth_buffer", depthBufferCompute);
+
+        average_shader.SetBuffer(mean_kernel, "depth_buffer", depthBufferCompute);
+        average_shader.SetBuffer(clear_kernel, "depth_buffer", depthBufferCompute);
+        average_shader.SetBuffer(median_kernel, "depth_buffer", depthBufferCompute);
+        average_shader.SetBuffer(fast_median_kernel, "depth_buffer", depthBufferCompute);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<SpotMovingDetection>().is_moving())
-        {
-            Debug.Log("close");
-        }
     }
 
     // close, weighted, median
@@ -115,16 +129,19 @@ public class DepthCompletion : MonoBehaviour
 
     public float[] complete_depth(float[] depth_ar, Texture2D color_image)
     {
-        float[] output = new float[480 * 640];
+        //if (depth_ar == null || depth_ar.Length != 480 * 640)
+        //{
+        //    depth_ar = new float[480 * 640];
+        //}
 
-        if (depth_ar == null || depth_ar.Length != 480 * 640)
-        {
-            depth_ar = new float[480 * 640];
-        }
+        //if (color_image == null || color_image.width < 640 || color_image.height < 480)
+        //{
+        //    color_image = new Texture2D(640, 480);
+        //}
 
-        if (color_image == null || color_image.width < 640 || color_image.height < 480)
+        if (median_averaging && mean_averaging)
         {
-            color_image = new Texture2D(640, 480);
+            mean_averaging = false;
         }
 
         current_time = DateTime.Now;
@@ -139,52 +156,74 @@ public class DepthCompletion : MonoBehaviour
             {
                 depth_ar = complete(depth_ar, color_image);
             }
-        }
-
-        if (mean_averaging || median_averaging || (clear_buffer && activate_depth_estimation) || edge_detection)
-        {
-            if (median_averaging && mean_averaging)
-            {
-                mean_averaging = false;
-            }
 
             if (clear_buffer)
             {
-                average_shader.SetBool("clear_buffer", true);
+                average_shader.Dispatch(clear_kernel, groupsX, groupsY, 1);
                 clear_buffer = false;
             }
-            else
+        }
+
+        if (mean_averaging || median_averaging || edge_detection)
+        {
+            average_shader.SetInt("buffer_pos", buffer_pos);
+            depthArCompute.SetData(depth_ar);
+
+            if (edge_detection)
             {
-                average_shader.SetBool("clear_buffer", false);
+                average_shader.SetFloat("edgeThreshold", edge_threshold);
+                average_shader.SetBuffer(edge_kernel, "depth_ar", depthArCompute);
             }
 
-            average_shader.SetInt("buffer_pos", buffer_pos);
-            average_shader.SetFloat("edgeThreshold", edge_threshold);
-            average_shader.SetBool("median_averaging", median_averaging);
-            average_shader.SetBool("edge_detection", edge_detection);
-            average_shader.SetBool("mean_averaging", mean_averaging);
-            average_shader.SetBool("activate_fast_median_calculation", activate_fast_median_calculation);
+            if (mean_averaging)
+            {
+                average_shader.SetBuffer(mean_kernel, "depth_ar", depthArCompute);
+            }
 
-            depthArCompute.SetData(depth_ar);
-            average_shader.SetBuffer(kernel, "depth_ar", depthArCompute);
+            if (median_averaging)
+            {
+                if (activate_fast_median_calculation)
+                {
+                    average_shader.SetBuffer(median_kernel, "depth_ar", depthArCompute);
+                }
+                else
+                {
+                    average_shader.SetBuffer(median_kernel, "depth_ar", depthArCompute);
+                }
+            }
 
-            int groupsX = (640 + 16 - 1) / 16;
-            int groupsY = (480 + 16 - 1) / 16;
-            average_shader.Dispatch(kernel, groupsX, groupsY, 1);
-            depthArCompute.GetData(output);
+            if (edge_detection)
+            {
+                average_shader.Dispatch(edge_kernel, groupsX, groupsY, 1);
+            }
 
-            if (buffer_pos == num_frames - 2)
+            if (mean_averaging) 
+            {
+                average_shader.Dispatch(mean_kernel, groupsX, groupsY, 1);
+            }
+
+            if (median_averaging)
+            {
+                if (activate_fast_median_calculation)
+                {
+                    average_shader.Dispatch(median_kernel, groupsX, groupsY, 1);
+                }
+                else
+                {
+                    average_shader.Dispatch(median_kernel, groupsX, groupsY, 1);
+                }   
+            }
+
+            if (median_averaging && buffer_pos == num_frames - 2)
             {
                 activate_fast_median_calculation = true;
             }
-
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
-        }
 
-        if (mean_averaging || median_averaging) 
-        {
+            depthArCompute.GetData(output);
             return output;
         }
+
         return depth_ar;
     }
 

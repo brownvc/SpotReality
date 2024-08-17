@@ -10,13 +10,11 @@
 
 // Number of frames
 int num_frames;
-bool activate_fast_median_calculation;
-bool clear_buffer;
 float edgeThreshold;
 
 // Buffers
-RWStructuredBuffer<float> depth_ar;
-RWStructuredBuffer<float> depth_buffer;
+RWStructuredBuffer<float> depth_ar; // EdgeDetection, MeanAveraging, MedianAveragingFast, MedianAveragingNaive 
+RWStructuredBuffer<float> depth_buffer; // MeanAveraging, ClearBuffer, MedianAveragingFast, MedianAveragingNaive 
 
 // buffer pos
 int buffer_pos;
