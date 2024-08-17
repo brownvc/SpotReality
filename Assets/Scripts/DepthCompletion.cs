@@ -224,6 +224,8 @@ public class DepthCompletion : MonoBehaviour
             return output;
         }
 
+        //UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
+
         return depth_ar;
     }
 
