@@ -221,6 +221,7 @@ public class DepthCompletion : MonoBehaviour
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
 
             depthArCompute.GetData(output);
+
             return output;
         }
 

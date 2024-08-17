@@ -123,16 +123,16 @@ public class DrawMeshInstanced : MonoBehaviour
         //argsBuffer.SetData(args);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
 
-        // get current fps
-        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        timer += Time.unscaledDeltaTime;
+        //// get current fps
+        //deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        //timer += Time.unscaledDeltaTime;
 
-        if (timer >= 1.0f) // Log FPS every second
-        {
-            float fps = 1.0f / deltaTime;
-            Debug.Log("FPS: " + Mathf.Ceil(fps));
-            timer = 0.0f; // Reset timer after logging
-        }
+        //if (timer >= 1.0f) // Log FPS every second
+        //{
+        //    float fps = 1.0f / deltaTime;
+        //    Debug.Log("FPS: " + Mathf.Ceil(fps));
+        //    timer = 0.0f; // Reset timer after logging
+        //}
     }
 
     private void SetProperties()                        
