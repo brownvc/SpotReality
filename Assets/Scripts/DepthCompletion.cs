@@ -143,12 +143,20 @@ public class DepthCompletion : MonoBehaviour
 
         if (mean_averaging || median_averaging || (clear_buffer && activate_depth_estimation) || edge_detection)
         {
+            if (median_averaging && mean_averaging)
+            {
+                mean_averaging = false;
+            }
+
             if (clear_buffer)
             {
+                average_shader.SetBool("clear_buffer", true);
                 clear_buffer = false;
             }
-                
-            average_shader.SetBool("clear_buffer", clear_buffer);
+            else
+            {
+                average_shader.SetBool("clear_buffer", false);
+            }
 
             average_shader.SetInt("buffer_pos", buffer_pos);
             average_shader.SetFloat("edgeThreshold", edge_threshold);
