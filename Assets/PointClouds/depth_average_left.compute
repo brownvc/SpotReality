@@ -10,6 +10,8 @@
 
 // Number of frames
 int num_frames;
+
+// For Edge Detection Min Grad
 float edgeThreshold;
 
 // Buffers
@@ -19,6 +21,8 @@ RWStructuredBuffer<float> depth_buffer; // MeanAveraging, ClearBuffer, MedianAve
 // buffer pos
 int buffer_pos;
 
+
+// EdgeDetection
 [numthreads(16, 16, 1)]
 void EdgeDetection(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
@@ -58,37 +62,8 @@ void EdgeDetection(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID
     }
 }
 
-[numthreads(16, 16, 1)]
-void MeanAveraging(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
-{
-    int xIndex = groupId.x * 16 + threadId.x;
-    int yIndex = groupId.y * 16 + threadId.y;
 
-    int index = xIndex + yIndex * WIDTH;
-
-    if (xIndex < WIDTH && yIndex < HEIGHT)
-    {
-        float weighted_sum = 0.0;
-        float total_weight = 0.0001;
-
-        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
-        
-        for (int i = 0; i < num_frames - 1; i++)
-        {
-            int idx = i * WIDTH * HEIGHT + index;
-            //float weight = 1.0;
-            //weight = 1.0;
-            if (depth_buffer[idx] > 0)
-            {
-                weighted_sum += depth_buffer[idx];
-                total_weight += 1.0;
-            }
-        }
-            
-        depth_ar[index] = weighted_sum / total_weight;
-    }
-}
-
+// Clear Buffer Data
 [numthreads(16, 16, 1)]
 void ClearBuffer(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
@@ -105,6 +80,8 @@ void ClearBuffer(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
     }
 }
 
+
+// MeanAveraging
 [numthreads(16, 16, 1)]
 void MedianAveragingFast(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
@@ -154,6 +131,8 @@ void MedianAveragingFast(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupTh
     }
 }
 
+
+// Native Median Averaging
 [numthreads(16, 16, 1)]
 void MedianAveragingNaive(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
 {
@@ -189,5 +168,38 @@ void MedianAveragingNaive(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupT
         }
         depth_ar[index] = tmp[9];
         depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index] = tmp[9];
+    }
+}
+
+
+// Fast Median Averaging
+[numthreads(16, 16, 1)]
+void MeanAveraging(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    int xIndex = groupId.x * 16 + threadId.x;
+    int yIndex = groupId.y * 16 + threadId.y;
+
+    int index = xIndex + yIndex * WIDTH;
+
+    if (xIndex < WIDTH && yIndex < HEIGHT)
+    {
+        float weighted_sum = 0.0;
+        float total_weight = 0.0001;
+
+        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
+        
+        for (int i = 0; i < num_frames - 1; i++)
+        {
+            int idx = i * WIDTH * HEIGHT + index;
+            //float weight = 1.0;
+            //weight = 1.0;
+            if (depth_buffer[idx] > 0)
+            {
+                weighted_sum += depth_buffer[idx];
+                total_weight += 1.0;
+            }
+        }
+            
+        depth_ar[index] = weighted_sum / total_weight;
     }
 }

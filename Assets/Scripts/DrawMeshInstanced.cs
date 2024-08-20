@@ -18,8 +18,6 @@ using System.Runtime.InteropServices;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
-    public GameObject Arm;
-    public GameObject Drive;
     public bool freeze_without_action;
     public int latency_frames;
     bool ready_to_freeze = false;
@@ -75,15 +73,11 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private MeshProperties[] globalProps;
 
-    private float deltaTime = 0.0f;
-    private float timer = 0.0f;
-
     public float delta_x;
     public float delta_y;
     public float delta_z;
 
     bool freeze_lock = false;
-
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -104,35 +98,13 @@ public class DrawMeshInstanced : MonoBehaviour
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
         SetProperties();
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
-        compute.SetFloat("t", t);
-        compute.SetFloat("y_min", y_min);
-        compute.SetFloat("z_max", z_max);
-
-        compute.SetFloat("dx", delta_x);
-        compute.SetFloat("dy", delta_y);
-        compute.SetFloat("dz", delta_z);
 
         UpdateTexture();
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
         // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
-        compute.Dispatch(kernel, Mathf.CeilToInt(population / 6f), 1, 1);
+        compute.Dispatch(kernel, Mathf.CeilToInt(population / 64), 1, 1);
 
-        //uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
-        //argsBuffer.GetData(args);
-        //args[0] += 480 * 640;
-        //argsBuffer.SetData(args);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
-
-        //// get current fps
-        //deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        //timer += Time.unscaledDeltaTime;
-
-        //if (timer >= 1.0f) // Log FPS every second
-        //{
-        //    float fps = 1.0f / deltaTime;
-        //    Debug.Log("FPS: " + Mathf.Ceil(fps));
-        //    timer = 0.0f; // Reset timer after logging
-        //}
     }
 
     private void SetProperties()                        
@@ -142,9 +114,6 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("pS", pS);
         material.SetTexture("_colorMap",color_image);
 
-        //meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
-        //depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
-        //globalProps = new MeshProperties[population];
         depthBuffer.SetData(depth_ar);
         meshPropertiesBuffer.SetData(globalProps);
 
@@ -173,7 +142,6 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void UpdateTexture()
     {
-        //Debug.Log(ready_to_freeze);
         if (freezeCloud || (ready_to_freeze && freeze_without_action))
         {
             return;
@@ -235,7 +203,6 @@ public class DrawMeshInstanced : MonoBehaviour
         Mesh mesh = CreateQuad(size_scale, size_scale);
         this.mesh = mesh;
 
-
         // Use saved meshes
         if (use_saved_meshes)
         {
@@ -269,9 +236,6 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_image.SetPixelData(depth_ar, 0);
 
             depth_ar_saved = depth_ar;
-
-            //(depth_ar, confidence_ar) = depthCompletion.complete_depth(depth_ar, color_image);
-            //color_image = Resources.Load<Texture2D>("Assets/PointClouds/Color_" + imageScriptIndex + ".png");
         }
         else
         {
@@ -332,6 +296,14 @@ public class DrawMeshInstanced : MonoBehaviour
 
         compute.SetFloat("samplingSize", downsample);
         material.SetFloat("samplingSize", downsample);
+
+        compute.SetFloat("t", t);
+        compute.SetFloat("y_min", y_min);
+        compute.SetFloat("z_max", z_max);
+
+        compute.SetFloat("dx", delta_x);
+        compute.SetFloat("dy", delta_y);
+        compute.SetFloat("dz", delta_z);
     }
 
     // Actually a cube, not a quad

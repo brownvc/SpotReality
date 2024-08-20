@@ -50,11 +50,10 @@ public class DepthCompletion : MonoBehaviour
 
     float[] output = new float[480 * 640];
 
-    public bool buffer_prepare_status()
-    {
-        return activate_fast_median_calculation; 
-    }
 
+    // =============================================================================== //
+    //                               Init & OnRelease                                  //
+    // =============================================================================== //
     void Start()
     {
         if (use_BPNet)
@@ -79,6 +78,7 @@ public class DepthCompletion : MonoBehaviour
         median_kernel = average_shader.FindKernel("MedianAveragingNaive");
         fast_median_kernel = average_shader.FindKernel("MedianAveragingFast");
 
+        // Data & Buffer
         average_shader.SetInt("num_frames", num_frames);
         depthBufferCompute.SetData(depth_buffer);
 
@@ -88,63 +88,32 @@ public class DepthCompletion : MonoBehaviour
         average_shader.SetBuffer(fast_median_kernel, "depth_buffer", depthBufferCompute);
     }
 
+    void OnDestroy()
+    {
+        depthBufferCompute.Release();
+        depthArCompute.Release();
+        worker.Dispose();
+    }
+
+
+    // =============================================================================== //
+    //                               Update                                            //
+    // =============================================================================== //
     // Update is called once per frame
     void Update()
     {
     }
 
-    // close, weighted, median
-    public void switch_averaging_mode()
-    {
-        if (!mean_averaging && !median_averaging)
-        {
-            mean_averaging = true;
-            median_averaging = false;
-        }
-        else if (mean_averaging && !median_averaging) 
-        {
-            mean_averaging = false;
-            median_averaging = true;
-        }
-        else
-        {
-            mean_averaging = false;
-            median_averaging = false;
-        }
-
-        GetComponent<DrawMeshInstanced>().continue_update();
-        activate_fast_median_calculation = false;
-        buffer_pos = 0;
-        clear_buffer = true;
-    }
-    
-    public void switch_depth_setimation_mode()
-    {
-        activate_depth_estimation = !activate_depth_estimation;
-        GetComponent<DrawMeshInstanced>().continue_update();
-        activate_fast_median_calculation = false;
-        buffer_pos = 0;
-        clear_buffer = true;
-    }
-
     public float[] complete_depth(float[] depth_ar, Texture2D color_image)
     {
-        //if (depth_ar == null || depth_ar.Length != 480 * 640)
-        //{
-        //    depth_ar = new float[480 * 640];
-        //}
-
-        //if (color_image == null || color_image.width < 640 || color_image.height < 480)
-        //{
-        //    color_image = new Texture2D(640, 480);
-        //}
-
         if (median_averaging && mean_averaging)
         {
             mean_averaging = false;
         }
 
         current_time = DateTime.Now;
+
+        // depth completion
         if (activate_depth_estimation)
         {
             if (use_BPNet) 
@@ -164,11 +133,13 @@ public class DepthCompletion : MonoBehaviour
             }
         }
 
+        // aceraging && edge detection
         if (mean_averaging || median_averaging || edge_detection)
         {
             average_shader.SetInt("buffer_pos", buffer_pos);
             depthArCompute.SetData(depth_ar);
 
+            // set buffer data CPU -> GPU
             if (edge_detection)
             {
                 average_shader.SetFloat("edgeThreshold", edge_threshold);
@@ -179,8 +150,7 @@ public class DepthCompletion : MonoBehaviour
             {
                 average_shader.SetBuffer(mean_kernel, "depth_ar", depthArCompute);
             }
-
-            if (median_averaging)
+            else if (median_averaging)
             {
                 if (activate_fast_median_calculation)
                 {
@@ -192,6 +162,7 @@ public class DepthCompletion : MonoBehaviour
                 }
             }
 
+            // dispatch shader kernel
             if (edge_detection)
             {
                 average_shader.Dispatch(edge_kernel, groupsX, groupsY, 1);
@@ -201,8 +172,7 @@ public class DepthCompletion : MonoBehaviour
             {
                 average_shader.Dispatch(mean_kernel, groupsX, groupsY, 1);
             }
-
-            if (median_averaging)
+            else if (median_averaging)
             {
                 if (activate_fast_median_calculation)
                 {
@@ -211,15 +181,16 @@ public class DepthCompletion : MonoBehaviour
                 else
                 {
                     average_shader.Dispatch(median_kernel, groupsX, groupsY, 1);
-                }   
+                }
+                
+                if (buffer_pos == num_frames - 2)
+                {
+                    activate_fast_median_calculation = true;
+                }
             }
 
-            if (median_averaging && buffer_pos == num_frames - 2)
-            {
-                activate_fast_median_calculation = true;
-            }
+            // depth GPU -> CPU
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
-
             depthArCompute.GetData(output);
 
             return output;
@@ -230,6 +201,48 @@ public class DepthCompletion : MonoBehaviour
         return depth_ar;
     }
 
+
+    // =============================================================================== //
+    //                               VR Control                                        //
+    // =============================================================================== //
+    // deactivated, weighted, median
+    public void switch_averaging_mode()
+    {
+        if (!mean_averaging && !median_averaging)
+        {
+            mean_averaging = true;
+            median_averaging = false;
+        }
+        else if (mean_averaging && !median_averaging)
+        {
+            mean_averaging = false;
+            median_averaging = true;
+        }
+        else
+        {
+            mean_averaging = false;
+            median_averaging = false;
+        }
+
+        GetComponent<DrawMeshInstanced>().continue_update();
+        activate_fast_median_calculation = false;
+        buffer_pos = 0;
+        clear_buffer = true;
+    }
+
+    public void switch_depth_setimation_mode()
+    {
+        activate_depth_estimation = !activate_depth_estimation;
+        GetComponent<DrawMeshInstanced>().continue_update();
+        activate_fast_median_calculation = false;
+        buffer_pos = 0;
+        clear_buffer = true;
+    }
+
+
+    // =============================================================================== //
+    //                               Depth Completion                                  //
+    // =============================================================================== //
     private float[] complete(float[] depth_data, Texture2D color_data)
     {
         TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
@@ -306,12 +319,5 @@ public class DepthCompletion : MonoBehaviour
 
         return output_depth;
 
-    }
-
-    void OnDestroy()
-    {
-        depthBufferCompute.Release();
-        depthArCompute.Release();
-        worker.Dispose();
     }
 }
