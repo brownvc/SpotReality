@@ -1040,10 +1040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 5235943364053865583}
-  Drive: {fileID: 3465647788609728707}
   freeze_without_action: 0
-  latency_frames: 200
+  latency_frames: 60
   depthCompletion: {fileID: 112187589}
   y_min: 0.5
   z_max: 100
@@ -1097,7 +1095,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 500d9d48561e62d419c87c6b759969dd, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: ce37d22dad5bde54a9b0bbd6aa193cc1, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &112187590
 MonoBehaviour:
@@ -1535,8 +1533,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -2430,8 +2426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -3601,10 +3595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 5235943364053865583}
-  Drive: {fileID: 3465647788609728707}
   freeze_without_action: 0
-  latency_frames: 200
+  latency_frames: 60
   depthCompletion: {fileID: 545284151}
   y_min: 0.5
   z_max: 100
@@ -3658,7 +3650,7 @@ MonoBehaviour:
   cy: 236
   num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
-  modelAsset: {fileID: 5022602860645237092, guid: 500d9d48561e62d419c87c6b759969dd, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: ce37d22dad5bde54a9b0bbd6aa193cc1, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
 --- !u!114 &545284152
 MonoBehaviour:
@@ -3916,8 +3908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -7173,8 +7163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -12286,8 +12274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -13827,8 +13813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -25975,8 +25959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -26352,8 +26334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}
@@ -27186,8 +27166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab28d8d9600c64391798c83a6cdfb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arm: {fileID: 0}
-  Drive: {fileID: 0}
   freeze_without_action: 0
   latency_frames: 0
   depthCompletion: {fileID: 0}

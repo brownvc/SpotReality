@@ -157,7 +157,7 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_ar = depthSubscriber.getDepthArr();
         }
 
-        depth_ar = depthCompletion.complete_depth(depth_ar, color_image);
+        depth_ar = depthCompletion.complete_depth(depth_ar, color_image, ready_to_freeze);
     }
 
     private void OnDisable()

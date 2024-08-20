@@ -104,7 +104,7 @@ public class DepthCompletion : MonoBehaviour
     {
     }
 
-    public float[] complete_depth(float[] depth_ar, Texture2D color_image)
+    public float[] complete_depth(float[] depth_ar, Texture2D color_image, bool activate)
     {
         if (median_averaging && mean_averaging)
         {
@@ -114,7 +114,7 @@ public class DepthCompletion : MonoBehaviour
         current_time = DateTime.Now;
 
         // depth completion
-        if (activate_depth_estimation)
+        if (activate_depth_estimation && activate)
         {
             if (use_BPNet) 
             {
@@ -136,11 +136,12 @@ public class DepthCompletion : MonoBehaviour
         // aceraging && edge detection
         if (mean_averaging || median_averaging || edge_detection)
         {
+            average_shader.SetBool("activate", activate);
             average_shader.SetInt("buffer_pos", buffer_pos);
             depthArCompute.SetData(depth_ar);
 
             // set buffer data CPU -> GPU
-            if (edge_detection)
+            if (edge_detection && activate)
             {
                 average_shader.SetFloat("edgeThreshold", edge_threshold);
                 average_shader.SetBuffer(edge_kernel, "depth_ar", depthArCompute);
@@ -163,7 +164,7 @@ public class DepthCompletion : MonoBehaviour
             }
 
             // dispatch shader kernel
-            if (edge_detection)
+            if (edge_detection && activate)
             {
                 average_shader.Dispatch(edge_kernel, groupsX, groupsY, 1);
             }

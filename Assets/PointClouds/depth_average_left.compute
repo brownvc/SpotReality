@@ -21,6 +21,9 @@ RWStructuredBuffer<float> depth_buffer; // MeanAveraging, ClearBuffer, MedianAve
 // buffer pos
 int buffer_pos;
 
+// activate filter or not
+bool activate;
+
 
 // EdgeDetection
 [numthreads(16, 16, 1)]
@@ -89,13 +92,13 @@ void MedianAveragingFast(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupTh
     int yIndex = groupId.y * 16 + threadId.y;
 
     int index = xIndex + yIndex * WIDTH;
-    
-    if (xIndex < WIDTH && yIndex < HEIGHT)
-    {
-        float depth_value = depth_ar[index];
-        float old_value = depth_buffer[buffer_pos * WIDTH * HEIGHT + index];
-        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_value;
 
+    float depth_value = depth_ar[index];
+    float old_value = depth_buffer[buffer_pos * WIDTH * HEIGHT + index];
+    depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_value;
+    
+    if (xIndex < WIDTH && yIndex < HEIGHT && activate)
+    {
         float median_value = depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index];
 
         if ((old_value - median_value) * (depth_value - median_value) > 0) // The new value and the old are on the same side
@@ -140,11 +143,11 @@ void MedianAveragingNaive(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupT
     int yIndex = groupId.y * 16 + threadId.y;
 
     int index = xIndex + yIndex * WIDTH;
-    
-    if (xIndex < WIDTH && yIndex < HEIGHT)
-    {
-        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
 
+    depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
+    
+    if (xIndex < WIDTH && yIndex < HEIGHT && activate)
+    {
         float tmp[19];
         for (int q = 0; q < num_frames - 1; q++)
         {
@@ -180,14 +183,13 @@ void MeanAveraging(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID
     int yIndex = groupId.y * 16 + threadId.y;
 
     int index = xIndex + yIndex * WIDTH;
+    depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
 
-    if (xIndex < WIDTH && yIndex < HEIGHT)
+    if (xIndex < WIDTH && yIndex < HEIGHT && activate)
     {
         float weighted_sum = 0.0;
         float total_weight = 0.0001;
-
-        depth_buffer[buffer_pos * WIDTH * HEIGHT + index] = depth_ar[index];
-        
+ 
         for (int i = 0; i < num_frames - 1; i++)
         {
             int idx = i * WIDTH * HEIGHT + index;
