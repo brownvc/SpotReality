@@ -1083,17 +1083,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25cf82332814848a603a2ec3427fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
+  activate_depth_estimation: 0
   mean_averaging: 0
   median_averaging: 1
-  edge_detection: 1
+  edge_detection: 0
   edge_threshold: 0.4
   use_BPNet: 0
   fx: 329.64
   cx: 318
   fy: 328.62
   cy: 236
-  num_frames: 20
   average_shader: {fileID: 7200000, guid: 5056181408d33fb4ca609c5c9471ede1, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: ce37d22dad5bde54a9b0bbd6aa193cc1, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}
@@ -3638,17 +3637,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25cf82332814848a603a2ec3427fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
+  activate_depth_estimation: 0
   mean_averaging: 0
   median_averaging: 1
-  edge_detection: 1
+  edge_detection: 0
   edge_threshold: 0.4
   use_BPNet: 0
   fx: 330.699
   cx: 309
   fy: 329.77
   cy: 236
-  num_frames: 20
   average_shader: {fileID: 7200000, guid: 218e245ec3d04954ba5efa18bce16290, type: 3}
   modelAsset: {fileID: 5022602860645237092, guid: ce37d22dad5bde54a9b0bbd6aa193cc1, type: 3}
   modelAssetBP: {fileID: 5022602860645237092, guid: f44f236bff7b8094da9b8a8e7ec28515, type: 3}

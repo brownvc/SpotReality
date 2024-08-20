@@ -21,7 +21,7 @@ public class DepthCompletion : MonoBehaviour
 
     private bool activate_fast_median_calculation = false;
 
-    public int num_frames;
+    int num_frames = 20;
     float[,] depth_buffer;
     int buffer_pos = 0;
 
@@ -104,8 +104,10 @@ public class DepthCompletion : MonoBehaviour
     {
     }
 
-    public float[] complete_depth(float[] depth_ar, Texture2D color_image, bool activate)
+    public float[] complete_depth(float[] depth_ar, Texture2D color_image, bool is_not_moving)
     {
+        bool is_moving = !is_not_moving;
+
         if (median_averaging && mean_averaging)
         {
             mean_averaging = false;
@@ -114,7 +116,7 @@ public class DepthCompletion : MonoBehaviour
         current_time = DateTime.Now;
 
         // depth completion
-        if (activate_depth_estimation && activate)
+        if (activate_depth_estimation && is_not_moving)
         {
             if (use_BPNet) 
             {
@@ -133,25 +135,27 @@ public class DepthCompletion : MonoBehaviour
             }
         }
 
-        // aceraging && edge detection
-        if (mean_averaging || median_averaging || edge_detection)
+        if (!median_averaging) 
         {
-            average_shader.SetBool("activate", activate);
+            activate_fast_median_calculation = false;
+        }
+
+        // aceraging && edge detection
+        if (mean_averaging || median_averaging || edge_detection || is_not_moving)
+        {
+            average_shader.SetBool("activate", is_not_moving);   // activate = activate_averaging
             average_shader.SetInt("buffer_pos", buffer_pos);
             depthArCompute.SetData(depth_ar);
 
             // set buffer data CPU -> GPU
-            if (edge_detection && activate)
+            if (edge_detection && is_not_moving)
             {
                 average_shader.SetFloat("edgeThreshold", edge_threshold);
                 average_shader.SetBuffer(edge_kernel, "depth_ar", depthArCompute);
             }
 
-            if (mean_averaging)
-            {
-                average_shader.SetBuffer(mean_kernel, "depth_ar", depthArCompute);
-            }
-            else if (median_averaging)
+            
+            if (median_averaging)
             {
                 if (activate_fast_median_calculation)
                 {
@@ -162,18 +166,19 @@ public class DepthCompletion : MonoBehaviour
                     average_shader.SetBuffer(median_kernel, "depth_ar", depthArCompute);
                 }
             }
+            else if (mean_averaging || is_moving)
+            {
+                average_shader.SetBuffer(mean_kernel, "depth_ar", depthArCompute);
+            }
 
             // dispatch shader kernel
-            if (edge_detection && activate)
+            if (edge_detection && is_not_moving)
             {
                 average_shader.Dispatch(edge_kernel, groupsX, groupsY, 1);
             }
 
-            if (mean_averaging) 
-            {
-                average_shader.Dispatch(mean_kernel, groupsX, groupsY, 1);
-            }
-            else if (median_averaging)
+            
+            if (median_averaging)
             {
                 if (activate_fast_median_calculation)
                 {
@@ -189,15 +194,21 @@ public class DepthCompletion : MonoBehaviour
                     activate_fast_median_calculation = true;
                 }
             }
+            else if (mean_averaging || is_moving)
+            {
+                average_shader.Dispatch(mean_kernel, groupsX, groupsY, 1);
+            }
 
             // depth GPU -> CPU
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
             depthArCompute.GetData(output);
 
+            Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
+
             return output;
         }
 
-        //UnityEngine.Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
+        Debug.Log("Execution Time: " + (DateTime.Now - current_time) + " s");
 
         return depth_ar;
     }
