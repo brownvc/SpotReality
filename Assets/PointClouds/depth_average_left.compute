@@ -149,11 +149,13 @@ void MedianAveragingFast(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupTh
                 }
             }
 
-            depth_ar[index] = depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index];
             if (count_z > 16)
             {
-                depth_ar[index] = 0.0;
+                depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index] = 0.0;
             }
+
+            depth_ar[index] = depth_buffer[(num_frames - 1) * WIDTH * HEIGHT + index];
+            
         }
     }
 }
