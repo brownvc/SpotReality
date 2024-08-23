@@ -15,6 +15,7 @@ using Unity.Sentis;
 using static UnityEngine.Analytics.IAnalytic;
 using UnityEngine.InputSystem;
 using System.Runtime.InteropServices;
+using Random = UnityEngine.Random;
 
 public class DrawMeshInstanced : MonoBehaviour
 {
@@ -149,6 +150,14 @@ public class DrawMeshInstanced : MonoBehaviour
 
         if (use_saved_meshes) {
             depth_ar = depth_ar_saved;
+
+            // add random noise to test averaging
+            float noiseMin = -0.0006f;
+            float noiseMax = 0.0002f;
+            for (int i = 0; i < depth_ar.Length; i++)
+            {
+                depth_ar[i] += Random.Range(noiseMin, noiseMax);
+            }
         }
         else
         {

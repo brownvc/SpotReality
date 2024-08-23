@@ -1067,7 +1067,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
   delta_x: 0
   delta_y: 0.02
   delta_z: 0.06
@@ -3621,7 +3621,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 0
+  use_saved_meshes: 1
   delta_x: 0
   delta_y: 0
   delta_z: 0
