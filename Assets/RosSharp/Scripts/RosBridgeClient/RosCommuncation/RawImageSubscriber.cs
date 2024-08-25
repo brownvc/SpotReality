@@ -260,7 +260,9 @@ namespace RosSharp.RosBridgeClient
         // Get the most recently calculated depth array
         public float[] getDepthArr()
         {
-            return globalData;
+            float[] copyOfData = new float[globalData.Length];
+            Array.Copy(globalData, copyOfData, globalData.Length);
+            return copyOfData;
         }
 
         // Turn off depth history for specified time

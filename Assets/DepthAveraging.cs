@@ -14,7 +14,7 @@ public class DepthAveraging : MonoBehaviour
 
     int num_frames = 20;
 
-    float[,] depth_buffer;
+    float[,] depth_buffer = new float[20, 480 * 640];
     private ComputeBuffer depthArCompute;
     private ComputeBuffer depthBufferCompute;
 
@@ -42,6 +42,8 @@ public class DepthAveraging : MonoBehaviour
         fast_median_kernel = average_shader.FindKernel("MedianAveragingFast");
 
         // Data & Buffer
+        depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        depthBufferCompute = new ComputeBuffer(480 * 640 * 20, sizeof(float));
         average_shader.SetInt("num_frames", num_frames);
         depthBufferCompute.SetData(depth_buffer);
 
@@ -59,6 +61,8 @@ public class DepthAveraging : MonoBehaviour
 
     public float[] averaging(float[] depth_ar, bool is_not_moving, bool mean_averaging, bool median_averaging, bool edge_detection, float edge_threshold)
     {
+        float[] temp = new float[480 * 640];
+
         bool is_moving = !is_not_moving;
 
         if (!median_averaging)
@@ -126,9 +130,9 @@ public class DepthAveraging : MonoBehaviour
 
             // depth GPU -> CPU
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
-            depthArCompute.GetData(output);
+            depthArCompute.GetData(temp);
 
-            return output;
+            return temp;
         }
 
         return depth_ar;

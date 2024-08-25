@@ -172,7 +172,7 @@ public class DrawMeshInstanced : MonoBehaviour
         else
         {
             // Get the depth and color
-            color_image = colorSubscriber.texture2D;
+            color_image = copy_texture(colorSubscriber.texture2D);
             depth_ar = depthSubscriber.getDepthArr();
         }
 
@@ -185,6 +185,18 @@ public class DrawMeshInstanced : MonoBehaviour
         depth_ar = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
 
         //depth_ar = depthCompletion.complete_depth(depth_ar, color_image, ready_to_freeze);
+    }
+
+    private Texture2D copy_texture(Texture2D input_texture)
+    {
+        if (input_texture == null)
+            return null;
+
+        // Create a new texture with the same dimensions and format
+        Texture2D copy = new Texture2D(input_texture.width, input_texture.height, input_texture.format, input_texture.mipmapCount > 1);
+        Graphics.CopyTexture(input_texture, copy);
+
+        return copy;
     }
 
     public bool get_ready_to_freeze()

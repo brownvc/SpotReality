@@ -185,16 +185,14 @@ public class DepthManager : MonoBehaviour
 
         // depth completion
         //Debug.Log("depth completion");
-        if (activate_depth_estimation && is_not_moving && depthL != null && depthR != null)
+        if (activate_depth_estimation && is_not_moving)
         {
             (temp_output_left, temp_output_right) = GetComponent<DepthCompletion>().complete(depthL, rgbL, depthR, rgbR);
         }
 
+        temp_output_left = AveragerLeft.averaging(temp_output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+
         return (temp_output_left, temp_output_right);
-
-        //output_left = AveragerLeft.averaging(depthL, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
-        //output_right = AveragerRight.averaging(depthR, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
-
-        //return (output_left, output_right);
     }
 }
