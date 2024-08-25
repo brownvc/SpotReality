@@ -677,7 +677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activate_depth_estimation: 1
   mean_averaging: 0
-  median_averaging: 0
+  median_averaging: 1
   edge_detection: 0
   edge_threshold: 0.4
   AveragerLeft: {fileID: 899797695}

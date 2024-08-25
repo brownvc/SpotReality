@@ -117,7 +117,7 @@ public class DepthManager : MonoBehaviour
             return output_right;
         }
 
-        return output_left;
+        return output_right;
     }
 
     //private void TryProcessDepths()
