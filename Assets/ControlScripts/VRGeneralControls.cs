@@ -136,23 +136,23 @@ public class VRGeneralControls : MonoBehaviour
             }
         }
 
-        /* Switch averaging mode if RT1 trigger is pressed */
-        if (RT1.action.WasPressedThisFrame())
-        {
-            foreach (DepthCompletion d in depth_completion)
-            {
-                d.switch_averaging_mode();
-            }
-        }
+        ///* Switch averaging mode if RT1 trigger is pressed */
+        //if (RT1.action.WasPressedThisFrame())
+        //{
+        //    foreach (DepthCompletion d in depth_completion)
+        //    {
+        //        d.switch_averaging_mode();
+        //    }
+        //}
 
-        /* Activate/deactivate depth completion if LT1 trigger is pressed */
-        if (LT1.action.WasPressedThisFrame())
-        {
-            foreach (DepthCompletion d in depth_completion)
-            {
-                d.switch_depth_setimation_mode();
-            }
-        }
+        ///* Activate/deactivate depth completion if LT1 trigger is pressed */
+        //if (LT1.action.WasPressedThisFrame())
+        //{
+        //    foreach (DepthCompletion d in depth_completion)
+        //    {
+        //        d.switch_depth_setimation_mode();
+        //    }
+        //}
     }
 
     public void toggleUI()

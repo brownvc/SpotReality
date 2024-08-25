@@ -49,13 +49,13 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     final_pos.y = final_pos.y + dy;
     final_pos.z = final_pos.z + dz;
 
-    if (final_pos.y < y_min || final_pos.z < -0.0f || final_pos.z > z_max)
-    {
-        final_pos.y = 0.0f;
-        final_pos.z = 0.0f;
-        final_pos.x = 0.0f;
-        final_pos.w = 0.0f;
-    }
+    //if (final_pos.y < y_min || final_pos.z < -0.0f || final_pos.z > z_max)
+    //{
+    //    final_pos.y = 0.0f;
+    //    final_pos.z = 0.0f;
+    //    final_pos.x = 0.0f;
+    //    final_pos.w = 0.0f;
+    //}
     
     // Apply translation to existing matrix, which will be read in the shader.
     _Properties[id.x].pos = final_pos;

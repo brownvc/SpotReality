@@ -23,7 +23,6 @@ public class DrawMeshInstanced : MonoBehaviour
     public int latency_frames;
     bool ready_to_freeze = false;
 
-    public DepthCompletion depthCompletion;
     public float y_min;
     public float z_max;
 
@@ -69,8 +68,8 @@ public class DrawMeshInstanced : MonoBehaviour
     
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
     private bool freezeCloud = false; // boolean that freezes this point cloud
-    private float[] depth_ar;
-    private float[] depth_ar_saved;
+    private float[] depth_ar = new float[480 * 640];
+    private float[] depth_ar_saved = new float[480 * 640];
 
     private MeshProperties[] globalProps;
 
@@ -79,6 +78,12 @@ public class DrawMeshInstanced : MonoBehaviour
     public float delta_z;
 
     bool freeze_lock = false;
+
+    public int camera_index;
+    public DepthManager depthManager;
+
+    private bool depth_process_lock = false;
+    private bool first_run = false;
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -95,12 +100,14 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Update()
     {
+        UpdateTexture();
+
         int kernel = compute.FindKernel("CSMain");
         //SetProperties enables point cloud to move when game object moves, but is laggier due to redrawing. Just comment it out for performance improvement;
         SetProperties();
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
 
-        UpdateTexture();
+
         // We used to just be able to use `population` here, but it looks like a Unity update imposed a thread limit (65535) on my device.
         // This is probably for the best, but we have to do some more calculation.  Divide population by numthreads.x (declared in compute shader).
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 64), 1, 1);
@@ -143,13 +150,16 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void UpdateTexture()
     {
-        if (freezeCloud || (ready_to_freeze && freeze_without_action))
+        if (freezeCloud || (ready_to_freeze && freeze_without_action))// || (!first_run && depth_process_lock))
         {
             return;
         }
 
         if (use_saved_meshes) {
-            depth_ar = depth_ar_saved;
+            for (int i = 0; i < 480 * 640; i++)
+            {
+                depth_ar[i] = depth_ar_saved[i];
+            }
 
             // add random noise to test averaging
             float noiseMin = -0.0006f;
@@ -166,8 +176,36 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_ar = depthSubscriber.getDepthArr();
         }
 
-        depth_ar = depthCompletion.complete_depth(depth_ar, color_image, ready_to_freeze);
+        //StartCoroutine(ProcessDepth(color_image, depth_ar));
+        //Debug.Log("update end");
+
+        //depthManager.ReceiveDataFromRenderer(color_image, depth_ar, camera_index);
+        //depth_ar = depthManager.get_processed_depth(camera_index);
+
+        depth_ar = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
+
+        //depth_ar = depthCompletion.complete_depth(depth_ar, color_image, ready_to_freeze);
     }
+
+    public bool get_ready_to_freeze()
+    {
+        return ready_to_freeze;
+    }
+
+    //private IEnumerator ProcessDepth(Texture2D rgb, float[] depth)
+    //{
+    //    depth_process_lock = true;
+    //    depthManager.ReceiveDataFromRenderer(rgb, depth, camera_index);
+
+    //    while (!depthManager.ready_to_get_res())
+    //    {
+    //        yield return null;
+    //    }
+
+    //    depth_ar = depthManager.get_processed_depth(camera_index);
+    //    Debug.Log("get_processed_depth");
+    //    depth_process_lock = false;
+    //}
 
     private void OnDisable()
     {
@@ -244,7 +282,10 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_image = new Texture2D((int)width, (int)height, TextureFormat.RFloat, false, false);
             depth_image.SetPixelData(depth_ar, 0);
 
-            depth_ar_saved = depth_ar;
+            for (int i=0; i < 480 * 640; i++)
+            {
+                depth_ar_saved[i] = depth_ar[i];
+            } 
         }
         else
         {
