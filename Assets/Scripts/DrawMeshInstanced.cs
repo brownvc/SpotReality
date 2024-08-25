@@ -85,6 +85,9 @@ public class DrawMeshInstanced : MonoBehaviour
     private bool depth_process_lock = false;
     private bool first_run = false;
 
+    private float deltaTime = 0.0f;
+    private float timer = 0.0f;
+
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
     private struct MeshProperties
@@ -113,6 +116,17 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 64), 1, 1);
 
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
+
+        // get current fps
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        timer += Time.unscaledDeltaTime;
+
+        if (timer >= 1.0f) // Log FPS every second
+        {
+            float fps = 1.0f / deltaTime;
+            Debug.Log("FPS: " + Mathf.Ceil(fps));
+            timer = 0.0f; // Reset timer after logging
+        }
     }
 
     private void SetProperties()                        
