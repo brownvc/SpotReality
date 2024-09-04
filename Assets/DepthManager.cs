@@ -36,7 +36,19 @@ public class DepthManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (activate_depth_estimation)
+        {
+            StartCoroutine(ResetActivateDepthEstimation());
+        }
+        
+    }
 
+
+    private IEnumerator ResetActivateDepthEstimation()
+    {
+        activate_depth_estimation = false;
+        yield return new WaitForSeconds(0.1f);
+        activate_depth_estimation = true;
     }
 
     // Update is called once per frame
