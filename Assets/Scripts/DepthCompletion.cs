@@ -13,7 +13,6 @@ public class DepthCompletion : MonoBehaviour
     Model runtimeModel;
     IWorker worker;
 
-
     //// =============================================================================== //
     ////                               Init & OnRelease                                  //
     //// =============================================================================== //
@@ -26,8 +25,11 @@ public class DepthCompletion : MonoBehaviour
     void OnDestroy()
     {
         worker.Dispose();
+        if (runtimeModel != null)
+        {
+            runtimeModel = null;
+        }
     }
-
 
     // =============================================================================== //
     //                               Depth Completion                                  //
@@ -37,12 +39,12 @@ public class DepthCompletion : MonoBehaviour
         TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
         TensorShape color_shape = new TensorShape(1, 3, 480, 640);
 
-        TensorFloat depth_tensor_0 = new TensorFloat(depth_shape, depth_data_0);
-        TensorFloat color_tensor_0 = TextureConverter.ToTensor(color_data_0, channels: 3);
+        using TensorFloat depth_tensor_0 = new TensorFloat(depth_shape, depth_data_0);
+        using TensorFloat color_tensor_0 = TextureConverter.ToTensor(color_data_0, channels: 3);
         color_tensor_0.Reshape(color_shape);
 
-        TensorFloat depth_tensor_1 = new TensorFloat(depth_shape, depth_data_1);
-        TensorFloat color_tensor_1 = TextureConverter.ToTensor(color_data_1, channels: 3);
+        using TensorFloat depth_tensor_1 = new TensorFloat(depth_shape, depth_data_1);
+        using TensorFloat color_tensor_1 = TextureConverter.ToTensor(color_data_1, channels: 3);
         color_tensor_1.Reshape(color_shape);
 
         Dictionary<string, Tensor> input_tensors = new Dictionary<string, Tensor>()
@@ -55,27 +57,18 @@ public class DepthCompletion : MonoBehaviour
 
         worker.Execute(input_tensors);
 
-        TensorFloat depth_outputTensor_0 = worker.PeekOutput("output_depth_0") as TensorFloat;
+        using TensorFloat depth_outputTensor_0 = worker.PeekOutput("output_depth_0") as TensorFloat;
         depth_outputTensor_0.CompleteOperationsAndDownload();
         float[] output_depth_0 = depth_outputTensor_0.ToReadOnlyArray();
 
-        TensorFloat depth_outputTensor_1 = worker.PeekOutput("output_depth_1") as TensorFloat;
+        using TensorFloat depth_outputTensor_1 = worker.PeekOutput("output_depth_1") as TensorFloat;
         depth_outputTensor_1.CompleteOperationsAndDownload();
         float[] output_depth_1 = depth_outputTensor_1.ToReadOnlyArray();
 
-        foreach (var key in input_tensors.Keys)
+        foreach (var tensor in input_tensors.Values)
         {
-            input_tensors[key].Dispose();
+            tensor.Dispose();
         }
-        input_tensors.Clear();
-
-        depth_tensor_0.Dispose();
-        color_tensor_0.Dispose();
-        depth_outputTensor_0.Dispose();
-
-        depth_tensor_1.Dispose();
-        color_tensor_1.Dispose();
-        depth_outputTensor_1.Dispose();
 
         return (output_depth_0, output_depth_1);
     }

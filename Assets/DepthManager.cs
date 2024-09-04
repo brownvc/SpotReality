@@ -45,42 +45,16 @@ public class DepthManager : MonoBehaviour
 
     }
 
-    //public void ReceiveDataFromRenderer(Texture2D rgb, float[] depth, int camera_index)
-    //{
-    //    //if (camera_index == 0 && !depth_process_lock && !received_left)
-    //    //{
-    //    //    depth_left = depth;
-    //    //    rgb_left = rgb;
-    //    //    received_left = true;
-    //    //    Debug.Log("receive left");
-    //    //}
-    //    //else if (camera_index == 1 && !depth_process_lock && !received_right)
-    //    //{
-    //    //    depth_right = depth;
-    //    //    rgb_right = rgb;
-    //    //    received_right = true;
-    //    //    Debug.Log("receive right");
-    //    //}
-
-    //    if (camera_index == 0)
-    //    {
-    //        depth_left = depth;
-    //        rgb_left = rgb;
-    //    }
-    //    else if (camera_index == 1)
-    //    {
-    //        depth_right = depth;
-    //        rgb_right = rgb;
-    //    }
-
-    //    TryProcessDepths();
-    //}
-
     public float[] update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
     {
         if (camera_index == 0 && !received_left)
         {
             depth_left = (float[])depth.Clone();
+
+            if (rgb_left != null)
+            {
+                Destroy(rgb_left);
+            }
             rgb_left = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
             Graphics.CopyTexture(rgb, rgb_left);
             received_left = true;
@@ -88,6 +62,11 @@ public class DepthManager : MonoBehaviour
         else if (camera_index == 1 && !received_right)
         {
             depth_right = (float[])depth.Clone();
+
+            if (rgb_right != null)
+            {
+                Destroy(rgb_right);
+            }
             rgb_right = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
             Graphics.CopyTexture(rgb, rgb_right);
             received_right = true;
@@ -112,67 +91,13 @@ public class DepthManager : MonoBehaviour
         {
             return output_left;
         }
-        else if(camera_index == 1)
+        else if (camera_index == 1)
         {
             return output_right;
         }
 
         return output_right;
     }
-
-    //private void TryProcessDepths()
-    //{
-    //    //if (received_left && received_right && !depth_process_lock && !first_run)
-    //    //{
-    //    //    Debug.Log("TryProcessDepths");
-    //    //    depth_process_lock = true;
-
-    //    //    bool not_moving = Depth_rederer.get_ready_to_freeze();
-    //    //    not_moving = true;
-    //    //    (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
-
-    //    //    received_left = false;
-    //    //    received_right = false;
-
-    //    //    depth_process_lock = false;
-    //    //    first_run = true;
-    //    //}
-
-    //    if (received_left && received_right && !depth_process_lock)
-    //    {
-    //        Debug.Log("TryProcessDepths");
-    //        depth_process_lock = true;
-
-    //        bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
-    //        not_moving = true;
-    //        (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
-
-    //        received_left = false;
-    //        received_right = false;
-
-    //        depth_process_lock = false;
-    //        first_run = true;
-    //    }
-    //}
-
-    //public float[] get_processed_depth(int camera_index)
-    //{
-    //    if (camera_index == 0)
-    //    {
-    //        return output_left;
-    //    }
-    //    else if (camera_index == 1)
-    //    {
-    //        return output_right;
-    //    }
-
-    //    return output_right;
-    //}
-
-    //public bool ready_to_get_res()
-    //{
-    //    return !received_right && first_run && !depth_process_lock;
-    //}
 
     private (float[], float[]) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
     {

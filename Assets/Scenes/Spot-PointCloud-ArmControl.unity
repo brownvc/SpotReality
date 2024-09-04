@@ -675,9 +675,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7066b569363dd43bb16a74d621adff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate_depth_estimation: 1
+  activate_depth_estimation: 0
   mean_averaging: 0
-  median_averaging: 1
+  median_averaging: 0
   edge_detection: 0
   edge_threshold: 0.4
   AveragerLeft: {fileID: 899797695}
@@ -1134,7 +1134,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 1
+  use_saved_meshes: 0
   delta_x: 0
   delta_y: 0.02
   delta_z: 0.06
@@ -3665,7 +3665,7 @@ MonoBehaviour:
   t: 1
   pS: 1
   size_scale: 0.0045
-  use_saved_meshes: 1
+  use_saved_meshes: 0
   delta_x: 0
   delta_y: 0
   delta_z: 0
