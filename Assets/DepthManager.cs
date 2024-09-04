@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DepthManager : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class DepthManager : MonoBehaviour
 
     bool first_run = false;
 
+    private float deltaTime = 0.0f;
+
+    public Text fpsText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +59,9 @@ public class DepthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        float fps = 1.0f / deltaTime;
+        fpsText.text = Mathf.Ceil(fps).ToString();
     }
 
     public float[] update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
@@ -89,7 +96,7 @@ public class DepthManager : MonoBehaviour
             depth_process_lock = true;
 
             bool not_moving = Left_Depth_Renderer.get_ready_to_freeze() && Right_Depth_Renderer.get_ready_to_freeze();
-            not_moving = true;
+            //not_moving = true;
             (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
 
             received_left = false;
