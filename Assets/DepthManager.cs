@@ -142,6 +142,7 @@ public class DepthManager : MonoBehaviour
             (spot1_output_left, spot1_output_right, spot2_output_left, spot2_output_right) = process_depth(spot1_depth_left, spot1_rgb_left, spot1_depth_right, spot1_rgb_right,
                 spot2_depth_left, spot2_rgb_left, spot2_depth_right, spot2_rgb_right, not_moving);
 
+
             spot1_received_left = false;
             spot1_received_right = false;
             spot2_received_left = false;
