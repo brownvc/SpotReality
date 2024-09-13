@@ -678,7 +678,7 @@ MonoBehaviour:
   activate_depth_estimation: 1
   mean_averaging: 1
   median_averaging: 0
-  edge_detection: 1
+  edge_detection: 0
   edge_threshold: 0.5
   AveragerLeft: {fileID: 899797695}
   AveragerRight: {fileID: 1893588832}
