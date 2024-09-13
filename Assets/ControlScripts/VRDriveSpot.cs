@@ -94,10 +94,10 @@ public class VRDriveSpot : MonoBehaviour
             else if (Mathf.Abs(leftMove.y) > Mathf.Abs(leftMove.x)) { leftMove.x = 0; }
 
             if (RT1.action.IsPressed()) {
-                drive.drive(leftMove, rightMove.x, height);
+                drive2.drive(leftMove, rightMove.x, height);
             } else
             {
-                drive2.drive(leftMove, rightMove.x, height);
+                drive.drive(leftMove, rightMove.x, height);
             }
                 
             //todo:add spot 2 drive

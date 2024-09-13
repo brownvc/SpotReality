@@ -108,6 +108,9 @@ namespace RosSharp.RosBridgeClient
 
             Vector3 linearVelocity = new Vector3(wasd[0], height, wasd[1]);
             Vector3 angularVelocity = new Vector3(0.0f, rotate, 0.0f);
+            Debug.Log("in drive" + linearVelocity);
+            Debug.Log("in drive" + linearVelocity.Unity2Ros());
+            Debug.Log("message" + message);
             message.linear = GetGeometryVector3(linearVelocity.Unity2Ros());
             message.angular = GetGeometryVector3(-angularVelocity.Unity2Ros());
                 
