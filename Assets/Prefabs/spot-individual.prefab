@@ -12854,7 +12854,7 @@ GameObject:
   - component: {fileID: 4840434432543982540}
   - component: {fileID: 4840434432543982541}
   m_Layer: 0
-  m_Name: spot
+  m_Name: spot-individual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
