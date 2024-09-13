@@ -74,7 +74,6 @@ public class DepthManager : MonoBehaviour
     {
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = 1.0f / deltaTime;
-        fpsText.text = Mathf.Ceil(fps).ToString();
     }
 
     public float[] update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
