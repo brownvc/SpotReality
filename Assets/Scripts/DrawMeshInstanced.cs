@@ -173,7 +173,7 @@ public class DrawMeshInstanced : MonoBehaviour
         }
         else
         {
-            DestroyImmediate(color_image);
+            DestroyImmediate(color_image, true);
             color_image = copy_texture(colorSubscriber.texture2D);
             depth_ar = depthSubscriber.getDepthArr();
         }
