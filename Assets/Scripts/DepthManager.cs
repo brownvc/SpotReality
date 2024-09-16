@@ -90,7 +90,8 @@ public class DepthManager : MonoBehaviour
         {
             depth_process_lock = true;
 
-            bool not_moving = Left_Depth_Renderer.get_ready_to_freeze() && Right_Depth_Renderer.get_ready_to_freeze();
+            //bool not_moving = Left_Depth_Renderer.get_ready_to_freeze() && Right_Depth_Renderer.get_ready_to_freeze();
+            bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
             //not_moving = true;
             (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
 

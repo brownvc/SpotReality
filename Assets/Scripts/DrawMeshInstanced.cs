@@ -80,6 +80,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public int camera_index;
     public DepthManager depthManager;
+    bool start_completion = true;
 
 
 
@@ -127,15 +128,25 @@ public class DrawMeshInstanced : MonoBehaviour
 
         yield return new WaitForSeconds(waitTime);
         ready_to_freeze = true;
+        start_completion = true;
         freeze_lock = false;
+    }
+
+    private IEnumerator ToggleReadyToDepthAfterDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        start_completion = true;
     }
 
     public void continue_update()
     {
+        start_completion = false;
         if (ready_to_freeze & !freeze_lock)
         {
             StartCoroutine(ToggleReadyToFreezeAfterDelay(1.0f / 30.0f * latency_frames));
+            StartCoroutine(ToggleReadyToDepthAfterDelay(1.0f / 30.0f * latency_frames / 2.0f));
             ready_to_freeze = false;
+            start_completion = false;
         }
     }
 
@@ -162,7 +173,7 @@ public class DrawMeshInstanced : MonoBehaviour
         }
         else
         {
-            Destroy(color_image);
+            DestroyImmediate(color_image);
             color_image = copy_texture(colorSubscriber.texture2D);
             depth_ar = depthSubscriber.getDepthArr();
         }
@@ -183,7 +194,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     public bool get_ready_to_freeze()
     {
-        return ready_to_freeze;
+        return start_completion;
     }
 
     private void OnDisable()
@@ -209,7 +220,7 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(ToggleReadyToFreezeAfterDelay(1.0f));
+        StartCoroutine(ToggleReadyToFreezeAfterDelay(5.0f));
 
         pS = 1.0f;
 
