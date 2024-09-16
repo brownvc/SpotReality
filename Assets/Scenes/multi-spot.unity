@@ -601,7 +601,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775010377568, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: use_saved_meshes
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137478775010377568, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: freeze_without_action
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775091860060, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: target
@@ -665,7 +669,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775515482002, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: use_saved_meshes
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137478775515482002, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: freeze_without_action
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2155790334621116742, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
