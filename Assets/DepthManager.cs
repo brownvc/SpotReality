@@ -36,8 +36,6 @@ public class DepthManager : MonoBehaviour
 
     private float deltaTime = 0.0f;
 
-    public Text fpsText;
-
     // Start is called before the first frame update
     void Start()
     {
