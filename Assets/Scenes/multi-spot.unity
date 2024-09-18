@@ -467,6 +467,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1137478773745686185, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137478773798299895, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478773891838696, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: target
       value: 
@@ -543,6 +551,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1137478774429119365, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478774518623752, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: 'objectsOfModeToEnable.Array.data[1]'
       value: 
@@ -559,6 +571,10 @@ PrefabInstance:
       propertyPath: rightHand
       value: 
       objectReference: {fileID: 3465647787827832883}
+    - target: {fileID: 1137478774556839316, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478774581538817, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: Mass
       value: 1.904699
@@ -567,6 +583,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 3465647789006909972}
+    - target: {fileID: 1137478774821249048, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478774957855930, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: Mass
       value: 1.904699
@@ -611,6 +631,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 3465647789006909972}
+    - target: {fileID: 1137478775229705923, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478775373783740, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -675,41 +699,125 @@ PrefabInstance:
       propertyPath: freeze_without_action
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1137478775531494915, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
     - target: {fileID: 2155790334621116742, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.54545456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2155790334621116742, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2155790335198557455, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.54545456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2155790335198557455, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2155790335198557455, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.54545456
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3310871051605526706, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871051605526707, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot/stream_image2/frontleft_depth_in_visual_frame/image
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190400, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/arm_pose_stamped
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190401, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/cmd_vel
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190406, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/kill_motor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190407, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/arm_stow
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190412, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/set_gripper
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190430, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231.:9091
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190431, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/joint_states
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190436, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/frontleft_fisheye_extrinsics
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190441, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/get_intrinsics
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190442, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/intrinsics
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052575190443, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot2/frontright_fisheye_extrinsics
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052589847488, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052589847489, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot/stream_image2/frontright_depth_in_visual_frame/image
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052718925108, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052718925109, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot/stream_image2/frontright_fisheye_image/image
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871052733856933, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 3465647789006909972}
     - target: {fileID: 3310871052953474548, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3310871053306987607, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 3465647788663781134}
+      objectReference: {fileID: 3465647789006909972}
+    - target: {fileID: 3310871053646093096, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Topic
+      value: /spot/stream_image2/frontleft_fisheye_image/image
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310871053646093103, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9091
+      objectReference: {fileID: 0}
     - target: {fileID: 4598551965490303601, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.54545456
       objectReference: {fileID: 0}
     - target: {fileID: 4598551965490303601, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4598551965709713501, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -777,15 +885,15 @@ PrefabInstance:
       objectReference: {fileID: 3465647789006909969}
     - target: {fileID: 4598551967144103480, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.54545456
       objectReference: {fileID: 0}
     - target: {fileID: 4598551967144103480, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4598551967144103480, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.54545456
       objectReference: {fileID: 0}
     - target: {fileID: 5143370623281230793, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: 'objectsOfModeToEnable.Array.data[0]'
