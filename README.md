@@ -1,5 +1,6 @@
 # SpotReality
 Brown University Spot Virtual Reality Project
+Simple_Button_Test
 
 ## Pre-Requisites
 This project is Windows-only Meta's headsets can only be used with Windows.
