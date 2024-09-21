@@ -38,6 +38,7 @@ Shader "Custom/InstancedIndirectColor" {
             float samplingSize;        // [2023-10-30][JHT] Value of 1 samples all pixels; value of 2 samples half the pixels
 
             float pS;                   // point scalar
+            int red_bool;
 
             StructuredBuffer<MeshProperties> _Properties;
 
@@ -106,8 +107,10 @@ Shader "Custom/InstancedIndirectColor" {
                 //o.color.g = coor.y;
                 //o.color.g = 0.0;
                 
+                if(red_bool == 0){
                 o.color.g = 0.0;
                 o.color.b = 0.0;
+                }
                 return o;
             }
 

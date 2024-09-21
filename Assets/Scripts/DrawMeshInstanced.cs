@@ -63,6 +63,8 @@ public class DrawMeshInstanced : MonoBehaviour
     public float t;
     public float pS;    // point scalar
 
+    public int red_bool;
+
     public float size_scale; //hack to current pointcloud viewing
 
     public bool use_saved_meshes = false; // boolean that determines whether to use saved meshes or read in new scene data from ROS
@@ -112,6 +114,7 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("a", target.eulerAngles.y * 0.00872f * 2.0f);
         material.SetFloat("pS", pS);
         material.SetTexture("_colorMap", color_image);
+        material.SetInt("red_bool", red_bool);
 
         depthBuffer.SetData(depth_ar);
         meshPropertiesBuffer.SetData(globalProps);
@@ -301,6 +304,7 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetInt("w", (int)width);
         material.SetFloat("a", target.eulerAngles.y * 0.00872f * 2.0f);
         material.SetFloat("pS", pS);
+        material.SetInt("red_bool", red_bool);
 
         Vector4 intr = new Vector4((float)CX, (float)CY, FX, FY);
         compute.SetVector("intrinsics", intr);

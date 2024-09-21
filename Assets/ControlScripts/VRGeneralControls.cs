@@ -13,6 +13,8 @@ public class VRGeneralControls : MonoBehaviour
     private bool UIShowing;
 
     public InputActionReference LAxB;
+
+    //empty input reference, will use to make scene work
     public InputActionReference LAx;
     public InputActionReference LX;
     public InputActionReference LY;
@@ -24,6 +26,9 @@ public class VRGeneralControls : MonoBehaviour
     public InputActionReference RB;
     public InputActionReference RT1;
     public InputActionReference RT2;
+
+    /* To toggle red button test */
+    public int paintRed;
 
     /* To be accessed by MoveArm script */
     public bool gripperOpen;
@@ -51,6 +56,7 @@ public class VRGeneralControls : MonoBehaviour
     void Start()
     {
         gripperOpen = false;
+        paintRed = 0;
         gripper.closeGripper();
         hintUI.enabled = true;
         UI.enabled = false;
@@ -134,6 +140,29 @@ public class VRGeneralControls : MonoBehaviour
                 gripperPercentage = 100f;
                 gripperOpen = true;
             }
+        }
+
+        if (LAx.action.WasPressedThisFrame())
+        {
+            if(paintRed == 0){
+                //call shader to paint red
+                //or purely pass around the value of paintRed
+                paintRed = 1;
+            }
+
+            else{
+                //call shader to not paint red
+                //or purely pass around the value of paintRed
+                paintRed = 0;
+            }
+
+            foreach (DrawMeshInstanced cloud in pointClouds)
+            {
+                cloud.red_bool = paintRed;
+            }
+
+            
+
         }
 
         ///* Switch averaging mode if RT1 trigger is pressed */
