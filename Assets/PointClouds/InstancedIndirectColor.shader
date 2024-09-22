@@ -107,7 +107,7 @@ Shader "Custom/InstancedIndirectColor" {
                 //o.color.g = coor.y;
                 //o.color.g = 0.0;
                 
-                if(red_bool == 0){
+                if(red_bool == 1){
                 o.color.g = 0.0;
                 o.color.b = 0.0;
                 }
