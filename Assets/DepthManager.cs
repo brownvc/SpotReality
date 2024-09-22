@@ -32,13 +32,18 @@ public class DepthManager : MonoBehaviour
     public DrawMeshInstanced Left_Depth_Renderer;
     public DrawMeshInstanced Right_Depth_Renderer;
 
-    bool first_run = false;
+    public GameObject FPSDisplayObject;
+    private FPSCounter fps_timer;
+    private int depth_completion_timer_id;
 
-    private float deltaTime = 0.0f;
+    bool first_run = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        fps_timer = FPSDisplayObject.GetComponent<FPSCounter>();
+        depth_completion_timer_id = fps_timer.registerTimer("Depth completion");
+
         if (activate_depth_estimation)
         {
             StartCoroutine(ResetActivateDepthEstimation());
@@ -61,6 +66,8 @@ public class DepthManager : MonoBehaviour
 
     public float[] update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
     {
+        fps_timer.start(depth_completion_timer_id);
+
         if (camera_index == 0 && !received_left)
         {
             depth_left = (float[])depth.Clone();
@@ -100,6 +107,8 @@ public class DepthManager : MonoBehaviour
             depth_process_lock = false;
             first_run = true;
         }
+
+        fps_timer.end(depth_completion_timer_id);
 
         if (camera_index == 0)
         {
