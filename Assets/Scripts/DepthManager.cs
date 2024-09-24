@@ -36,9 +36,25 @@ public class DepthManager : MonoBehaviour
 
     private float deltaTime = 0.0f;
 
+    public GameObject FPSDisplayObject;
+
+    private FPSCounter fps_timer;
+    private int depth_completion_timer_id;
+    private int averaging_timer_id;
+    private int left_eye_data_timer_id;
+    private int right_eye_data_timer_id;
+
     // Start is called before the first frame update
     void Start()
     {
+        fps_timer = FPSDisplayObject.GetComponent<FPSCounter>();
+
+        depth_completion_timer_id = fps_timer.registerTimer("Depth completion");
+        averaging_timer_id = fps_timer.registerTimer("Mean Averaging");
+        left_eye_data_timer_id = fps_timer.registerTimer("Left eye data");
+        right_eye_data_timer_id = fps_timer.registerTimer("Right eye data");
+
+
         if (activate_depth_estimation)
         {
             StartCoroutine(ResetActivateDepthEstimation());
@@ -63,6 +79,8 @@ public class DepthManager : MonoBehaviour
     {
         if (camera_index == 0 && !received_left)
         {
+            fps_timer.start(left_eye_data_timer_id);
+
             depth_left = (float[])depth.Clone();
 
             if (rgb_left != null)
@@ -72,9 +90,13 @@ public class DepthManager : MonoBehaviour
             rgb_left = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
             Graphics.CopyTexture(rgb, rgb_left);
             received_left = true;
+
+            fps_timer.end(left_eye_data_timer_id);
         }
         else if (camera_index == 1 && !received_right)
         {
+            fps_timer.start(right_eye_data_timer_id);
+
             depth_right = (float[])depth.Clone();
 
             if (rgb_right != null)
@@ -84,6 +106,8 @@ public class DepthManager : MonoBehaviour
             rgb_right = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
             Graphics.CopyTexture(rgb, rgb_right);
             received_right = true;
+
+            fps_timer.end(right_eye_data_timer_id);
         }
 
         if (received_left && received_right && !depth_process_lock)
@@ -127,11 +151,15 @@ public class DepthManager : MonoBehaviour
         //Debug.Log("depth completion");
         if (activate_depth_estimation && is_not_moving)
         {
+            fps_timer.start(depth_completion_timer_id);
             (temp_output_left, temp_output_right) = GetComponent<DepthCompletion>().complete(depthL, rgbL, depthR, rgbR);
+            fps_timer.end(depth_completion_timer_id);
         }
 
+        fps_timer.start(averaging_timer_id);
         temp_output_left = AveragerLeft.averaging(temp_output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
         temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        fps_timer.end(averaging_timer_id);
 
         return (temp_output_left, temp_output_right);
     }
