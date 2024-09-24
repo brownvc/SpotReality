@@ -149,6 +149,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
         if (use_saved_meshes)
         {
+            Debug.Log("UpdateTexture use_saved_meshes if");
+
             for (int i = 0; i < 480 * 640; i++)
             {
                 depth_ar[i] = depth_ar_saved[i];

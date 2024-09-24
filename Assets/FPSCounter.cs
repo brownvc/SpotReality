@@ -50,6 +50,7 @@ public class FPSCounter : MonoBehaviour
         named_timer nt = timer_map[timer_id];
         nt.start_time = Time.realtimeSinceStartupAsDouble;
         timer_map[timer_id] = nt;
+
     }
 
     public void end(int timer_id)
