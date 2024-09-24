@@ -82,33 +82,35 @@ public class FPSCounter : MonoBehaviour
 
 
         //// TODO: Figure out how to access values by reference from a Dictionary...
-        //for (int i = 0; i < timer_count; i++)
-        //{
-        //    named_timer nt = timer_map[i];
-
-        //    double diff = nt.end_time - nt.start_time;
-        //    nt.running_delta += diff;
-        //    nt.n_frames++;
-
-        //    timer_map[i] = nt;
-        //}
-        
         if (deltaTime > updateInterval) {
             string str = "";
 
-            foreach (KeyValuePair<int, named_timer> kvp in timer_map)
+            for (int i = 0; i < timer_count; i++)
             {
-                named_timer nt = kvp.Value;
+
+                named_timer nt = timer_map[i];
                 str += nt.name + ": ";
                 double diff = nt.running_delta / n_frames;
+                if (n_frames != nt.n_updates)
+                {
+                    Debug.LogWarning(
+                        "n_updates " + nt.n_updates.ToString() + " != n_frames "
+                        + n_frames.ToString() + " for timer " + nt.name
+                   );
+                }
                 double ms = diff * 1000.0;
                 double fps = 1.0 / diff;
                 str += string.Format("{0:0.00000} ms - ", ms);
                 str += string.Format("{0:0.00} fps\n", fps);
 
-                n_frames = 0;
-                deltaTime = 0.0f;
+                nt.n_updates     = 0;
+                nt.running_delta = 0;
+
+
+                timer_map[i] = nt;
             }
+            n_frames = 0;
+            deltaTime = 0.0f;
 
             fpsText.text = str;
         }

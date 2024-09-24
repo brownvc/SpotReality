@@ -33,8 +33,11 @@ public class DepthManager : MonoBehaviour
     public DrawMeshInstanced Right_Depth_Renderer;
 
     public GameObject FPSDisplayObject;
+
     private FPSCounter fps_timer;
     private int depth_completion_timer_id;
+    private int left_eye_data_timer_id;
+    private int right_eye_data_timer_id;
 
     bool first_run = false;
 
@@ -42,7 +45,10 @@ public class DepthManager : MonoBehaviour
     void Start()
     {
         fps_timer = FPSDisplayObject.GetComponent<FPSCounter>();
+
         depth_completion_timer_id = fps_timer.registerTimer("Depth completion");
+        left_eye_data_timer_id = fps_timer.registerTimer("Left eye data");
+        right_eye_data_timer_id = fps_timer.registerTimer("Right eye data");
 
         if (activate_depth_estimation)
         {
@@ -66,10 +72,11 @@ public class DepthManager : MonoBehaviour
 
     public float[] update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
     {
-        fps_timer.start(depth_completion_timer_id);
 
         if (camera_index == 0 && !received_left)
         {
+            fps_timer.start(left_eye_data_timer_id);
+
             depth_left = (float[])depth.Clone();
 
             if (rgb_left != null)
@@ -79,9 +86,14 @@ public class DepthManager : MonoBehaviour
             rgb_left = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
             Graphics.CopyTexture(rgb, rgb_left);
             received_left = true;
+
+            fps_timer.end(left_eye_data_timer_id);
+
         }
         else if (camera_index == 1 && !received_right)
         {
+            fps_timer.start(right_eye_data_timer_id);
+
             depth_right = (float[])depth.Clone();
 
             if (rgb_right != null)
@@ -91,10 +103,14 @@ public class DepthManager : MonoBehaviour
             rgb_right = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
             Graphics.CopyTexture(rgb, rgb_right);
             received_right = true;
+
+            fps_timer.end(right_eye_data_timer_id);
         }
 
         if (received_left && received_right && !depth_process_lock)
         {
+            fps_timer.start(depth_completion_timer_id);
+
             depth_process_lock = true;
 
             bool not_moving = Left_Depth_Renderer.get_ready_to_freeze() && Right_Depth_Renderer.get_ready_to_freeze();
@@ -106,9 +122,10 @@ public class DepthManager : MonoBehaviour
 
             depth_process_lock = false;
             first_run = true;
-        }
 
-        fps_timer.end(depth_completion_timer_id);
+            fps_timer.end(depth_completion_timer_id);
+
+        }
 
         if (camera_index == 0)
         {

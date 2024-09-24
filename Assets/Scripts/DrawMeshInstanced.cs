@@ -143,6 +143,7 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         if (freezeCloud || (ready_to_freeze && freeze_without_action))// || (!first_run && depth_process_lock))
         {
+            Debug.Log("Exiting UpdateTexture early");
             return;
         }
 
