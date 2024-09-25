@@ -11,12 +11,18 @@ public class DepthAveraging : MonoBehaviour
     int clear_kernel;
     int median_kernel;
     int fast_median_kernel;
+    int inpainting_kernel;
 
     int num_frames = 20;
 
     float[,] depth_buffer = new float[20, 480 * 640];
     private ComputeBuffer depthArCompute;
     private ComputeBuffer depthBufferCompute;
+
+    private ComputeBuffer edgeMaskCompute;
+    private ComputeBuffer gradientXCompute;
+    private ComputeBuffer gradientYCompute;
+    private ComputeBuffer depthArEdgeCompute;
 
     int buffer_pos = 0;
     private bool activate_fast_median_calculation = false;
@@ -40,10 +46,17 @@ public class DepthAveraging : MonoBehaviour
         clear_kernel = average_shader.FindKernel("ClearBuffer");
         median_kernel = average_shader.FindKernel("MedianAveragingNaive");
         fast_median_kernel = average_shader.FindKernel("MedianAveragingFast");
+        inpainting_kernel = average_shader.FindKernel("Inpainting");
 
         // Data & Buffer
         depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
         depthBufferCompute = new ComputeBuffer(480 * 640 * 20, sizeof(float));
+
+        edgeMaskCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        gradientXCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        gradientYCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        depthArEdgeCompute = new ComputeBuffer(480 * 640, sizeof(float));
+
         average_shader.SetInt("num_frames", num_frames);
         depthBufferCompute.SetData(depth_buffer);
 
@@ -51,6 +64,16 @@ public class DepthAveraging : MonoBehaviour
         average_shader.SetBuffer(clear_kernel, "depth_buffer", depthBufferCompute);
         average_shader.SetBuffer(median_kernel, "depth_buffer", depthBufferCompute);
         average_shader.SetBuffer(fast_median_kernel, "depth_buffer", depthBufferCompute);
+
+        average_shader.SetBuffer(edge_kernel, "edge_mask", edgeMaskCompute);
+        average_shader.SetBuffer(edge_kernel, "GradientX", gradientXCompute);
+        average_shader.SetBuffer(edge_kernel, "GradientY", gradientYCompute);
+        average_shader.SetBuffer(edge_kernel, "depth_ar_temp", depthArEdgeCompute);
+
+        average_shader.SetBuffer(inpainting_kernel, "edge_mask", edgeMaskCompute);
+        average_shader.SetBuffer(inpainting_kernel, "GradientX", gradientXCompute);
+        average_shader.SetBuffer(inpainting_kernel, "GradientY", gradientYCompute);
+        average_shader.SetBuffer(inpainting_kernel, "depth_ar_temp", depthArEdgeCompute);
     }
 
     void OnDestroy()
@@ -82,6 +105,7 @@ public class DepthAveraging : MonoBehaviour
             {
                 average_shader.SetFloat("edgeThreshold", edge_threshold);
                 average_shader.SetBuffer(edge_kernel, "depth_ar", depthArCompute);
+                average_shader.SetBuffer(inpainting_kernel, "depth_ar", depthArCompute);
             }
 
             if (median_averaging)
@@ -104,6 +128,7 @@ public class DepthAveraging : MonoBehaviour
             if (edge_detection && is_not_moving)
             {
                 average_shader.Dispatch(edge_kernel, groupsX, groupsY, 1);
+                average_shader.Dispatch(inpainting_kernel, groupsX, groupsY, 1);
             }
 
 

@@ -3,6 +3,7 @@
 #pragma kernel ClearBuffer
 #pragma kernel MedianAveragingFast
 #pragma kernel MedianAveragingNaive
+#pragma kernel Inpainting
 
 // Size of the buffers
 #define WIDTH 640
@@ -15,14 +16,55 @@ int num_frames;
 float edgeThreshold;
 
 // Buffers
-RWStructuredBuffer<float> depth_ar; // EdgeDetection, MeanAveraging, MedianAveragingFast, MedianAveragingNaive 
+RWStructuredBuffer<float> depth_ar; // EdgeDetection, MeanAveraging, MedianAveragingFast, MedianAveragingNaive, Inpainting
 RWStructuredBuffer<float> depth_buffer; // MeanAveraging, ClearBuffer, MedianAveragingFast, MedianAveragingNaive 
+RWStructuredBuffer<float> edge_mask;
+RWStructuredBuffer<float> GradientX;
+RWStructuredBuffer<float> GradientY;
+RWStructuredBuffer<float> depth_ar_temp;
 
 // buffer pos
 int buffer_pos;
 
 // activate filter or not
 bool activate;
+
+// Inpainting
+[numthreads(16, 16, 1)]
+void Inpainting(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID)
+{
+    int xIndex = groupId.x * 16 + threadId.x;
+    int yIndex = groupId.y * 16 + threadId.y;
+
+    int index = xIndex + yIndex * WIDTH;
+
+    if (edge_mask[index] >= 0.5 && (xIndex > 10 && xIndex < WIDTH - 10 && yIndex > 00 && yIndex < HEIGHT - 10)) 
+    {
+        float2 grad = float2(GradientX[index], GradientY[index]);
+        float2 searchDir = normalize(grad);
+        float depth = 0;
+        bool found = false;
+
+        for (int i = 1; i <= 30; ++i) 
+        {
+            int newx = int(searchDir.x * i);
+            int newy = int(searchDir.y * i);
+
+            int new_index = newx + newy * WIDTH;
+
+            if (edge_mask[new_index] <= 0.5)
+            {
+                depth = depth_ar_temp[new_index];
+                found = true;
+                break;
+            }
+        }
+
+        depth_ar[index] = found ? depth : depth_ar_temp[index];
+    } else {
+        depth_ar[index] = depth_ar_temp[index];
+    }
+}
 
 
 // EdgeDetection
@@ -57,10 +99,18 @@ void EdgeDetection(uint3 groupId : SV_GroupID, uint3 threadId : SV_GroupThreadID
                     + depth_ar[(xIndex + 1) + (yIndex - 1) * WIDTH] * 1.0;
 
         float temp = gradX * gradX + gradY * gradY;
+        GradientX[index] = gradX;
+        GradientY[index] = gradY;
 
         if (temp >= 0.0 && sqrt(temp) > edgeThreshold)
         {
-            depth_ar[index] = 0.0;
+            depth_ar_temp[index] = 0.0;
+            edge_mask[index] = 1.0;
+        }
+        else
+        {
+            depth_ar_temp[index] = depth_ar[index];
+            edge_mask[index] = 0.0;
         }
     }
 }
