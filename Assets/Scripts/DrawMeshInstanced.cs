@@ -143,11 +143,14 @@ public class DrawMeshInstanced : MonoBehaviour
     {
         if (freezeCloud || (ready_to_freeze && freeze_without_action))// || (!first_run && depth_process_lock))
         {
+            Debug.Log("Exiting UpdateTexture early");
             return;
         }
 
         if (use_saved_meshes)
         {
+            Debug.Log("UpdateTexture use_saved_meshes if");
+
             for (int i = 0; i < 480 * 640; i++)
             {
                 depth_ar[i] = depth_ar_saved[i];
