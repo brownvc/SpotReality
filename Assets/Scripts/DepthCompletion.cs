@@ -13,6 +13,9 @@ public class DepthCompletion : MonoBehaviour
     public ModelAsset modelAsset;
     Model runtimeModel;
     Worker worker;
+    //TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
+    //TensorShape color_shape = new TensorShape(1, 3, 480, 640);
+
 
     //// =============================================================================== //
     ////                               Init & OnRelease                                  //
@@ -35,18 +38,16 @@ public class DepthCompletion : MonoBehaviour
     // =============================================================================== //
     //                               Depth Completion                                  //
     // =============================================================================== //
-    public (ComputeBuffer, ComputeBuffer) complete(float[] depth_data_0, Texture2D color_data_0, float[] depth_data_1, Texture2D color_data_1)
+    //public (ComputeBuffer, ComputeBuffer) complete(float[] depth_data_0, Texture2D color_data_0, float[] depth_data_1, Texture2D color_data_1)
+    public (ComputeBuffer, ComputeBuffer) complete(Tensor<float> depth_tensor_0, Tensor<float> color_tensor_0, Tensor<float> depth_tensor_1, Tensor<float> color_tensor_1)
     {
-        TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
-        TensorShape color_shape = new TensorShape(1, 3, 480, 640);
+        //Tensor<float> depth_tensor_0 = new Tensor<float>(depth_shape, depth_data_0);
+        //Tensor<float> color_tensor_0 = TextureConverter.ToTensor(color_data_0, channels: 3);
+        //color_tensor_0.Reshape(color_shape);
 
-        Tensor<float> depth_tensor_0 = new Tensor<float>(depth_shape, depth_data_0);
-        Tensor<float> color_tensor_0 = TextureConverter.ToTensor(color_data_0, channels: 3);
-        color_tensor_0.Reshape(color_shape);
-
-        Tensor<float> depth_tensor_1 = new Tensor<float>(depth_shape, depth_data_1);
-        Tensor<float> color_tensor_1 = TextureConverter.ToTensor(color_data_1, channels: 3);
-        color_tensor_1.Reshape(color_shape);
+        //Tensor<float> depth_tensor_1 = new Tensor<float>(depth_shape, depth_data_1);
+        //Tensor<float> color_tensor_1 = TextureConverter.ToTensor(color_data_1, channels: 3);
+        //color_tensor_1.Reshape(color_shape);
 
         worker.SetInput("rgb_0", color_tensor_0);
         worker.SetInput("rgb_1", color_tensor_1);

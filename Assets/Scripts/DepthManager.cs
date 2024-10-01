@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Sentis;
 
 public class DepthManager : MonoBehaviour
 {
@@ -12,11 +13,11 @@ public class DepthManager : MonoBehaviour
 
     public float edge_threshold;
 
-    private float[] depth_left;
-    private Texture2D rgb_left;
+    private Tensor<float> depth_left_t;
+    private Tensor<float> rgb_left_t;
 
-    private float[] depth_right;
-    private Texture2D rgb_right;
+    private Tensor<float> depth_right_t;
+    private Tensor<float> rgb_right_t;
 
     private float[] output_left = new float[480 * 640];
     private float[] output_right = new float[480 * 640];
@@ -47,6 +48,9 @@ public class DepthManager : MonoBehaviour
     private DepthCompletion depth_completion;
     private ComputeBuffer temp_output_left;
     private ComputeBuffer temp_output_right;
+
+    TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
+    TensorShape color_shape = new TensorShape(1, 3, 480, 640);
 
     // Start is called before the first frame update
     void Start()
@@ -89,14 +93,19 @@ public class DepthManager : MonoBehaviour
         {
             fps_timer.start(left_eye_data_timer_id);
 
-            depth_left = (float[])depth.Clone();
+            //depth_left = (float[])depth.Clone();
 
-            if (rgb_left != null)
-            {
-                Destroy(rgb_left);
-            }
-            rgb_left = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
-            Graphics.CopyTexture(rgb, rgb_left);
+            //if (rgb_left != null)
+            //{
+            //    Destroy(rgb_left);
+            //}
+            //rgb_left = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
+            //Graphics.CopyTexture(rgb, rgb_left);
+
+            depth_left_t = new Tensor<float>(depth_shape, depth);
+            rgb_left_t = TextureConverter.ToTensor(rgb, channels: 3);
+            rgb_left_t.Reshape(color_shape);
+
             received_left = true;
 
             fps_timer.end(left_eye_data_timer_id);
@@ -105,14 +114,10 @@ public class DepthManager : MonoBehaviour
         {
             fps_timer.start(right_eye_data_timer_id);
 
-            depth_right = (float[])depth.Clone();
+            depth_right_t = new Tensor<float>(depth_shape, depth);
+            rgb_right_t = TextureConverter.ToTensor(rgb, channels: 3);
+            rgb_right_t.Reshape(color_shape);
 
-            if (rgb_right != null)
-            {
-                Destroy(rgb_right);
-            }
-            rgb_right = new Texture2D(rgb.width, rgb.height, rgb.format, rgb.mipmapCount > 1);
-            Graphics.CopyTexture(rgb, rgb_right);
             received_right = true;
 
             fps_timer.end(right_eye_data_timer_id);
@@ -125,7 +130,7 @@ public class DepthManager : MonoBehaviour
             //bool not_moving = Left_Depth_Renderer.get_ready_to_freeze() && Right_Depth_Renderer.get_ready_to_freeze();
             bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
             //not_moving = true;
-            (temp_output_left, temp_output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
+            (temp_output_left, temp_output_right) = process_depth(depth_left_t, rgb_left_t, depth_right_t, rgb_right_t, not_moving);
 
             received_left = false;
             received_right = false;
@@ -146,7 +151,7 @@ public class DepthManager : MonoBehaviour
         return temp_output_right;
     }
 
-    private (ComputeBuffer, ComputeBuffer) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
+    private (ComputeBuffer, ComputeBuffer) process_depth(Tensor<float> depthL, Tensor<float> rgbL, Tensor<float> depthR, Tensor<float> rgbR, bool is_not_moving)
     {
         if (median_averaging && mean_averaging)
         {
