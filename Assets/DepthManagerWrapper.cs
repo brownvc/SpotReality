@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class DepthManagerWrapper : MonoBehaviour
@@ -19,6 +20,8 @@ public class DepthManagerWrapper : MonoBehaviour
 
     public DrawMeshInstanced Left_Depth_Renderer;
     public DrawMeshInstanced Right_Depth_Renderer;
+
+    private DepthCompletion depth_completion;
 
     // ============================================== Depth Manager =========================================================
     public bool activate_depth_estimation;
@@ -72,18 +75,33 @@ public class DepthManagerWrapper : MonoBehaviour
 
     void Update()
     {
-        if (received_right && received_left)
+        if (!is_estimating)
+        {
+            bool is_not_moving = Left_Depth_Renderer.get_ready_to_freeze();
+            output_left = AveragerLeft.averaging(output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+            output_right = AveragerRight.averaging(output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        }
+        if (received_left && received_right && !is_estimating)
         {
             is_estimating = true;
-            Debug.Log("here");
-            bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
-            (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
-            is_estimating = false;
+            Task.Run(() => ProcessDepthAsync()).ContinueWith(task =>
+            {
+                if (task.Exception != null)
+                    Debug.LogError("Depth processing failed: " + task.Exception);
+                is_estimating = false;
+            });
         }
+    }
+
+    async Task ProcessDepthAsync()
+    {
+        bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
+        (output_left, output_right) = await Task.Run(() => process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving));
     }
 
     void Start()
     {
+        depth_completion = GetComponent<DepthCompletion>();
         if (activate_depth_estimation)
         {
             StartCoroutine(ResetActivateDepthEstimation());
@@ -114,17 +132,15 @@ public class DepthManagerWrapper : MonoBehaviour
         if (activate_depth_estimation && is_not_moving)
         {
             //fps_timer.start(depth_completion_timer_id);
-            (temp_output_left, temp_output_right) = GetComponent<DepthCompletion>().complete(depthL, rgbL, depthR, rgbR);
+            (temp_output_left, temp_output_right) = depth_completion.complete(depthL, rgbL, depthR, rgbR);
             //fps_timer.end(depth_completion_timer_id);
         }
 
         //fps_timer.start(averaging_timer_id);
-        temp_output_left = AveragerLeft.averaging(temp_output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
-        temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        //temp_output_left = AveragerLeft.averaging(temp_output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        //temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
         //fps_timer.end(averaging_timer_id);
 
         return (temp_output_left, temp_output_right);
     }
-
-
 }

@@ -14,6 +14,29 @@ public class DepthCompletion : MonoBehaviour
     Model runtimeModel;
     Worker worker;
 
+    //=========================== Dispatcher ===============================
+    private static readonly Queue<Action> executeOnMainThread = new Queue<Action>();
+
+    public static void ExecuteInUpdate(Action action)
+    {
+        lock (executeOnMainThread)
+        {
+            executeOnMainThread.Enqueue(action);
+        }
+    }
+    void Update()
+    {
+        while (executeOnMainThread.Count > 0)
+        {
+            Action action;
+            lock (executeOnMainThread)
+            {
+                action = executeOnMainThread.Dequeue();
+            }
+            action.Invoke();
+        }
+    }
+
     //// =============================================================================== //
     ////                               Init & OnRelease                                  //
     //// =============================================================================== //
