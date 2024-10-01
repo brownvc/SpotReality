@@ -40,7 +40,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public ComputeShader compute;
     private ComputeBuffer meshPropertiesBuffer;
     private ComputeBuffer argsBuffer;
-    private ComputeBuffer depthBuffer;
+    //private ComputeBuffer depthBuffer;
 
     public Transform target;
     public Transform auxTarget; // In case someone changes the offset rotation
@@ -82,7 +82,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public DepthManager depthManager;
     bool start_completion = true;
 
-
+    ComputeBuffer depth_ar_buffer;
 
     // Mesh Properties struct to be read from the GPU.
     // Size() is a convenience funciton which returns the stride of the struct.
@@ -98,13 +98,32 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Update()
     {
+        float startTime = Time.realtimeSinceStartup;
+
         UpdateTexture();
+
+        float t1 = Time.realtimeSinceStartup;
 
         int kernel = compute.FindKernel("CSMain");
         SetProperties();
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 64), 1, 1);
+
+
+        float t2 = Time.realtimeSinceStartup;
+
+
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
+
+        float t3 = Time.realtimeSinceStartup;
+
+        float d1 = t1 - startTime;
+        float d2 = t2 - t1;
+        float d3 = t3 - t2;
+
+        Debug.Log($"Runtime of HeavyComputationFunction: {d1 * 1000} seconds: {d2 * 1000} seconds: {d3 * 1000} seconds");
+
+
     }
 
     private void SetProperties()
@@ -114,12 +133,12 @@ public class DrawMeshInstanced : MonoBehaviour
         material.SetFloat("pS", pS);
         material.SetTexture("_colorMap", color_image);
 
-        depthBuffer.SetData(depth_ar);
+        //depthBuffer.SetData(depth_ar);
         meshPropertiesBuffer.SetData(globalProps);
 
         material.SetBuffer("_Properties", meshPropertiesBuffer);
         compute.SetBuffer(kernel, "_Properties", meshPropertiesBuffer);
-        compute.SetBuffer(kernel, "_Depth", depthBuffer);
+        compute.SetBuffer(kernel, "_Depth", depth_ar_buffer);
     }
 
     private IEnumerator ToggleReadyToFreezeAfterDelay(float waitTime)
@@ -159,17 +178,18 @@ public class DrawMeshInstanced : MonoBehaviour
 
         if (use_saved_meshes)
         {
-            for (int i = 0; i < 480 * 640; i++)
-            {
-                depth_ar[i] = depth_ar_saved[i];
-            }
+            //for (int i = 0; i < 480 * 640; i++)
+            //{
+            //    depth_ar[i] = depth_ar_saved[i];
+            //}
 
-            float noiseMin = -0.0006f;
-            float noiseMax = 0.0002f;
-            for (int i = 0; i < depth_ar.Length; i++)
-            {
-                depth_ar[i] += Random.Range(noiseMin, noiseMax);
-            }
+            //float noiseMin = -0.0006f;
+            //float noiseMax = 0.0002f;
+            //for (int i = 0; i < depth_ar.Length; i++)
+            //{
+            //    depth_ar[i] += Random.Range(noiseMin, noiseMax);
+            //}
+            depth_ar = depth_ar_saved;
         }
         else
         {
@@ -178,7 +198,7 @@ public class DrawMeshInstanced : MonoBehaviour
             depth_ar = depthSubscriber.getDepthArr();
         }
 
-        depth_ar = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
+        depth_ar_buffer = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
     }
 
     private Texture2D copy_texture(Texture2D input_texture)
@@ -204,13 +224,13 @@ public class DrawMeshInstanced : MonoBehaviour
             meshPropertiesBuffer.Release();
         if (argsBuffer != null)
             argsBuffer.Release();
-        if (depthBuffer != null)
-            depthBuffer.Release();
+        if (depth_ar_buffer != null)
+            depth_ar_buffer.Release();
 
         // Clear references to ensure garbage collector can reclaim memory.
         meshPropertiesBuffer = null;
         argsBuffer = null;
-        depthBuffer = null;
+        depth_ar_buffer = null;
     }
 
     private void OnDestroy()
@@ -220,6 +240,8 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void OnEnable()
     {
+        //depth_ar_buffer = new ComputeBuffer(480 * 640 * 20, sizeof(float));
+
         StartCoroutine(ToggleReadyToFreezeAfterDelay(5.0f));
 
         pS = 1.0f;
@@ -300,7 +322,7 @@ public class DrawMeshInstanced : MonoBehaviour
         meshPropertiesBuffer = new ComputeBuffer((int)population, MeshProperties.Size());
         meshPropertiesBuffer.SetData(globalProps);
 
-        depthBuffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
+        depth_ar_buffer = new ComputeBuffer((int)depth_ar.Length, sizeof(float));
     }
 
     private void InitializeMaterials()

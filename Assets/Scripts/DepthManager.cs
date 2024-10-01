@@ -83,7 +83,7 @@ public class DepthManager : MonoBehaviour
     {
     }
 
-    public float[] update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
+    public ComputeBuffer update_depth_from_renderer(Texture2D rgb, float[] depth, int camera_index)
     {
         if (camera_index == 0 && !received_left)
         {
@@ -125,7 +125,7 @@ public class DepthManager : MonoBehaviour
             //bool not_moving = Left_Depth_Renderer.get_ready_to_freeze() && Right_Depth_Renderer.get_ready_to_freeze();
             bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
             //not_moving = true;
-            (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
+            (temp_output_left, temp_output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
 
             received_left = false;
             received_right = false;
@@ -136,17 +136,17 @@ public class DepthManager : MonoBehaviour
 
         if (camera_index == 0)
         {
-            return output_left;
+            return temp_output_left;
         }
         else if (camera_index == 1)
         {
-            return output_right;
+            return temp_output_right;
         }
 
-        return output_right;
+        return temp_output_right;
     }
 
-    private (float[], float[]) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
+    private (ComputeBuffer, ComputeBuffer) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
     {
         if (median_averaging && mean_averaging)
         {
@@ -169,11 +169,11 @@ public class DepthManager : MonoBehaviour
         temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
         fps_timer.end(averaging_timer_id);
 
-        float[] ol = new float[480 * 640], or = new float[480 * 640];
+        //float[] ol = new float[480 * 640], or = new float[480 * 640];
 
-        temp_output_left.GetData(ol);
-        temp_output_right.GetData(or);
+        //temp_output_left.GetData(ol);
+        //temp_output_right.GetData(or);
 
-        return (ol, or);
+        return (temp_output_left, temp_output_right);
     }
 }
