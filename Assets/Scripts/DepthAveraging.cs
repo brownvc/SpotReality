@@ -15,7 +15,7 @@ public class DepthAveraging : MonoBehaviour
     int num_frames = 20;
 
     float[,] depth_buffer = new float[20, 480 * 640];
-    private ComputeBuffer depthArCompute;
+    //private ComputeBuffer depthArCompute;
     private ComputeBuffer depthBufferCompute;
 
     int buffer_pos = 0;
@@ -42,7 +42,7 @@ public class DepthAveraging : MonoBehaviour
         fast_median_kernel = average_shader.FindKernel("MedianAveragingFast");
 
         // Data & Buffer
-        depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
+        //depthArCompute = new ComputeBuffer(480 * 640, sizeof(float));
         depthBufferCompute = new ComputeBuffer(480 * 640 * 20, sizeof(float));
         average_shader.SetInt("num_frames", num_frames);
         depthBufferCompute.SetData(depth_buffer);
@@ -56,10 +56,10 @@ public class DepthAveraging : MonoBehaviour
     void OnDestroy()
     {
         depthBufferCompute.Release();
-        depthArCompute.Release();
+        //depthArCompute.Release();
     }
 
-    public float[] averaging(float[] depth_ar, bool is_not_moving, bool mean_averaging, bool median_averaging, bool edge_detection, float edge_threshold)
+    public ComputeBuffer averaging(ComputeBuffer depth_ar_buffer, bool is_not_moving, bool mean_averaging, bool median_averaging, bool edge_detection, float edge_threshold)
     {
         float[] temp = new float[480 * 640];
 
@@ -75,29 +75,29 @@ public class DepthAveraging : MonoBehaviour
         {
             average_shader.SetBool("activate", is_not_moving);   // activate = activate_averaging
             average_shader.SetInt("buffer_pos", buffer_pos);
-            depthArCompute.SetData(depth_ar);
+            //depthArCompute.SetData(depth_ar);
 
             // set buffer data CPU -> GPU
             if (edge_detection && is_not_moving)
             {
                 average_shader.SetFloat("edgeThreshold", edge_threshold);
-                average_shader.SetBuffer(edge_kernel, "depth_ar", depthArCompute);
+                average_shader.SetBuffer(edge_kernel, "depth_ar", depth_ar_buffer);
             }
 
             if (median_averaging)
             {
                 if (activate_fast_median_calculation)
                 {
-                    average_shader.SetBuffer(median_kernel, "depth_ar", depthArCompute);
+                    average_shader.SetBuffer(median_kernel, "depth_ar", depth_ar_buffer);
                 }
                 else
                 {
-                    average_shader.SetBuffer(median_kernel, "depth_ar", depthArCompute);
+                    average_shader.SetBuffer(median_kernel, "depth_ar", depth_ar_buffer);
                 }
             }
             else if (mean_averaging || is_moving)
             {
-                average_shader.SetBuffer(mean_kernel, "depth_ar", depthArCompute);
+                average_shader.SetBuffer(mean_kernel, "depth_ar", depth_ar_buffer);
             }
 
             // dispatch shader kernel
@@ -130,11 +130,11 @@ public class DepthAveraging : MonoBehaviour
 
             // depth GPU -> CPU
             buffer_pos = (buffer_pos + 1) % (num_frames - 1);
-            depthArCompute.GetData(temp);
+            //depthArCompute.GetData(temp);
 
-            return temp;
+            return depth_ar_buffer;
         }
 
-        return depth_ar;
+        return depth_ar_buffer;
     }
 }

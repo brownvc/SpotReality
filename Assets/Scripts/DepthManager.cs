@@ -44,9 +44,17 @@ public class DepthManager : MonoBehaviour
     private int left_eye_data_timer_id;
     private int right_eye_data_timer_id;
 
+    private DepthCompletion depth_completion;
+    private ComputeBuffer temp_output_left;
+    private ComputeBuffer temp_output_right;
+
     // Start is called before the first frame update
     void Start()
     {
+        depth_completion = GetComponent<DepthCompletion>();
+        temp_output_left = new ComputeBuffer(480 * 640, sizeof(float));
+        temp_output_right = new ComputeBuffer(480 * 640, sizeof(float));
+
         fps_timer = FPSDisplayObject.GetComponent<FPSCounter>();
 
         depth_completion_timer_id = fps_timer.registerTimer("Depth completion");
@@ -145,14 +153,14 @@ public class DepthManager : MonoBehaviour
             mean_averaging = false;
         }
 
-        float[] temp_output_left = depthL, temp_output_right = depthR;
+        //float[] temp_output_left = depthL, temp_output_right = depthR;
 
         // depth completion
         //Debug.Log("depth completion");
         if (activate_depth_estimation && is_not_moving)
         {
             fps_timer.start(depth_completion_timer_id);
-            (temp_output_left, temp_output_right) = GetComponent<DepthCompletion>().complete(depthL, rgbL, depthR, rgbR);
+            (temp_output_left, temp_output_right) = depth_completion.complete(depthL, rgbL, depthR, rgbR);
             fps_timer.end(depth_completion_timer_id);
         }
 
@@ -161,6 +169,11 @@ public class DepthManager : MonoBehaviour
         temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
         fps_timer.end(averaging_timer_id);
 
-        return (temp_output_left, temp_output_right);
+        float[] ol = new float[480 * 640], or = new float[480 * 640];
+
+        temp_output_left.GetData(ol);
+        temp_output_right.GetData(or);
+
+        return (ol, or);
     }
 }

@@ -35,7 +35,7 @@ public class DepthCompletion : MonoBehaviour
     // =============================================================================== //
     //                               Depth Completion                                  //
     // =============================================================================== //
-    public (float[], float[]) complete(float[] depth_data_0, Texture2D color_data_0, float[] depth_data_1, Texture2D color_data_1)
+    public (ComputeBuffer, ComputeBuffer) complete(float[] depth_data_0, Texture2D color_data_0, float[] depth_data_1, Texture2D color_data_1)
     {
         TensorShape depth_shape = new TensorShape(1, 1, 480, 640);
         TensorShape color_shape = new TensorShape(1, 3, 480, 640);
@@ -55,16 +55,18 @@ public class DepthCompletion : MonoBehaviour
         worker.Schedule();
 
         Tensor<float> depth_outputTensor_0 = worker.PeekOutput("output_depth_0") as Tensor<float>;
-        float[] output_depth_0 = depth_outputTensor_0.DownloadToArray();
+        //float[] output_depth_0 = depth_outputTensor_0.DownloadToArray();
+        ComputeBuffer computeTensorData0 = ComputeTensorData.Pin(depth_outputTensor_0).buffer;
 
         Tensor<float> depth_outputTensor_1 = worker.PeekOutput("output_depth_1") as Tensor<float>;
-        float[] output_depth_1 = depth_outputTensor_1.DownloadToArray();
+        //float[] output_depth_1 = depth_outputTensor_1.DownloadToArray();
+        ComputeBuffer computeTensorData1 = ComputeTensorData.Pin(depth_outputTensor_1).buffer;
 
         color_tensor_0.Dispose();
         color_tensor_1.Dispose();
         depth_tensor_0.Dispose();
         depth_tensor_1.Dispose();
 
-        return (output_depth_0, output_depth_1);
+        return (computeTensorData0, computeTensorData1);
     }
 }
