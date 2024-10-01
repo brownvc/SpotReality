@@ -168,6 +168,11 @@ public class DepthManager : MonoBehaviour
             (temp_output_left, temp_output_right) = depth_completion.complete(depthL, rgbL, depthR, rgbR);
             fps_timer.end(depth_completion_timer_id);
         }
+        else
+        {
+            temp_output_left = ComputeTensorData.Pin(depthL).buffer;
+            temp_output_right = ComputeTensorData.Pin(depthR).buffer;
+        }
 
         fps_timer.start(averaging_timer_id);
         temp_output_left = AveragerLeft.averaging(temp_output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);

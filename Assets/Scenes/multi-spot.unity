@@ -597,6 +597,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1137478773745686185, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9090
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137478773798299895, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9090
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478773891838696, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: target
       value: 
@@ -673,6 +681,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1137478774429119365, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9090
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478774518623752, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: 'objectsOfModeToEnable.Array.data[1]'
       value: 
@@ -697,6 +709,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 3465647789006909972}
+    - target: {fileID: 1137478774821249048, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9090
+      objectReference: {fileID: 0}
     - target: {fileID: 1137478774957855930, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: Mass
       value: 1.904699
@@ -731,7 +747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775010377568, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: use_saved_meshes
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775010377568, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: freeze_without_action
@@ -799,11 +815,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775515482002, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: use_saved_meshes
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775515482002, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: freeze_without_action
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137478775531494915, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: RosBridgeServerUrl
+      value: ws://138.16.160.231:9090
       objectReference: {fileID: 0}
     - target: {fileID: 2155790334621116742, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -931,11 +951,11 @@ PrefabInstance:
       objectReference: {fileID: 3465647787827832883}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: edge_detection
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: mean_averaging
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: FPSDisplayObject
