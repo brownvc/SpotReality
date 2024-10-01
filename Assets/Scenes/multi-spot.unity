@@ -124,6 +124,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1137478774957855876, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
   m_PrefabInstance: {fileID: 1137478774987024292}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &413366065 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1522503467282568476, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
+  m_PrefabInstance: {fileID: 747478811}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,11 +320,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8717834295499631261, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5284521774682234486, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1149825480}
   m_SourcePrefab: {fileID: 100100000, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
+--- !u!1 &1149825478 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5284521774682234486, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
+  m_PrefabInstance: {fileID: 747478811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1149825480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149825478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a76d0ae93fd8842bddc4ce6909c3df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fpsText: {fileID: 413366065}
 --- !u!4 &1220219466 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1137478774038656494, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
@@ -698,7 +731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775010377568, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: use_saved_meshes
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775010377568, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: freeze_without_action
@@ -766,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775515482002, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: use_saved_meshes
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1137478775515482002, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: freeze_without_action
@@ -900,6 +933,10 @@ PrefabInstance:
       propertyPath: mean_averaging
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: FPSDisplayObject
+      value: 
+      objectReference: {fileID: 1149825478}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: median_averaging
       value: 1
