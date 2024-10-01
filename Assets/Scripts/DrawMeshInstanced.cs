@@ -98,30 +98,30 @@ public class DrawMeshInstanced : MonoBehaviour
 
     private void Update()
     {
-        float startTime = Time.realtimeSinceStartup;
+        //float startTime = Time.realtimeSinceStartup;
 
         UpdateTexture();
 
-        float t1 = Time.realtimeSinceStartup;
+        //float t1 = Time.realtimeSinceStartup;
 
         int kernel = compute.FindKernel("CSMain");
         SetProperties();
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
-        compute.Dispatch(kernel, Mathf.CeilToInt(population / 64), 1, 1);
+        compute.Dispatch(kernel, Mathf.CeilToInt(population / 256), 1, 1);
 
 
-        float t2 = Time.realtimeSinceStartup;
+        //float t2 = Time.realtimeSinceStartup;
 
 
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
 
-        float t3 = Time.realtimeSinceStartup;
+        //float t3 = Time.realtimeSinceStartup;
 
-        float d1 = t1 - startTime;
-        float d2 = t2 - t1;
-        float d3 = t3 - t2;
+        //float d1 = t1 - startTime;
+        //float d2 = t2 - t1;
+        //float d3 = t3 - t2;
 
-        Debug.Log($"Runtime of HeavyComputationFunction: {d1 * 1000} seconds: {d2 * 1000} seconds: {d3 * 1000} seconds");
+        //Debug.Log($"Runtime of HeavyComputationFunction: {d1 * 1000} seconds: {d2 * 1000} seconds: {d3 * 1000} seconds");
 
 
     }

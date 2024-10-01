@@ -61,7 +61,7 @@ public class DepthAveraging : MonoBehaviour
 
     public ComputeBuffer averaging(ComputeBuffer depth_ar_buffer, bool is_not_moving, bool mean_averaging, bool median_averaging, bool edge_detection, float edge_threshold)
     {
-        float[] temp = new float[480 * 640];
+        //float[] temp = new float[480 * 640];
 
         bool is_moving = !is_not_moving;
 

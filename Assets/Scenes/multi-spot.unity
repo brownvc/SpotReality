@@ -930,8 +930,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3465647787827832883}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: edge_detection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: mean_averaging
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: FPSDisplayObject
@@ -939,6 +943,10 @@ PrefabInstance:
       objectReference: {fileID: 1149825478}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: median_averaging
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: activate_depth_estimation
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

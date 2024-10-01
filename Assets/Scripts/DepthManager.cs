@@ -19,8 +19,8 @@ public class DepthManager : MonoBehaviour
     private Tensor<float> depth_right_t;
     private Tensor<float> rgb_right_t;
 
-    private float[] output_left = new float[480 * 640];
-    private float[] output_right = new float[480 * 640];
+    //private float[] output_left = new float[480 * 640];
+    //private float[] output_right = new float[480 * 640];
 
     private bool received_left = false;
     private bool received_right = false;
@@ -33,9 +33,9 @@ public class DepthManager : MonoBehaviour
     public DrawMeshInstanced Left_Depth_Renderer;
     public DrawMeshInstanced Right_Depth_Renderer;
 
-    bool first_run = false;
+    //bool first_run = false;
 
-    private float deltaTime = 0.0f;
+    //private float deltaTime = 0.0f;
 
     public GameObject FPSDisplayObject;
 
@@ -136,7 +136,7 @@ public class DepthManager : MonoBehaviour
             received_right = false;
 
             depth_process_lock = false;
-            first_run = true;
+            //first_run = true;
         }
 
         if (camera_index == 0)

@@ -20,7 +20,7 @@ float dz;
 
 // We used to just be able to use (1, 1, 1) threads for whatever population (not sure the old limit), but a Unity update
 // imposed a thread limit of 65535.  Now, to populations above that, we need to be more granular with our threads.
-[numthreads(64, 1, 1)]
+[numthreads(256, 1, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID) {
     if (id.x < 480 * 640)
     {
