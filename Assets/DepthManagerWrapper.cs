@@ -17,10 +17,19 @@ public class DepthManagerWrapper : MonoBehaviour
     private bool received_left = false;
     private bool received_right = false;
 
-    private DepthManager depth_manager;
-
     public DrawMeshInstanced Left_Depth_Renderer;
     public DrawMeshInstanced Right_Depth_Renderer;
+
+    // ============================================== Depth Manager =========================================================
+    public bool activate_depth_estimation;
+    public bool mean_averaging;
+    public bool median_averaging;
+    public bool edge_detection;
+
+    public DepthAveraging AveragerLeft;
+    public DepthAveraging AveragerRight;
+
+    public float edge_threshold;
 
     public float[] get_depth(int camera_index)
     {
@@ -68,13 +77,54 @@ public class DepthManagerWrapper : MonoBehaviour
             is_estimating = true;
             Debug.Log("here");
             bool not_moving = Left_Depth_Renderer.get_ready_to_freeze();
-            (output_left, output_right) = depth_manager.process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
+            (output_left, output_right) = process_depth(depth_left, rgb_left, depth_right, rgb_right, not_moving);
             is_estimating = false;
         }
     }
 
     void Start()
     {
-        depth_manager = GetComponent<DepthManager>();
+        if (activate_depth_estimation)
+        {
+            StartCoroutine(ResetActivateDepthEstimation());
+        }
     }
+
+
+    // ============================================== Depth Manager =========================================================
+
+    private IEnumerator ResetActivateDepthEstimation()
+    {
+        activate_depth_estimation = false;
+        yield return new WaitForSeconds(0.1f);
+        activate_depth_estimation = true;
+    }
+
+    public (float[], float[]) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
+    {
+        if (median_averaging && mean_averaging)
+        {
+            mean_averaging = false;
+        }
+
+        float[] temp_output_left = depthL, temp_output_right = depthR;
+
+        // depth completion
+        //Debug.Log("depth completion");
+        if (activate_depth_estimation && is_not_moving)
+        {
+            //fps_timer.start(depth_completion_timer_id);
+            (temp_output_left, temp_output_right) = GetComponent<DepthCompletion>().complete(depthL, rgbL, depthR, rgbR);
+            //fps_timer.end(depth_completion_timer_id);
+        }
+
+        //fps_timer.start(averaging_timer_id);
+        temp_output_left = AveragerLeft.averaging(temp_output_left, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        temp_output_right = AveragerRight.averaging(temp_output_right, is_not_moving, mean_averaging, median_averaging, edge_detection, edge_threshold);
+        //fps_timer.end(averaging_timer_id);
+
+        return (temp_output_left, temp_output_right);
+    }
+
+
 }

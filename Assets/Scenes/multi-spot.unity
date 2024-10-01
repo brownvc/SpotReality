@@ -140,6 +140,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4115750826544966975, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
   m_PrefabInstance: {fileID: 1137478774987024292}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &508627275 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2645303768384679997, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+  m_PrefabInstance: {fileID: 1137478774987024292}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a052399364c1a3a4bb8b7e339fc06de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &572054947 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1522503467282568476, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
@@ -361,6 +372,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1137478774038656494, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
   m_PrefabInstance: {fileID: 1137478774987024292}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1357609063 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7804190775113731817, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+  m_PrefabInstance: {fileID: 1137478774987024292}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a052399364c1a3a4bb8b7e339fc06de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1745001872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +397,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Left_Depth_Renderer: {fileID: 8783307}
   Right_Depth_Renderer: {fileID: 1117743168}
+  activate_depth_estimation: 0
+  mean_averaging: 0
+  median_averaging: 0
+  edge_detection: 0
+  AveragerLeft: {fileID: 508627275}
+  AveragerRight: {fileID: 1357609063}
+  edge_threshold: 0.5
 --- !u!1 &2015080485 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5284521774682234486, guid: 8eac20a7794b34648a38314aaf9b0da1, type: 3}
@@ -971,6 +1000,10 @@ PrefabInstance:
       propertyPath: rightHand
       value: 
       objectReference: {fileID: 3465647787827832883}
+    - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: edge_detection
       value: 0
