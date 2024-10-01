@@ -79,7 +79,7 @@ public class DrawMeshInstanced : MonoBehaviour
     bool freeze_lock = false;
 
     public int camera_index;
-    public DepthManager depthManager;
+    public DepthManagerWrapper depthManagerWrapper;
     bool start_completion = true;
 
 
@@ -177,8 +177,9 @@ public class DrawMeshInstanced : MonoBehaviour
             color_image = copy_texture(colorSubscriber.texture2D);
             depth_ar = depthSubscriber.getDepthArr();
         }
-
-        depth_ar = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
+        depthManagerWrapper.set_data(camera_index, color_image, depth_ar);
+        //depth_ar = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
+        depth_ar = depthManagerWrapper.get_depth(camera_index);
     }
 
     private Texture2D copy_texture(Texture2D input_texture)

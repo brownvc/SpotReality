@@ -138,7 +138,7 @@ public class DepthManager : MonoBehaviour
         return output_right;
     }
 
-    private (float[], float[]) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
+    public (float[], float[]) process_depth(float[] depthL, Texture2D rgbL, float[] depthR, Texture2D rgbR, bool is_not_moving)
     {
         if (median_averaging && mean_averaging)
         {
