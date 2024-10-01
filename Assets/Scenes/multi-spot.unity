@@ -955,7 +955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: mean_averaging
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7905348066476718834, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: FPSDisplayObject
