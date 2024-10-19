@@ -825,6 +825,18 @@ PrefabInstance:
       propertyPath: RosBridgeServerUrl
       value: ws://138.16.160.231:9090
       objectReference: {fileID: 0}
+    - target: {fileID: 1671417918396011304, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: Baseline
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: fdc4b8e23617cf14080030d84fe70e21, type: 3}
+    - target: {fileID: 1671417918396011304, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: MaskBaseline
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 377931a4563ad814289495e512b318b4, type: 3}
+    - target: {fileID: 1671417918396011304, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
+      propertyPath: use_baseline
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2155790334621116742, guid: 56ddb6be10446584fbc75833cadcd54f, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.54545456
