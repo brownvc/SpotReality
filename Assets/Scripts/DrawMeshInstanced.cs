@@ -31,6 +31,7 @@ public class DrawMeshInstanced : MonoBehaviour
     public Texture2D depth_image;
 
     public int imageScriptIndex;
+    public int data_label;
 
     public Material material;
 
@@ -104,6 +105,7 @@ public class DrawMeshInstanced : MonoBehaviour
         compute.SetMatrix("_GOPose", Matrix4x4.TRS(transform.position, transform.rotation, new Vector3(1, 1, 1)));
         compute.Dispatch(kernel, Mathf.CeilToInt(population / 64), 1, 1);
         Graphics.DrawMeshInstancedIndirect(mesh, 0, material, bounds, argsBuffer);
+        data_label++;
     }
 
     private void SetProperties()
@@ -168,6 +170,35 @@ public class DrawMeshInstanced : MonoBehaviour
             Destroy(color_image);
             color_image = copy_texture(colorSubscriber.texture2D);
             depth_ar = depthSubscriber.getDepthArr();
+        }
+
+        if (data_label % 121 == 0)
+        {
+            byte[] bytes = color_image.EncodeToPNG();
+            //File.WriteAllBytes()
+            string label = "color/color_test_data" + data_label + ".png";
+            string colorImagePath = System.IO.Path.Combine(Application.persistentDataPath, label);
+            File.WriteAllBytes(colorImagePath, bytes);
+            print("storing image data in" + colorImagePath);
+
+            StringBuilder csvContent = new StringBuilder();
+
+
+            for (int i = 0; i < depth_ar.Length; i++)
+            {
+                csvContent.Append(depth_ar[i].ToString());
+
+                // Add a comma between elements, except after the last element
+                if (i < depth_ar.Length - 1)
+                    csvContent.Append(",");
+            }
+
+            string csv_label = "depth/depth_test_data" + data_label + ".csv";
+            string filepath = System.IO.Path.Combine(Application.persistentDataPath, csv_label);
+            // Write the CSV string to a file
+            File.WriteAllText(filepath, csvContent.ToString());
+            Debug.Log("Depth data saved to " + filepath);
+
         }
 
         depth_ar = depthManager.update_depth_from_renderer(color_image, depth_ar, camera_index);
